@@ -26,8 +26,9 @@ class PendidikanTerakhirResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nama_pendidikan')
                     ->required()
-                    ->columnSpanFull()
-            ]);
+                    ->autofocus()
+            ])->columns(1)
+            ->inlineLabel();
     }
 
     public static function table(Table $table): Table

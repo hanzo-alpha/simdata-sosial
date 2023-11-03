@@ -34,8 +34,8 @@ return [
     'nav.group' => 'Pengaturan',
     'nav.role.label' => 'Peran & Ijin',
     'nav.role.icon' => 'heroicon-o-shield-check',
-    'resource.label.role' => 'Peran',
-    'resource.label.roles' => 'Peran',
+    'resource.label.role' => 'Peran & Ijin',
+    'resource.label.roles' => 'Peran & Ijin',
 
     /*
     |--------------------------------------------------------------------------
