@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -46,7 +47,23 @@ class AdminPanelProvider extends PanelProvider
                     )
                     ->enableTwoFactorAuthentication()
                     ->enableSanctumTokens(),
-                SpotlightPlugin::make()
+                SpotlightPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 3
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 4,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
             ])
             ->favicon(asset('favicon-white.png'))
             ->brandName(config('custom.app.name'))
@@ -63,6 +80,11 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('master')
                     ->label('Master')
+                    ->collapsible()
+                    ->collapsed()
+                    ->icon('heroicon-o-circle-stack'),
+                NavigationGroup::make('pengaturan')
+                    ->label('Pengaturan')
                     ->collapsible()
                     ->collapsed()
                     ->icon('heroicon-o-cog')
