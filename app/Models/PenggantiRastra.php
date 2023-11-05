@@ -11,7 +11,7 @@ class PenggantiRastra extends Model
     use HasKeluarga;
 
     public $timestamps = false;
-    protected $table = 'pengganti_rastra';
+    protected $table = 'pengganti_rastras';
     protected $fillable = [
         'keluarga_id',
         'nokk_pengganti',

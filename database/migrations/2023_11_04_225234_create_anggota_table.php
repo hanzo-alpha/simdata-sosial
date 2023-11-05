@@ -3,6 +3,7 @@
 use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
+use App\Models\Keluarga;
 use App\Models\PendidikanTerakhir;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,6 +14,7 @@ return new class extends Migration {
     {
         Schema::create('anggota', static function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Keluarga::class)->constrained('keluarga')->cascadeOnUpdate();
             $table->string('nokk');
             $table->string('nik');
             $table->string('nama_anggota');

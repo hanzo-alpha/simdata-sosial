@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JenisKelaminEnum;
+use App\Enums\StatusKawinEnum;
 use App\Filament\Resources\KeluargaResource\Pages;
 use App\Filament\Resources\KeluargaResource\RelationManagers;
 use App\Models\Keluarga;
@@ -10,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class KeluargaResource extends Resource
 {
@@ -33,7 +36,7 @@ class KeluargaResource extends Resource
                                 ->required()
                                 ->maxLength(20),
                             Forms\Components\TextInput::make('nik')
-                                ->label('N I K')
+                                ->label('Nomor Induk Kependudukan (NIK)')
                                 ->required()
                                 ->maxLength(20),
                             Forms\Components\TextInput::make('nama_lengkap')
@@ -41,7 +44,7 @@ class KeluargaResource extends Resource
                                 ->required()
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('notelp')
-                                ->label('$label')
+                                ->label('No. Telp/HP')
                                 ->tel()
                                 ->required()
                                 ->maxLength(18),
@@ -59,27 +62,46 @@ class KeluargaResource extends Resource
                             Forms\Components\Select::make('alamat_id')
                                 ->relationship('alamat', 'id')
                                 ->required(),
-                            Forms\Components\TextInput::make('jenis_bantuan_id')
+                            Forms\Components\Select::make('jenis_bantuan_id')
                                 ->required()
-                                ->numeric(),
-                            Forms\Components\TextInput::make('pendidikan_terakhir_id')
+                                ->relationship('jenis_bantuan', 'nama_bantuan'),
+                            Forms\Components\Select::make('pendidikan_terakhir_id')
                                 ->required()
-                                ->numeric(),
-                            Forms\Components\TextInput::make('hubungan_keluarga_id')
+                                ->relationship('pendidikan_terakhir', 'nama_pendidikan'),
+                            Forms\Components\Select::make('hubungan_keluarga_id')
                                 ->required()
-                                ->numeric(),
-                            Forms\Components\TextInput::make('jenis_pekerjaan_id')
+                                ->relationship('hubungan_keluarga', 'nama_hubungan'),
+                            Forms\Components\Select::make('jenis_pekerjaan_id')
                                 ->required()
-                                ->numeric(),
+                                ->relationship('jenis_pekerjaan', 'nama_pekerjaan'),
 
                             Forms\Components\TextInput::make('nama_ibu_kandung')
                                 ->required()
                                 ->maxLength(255),
-                            Forms\Components\Toggle::make('status_kawin'),
-                            Forms\Components\Toggle::make('jenis_kelamin'),
-                            Forms\Components\Toggle::make('status_keluarga'),
+                            Forms\Components\Select::make('status_kawin')
+                                ->options(StatusKawinEnum::class),
+                            Forms\Components\Select::make('jenis_kelamin')
+                                ->options(JenisKelaminEnum::class),
+                            ToggleButton::make('status_keluarga')
+                                ->offColor('danger')
+                                ->onColor('primary')
+                                ->offLabel('Non Aktif')
+                                ->onLabel('Aktif')
+                                ->default(true),
+//                            ButtonGroup::make('status_keluarga')
+//                                ->options(StatusAktif::class)
+//                                ->onColor('primary')
+//                                ->offColor('gray')
+//                                ->gridDirection('column')
+//                                ->default(StatusAktif::AKTIF)
+//                                ->icons([
+//                                    1 => 'heroicon-m-user',
+//                                    0 => 'heroicon-m-building-office',
+//                                ])
+//                                ->iconPosition(\Filament\Support\Enums\IconPosition::After)
+//                                ->iconSize(IconSize::Medium),
                         ])->columns(2)
-                ]),
+                ])->skippable(),
 
             ])->columns(1);
     }
@@ -141,7 +163,7 @@ class KeluargaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\AnggotaRelationManager::class
         ];
     }
 

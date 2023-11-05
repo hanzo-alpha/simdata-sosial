@@ -41,6 +41,11 @@ class Keluarga extends Model
         'status_keluarga' => StatusAktif::class
     ];
 
+    public function anggota(): BelongsToMany
+    {
+        return $this->belongsToMany(Anggota::class, 'anggota_keluarga');
+    }
+
     public function alamat(): BelongsTo
     {
         return $this->belongsTo(Alamat::class);

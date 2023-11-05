@@ -6,6 +6,8 @@ use App\Filament\Resources\KeluargaResource;
 use EightyNine\ExcelImport\ExcelImportAction;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListKeluarga extends ListRecords
 {
@@ -19,5 +21,10 @@ class ListKeluarga extends ListRecords
                 ->color('success'),
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function paginateTableQuery(Builder $query): Paginator
+    {
+        return $query->fastPaginate($this->getTableRecordsPerPage());
     }
 }

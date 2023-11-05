@@ -18,6 +18,7 @@
         "eightynine/filament-excel-import": "^3.0",
         "filament/filament": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
+        "hammerstone/fast-paginate": "^1.0",
         "jeffgreco13/filament-breezy": "^2.1",
         "kenepa/multi-widget": "^2.0",
         "laravel/framework": "^10.10",

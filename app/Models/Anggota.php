@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\JenisKelaminEnum;
 use App\Traits\HasTambahan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Anggota extends Model
 {
@@ -13,6 +14,7 @@ class Anggota extends Model
     public $timestamps = false;
     protected $table = 'anggota';
     protected $fillable = [
+        'keluarga_id',
         'nokk',
         'nik',
         'nama_anggota',
@@ -31,6 +33,11 @@ class Anggota extends Model
     protected $casts = [
         'jenis_kelamin' => JenisKelaminEnum::class
     ];
+
+    public function keluarga(): BelongsTo
+    {
+        return $this->belongsTo(Keluarga::class);
+    }
 
 
 }
