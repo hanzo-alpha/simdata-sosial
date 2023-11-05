@@ -78,6 +78,11 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->navigationGroups([
+                NavigationGroup::make('bantuan')
+                    ->label('Bantuan')
+                    ->collapsible()
+                    ->collapsed()
+                    ->icon('heroicon-o-circle-stack'),
                 NavigationGroup::make('master')
                     ->label('Master')
                     ->collapsible()

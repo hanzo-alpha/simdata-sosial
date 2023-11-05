@@ -4,8 +4,72 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a145824af235dbc5b4d90b876d075e77",
+    "content-hash": "4f7ee98f66f080de18dbf9a81717a5db",
     "packages": [
+        {
+            "name": "andrewdwallo/filament-selectify",
+            "version": "v2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andrewdwallo/filament-selectify.git",
+                "reference": "fcd32d3b1f516e53d610c69a529f9e8730f99afb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andrewdwallo/filament-selectify/zipball/fcd32d3b1f516e53d610c69a529f9e8730f99afb",
+                "reference": "fcd32d3b1f516e53d610c69a529f9e8730f99afb",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Wallo\\FilamentSelectify\\FilamentSelectifyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Wallo\\FilamentSelectify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Wallo",
+                    "email": "andrewdwallo@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package filament-selectify",
+            "homepage": "https://github.com/andrewdwallo/filament-selectify",
+            "keywords": [
+                "andrewdwallo",
+                "filament-selectify",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/andrewdwallo/filament-selectify/issues",
+                "source": "https://github.com/andrewdwallo/filament-selectify/tree/v2.0.6"
+            },
+            "time": "2023-10-20T05:27:17+00:00"
+        },
         {
             "name": "anourvalar/eloquent-serialize",
             "version": "1.2.16",
@@ -70,6 +134,140 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.16"
             },
             "time": "2023-09-16T15:09:21+00:00"
+        },
+        {
+            "name": "arbermustafa/filament-locationpickr-field",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arbermustafa/filament-locationpickr-field.git",
+                "reference": "e3638991b6251dd407de348bb9af8615c20618ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arbermustafa/filament-locationpickr-field/zipball/e3638991b6251dd407de348bb9af8615c20618ad",
+                "reference": "e3638991b6251dd407de348bb9af8615c20618ad",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.13.5"
+            },
+            "require-dev": {
+                "pestphp/pest": "^2.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ArberMustafa\\FilamentLocationPickrField\\LocationPickrFieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ArberMustafa\\FilamentLocationPickrField\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arber Mustafa",
+                    "email": "info@arbermustafa.com",
+                    "homepage": "https://arbermustafa.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Location picker field for Filament Php using Google Maps",
+            "homepage": "https://github.com/arbermustafa/filament-locationpickr-field",
+            "keywords": [
+                "arbermustafa",
+                "field",
+                "filament-locationpickr-field",
+                "filament-plugin",
+                "form",
+                "google-maps",
+                "laravel",
+                "maps",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/arbermustafa/filament-locationpickr-field/issues",
+                "source": "https://github.com/arbermustafa/filament-locationpickr-field/tree/2.0.0"
+            },
+            "time": "2023-09-14T12:15:06+00:00"
+        },
+        {
+            "name": "awcodes/filament-badgeable-column",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/awcodes/filament-badgeable-column.git",
+                "reference": "78cb5c55000ebd54758d254f61b6460edbfb0155"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/awcodes/filament-badgeable-column/zipball/78cb5c55000ebd54758d254f61b6460edbfb0155",
+                "reference": "78cb5c55000ebd54758d254f61b6460edbfb0155",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Awcodes\\FilamentBadgeableColumn\\BadgeableColumnServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Awcodes\\FilamentBadgeableColumn\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "awcodes",
+                    "email": "awcodes1@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Filament Tables column to append and prepend badges.",
+            "homepage": "https://github.com/awcodes/badger",
+            "keywords": [
+                "awcodes",
+                "badger",
+                "filament",
+                "filament-badgeable-column",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/awcodes/filament-badgeable-column/issues",
+                "source": "https://github.com/awcodes/filament-badgeable-column/tree/v2.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/awcodes",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-10-09T13:25:53+00:00"
         },
         {
             "name": "awcodes/filament-table-repeater",
@@ -1511,6 +1709,80 @@
             "time": "2023-10-06T06:47:41+00:00"
         },
         {
+            "name": "eightynine/filament-excel-import",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eighty9nine/filament-excel-import.git",
+                "reference": "296f08aa5fc534556147d5d2f2c101475ff140a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eighty9nine/filament-excel-import/zipball/296f08aa5fc534556147d5d2f2c101475ff140a4",
+                "reference": "296f08aa5fc534556147d5d2f2c101475ff140a4",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0",
+                "maatwebsite/excel": "^3.1",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "EightyNine\\ExcelImport\\ExcelImportServiceProvider"
+                    ],
+                    "aliases": {
+                        "ExcelImportAction": "EightyNine\\ExcelImport\\Facades\\ExcelImportAction"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EightyNine\\ExcelImport\\": "src/",
+                    "EightyNine\\ExcelImport\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eighty Nine",
+                    "email": "eighty9nine@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Import Excel files with Laravel Filament.",
+            "homepage": "https://github.com/eightynine/filament-excel-import",
+            "keywords": [
+                "eightynine",
+                "filament-excel-import",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/eightynine/filament-excel-import/issues",
+                "source": "https://github.com/eightynine/filament-excel-import"
+            },
+            "time": "2023-10-20T14:22:27+00:00"
+        },
+        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.16.0",
             "source": {
@@ -2607,6 +2879,59 @@
                 "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.1.17"
             },
             "time": "2023-10-23T20:43:54+00:00"
+        },
+        {
+            "name": "kenepa/multi-widget",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenepa/multi-widget.git",
+                "reference": "813cc3cadcfd65979ff66fc58a38358b32f34b6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenepa/multi-widget/zipball/813cc3cadcfd65979ff66fc58a38358b32f34b6f",
+                "reference": "813cc3cadcfd65979ff66fc58a38358b32f34b6f",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "tightenco/duster": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kenepa\\MultiWidget\\MultiWidgetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kenepa\\MultiWidget\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Filament widget that encompasses multiple widgets.",
+            "homepage": "https://github.com/kenepa/multi-widget",
+            "keywords": [
+                "Kenepa",
+                "filament",
+                "laravel",
+                "multi-widget"
+            ],
+            "support": {
+                "issues": "https://github.com/kenepa/multi-widget/issues",
+                "source": "https://github.com/kenepa/multi-widget/tree/2.0.2"
+            },
+            "time": "2023-09-27T11:48:08+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
