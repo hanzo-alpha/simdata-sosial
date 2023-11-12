@@ -9,6 +9,8 @@ use App\Traits\HasTambahan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Keluarga extends Model
 {
@@ -32,6 +34,8 @@ class Keluarga extends Model
         'status_kawin',
         'jenis_kelamin',
         'status_keluarga',
+        'addressable_id',
+        'addressable_type',
     ];
 
     protected $casts = [
@@ -41,7 +45,12 @@ class Keluarga extends Model
         'status_keluarga' => StatusAktif::class
     ];
 
-    public function anggota(): BelongsToMany
+    public function anggota(): HasMany
+    {
+        return $this->hasMany(Anggota::class);
+    }
+
+    public function anggota_keluarga(): BelongsToMany
     {
         return $this->belongsToMany(Anggota::class, 'anggota_keluarga');
     }
@@ -51,8 +60,18 @@ class Keluarga extends Model
         return $this->belongsTo(Alamat::class);
     }
 
-    public function jenis_bantuan(): BelongsToMany
+    public function addresses(): MorphToMany
     {
-        return $this->belongsToMany(JenisBantuan::class);
+        return $this->morphToMany(Address::class, 'addressable');
+    }
+
+    public function jenis_bantuan_keluarga(): BelongsToMany
+    {
+        return $this->belongsToMany(JenisBantuan::class, 'jenis_bantuan_keluarga');
+    }
+
+    public function jenis_bantuan(): BelongsTo
+    {
+        return $this->belongsTo(JenisBantuan::class);
     }
 }

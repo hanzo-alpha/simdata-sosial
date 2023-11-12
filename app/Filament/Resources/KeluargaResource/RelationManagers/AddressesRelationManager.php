@@ -1,32 +1,23 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\KeluargaResource\RelationManagers;
 
-use App\Filament\Resources\AlamatResource\Pages;
-use App\Filament\Resources\AlamatResource\RelationManagers;
-use App\Models\Alamat;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class AlamatResource extends Resource
+class AddressesRelationManager extends RelationManager
 {
-    protected static ?string $model = Alamat::class;
+    protected static string $relationship = 'addresses';
 
-    protected static ?string $slug = 'alamat';
-    protected static ?string $label = 'Alamat';
-    protected static ?string $pluralLabel = 'Alamat';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $recordTitleAttribute = 'full_address';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('keluarga_id')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\Textarea::make('alamat')
                     ->required()
                     ->maxLength(65535)
@@ -61,12 +52,11 @@ class AlamatResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('alamat')
             ->columns([
-                Tables\Columns\TextColumn::make('keluarga_id')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('no_rt')
@@ -95,29 +85,20 @@ class AlamatResource extends Resource
             ->filters([
                 //
             ])
+            ->headerActions([
+                Tables\Actions\AttachAction::make(),
+                Tables\Actions\CreateAction::make(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DetachAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DetachBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListAlamats::route('/'),
-            'create' => Pages\CreateAlamat::route('/create'),
-            'edit' => Pages\EditAlamat::route('/{record}/edit'),
-        ];
     }
 }

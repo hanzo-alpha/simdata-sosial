@@ -60,7 +60,7 @@ class KeluargaResource extends Resource
                     Forms\Components\Wizard\Step::make('Data Lainnya')
                         ->schema([
                             Forms\Components\Select::make('alamat_id')
-                                ->relationship('alamat', 'id')
+                                ->relationship('alamat', 'alamat')
                                 ->required(),
                             Forms\Components\Select::make('jenis_bantuan_id')
                                 ->required()
@@ -110,7 +110,7 @@ class KeluargaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('alamat.id')
+                Tables\Columns\TextColumn::make('alamat.alamat')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_bantuan_id')
@@ -163,6 +163,7 @@ class KeluargaResource extends Resource
     public static function getRelations(): array
     {
         return [
+            RelationManagers\AddressesRelationManager::class,
             RelationManagers\AnggotaRelationManager::class
         ];
     }

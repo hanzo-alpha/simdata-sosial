@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('bank')->nullable();
             $table->string('dir')->nullable();
             $table->string('gelombang')->nullable();
+            $table->unsignedInteger('nominal')->nullable()->default(0);
             $table->tinyInteger('status_pkh')->nullable();
             $table->timestamps();
         });

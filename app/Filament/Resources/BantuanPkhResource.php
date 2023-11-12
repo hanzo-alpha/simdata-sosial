@@ -34,6 +34,10 @@ class BantuanPkhResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('jenis_bantuan_id')
                     ->relationship('jenis_bantuan', 'id'),
+                Forms\Components\TextInput::make('nominal')
+                    ->prefix('Rp')
+                    ->numeric()
+                    ->maxValue(42949672.95),
                 Forms\Components\TextInput::make('dtks_id')
                     ->maxLength(36),
                 Forms\Components\TextInput::make('bank')

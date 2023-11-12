@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use App\Enums\StatusAktif;
+use App\Traits\HasJenisBantuan;
 use App\Traits\HasKeluarga;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BantuanPkh extends Model
 {
-    use HasKeluarga;
+    use HasKeluarga, HasJenisBantuan;
 
     public $timestamps = false;
     protected $table = 'bantuan_pkh';
@@ -22,16 +23,13 @@ class BantuanPkh extends Model
         'bank',
         'dir',
         'gelombang',
+        'nominal',
         'status_pkh',
     ];
 
     protected $casts = [
         'dtks_id' => 'string',
+        'nominal' => MoneyCast::class,
         'status_pkh' => StatusAktif::class
     ];
-
-    public function jenis_bantuan(): BelongsTo
-    {
-        return $this->belongsTo(JenisBantuan::class);
-    }
 }

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use App\Enums\StatusAktif;
+use App\Traits\HasJenisBantuan;
 use App\Traits\HasKeluarga;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BantuanBpnt extends Model
 {
-    use HasKeluarga;
+    use HasKeluarga, HasJenisBantuan;
 
     public $timestamps = false;
     protected $table = 'bantuan_bpnt';
@@ -22,11 +24,13 @@ class BantuanBpnt extends Model
         'bank',
         'dir',
         'gelombang',
+        'nominal',
         'status_bpnt',
     ];
 
     protected $casts = [
         'dtks_id' => 'string',
+        'nominal' => MoneyCast::class,
         'status_bpnt' => StatusAktif::class
     ];
 
