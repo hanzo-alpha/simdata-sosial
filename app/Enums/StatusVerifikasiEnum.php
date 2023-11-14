@@ -6,19 +6,19 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusVerifikasiEnum: int implements HasLabel, HasColor, HasIcon
+enum StatusVerifikasiEnum: string implements HasLabel, HasColor, HasIcon
 {
 
-    case UNVERIFIED = 1;
-    case VERIFIED = 2;
-    case NEED_REVIEW = 3;
+    case UNVERIFIED = 'UNVERIFIED';
+    case VERIFIED = 'VERIFIED';
+    case REVIEW = 'REVIEW';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::UNVERIFIED => 'BELUM DIVERIFIKASI',
+            self::UNVERIFIED => 'TIDAK DIVERIFIKASI',
             self::VERIFIED => 'SUDAH DIVERIFIKASI',
-            self::NEED_REVIEW => 'PERLU DI REVIEW',
+            self::REVIEW => 'DITINJAU ULANG',
         };
     }
 
@@ -27,7 +27,7 @@ enum StatusVerifikasiEnum: int implements HasLabel, HasColor, HasIcon
         return match ($this) {
             self::UNVERIFIED => 'danger',
             self::VERIFIED => 'success',
-            self::NEED_REVIEW => 'warning',
+            self::REVIEW => 'warning',
         };
     }
 
@@ -36,7 +36,7 @@ enum StatusVerifikasiEnum: int implements HasLabel, HasColor, HasIcon
         return match ($this) {
             self::UNVERIFIED => 'heroicon-o-minus-circle',
             self::VERIFIED => 'heroicon-o-check-circle',
-            self::NEED_REVIEW => 'heroicon-o-exclamation-circle',
+            self::REVIEW => 'heroicon-o-exclamation-circle',
         };
     }
 }

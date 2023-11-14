@@ -3,9 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
+use App\Enums\StatusAktif;
 use App\Enums\StatusKawinEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\KeluargaResource\Pages;
 use App\Filament\Resources\KeluargaResource\RelationManagers;
+use App\Forms\Components\AddressForm;
 use App\Models\Keluarga;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -28,79 +31,14 @@ class KeluargaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Wizard::make([
-                    Forms\Components\Wizard\Step::make('Data Pribadi')
-                        ->schema([
-                            Forms\Components\TextInput::make('nokk')
-                                ->label('No. Kartu Keluarga')
-                                ->autofocus()
-                                ->required()
-                                ->maxLength(20),
-                            Forms\Components\TextInput::make('nik')
-                                ->label('Nomor Induk Kependudukan (NIK)')
-                                ->required()
-                                ->maxLength(20),
-                            Forms\Components\TextInput::make('nama_lengkap')
-                                ->label('Nama Lengkap')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('notelp')
-                                ->label('No. Telp/HP')
-                                ->tel()
-                                ->required()
-                                ->maxLength(18),
-                            Forms\Components\TextInput::make('tempat_lahir')
-                                ->label('Tempat Lahir')
-                                ->required()
-                                ->maxLength(50),
-                            Forms\Components\DatePicker::make('tgl_lahir')
-                                ->label('Tanggal Lahir')
-                                ->required(),
-
-                        ])->columns(2),
+                    Forms\Components\Wizard\Step::make('Data Keluarga')
+                        ->schema(static::getFormSchema('keluarga'))->columns(2),
+                    Forms\Components\Wizard\Step::make('Alamat Keluarga')
+                        ->schema(static::getFormSchema('alamat'))->columns(2),
                     Forms\Components\Wizard\Step::make('Data Lainnya')
-                        ->schema([
-                            Forms\Components\Select::make('alamat_id')
-                                ->relationship('alamat', 'alamat')
-                                ->required(),
-                            Forms\Components\Select::make('jenis_bantuan_id')
-                                ->required()
-                                ->relationship('jenis_bantuan', 'nama_bantuan'),
-                            Forms\Components\Select::make('pendidikan_terakhir_id')
-                                ->required()
-                                ->relationship('pendidikan_terakhir', 'nama_pendidikan'),
-                            Forms\Components\Select::make('hubungan_keluarga_id')
-                                ->required()
-                                ->relationship('hubungan_keluarga', 'nama_hubungan'),
-                            Forms\Components\Select::make('jenis_pekerjaan_id')
-                                ->required()
-                                ->relationship('jenis_pekerjaan', 'nama_pekerjaan'),
-
-                            Forms\Components\TextInput::make('nama_ibu_kandung')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\Select::make('status_kawin')
-                                ->options(StatusKawinEnum::class),
-                            Forms\Components\Select::make('jenis_kelamin')
-                                ->options(JenisKelaminEnum::class),
-                            ToggleButton::make('status_keluarga')
-                                ->offColor('danger')
-                                ->onColor('primary')
-                                ->offLabel('Non Aktif')
-                                ->onLabel('Aktif')
-                                ->default(true),
-//                            ButtonGroup::make('status_keluarga')
-//                                ->options(StatusAktif::class)
-//                                ->onColor('primary')
-//                                ->offColor('gray')
-//                                ->gridDirection('column')
-//                                ->default(StatusAktif::AKTIF)
-//                                ->icons([
-//                                    1 => 'heroicon-m-user',
-//                                    0 => 'heroicon-m-building-office',
-//                                ])
-//                                ->iconPosition(\Filament\Support\Enums\IconPosition::After)
-//                                ->iconSize(IconSize::Medium),
-                        ])->columns(2)
+                        ->schema(static::getFormSchema('lainnya'))->columns(2),
+                    Forms\Components\Wizard\Step::make('Unggah Data')
+                        ->schema(static::getFormSchema('upload'))->columns(2)
                 ])->skippable(),
 
             ])->columns(1);
@@ -174,6 +112,164 @@ class KeluargaResource extends Resource
             'index' => Pages\ListKeluarga::route('/'),
             'create' => Pages\CreateKeluarga::route('/create'),
             'edit' => Pages\EditKeluarga::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status_keluarga', StatusAktif::AKTIF)->count();
+    }
+
+    public static function getGlobalSearchEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['anggota', 'alamat', 'jenis_bantuan']);
+    }
+
+    public static function getFormSchema(string $section = null): array
+    {
+//        if ($section === 'items') {
+//            return [
+//                Forms\Components\Repeater::make('items')
+//                    ->relationship()
+//                    ->schema([
+//                        Forms\Components\Select::make('shop_product_id')
+//                            ->label('Product')
+//                            ->options(Product::query()->pluck('name', 'id'))
+//                            ->required()
+//                            ->reactive()
+//                            ->afterStateUpdated(fn($state, Forms\Set $set) => $set('unit_price',
+//                                Product::find($state)?->price ?? 0))
+//                            ->columnSpan([
+//                                'md' => 5,
+//                            ])
+//                            ->searchable(),
+//
+//                        Forms\Components\TextInput::make('qty')
+//                            ->label('Quantity')
+//                            ->numeric()
+//                            ->default(1)
+//                            ->columnSpan([
+//                                'md' => 2,
+//                            ])
+//                            ->required(),
+//
+//                        Forms\Components\TextInput::make('unit_price')
+//                            ->label('Unit Price')
+//                            ->disabled()
+//                            ->dehydrated()
+//                            ->numeric()
+//                            ->required()
+//                            ->columnSpan([
+//                                'md' => 3,
+//                            ]),
+//                    ])
+//                    ->orderable()
+//                    ->defaultItems(1)
+//                    ->disableLabel()
+//                    ->columns([
+//                        'md' => 10,
+//                    ])
+//                    ->required(),
+//            ];
+//        }
+
+        if ($section === 'keluarga') {
+            return [
+                Forms\Components\TextInput::make('nokk')
+                    ->label('No. Kartu Keluarga')
+                    ->autofocus()
+                    ->required()
+                    ->maxLength(20),
+                Forms\Components\TextInput::make('nik')
+                    ->label('Nomor Induk Kependudukan (NIK)')
+                    ->required()
+                    ->maxLength(20),
+                Forms\Components\TextInput::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('notelp')
+                    ->label('No. Telp/HP')
+                    ->tel()
+                    ->required()
+                    ->maxLength(18),
+                Forms\Components\TextInput::make('tempat_lahir')
+                    ->label('Tempat Lahir')
+                    ->required()
+                    ->maxLength(50),
+                Forms\Components\DatePicker::make('tgl_lahir')
+                    ->label('Tanggal Lahir')
+                    ->required(),
+            ];
+        }
+
+        if ($section === 'alamat') {
+            return [
+                AddressForm::make('address')->columnSpan('full')
+            ];
+        }
+
+        if ($section === 'upload') {
+            return [
+                Forms\Components\Grid::make()->schema([
+                    Forms\Components\FileUpload::make('upload_foto')
+                        ->label('Unggah Foto')
+                        ->image()
+                        ->required()
+                        ->helperText('maks. 2MB')
+                        ->image(),
+
+                    Forms\Components\FileUpload::make('upload_dokumen')
+                        ->label('Unggah File Pendukung Lainnya')
+                        ->helperText('maks. 5MB')
+                        ->required(),
+                ])
+
+            ];
+        }
+
+        return [
+            Forms\Components\Select::make('jenis_bantuan_id')
+                ->required()
+                ->searchable()
+                ->relationship('jenis_bantuan', 'nama_bantuan')
+                ->preload()
+                ->optionsLimit(20),
+            Forms\Components\Select::make('pendidikan_terakhir_id')
+                ->required()
+                ->searchable()
+                ->relationship('pendidikan_terakhir', 'nama_pendidikan')
+                ->preload()
+                ->optionsLimit(20),
+            Forms\Components\Select::make('hubungan_keluarga_id')
+                ->required()
+                ->searchable()
+                ->relationship('hubungan_keluarga', 'nama_hubungan')
+                ->preload()
+                ->optionsLimit(20),
+            Forms\Components\Select::make('jenis_pekerjaan_id')
+                ->required()
+                ->searchable()
+                ->relationship('jenis_pekerjaan', 'nama_pekerjaan')
+                ->preload()
+                ->optionsLimit(20),
+
+            Forms\Components\TextInput::make('nama_ibu_kandung')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\Select::make('status_kawin')
+                ->searchable()
+                ->options(StatusKawinEnum::class),
+            Forms\Components\Select::make('jenis_kelamin')
+                ->options(JenisKelaminEnum::class),
+            Forms\Components\Select::make('status_verifikasi')
+                ->options(StatusVerifikasiEnum::class),
+            ToggleButton::make('status_keluarga')
+                ->offColor('danger')
+                ->onColor('primary')
+                ->offLabel('Non Aktif')
+                ->onLabel('Aktif')
+                ->default(true),
         ];
     }
 }

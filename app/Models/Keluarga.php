@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusKawinEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Keluarga extends Model
@@ -34,6 +36,7 @@ class Keluarga extends Model
         'status_kawin',
         'jenis_kelamin',
         'status_keluarga',
+        'status_verifikasi',
         'addressable_id',
         'addressable_type',
     ];
@@ -42,7 +45,8 @@ class Keluarga extends Model
         'tgl_lahir' => 'datetime',
         'status_kawin' => StatusKawinEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
-        'status_keluarga' => StatusAktif::class
+        'status_keluarga' => StatusAktif::class,
+        'status_verifikasi' => StatusVerifikasiEnum::class
     ];
 
     public function anggota(): HasMany
@@ -63,6 +67,11 @@ class Keluarga extends Model
     public function addresses(): MorphToMany
     {
         return $this->morphToMany(Address::class, 'addressable');
+    }
+
+    public function address(): MorphOne
+    {
+        return $this->morphOne(AddressKeluarga::class, 'addressable');
     }
 
     public function jenis_bantuan_keluarga(): BelongsToMany
