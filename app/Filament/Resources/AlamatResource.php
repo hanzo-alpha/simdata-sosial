@@ -24,15 +24,9 @@ class AlamatResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('keluarga_id')
+                Forms\Components\TextInput::make('alamat')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('alamat')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('alamat2')
-                    ->maxLength(65535)
+                    ->maxLength(255)
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('no_rt')
                     ->maxLength(255),

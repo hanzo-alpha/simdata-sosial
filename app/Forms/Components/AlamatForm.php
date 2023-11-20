@@ -5,6 +5,7 @@ namespace App\Forms\Components;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\Provinsi;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Grid;
@@ -12,10 +13,12 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Model;
 
-class AddressForm extends Field
+class AlamatForm extends Field
 {
-//    protected string $view = 'forms.components.address-form';
-    public $relationship = null;
+//    protected string $view = 'forms.components.alamat-form';
+
+    public ?string $relationship = null;
+
     protected string $view = 'filament-forms::components.group';
 
     public function relationship(string|callable $relationship): static
@@ -79,27 +82,28 @@ class AddressForm extends Field
                         ->defaultLocation([-4.366561933335206, 119.89695254227935])
                         ->defaultZoom(16)
                         ->columnSpan('full')
-                        ->reactive()
+                        ->live(true)
                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
                             $set('latitude', $state['lat']);
                             $set('longitude', $state['lng']);
                         }),
-                    TextInput::make('full_address'),
+                    TextInput::make('alamat')->nullable(),
+                    TextInput::make('full_address')->nullable(),
                     Grid::make(2)->schema([
                         TextInput::make('latitude')
-                            ->reactive()
+                            ->live(true)
                             ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('location', [
                                     'lat' => floatVal($state),
-                                    'lng' => floatVal($get('longitude')),
+                                    'lng' => (float) $get('longitude'),
                                 ]);
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
                         TextInput::make('longitude')
-                            ->reactive()
+                            ->live(true)
                             ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('location', [
-                                    'lat' => floatval($get('latitude')),
+                                    'lat' => (float) $get('latitude'),
                                     'lng' => floatVal($state),
                                 ]);
                             })
@@ -111,37 +115,72 @@ class AddressForm extends Field
                 ->schema([
                     Select::make('provinsi')
                         ->searchable()
-//                        ->options(Provinsi::pluck('name', 'code'))
-                        ->relationship('prov', 'name')
+                        ->options(Provinsi::pluck('name', 'code'))
+                        ->default('73')
                         ->preload()
                         ->live(true)
                         ->optionsLimit(20)
                         ->label('Provinsi'),
                     Select::make('kabupaten')
-                        ->searchable()
-                        ->options(Kabupaten::pluck('name', 'code'))
-                        ->preload()
-                        ->live(true)
-                        ->optionsLimit(20)
-                        ->label('Kabupaten'),
+                        ->nullable()
+                        ->options(function (callable $get) {
+                            $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
+                            if (!$kab) {
+                                return Kabupaten::where('provinsi_code', config('custom.default.kodekab'))
+                                    ->pluck('name', 'code');
+                            }
+
+                            return $kab->pluck('name', 'code');
+                        })
+                        ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null))
+                        ->reactive()
+                        ->searchable(),
                 ]),
 
             Grid::make(2)
                 ->schema([
                     Select::make('kecamatan')
+                        ->nullable()
                         ->searchable()
-                        ->options(Kecamatan::pluck('name', 'code'))
-                        ->preload()
-                        ->live(true)
-                        ->optionsLimit(20)
-                        ->label('Kecamatan'),
+                        ->reactive()
+                        ->options(function (callable $get) {
+                            $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
+                            if (!$kab) {
+                                return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
+                                    ->pluck('name', 'code');
+                            }
+
+                            return $kab->pluck('name', 'code');
+                        })
+//                            ->hidden(fn (callable $get) => ! $get('kabupaten'))
+                        ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+
                     Select::make('kelurahan')
+                        ->nullable()
+                        ->options(function (callable $get) {
+                            $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
+                            if (!$kel) {
+                                return Kelurahan::where('kecamatan_code', '731211')
+                                    ->pluck('name', 'code');
+                            }
+
+                            return $kel->pluck('name', 'code');
+                        })
+                        ->reactive()
                         ->searchable()
-                        ->options(Kelurahan::pluck('name', 'code'))
-                        ->preload()
-                        ->live(true)
-                        ->optionsLimit(20)
-                        ->label('Kelurahan'),
+//                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
+                        ->afterStateUpdated(function (callable $set, $state) {
+                            $village = Kelurahan::where('code', $state)->first();
+                            if ($village) {
+//                                $set('latitude', $village['latitude']);
+//                                $set('longitude', $village['longitude']);
+                                $set('location', [
+                                    'lat' => (float) $village['latitude'],
+                                    'lng' => (float) $village['longitude'],
+                                ]);
+                            }
+
+                        }),
                 ]),
 
             Grid::make(4)
@@ -162,7 +201,7 @@ class AddressForm extends Field
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (AddressForm $component, ?Model $record) {
+        $this->afterStateHydrated(function (AlamatForm $component, ?Model $record) {
             $address = $record?->getRelationValue($this->getRelationship());
 
             $component->state($address ? $address->toArray() : [

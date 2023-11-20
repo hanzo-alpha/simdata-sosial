@@ -6,14 +6,14 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusKawinEnum: string implements HasLabel, HasIcon, HasColor
+enum StatusKawinEnum: int implements HasLabel, HasIcon, HasColor
 {
-    case KAWIN = 'K';
-    case BELUMKAWIN = 'BK';
-    case CERAI_HIDUP = 'CH';
-    case CERAI_MATI = 'CM';
-    case JANDA = 'J';
-    case DUDA = 'D';
+    case KAWIN = 1;
+    case BELUMKAWIN = 2;
+    case CERAI_HIDUP = 3;
+    case CERAI_MATI = 4;
+    case JANDA = 5;
+    case DUDA = 6;
 
 
     public function getLabel(): ?string

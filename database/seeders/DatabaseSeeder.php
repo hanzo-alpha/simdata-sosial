@@ -18,5 +18,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $this->call([
+            ProvinsiTableSeeder::class,
+            KabupatenTableSeeder::class,
+            KecamatanTableSeeder::class,
+            KelurahanTableSeeder::class,
+            PulauTableSeeder::class
+
+        ]);
     }
 }

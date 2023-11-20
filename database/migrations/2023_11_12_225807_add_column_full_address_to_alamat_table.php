@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('alamat', static function (Blueprint $table) {
-            $table->string('full_address')->virtualAs("CONCAT(alamat, ', ', alamat2, ', ',
+            $table->string('full_address')->virtualAs("CONCAT(alamat, ', ',
              'RT. ' ,no_rt, ', ', 'RW. ', no_rw, ', ', dusun, ' ', kodepos)");
         });
     }
