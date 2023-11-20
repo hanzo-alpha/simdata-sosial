@@ -6,10 +6,10 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum JenisKelaminEnum: string implements HasLabel, HasColor, HasIcon
+enum JenisKelaminEnum: int implements HasLabel, HasColor, HasIcon
 {
-    case LAKI = 'Laki-Laki';
-    case PEREMPUAN = 'Perempuan';
+    case LAKI = 1;
+    case PEREMPUAN = 2;
 
 
     public function getLabel(): ?string

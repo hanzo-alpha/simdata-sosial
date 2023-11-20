@@ -2,24 +2,25 @@
 
 namespace App\Models;
 
+use App\Traits\HasWilayah;
 use Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Address extends Model
 {
+    use HasWilayah;
 
     public $timestamps = false;
     protected $table = 'addresses';
 
-    protected $appends = [
-        'location',
-    ];
+//    protected $appends = [
+//        'location',
+//    ];
 
     protected $fillable = [
         'keluarga_id',
         'alamat',
-        'alamat2',
         'no_rt',
         'no_rw',
         'provinsi',
@@ -31,7 +32,25 @@ class Address extends Model
         'location',
         'latitude',
         'longitude',
+        'full_address',
     ];
+
+    private function getAlamatLengkap(array $attributes): string
+    {
+        $sep = ', ';
+
+        return $attributes['alamat'] . $sep . $attributes['provinsi'] . $sep . $attributes['kabupaten'] .
+            $sep . $attributes['kecamatan'] . $sep . $attributes['kelurahan'] . $sep . $attributes['dusun'] .
+            $sep . $attributes['no_rt'] . $sep . $attributes['no_rw'] . $sep . $attributes['kodepos'];
+    }
+
+    public function fullAddress(): Attribute
+    {
+        return Attribute::make(
+            get: static fn($value) => $value,
+            set: static fn($value, $attributes) => $this->getAlamatLengkap($attributes)
+        );
+    }
 
     public function location(): Attribute
     {

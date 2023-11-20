@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Keluarga::class)->constrained('keluarga')->cascadeOnUpdate();
             $table->text('alamat');
-            $table->text('alamat2')->nullable();
             $table->string('no_rt')->nullable();
             $table->string('no_rw')->nullable();
             $table->string('provinsi')->nullable();

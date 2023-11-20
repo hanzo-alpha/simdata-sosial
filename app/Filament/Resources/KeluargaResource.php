@@ -8,7 +8,7 @@ use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\KeluargaResource\Pages;
 use App\Filament\Resources\KeluargaResource\RelationManagers;
-use App\Forms\Components\AddressForm;
+use App\Forms\Components\AlamatForm;
 use App\Models\Keluarga;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -127,52 +127,6 @@ class KeluargaResource extends Resource
 
     public static function getFormSchema(string $section = null): array
     {
-//        if ($section === 'items') {
-//            return [
-//                Forms\Components\Repeater::make('items')
-//                    ->relationship()
-//                    ->schema([
-//                        Forms\Components\Select::make('shop_product_id')
-//                            ->label('Product')
-//                            ->options(Product::query()->pluck('name', 'id'))
-//                            ->required()
-//                            ->reactive()
-//                            ->afterStateUpdated(fn($state, Forms\Set $set) => $set('unit_price',
-//                                Product::find($state)?->price ?? 0))
-//                            ->columnSpan([
-//                                'md' => 5,
-//                            ])
-//                            ->searchable(),
-//
-//                        Forms\Components\TextInput::make('qty')
-//                            ->label('Quantity')
-//                            ->numeric()
-//                            ->default(1)
-//                            ->columnSpan([
-//                                'md' => 2,
-//                            ])
-//                            ->required(),
-//
-//                        Forms\Components\TextInput::make('unit_price')
-//                            ->label('Unit Price')
-//                            ->disabled()
-//                            ->dehydrated()
-//                            ->numeric()
-//                            ->required()
-//                            ->columnSpan([
-//                                'md' => 3,
-//                            ]),
-//                    ])
-//                    ->orderable()
-//                    ->defaultItems(1)
-//                    ->disableLabel()
-//                    ->columns([
-//                        'md' => 10,
-//                    ])
-//                    ->required(),
-//            ];
-//        }
-
         if ($section === 'keluarga') {
             return [
                 Forms\Components\TextInput::make('nokk')
@@ -205,22 +159,31 @@ class KeluargaResource extends Resource
 
         if ($section === 'alamat') {
             return [
-                AddressForm::make('address')->columnSpan('full')
+//                AddressForm::make('address')
+//                    ->relationship('prov')
+//                    ->columnSpan('full'),
+                AlamatForm::make('alamat')
+                    ->columnSpanFull(),
+//                Forms\Components\Select::make('alamat')
+//                    ->preload()
+//                    ->optionsLimit(10)
+//                    ->relationship('alamat.alamat')
             ];
         }
 
         if ($section === 'upload') {
             return [
                 Forms\Components\Grid::make()->schema([
-                    Forms\Components\FileUpload::make('upload_foto')
+                    Forms\Components\FileUpload::make('unggah_foto')
                         ->label('Unggah Foto')
-                        ->image()
+                        ->multiple()
                         ->required()
                         ->helperText('maks. 2MB')
                         ->image(),
 
-                    Forms\Components\FileUpload::make('upload_dokumen')
+                    Forms\Components\FileUpload::make('unggah_dokumen')
                         ->label('Unggah File Pendukung Lainnya')
+                        ->multiple()
                         ->helperText('maks. 5MB')
                         ->required(),
                 ])

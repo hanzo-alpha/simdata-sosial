@@ -29,7 +29,10 @@ return new class extends Migration {
             $table->tinyInteger('status_kawin')->nullable()->default(1);
             $table->tinyInteger('jenis_kelamin')->nullable()->default(1);
             $table->tinyInteger('status_keluarga')->nullable()->default(0);
+            $table->json('unggah_foto')->nullable();
+            $table->json('unggah_dokumen')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 };

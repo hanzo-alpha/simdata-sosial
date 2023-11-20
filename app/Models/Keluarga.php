@@ -7,18 +7,19 @@ use App\Enums\StatusAktif;
 use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
+use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Keluarga extends Model
 {
-    use HasTambahan;
+    use HasTambahan, HasWilayah, SoftDeletes;
 
-    public $timestamps = false;
     protected $table = 'keluarga';
     protected $fillable = [
         'nokk',
@@ -37,8 +38,8 @@ class Keluarga extends Model
         'jenis_kelamin',
         'status_keluarga',
         'status_verifikasi',
-        'addressable_id',
-        'addressable_type',
+        'unggah_foto',
+        'unggah_dokumen',
     ];
 
     protected $casts = [
@@ -46,7 +47,9 @@ class Keluarga extends Model
         'status_kawin' => StatusKawinEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_keluarga' => StatusAktif::class,
-        'status_verifikasi' => StatusVerifikasiEnum::class
+        'status_verifikasi' => StatusVerifikasiEnum::class,
+        'unggah_foto' => 'array',
+        'unggah_dokumen' => 'array',
     ];
 
     public function anggota(): HasMany

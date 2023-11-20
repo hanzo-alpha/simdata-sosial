@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Alamat extends Model
 {
@@ -19,7 +19,6 @@ class Alamat extends Model
     protected $fillable = [
         'keluarga_id',
         'alamat',
-        'alamat2',
         'no_rt',
         'no_rw',
         'provinsi',
@@ -28,9 +27,6 @@ class Alamat extends Model
         'kelurahan',
         'dusun',
         'kodepos',
-        'location',
-        'latitude',
-        'longitude',
     ];
 
     public function location(): Attribute
@@ -44,13 +40,14 @@ class Alamat extends Model
                 'lng' => (float) $attributes['longitude'],
             ], JSON_THROW_ON_ERROR),
             set: static fn($value) => [
-                'lat' => $value['lat'],
-                'lng' => $value['lng'],
+                'latitude' => $value['lat'],
+                'longitude' => $value['lng'],
             ],
         );
     }
 
-    public function keluarga(): BelongsTo
+    public function keluarga(): BelongsToMany
     {
+        return $this->belongsToMany(Keluarga::class, 'alamat_keluarga');
     }
 }
