@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\KeluargaResource\Pages;
 
+use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\KeluargaResource;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Wizard\Step;
@@ -34,7 +35,13 @@ class CreateKeluarga extends CreateRecord
     {
         $data['alamat_id'] = 1;
         $data['dtks_id'] = \Str::uuid()->toString();
+        $data['status_verifikasi'] = !auth()->user()?->role('super_admin') ? StatusVerifikasiEnum::UNVERIFIED : $data['status_verifikasi'];
         return $data;
+    }
+
+    public function hasSkippableSteps(): bool
+    {
+        return true;
     }
 
     protected function getSteps(): array

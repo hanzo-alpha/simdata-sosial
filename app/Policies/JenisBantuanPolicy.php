@@ -76,7 +76,7 @@ class JenisBantuanPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_jenis::bantuan');
+        return $user->can('{{ DeleteAny }}');
     }
 
     /**
@@ -99,7 +99,7 @@ class JenisBantuanPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_jenis::bantuan');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -111,7 +111,7 @@ class JenisBantuanPolicy
      */
     public function restore(User $user, JenisBantuan $jenisBantuan): bool
     {
-        return $user->can('restore_jenis::bantuan');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -122,7 +122,7 @@ class JenisBantuanPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_jenis::bantuan');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -134,7 +134,7 @@ class JenisBantuanPolicy
      */
     public function replicate(User $user, JenisBantuan $jenisBantuan): bool
     {
-        return $user->can('replicate_jenis::bantuan');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -145,7 +145,7 @@ class JenisBantuanPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_jenis::bantuan');
+        return $user->can('{{ Reorder }}');
     }
 
 }

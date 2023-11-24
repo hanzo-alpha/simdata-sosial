@@ -18,13 +18,13 @@ return [
     'super_admin' => [
         'enabled' => true,
         'name' => 'super_admin',
-        'define_via_gate' => false,
+        'define_via_gate' => true,
         'intercept_gate' => 'before', // after
     ],
 
     'panel_user' => [
         'enabled' => true,
-        'name' => 'panel_user',
+        'name' => 'operator',
     ],
 
     'permission_prefixes' => [
@@ -34,9 +34,7 @@ return [
             'create',
             'update',
             'delete',
-            'delete_any',
             'force_delete',
-            'force_delete_any',
         ],
 
         'page' => 'page',

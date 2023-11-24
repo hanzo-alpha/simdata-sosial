@@ -76,7 +76,7 @@ class KriteriaPelayananPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_kriteria::pelayanan');
+        return $user->can('{{ DeleteAny }}');
     }
 
     /**
@@ -99,7 +99,7 @@ class KriteriaPelayananPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_kriteria::pelayanan');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -111,7 +111,7 @@ class KriteriaPelayananPolicy
      */
     public function restore(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
     {
-        return $user->can('restore_kriteria::pelayanan');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -122,7 +122,7 @@ class KriteriaPelayananPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_kriteria::pelayanan');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -134,7 +134,7 @@ class KriteriaPelayananPolicy
      */
     public function replicate(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
     {
-        return $user->can('replicate_kriteria::pelayanan');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -145,7 +145,7 @@ class KriteriaPelayananPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_kriteria::pelayanan');
+        return $user->can('{{ Reorder }}');
     }
 
 }

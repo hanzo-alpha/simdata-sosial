@@ -10,15 +10,17 @@ use App\Filament\Resources\KeluargaResource\Pages;
 use App\Filament\Resources\KeluargaResource\RelationManagers;
 use App\Forms\Components\AddressForm;
 use App\Models\Keluarga;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-class KeluargaResource extends Resource
+class KeluargaResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Keluarga::class;
 
@@ -28,6 +30,19 @@ class KeluargaResource extends Resource
     protected static ?string $label = 'Keluarga';
     protected static ?string $pluralLabel = 'Keluarga';
     protected static ?string $navigationGroup = 'Master';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'force_delete',
+            'verify'
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -192,7 +207,8 @@ class KeluargaResource extends Resource
                     ->options(JenisKelaminEnum::class),
                 Forms\Components\Select::make('status_verifikasi')
                     ->options(StatusVerifikasiEnum::class)
-                    ->hidden(fn() => !auth()->user()?->role('super_admin')),
+                    ->visible(fn() => auth()->user()?->role('super_admin')),
+//                    ->hidden(fn() => !auth()->user()?->role('super_admin')),
                 ToggleButton::make('status_keluarga')
                     ->offColor('danger')
                     ->onColor('primary')
@@ -214,11 +230,37 @@ class KeluargaResource extends Resource
                 Forms\Components\Grid::make()->schema([
                     Forms\Components\FileUpload::make('unggah_foto')
                         ->label('Unggah Foto Rumah')
+                        ->getUploadedFileNameForStorageUsing(
+                            fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                                ->prepend(date('d-m-Y-H-i-s') . '-'),
+                        )
+                        ->storeFileNamesIn('upload_file_names')
                         ->preserveFilenames()
                         ->multiple()
+                        ->reorderable()
+                        ->appendFiles()
+                        ->openable()
                         ->required()
                         ->helperText('maks. 2MB')
-                        ->image(),
+//                        ->previewable(false)
+                        ->maxFiles(3)
+                        ->maxSize(2048)
+                        ->columnSpanFull()
+                        ->imagePreviewHeight('250')
+//                        ->loadingIndicatorPosition('left')
+//                        ->removeUploadedFileButtonPosition('right')
+//                        ->uploadButtonPosition('left')
+//                        ->uploadProgressIndicatorPosition('left')
+                        ->image()
+                        ->imageEditor()
+//                        ->imageEditorMode(2)
+                        ->imageEditorAspectRatios([
+                            '16:9',
+                            '4:3',
+                            '1:1',
+                        ]),
+//                        ->imageEditorViewportWidth('1920')
+//                        ->imageEditorViewportHeight('1080'),
 
 //                    Forms\Components\FileUpload::make('unggah_dokumen')
 //                        ->label('Unggah File Pendukung Lainnya')

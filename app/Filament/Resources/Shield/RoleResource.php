@@ -454,6 +454,7 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function getWidgetOptions(): array
     {
+//        dd(FilamentShield::getWidgets());
         return collect(FilamentShield::getWidgets())
             ->flatMap(fn($widgetPermission) => [
                 $widgetPermission => FilamentShield::getLocalizedWidgetLabel($widgetPermission),

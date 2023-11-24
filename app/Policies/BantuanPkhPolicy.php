@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\BantuanPkh;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Spatie\Permission\Models\Role;
 
-class RolePolicy
+class BantuanPkhPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_shield::role');
+        return $user->can('view_any_bantuan::pkh');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\BantuanPkh  $bantuanPkh
      * @return bool
      */
-    public function view(User $user, Role $role): bool
+    public function view(User $user, BantuanPkh $bantuanPkh): bool
     {
-        return $user->can('view_shield::role');
+        return $user->can('view_bantuan::pkh');
     }
 
     /**
@@ -41,31 +41,31 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_shield::role');
+        return $user->can('create_bantuan::pkh');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\BantuanPkh  $bantuanPkh
      * @return bool
      */
-    public function update(User $user, Role $role): bool
+    public function update(User $user, BantuanPkh $bantuanPkh): bool
     {
-        return $user->can('update_shield::role');
+        return $user->can('update_bantuan::pkh');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\BantuanPkh  $bantuanPkh
      * @return bool
      */
-    public function delete(User $user, Role $role): bool
+    public function delete(User $user, BantuanPkh $bantuanPkh): bool
     {
-        return $user->can('delete_shield::role');
+        return $user->can('delete_bantuan::pkh');
     }
 
     /**
@@ -76,19 +76,19 @@ class RolePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_shield::role');
+        return $user->can('{{ DeleteAny }}');
     }
 
     /**
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\BantuanPkh  $bantuanPkh
      * @return bool
      */
-    public function forceDelete(User $user, Role $role): bool
+    public function forceDelete(User $user, BantuanPkh $bantuanPkh): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_bantuan::pkh');
     }
 
     /**
@@ -106,10 +106,10 @@ class RolePolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\BantuanPkh  $bantuanPkh
      * @return bool
      */
-    public function restore(User $user, Role $role): bool
+    public function restore(User $user, BantuanPkh $bantuanPkh): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -129,10 +129,10 @@ class RolePolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \Spatie\Permission\Models\Role  $role
+     * @param  \App\Models\BantuanPkh  $bantuanPkh
      * @return bool
      */
-    public function replicate(User $user, Role $role): bool
+    public function replicate(User $user, BantuanPkh $bantuanPkh): bool
     {
         return $user->can('{{ Replicate }}');
     }
