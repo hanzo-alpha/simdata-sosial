@@ -14,6 +14,7 @@ return new class extends Migration {
     {
         Schema::create('keluarga', static function (Blueprint $table) {
             $table->id();
+            $table->uuid('dtks_id')->nullable()->default(Str::uuid()->toString());
             $table->string('nokk', 20);
             $table->string('nik', 20);
             $table->string('nama_lengkap');

@@ -2,12 +2,14 @@
 
 namespace App\Filament\Widgets;
 
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class KeluargaChart extends ApexChartWidget
 {
+    use HasWidgetShield;
     /**
      * Chart Id
      *
@@ -24,7 +26,7 @@ class KeluargaChart extends ApexChartWidget
 
     protected static ?int $contentHeight = 300; //px
 
-    protected static bool $darkMode = false;
+//    protected static bool $darkMode = false;
 
     protected static ?string $loadingIndicator = 'Sedang memuat...';
 

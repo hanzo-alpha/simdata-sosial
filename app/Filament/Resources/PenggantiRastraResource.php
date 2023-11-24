@@ -14,6 +14,8 @@ class PenggantiRastraResource extends Resource
 {
     protected static ?string $model = PenggantiRastra::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-up-tray';
+
     protected static ?string $slug = 'pengganti-rastra';
     protected static ?string $label = 'Pengganti RASTRA';
     protected static ?string $pluralLabel = 'Pengganti RASTRA';

@@ -18,7 +18,7 @@ class JenisPelayananResource extends Resource
 {
     protected static ?string $model = JenisPelayanan::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
     protected static ?string $slug = 'jenis-pelayanan';
     protected static ?string $label = 'Jenis Pelayanan';
     protected static ?string $navigationGroup = 'Master';

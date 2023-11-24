@@ -15,7 +15,7 @@ class HubunganKeluargaResource extends Resource
 {
     protected static ?string $model = HubunganKeluarga::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
     protected static ?string $slug = 'hubungan-keluarga';
     protected static ?string $label = 'Hubungan Keluarga';
     protected static ?string $pluralLabel = 'Hubungan Keluarga';

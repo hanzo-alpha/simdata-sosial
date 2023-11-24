@@ -15,6 +15,8 @@ class BantuanPkhResource extends Resource
 {
     protected static ?string $model = BantuanPkh::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-bookmark-square';
+
     protected static ?string $slug = 'bantuan-pkh';
     protected static ?string $label = 'Bantuan Keluarga Harapan (PKH)';
     protected static ?string $pluralLabel = 'Bantuan Keluarga Harapan (PKH)';

@@ -15,6 +15,8 @@ class BantuanBpntResource extends Resource
 {
     protected static ?string $model = BantuanBpnt::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
     protected static ?string $slug = 'bantuan-bpnt';
     protected static ?string $label = 'Bantuan BPNT';
     protected static ?string $pluralLabel = 'Bantuan BPNT';

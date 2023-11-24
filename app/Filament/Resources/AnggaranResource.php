@@ -15,10 +15,13 @@ class AnggaranResource extends Resource
 {
     protected static ?string $model = Anggaran::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+
     protected static ?string $slug = 'anggaran';
     protected static ?string $label = 'Anggaran';
     protected static ?string $pluralLabel = 'Anggaran';
     protected static ?string $navigationGroup = 'Master';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

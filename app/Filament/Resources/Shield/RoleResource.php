@@ -84,7 +84,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                             ]),
                         Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.pages'))
                             ->visible(fn(
-                            ): bool => (bool) Utils::isPageEntityEnabled() && (count(FilamentShield::getPages()) > 0 ? true : false))
+                            ): bool => (bool) Utils::isPageEntityEnabled() && count(FilamentShield::getPages()) > 0)
                             ->badge(count(static::getPageOptions()))
                             ->schema([
                                 Forms\Components\CheckboxList::make('pages_tab')
@@ -134,7 +134,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => blank($state) ? false : true)
+                                    ->dehydrated(fn($state) => !blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -142,7 +142,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                             ]),
                         Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.widgets'))
                             ->visible(fn(
-                            ): bool => (bool) Utils::isWidgetEntityEnabled() && (count(FilamentShield::getWidgets()) > 0 ? true : false))
+                            ): bool => (bool) Utils::isWidgetEntityEnabled() && count(FilamentShield::getWidgets()) > 0)
                             ->badge(count(static::getWidgetOptions()))
                             ->schema([
                                 Forms\Components\CheckboxList::make('widgets_tab')
@@ -193,7 +193,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => blank($state) ? false : true)
+                                    ->dehydrated(fn($state) => !blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -201,7 +201,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                             ]),
                         Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.custom'))
                             ->visible(fn(
-                            ): bool => (bool) Utils::isCustomPermissionEntityEnabled() && (count(static::getCustomEntities()) > 0 ? true : false))
+                            ): bool => (bool) Utils::isCustomPermissionEntityEnabled() && count(static::getCustomEntities()) > 0)
                             ->badge(count(static::getCustomPermissionOptions()))
                             ->schema([
                                 Forms\Components\CheckboxList::make('custom_permissions')
@@ -251,7 +251,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => blank($state) ? false : true)
+                                    ->dehydrated(fn($state) => !blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -356,7 +356,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                             set: $set,
                             resetState: true
                         ))
-                        ->dehydrated(fn($state) => blank($state) ? false : true)
+                        ->dehydrated(fn($state) => !blank($state))
                         ->bulkToggleable()
                         ->gridDirection('row')
                         ->columns(FilamentShieldPlugin::get()->getResourceCheckboxListColumns()),
@@ -398,7 +398,8 @@ class RoleResource extends Resource implements HasShieldPermissions
         $entitiesStates = collect($livewire->form->getFlatComponents())
             ->reduce(function ($counts, $component) {
                 if ($component instanceof Forms\Components\CheckboxList) {
-                    $counts[$component->getName()] = count(array_keys($component->getOptions())) == count(collect($component->getState())->values()->unique()->toArray());
+                    $counts[$component->getName()] = count(array_keys($component->getOptions())) === count(collect
+                        ($component->getState())->values()->unique()->toArray());
                 }
 
                 return $counts;
@@ -446,11 +447,10 @@ class RoleResource extends Resource implements HasShieldPermissions
             ->toArray();
     }
 
-//    public static function getNavigationIcon(): string
-//    {
-////        return __('filament-shield::filament-shield.nav.role.icon');
-//        return '';
-//    }
+    public static function getNavigationIcon(): string
+    {
+        return __('filament-shield::filament-shield.nav.role.icon');
+    }
 
     public static function getWidgetOptions(): array
     {

@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 class JenisPekerjaanResource extends Resource
 {
     protected static ?string $model = JenisPekerjaan::class;
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     protected static ?string $slug = 'jenis-pekerjaan';
     protected static ?string $label = 'Jenis Pekerjaan';

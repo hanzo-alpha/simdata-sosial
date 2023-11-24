@@ -15,7 +15,7 @@ class KriteriaPelayananResource extends Resource
 {
     protected static ?string $model = KriteriaPelayanan::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
     protected static ?string $slug = 'kriteria-pelayanan';
     protected static ?string $label = 'Kriteria Pelayanan';
     protected static ?string $navigationGroup = 'Master';

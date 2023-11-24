@@ -2,11 +2,9 @@
 
 namespace App\Forms\Components;
 
-use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use App\Models\Provinsi;
-use Cheesegrits\FilamentGoogleMaps\Fields\Map;
+use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -15,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AlamatForm extends Field
 {
-//    protected string $view = 'forms.components.alamat-form';
-
     public ?string $relationship = null;
 
     protected string $view = 'filament-forms::components.group';
@@ -57,38 +53,51 @@ class AlamatForm extends Field
         return [
             Grid::make()
                 ->schema([
-                    Map::make('location')
-                        ->mapControls([
-                            'mapTypeControl' => true,
-                            'scaleControl' => true,
-                            'streetViewControl' => true,
-                            'rotateControl' => true,
-                            'fullscreenControl' => true,
-                            'searchBoxControl' => false, // creates geocomplete field inside map
-                            'zoomControl' => false,
-                        ])
-                        ->height(fn() => '400px')
-                        ->autocomplete(fieldName: 'full_address', countries: ['id'])
-                        ->autocompleteReverse(true)
-                        ->draggable()
-                        ->clickable()
-                        ->geolocate()
+                    Geocomplete::make('alamat')
+                        ->countries(['id'])
+                        ->updateLatLng()
+                        ->geocodeOnLoad()
+                        ->columnSpanFull()
                         ->reverseGeocode([
+                            'country' => '%C',
                             'city' => '%L',
+                            'district' => '%D',
                             'zip' => '%z',
                             'state' => '%A1',
-                            'street' => '%n %S',
-                        ])
-                        ->defaultLocation([-4.366561933335206, 119.89695254227935])
-                        ->defaultZoom(16)
-                        ->columnSpan('full')
-                        ->live(true)
-                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                            $set('latitude', $state['lat']);
-                            $set('longitude', $state['lng']);
-                        }),
-                    TextInput::make('alamat')->nullable(),
-                    TextInput::make('full_address')->nullable(),
+                            'street' => '%S %n',
+                        ]),
+
+//                    Map::make('location')
+//                        ->mapControls([
+//                            'mapTypeControl' => true,
+//                            'scaleControl' => true,
+//                            'streetViewControl' => true,
+//                            'rotateControl' => true,
+//                            'fullscreenControl' => true,
+//                            'searchBoxControl' => false, // creates geocomplete field inside map
+//                            'zoomControl' => false,
+//                        ])
+//                        ->height(fn() => '400px')
+//                        ->autocomplete(fieldName: 'full_address', countries: ['id'])
+//                        ->autocompleteReverse(true)
+//                        ->draggable()
+//                        ->clickable()
+//                        ->geolocate()
+//                        ->reverseGeocode([
+//                            'city' => '%L',
+//                            'zip' => '%z',
+//                            'state' => '%A1',
+//                            'street' => '%n %S',
+//                        ])
+//                        ->defaultLocation([-4.366561933335206, 119.89695254227935])
+//                        ->defaultZoom(16)
+//                        ->columnSpan('full')
+//                        ->live(true)
+//                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
+//                            $set('latitude', $state['lat']);
+//                            $set('longitude', $state['lng']);
+//                        }),
+//                    TextInput::make('alamat')->nullable(),
                     Grid::make(2)->schema([
                         TextInput::make('latitude')
                             ->live(true)
@@ -111,31 +120,32 @@ class AlamatForm extends Field
                     ]),
                 ]),
 
-            Grid::make(2)
-                ->schema([
-                    Select::make('provinsi')
-                        ->searchable()
-                        ->options(Provinsi::pluck('name', 'code'))
-                        ->default('73')
-                        ->preload()
-                        ->live(true)
-                        ->optionsLimit(20)
-                        ->label('Provinsi'),
-                    Select::make('kabupaten')
-                        ->nullable()
-                        ->options(function (callable $get) {
-                            $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                            if (!$kab) {
-                                return Kabupaten::where('provinsi_code', config('custom.default.kodekab'))
-                                    ->pluck('name', 'code');
-                            }
-
-                            return $kab->pluck('name', 'code');
-                        })
-                        ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null))
-                        ->reactive()
-                        ->searchable(),
-                ]),
+//            Grid::make(2)
+//                ->schema([
+//                    Select::make('provinsi')
+//                        ->searchable()
+//                        ->options(Provinsi::pluck('name', 'code'))
+//                        ->default(config('custom.default.kodeprov'))
+//                        ->preload()
+//                        ->live(true)
+//                        ->optionsLimit(20)
+//                        ->label('Provinsi'),
+//                    Select::make('kabupaten')
+//                        ->nullable()
+//                        ->options(function (callable $get) {
+//                            $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
+//                            $kab = $kab ?? config('custom.default.kodeprov');
+//                            if (!$kab) {
+//                                return Kabupaten::where('provinsi_code', config('custom.default.kodekab'))
+//                                    ->pluck('name', 'code');
+//                            }
+//
+//                            return $kab->pluck('name', 'code');
+//                        })
+//                        ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null))
+//                        ->reactive()
+//                        ->searchable(),
+//                ]),
 
             Grid::make(2)
                 ->schema([
@@ -144,7 +154,8 @@ class AlamatForm extends Field
                         ->searchable()
                         ->reactive()
                         ->options(function (callable $get) {
-                            $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
+//                            $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
+                            $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
                             if (!$kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
@@ -172,8 +183,8 @@ class AlamatForm extends Field
                         ->afterStateUpdated(function (callable $set, $state) {
                             $village = Kelurahan::where('code', $state)->first();
                             if ($village) {
-//                                $set('latitude', $village['latitude']);
-//                                $set('longitude', $village['longitude']);
+                                $set('latitude', $village['latitude']);
+                                $set('longitude', $village['longitude']);
                                 $set('location', [
                                     'lat' => (float) $village['latitude'],
                                     'lng' => (float) $village['longitude'],

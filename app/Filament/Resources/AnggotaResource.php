@@ -17,10 +17,13 @@ class AnggotaResource extends Resource
 {
     protected static ?string $model = Anggota::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+
     protected static ?string $slug = 'anggota';
     protected static ?string $label = 'Anggota';
     protected static ?string $pluralLabel = 'Anggota';
     protected static ?string $navigationGroup = 'Master';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

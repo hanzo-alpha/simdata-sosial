@@ -15,6 +15,8 @@ class BantuanBpjsResource extends Resource
 {
     protected static ?string $model = BantuanBpjs::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+
     protected static ?string $slug = 'bantuan-bpjs';
     protected static ?string $label = 'Bantuan BPJS';
     protected static ?string $pluralLabel = 'Bantuan BPJS';

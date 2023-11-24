@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -63,12 +64,21 @@ class AdminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
+                CuratorPlugin::make()
+                    ->label('Media')
+                    ->pluralLabel('Media')
+                    ->navigationIcon('heroicon-o-photo')
+                    ->navigationGroup('Master')
+                    ->navigationSort(3)
+                    ->navigationCountBadge()
             ])
+            ->databaseNotifications()
+//            ->databaseNotificationsPolling('30s')
             ->favicon(asset('favicon-white.png'))
             ->brandName(config('custom.app.name'))
-            ->brandLogo(asset('images/logo/svg/logo-no-background.svg'))
+            ->brandLogo(asset('images/logo/svg/logo-rumahdata-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
-            ->darkModeBrandLogo(config('custom.app.logo_dark'))
+            ->darkModeBrandLogo(asset('images/logo/logo-white.png'))
             ->darkMode(config('custom.app.dark_mode', true))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -80,18 +90,15 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make('master')
                     ->label('Master')
                     ->collapsible()
-                    ->collapsed()
-                    ->icon('heroicon-o-circle-stack'),
+                    ->collapsed(),
                 NavigationGroup::make('bantuan')
                     ->label('Bantuan')
                     ->collapsible()
-                    ->collapsed()
-                    ->icon('heroicon-o-circle-stack'),
+                    ->collapsed(),
                 NavigationGroup::make('pengaturan')
                     ->label('Pengaturan')
                     ->collapsible()
-                    ->collapsed()
-                    ->icon('heroicon-o-cog')
+                    ->collapsed(),
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([

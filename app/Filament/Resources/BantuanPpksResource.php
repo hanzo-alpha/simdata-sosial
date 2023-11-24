@@ -17,6 +17,8 @@ class BantuanPpksResource extends Resource
 {
     protected static ?string $model = BantuanPpks::class;
 
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+
     protected static ?string $slug = 'bantuan-ppks';
     protected static ?string $label = 'Bantuan PPKS';
     protected static ?string $pluralLabel = 'Bantuan PPKS';
