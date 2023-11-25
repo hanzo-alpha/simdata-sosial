@@ -65,7 +65,7 @@ class Address extends Model
         );
     }
 
-    public function keluarga(): MorphToMany
+    public function keluargas(): MorphToMany
     {
         return $this->morphedByMany(Keluarga::class, 'addressable');
     }

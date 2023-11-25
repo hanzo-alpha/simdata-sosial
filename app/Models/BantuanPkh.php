@@ -3,33 +3,48 @@
 namespace App\Models;
 
 use App\Casts\MoneyCast;
-use App\Enums\StatusAktif;
 use App\Traits\HasJenisBantuan;
-use App\Traits\HasKeluarga;
+use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BantuanPkh extends Model
 {
-    use HasKeluarga, HasJenisBantuan;
+    use HasJenisBantuan, HasWilayah;
 
-    public $timestamps = false;
     protected $table = 'bantuan_pkh';
     protected $fillable = [
-        'keluarga_id',
+        'dtks_id',
+        'nokk',
+        'nik_ktp',
+        'nama_penerima',
         'kode_wilayah',
         'tahap',
-        'jenis_bantuan_id',
-        'dtks_id',
+        'bansos',
+        'jenis_bantuan',
         'bank',
+        'nominal',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'alamat',
+        'no_rt',
+        'no_rw',
+        'dusun',
         'dir',
         'gelombang',
-        'nominal',
         'status_pkh',
     ];
 
     protected $casts = [
         'dtks_id' => 'string',
         'nominal' => MoneyCast::class,
-        'status_pkh' => StatusAktif::class
+        'status_pkh' => 'string'
     ];
+
+    public function jenis_bantuan(): BelongsTo
+    {
+        return $this->belongsTo(JenisBantuan::class);
+    }
 }

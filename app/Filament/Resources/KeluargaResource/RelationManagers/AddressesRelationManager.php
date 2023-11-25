@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class AddressesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'addresses';
+    protected static string $relationship = 'address';
 
     protected static ?string $recordTitleAttribute = 'full_address';
 
@@ -20,9 +20,6 @@ class AddressesRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Textarea::make('alamat')
                     ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('alamat2')
                     ->maxLength(65535)
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('no_rt')

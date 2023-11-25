@@ -11,6 +11,7 @@ use App\Filament\Resources\KeluargaResource\RelationManagers;
 use App\Forms\Components\AddressForm;
 use App\Models\Keluarga;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -96,8 +97,8 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
-                Tables\Columns\TextColumn::make('alamat.alamat')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('alamat.full_address')
+                    ->words(3)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_bantuan.nama_bantuan')
                     ->numeric()
@@ -123,6 +124,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
+                ApprovalStatusColumn::make('approvalStatus.status'),
                 Tables\Columns\IconColumn::make('status_keluarga')
                     ->boolean()
                     ->toggleable()
@@ -132,7 +134,12 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    ...\EightyNine\Approvals\Tables\Actions\ApprovalActions::make(
+                        Tables\Actions\Action::make('Done')
+                    ),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -145,7 +152,6 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     {
         return [
             RelationManagers\AddressesRelationManager::class,
-            RelationManagers\AnggotaRelationManager::class
         ];
     }
 
@@ -208,7 +214,6 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 Forms\Components\Select::make('status_verifikasi')
                     ->options(StatusVerifikasiEnum::class)
                     ->visible(fn() => auth()->user()?->role('super_admin')),
-//                    ->hidden(fn() => !auth()->user()?->role('super_admin')),
                 ToggleButton::make('status_keluarga')
                     ->offColor('danger')
                     ->onColor('primary')
@@ -234,7 +239,6 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
                                 ->prepend(date('d-m-Y-H-i-s') . '-'),
                         )
-                        ->storeFileNamesIn('upload_file_names')
                         ->preserveFilenames()
                         ->multiple()
                         ->reorderable()
@@ -242,31 +246,17 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                         ->openable()
                         ->required()
                         ->helperText('maks. 2MB')
-//                        ->previewable(false)
                         ->maxFiles(3)
                         ->maxSize(2048)
                         ->columnSpanFull()
                         ->imagePreviewHeight('250')
-//                        ->loadingIndicatorPosition('left')
-//                        ->removeUploadedFileButtonPosition('right')
-//                        ->uploadButtonPosition('left')
-//                        ->uploadProgressIndicatorPosition('left')
                         ->image()
                         ->imageEditor()
-//                        ->imageEditorMode(2)
                         ->imageEditorAspectRatios([
                             '16:9',
                             '4:3',
                             '1:1',
                         ]),
-//                        ->imageEditorViewportWidth('1920')
-//                        ->imageEditorViewportHeight('1080'),
-
-//                    Forms\Components\FileUpload::make('unggah_dokumen')
-//                        ->label('Unggah File Pendukung Lainnya')
-//                        ->multiple()
-//                        ->helperText('maks. 5MB')
-//                        ->required(),
                 ])
 
             ];

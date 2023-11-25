@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Keluarga;
+use App\Models\JenisBantuan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,16 +10,29 @@ return new class extends Migration {
     {
         Schema::create('bantuan_pkh', static function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Keluarga::class)->constrained('keluarga')->cascadeOnUpdate();
-            $table->string('kode_wilayah')->nullable();
-            $table->string('tahap')->nullable();
-            $table->bigInteger('jenis_bantuan_id')->nullable();
-            $table->uuid('dtks_id')->nullable();
-            $table->string('bank')->nullable();
+            $table->uuid('dtks_id')->default(Str::uuid()->toString());
+            $table->string('nokk');
+            $table->string('nik_ktp');
+            $table->string('nama_penerima');
+            $table->char('kode_wilayah', 10);
+            $table->unsignedTinyInteger('tahap');
+            $table->string('bansos');
+            $table->foreignIdFor(JenisBantuan::class)
+                ->constrained('jenis_bantuan')
+                ->cascadeOnUpdate();
+            $table->unsignedFloat('nominal')->nullable()->default(0);
+            $table->string('bank');
+            $table->char('provinsi', 2)->nullable();
+            $table->char('kabupaten', 5)->nullable();
+            $table->char('kecamatan', 7)->nullable();
+            $table->char('kelurahan', 10)->nullable();
+            $table->string('alamat');
+            $table->string('no_rt')->nullable();
+            $table->string('no_rw')->nullable();
+            $table->string('dusun')->nullable();
             $table->string('dir')->nullable();
             $table->string('gelombang')->nullable();
-            $table->unsignedInteger('nominal')->nullable()->default(0);
-            $table->tinyInteger('status_pkh')->nullable();
+            $table->string('status_pkh')->nullable()->default('PKH');
             $table->timestamps();
         });
     }

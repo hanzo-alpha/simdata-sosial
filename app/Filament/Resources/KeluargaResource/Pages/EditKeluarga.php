@@ -4,12 +4,14 @@ namespace App\Filament\Resources\KeluargaResource\Pages;
 
 use App\Filament\Resources\KeluargaResource;
 use Cheesegrits\FilamentGoogleMaps\Concerns\InteractsWithMaps;
+use EightyNine\Approvals\Traits\HasApprovalHeaderActions;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditKeluarga extends EditRecord
 {
-    use InteractsWithMaps;
+    use InteractsWithMaps, HasApprovalHeaderActions;
 
     protected static string $resource = KeluargaResource::class;
 
@@ -18,5 +20,11 @@ class EditKeluarga extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function getOnCompletionAction(): Action
+    {
+        return Action::make('Done')
+            ->color('success');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\KeluargaResource\Pages;
 
 use App\Filament\Resources\KeluargaResource;
-use EightyNine\ExcelImport\ExcelImportAction;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -16,9 +15,6 @@ class ListKeluarga extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ExcelImportAction::make()
-                ->slideOver()
-                ->color('success'),
             Actions\CreateAction::make(),
         ];
     }
