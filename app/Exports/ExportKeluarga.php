@@ -26,6 +26,13 @@ class ExportKeluarga extends ExcelExport
             Column::make('address.dusun')->heading('Dusun'),
             Column::make('address.no_rt')->heading('No.RT'),
             Column::make('address.no_rw')->heading('No.RW'),
+            Column::make('jenis_bantuan.alias')->heading('Bantuan'),
+            Column::make('jenis_pekerjaan.nama_pekerjaan')->heading('Pekerjaan'),
+            Column::make('pendidikan_terakhir.nama_pendidikan')->heading('Pendidikan Terakhir'),
+            Column::make('hubungan_keluarga.nama_hubungan')->heading('Hubungan Keluarga'),
+            Column::make('status_kawin')->heading('Status Kawin'),
+            Column::make('status_verifikasi')->heading('Status Verifikasi'),
+            Column::make('unggah_foto')->heading('Foto Rumah'),
         ]);
         $this->queue()->withChunkSize(500);
     }
