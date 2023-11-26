@@ -6,6 +6,7 @@ use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
+use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
 use App\Filament\Resources\KeluargaResource\RelationManagers;
 use App\Forms\Components\AddressForm;
@@ -14,11 +15,19 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class KeluargaResource extends Resource implements HasShieldPermissions
@@ -27,9 +36,9 @@ class KeluargaResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $slug = 'keluarga';
-    protected static ?string $label = 'Keluarga';
-    protected static ?string $pluralLabel = 'Keluarga';
+    protected static ?string $slug = 'penerima-manfaat';
+    protected static ?string $label = 'Penerima Manfaat';
+    protected static ?string $pluralLabel = 'Penerima Manfaat';
     protected static ?string $navigationGroup = 'Master';
 
     public static function getPermissionPrefixes(): array
@@ -70,19 +79,28 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nokk')
+                Tables\Columns\ImageColumn::make('unggah_foto')
+                    ->label('Foto Rumah')
+//                    ->square()
+                    ->stacked()
+                    ->limit(3)
+                    ->limitedRemainingText(true),
+                Tables\Columns\TextColumn::make('dtks_id')
+                    ->label('DTKS ID')
+                    ->description(fn($record) => $record->nama_lengkap)
+                    ->sortable()
+//                    ->limit(10)
+                    ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('NIK & NO. KK')
+                    ->toggleable()
+                    ->description(fn($record) => 'No. KK : ' . $record->nokk)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
+                    ->label('TTL')
+                    ->formatStateUsing(fn($state, $record) => $state . ', ' . $record->tgl_lahir->format('d/m/Y'))
                     ->searchable()
-                    ->toggleable()
-                    ->toggledHiddenByDefault(),
-                Tables\Columns\TextColumn::make('tgl_lahir')
-                    ->dateTime()
-                    ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('notelp')
@@ -97,14 +115,16 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
-                Tables\Columns\TextColumn::make('alamat.full_address')
-                    ->words(3)
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('jenis_bantuan.nama_bantuan')
-                    ->numeric()
-                    ->sortable()
+                Tables\Columns\TextColumn::make('address.kec.name')
+                    ->label('Kecamatan')
+                    ->description(fn($record) => 'Kel. ' . $record->address->kel->name)
                     ->toggleable()
-                    ->toggledHiddenByDefault(),
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
+                    ->badge()
+                    ->color(fn($record) => $record->jenis_bantuan->warna)
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('pendidikan_terakhir.nama_pendidikan')
                     ->numeric()
                     ->sortable()
@@ -124,17 +144,39 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
-                ApprovalStatusColumn::make('approvalStatus.status'),
+                ApprovalStatusColumn::make('approvalStatus.status')
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+                Tables\Columns\TextColumn::make('status_verifikasi')
+                    ->badge(),
                 Tables\Columns\IconColumn::make('status_keluarga')
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('jenis_bantuan_id')
+                    ->label('Jenis Bantuan')
+                    ->relationship('jenis_bantuan', 'alias')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('status_kawin')
+                    ->options(StatusKawinEnum::class)
+                    ->searchable(),
+                SelectFilter::make('status_verifikasi')
+                    ->options(StatusVerifikasiEnum::class)
+                    ->searchable(),
+                SelectFilter::make('status_keluarga')
+                    ->label('Status Aktif')
+                    ->options(StatusAktif::class)
+                    ->searchable(),
+
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     ...\EightyNine\Approvals\Tables\Actions\ApprovalActions::make(
                         Tables\Actions\Action::make('Done')
@@ -144,6 +186,11 @@ class KeluargaResource extends Resource implements HasShieldPermissions
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->label('Ekspor Ke Excel')
+                        ->exports([
+                            ExportKeluarga::make()
+                        ]),
                 ]),
             ]);
     }
@@ -160,8 +207,155 @@ class KeluargaResource extends Resource implements HasShieldPermissions
         return [
             'index' => Pages\ListKeluarga::route('/'),
             'create' => Pages\CreateKeluarga::route('/create'),
+            'view' => Pages\ViewKeluarga::route('/{record}'),
             'edit' => Pages\EditKeluarga::route('/{record}/edit'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Data Pribadi')
+                    ->description('Berisi informasi dasar keluarga')
+                    ->schema([
+                        TextEntry::make('dtks_id')
+                            ->label('DTKS ID')
+                            ->weight(FontWeight::SemiBold)
+                            ->copyable()
+                            ->icon('heroicon-o-identification')
+                            ->color('primary'),
+                        TextEntry::make('nokk')
+                            ->label('No. Kartu Keluarga (KK)')
+                            ->weight(FontWeight::SemiBold)
+                            ->copyable()
+                            ->icon('heroicon-o-identification')
+                            ->color('primary'),
+                        TextEntry::make('nik')
+                            ->label('No. Induk Kependudukan (NIK)')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-identification')
+                            ->copyable()
+                            ->color('primary'),
+                        TextEntry::make('nama_lengkap')
+                            ->label('Nama Lengkap')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-user')
+                            ->color('primary'),
+                        TextEntry::make('notelp')
+                            ->label('No. Telp/WA')
+                            ->icon('heroicon-o-device-phone-mobile')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('tempat_lahir')
+                            ->label('Tempat Lahir')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-home')
+                            ->color('primary'),
+                        TextEntry::make('tgl_lahir')
+                            ->label('Tanggal Lahir')
+                            ->date('d F Y')
+                            ->icon('heroicon-o-calendar')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                    ])->columns(3),
+
+                Section::make('Data Alamat')
+                    ->description('Berisi informasi tentang alamat dan lokasi keluarga')
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('address.alamat')
+                                    ->label('Alamat'),
+                                TextEntry::make('address.latitude')
+                                    ->label('Latitude'),
+                                TextEntry::make('address.longitude')
+                                    ->label('longitude'),
+                            ]),
+                        Grid::make(4)
+                            ->schema([
+                                TextEntry::make('address.prov.name')
+                                    ->label('Provinsi'),
+                                TextEntry::make('address.kab.name')
+                                    ->label('Kabupaten'),
+                                TextEntry::make('address.kec.name')
+                                    ->label('Kecamatan'),
+                                TextEntry::make('address.kel.name')
+                                    ->label('Kelurahan'),
+                            ]),
+
+                        Grid::make(4)->schema([
+                            TextEntry::make('alamat.dusun')
+                                ->label('Dusun'),
+                            TextEntry::make('alamat.no_rt')
+                                ->label('No. RT'),
+                            TextEntry::make('alamat.no_rw')
+                                ->label('No. RW'),
+                            TextEntry::make('alamat.kodepos')
+                                ->label('Kode Pos'),
+                        ])
+                    ])->columns(3),
+
+                Section::make('Data Pendukung')
+                    ->schema([
+                        TextEntry::make('jenis_bantuan.nama_bantuan')
+                            ->label('Jenis Bantuan')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('jenis_pekerjaan.nama_pekerjaan')
+                            ->label('Jenis Pekerjaan')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('pendidikan_terakhir.nama_pendidikan')
+                            ->label('Pendidikan Terakhir')
+                            ->icon('heroicon-o-academic-cap')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('hubungan_keluarga.nama_hubungan')
+                            ->label('Hubungan Keluarga')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('nama_ibu_kandung')
+                            ->label('Nama Ibu Kandung')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('jenis_kelamin')
+                            ->label('Jenis Kelamin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('status_kawin')
+                                    ->label('Status Kawin')
+                                    ->badge(),
+                                TextEntry::make('status_verifikasi')
+                                    ->label('Verifikasi Berkas/Foto')
+                                    ->badge(),
+                                TextEntry::make('status_keluarga')
+                                    ->label('Status Aktif')
+                                    ->badge(),
+                            ]),
+                    ])
+                    ->columns(3),
+
+                Section::make('Foto Rumah')
+                    ->schema([
+                        ImageEntry::make('unggah_foto')
+                            ->hiddenLabel()
+                            ->visibility('private')
+                            ->columnSpanFull()
+//                            ->width(800)
+//                            ->height(600)
+//                            ->size(400)
+                            ->extraImgAttributes([
+                                'alt' => 'foto rumah',
+                                'loading' => 'lazy'
+                            ])
+                            ->limit(3)
+                            ->limitedRemainingText()
+                    ])->columns(3)
+
+            ]);
     }
 
     public static function getNavigationBadge(): ?string
@@ -213,7 +407,8 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->options(JenisKelaminEnum::class),
                 Forms\Components\Select::make('status_verifikasi')
                     ->options(StatusVerifikasiEnum::class)
-                    ->visible(fn() => auth()->user()?->role('super_admin')),
+                    ->default(StatusVerifikasiEnum::UNVERIFIED)
+                    ->visible(fn() => auth()->user()?->hasRole(['super_admin', 'admin'])),
                 ToggleButton::make('status_keluarga')
                     ->offColor('danger')
                     ->onColor('primary')
@@ -267,12 +462,12 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 ->label('No. Kartu Keluarga')
                 ->autofocus()
                 ->required()
-                ->unique()
+                ->unique(ignoreRecord: true)
                 ->maxLength(20),
             Forms\Components\TextInput::make('nik')
                 ->label('Nomor Induk Kependudukan (NIK)')
                 ->required()
-                ->unique()
+                ->unique(ignoreRecord: true)
                 ->maxLength(20),
             Forms\Components\TextInput::make('nama_lengkap')
                 ->label('Nama Lengkap')

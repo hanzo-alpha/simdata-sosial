@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Keluarga;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,7 +9,6 @@ return new class extends Migration {
     {
         Schema::create('alamat', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Keluarga::class)->constrained('keluarga')->cascadeOnUpdate();
             $table->text('alamat');
             $table->string('no_rt')->nullable();
             $table->string('no_rw')->nullable();

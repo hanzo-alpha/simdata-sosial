@@ -16,9 +16,9 @@ enum StatusVerifikasiEnum: string implements HasLabel, HasColor, HasIcon
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::UNVERIFIED => 'TIDAK DIVERIFIKASI',
-            self::VERIFIED => 'SUDAH DIVERIFIKASI',
-            self::REVIEW => 'DITINJAU ULANG',
+            self::UNVERIFIED => 'Belum Diverifikasi',
+            self::VERIFIED => 'Terverifikasi',
+            self::REVIEW => 'Sedang Ditinjau',
         };
     }
 

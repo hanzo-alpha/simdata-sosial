@@ -2,12 +2,10 @@
 
 namespace App\Policies;
 
-use App\Enums\StatusVerifikasiEnum;
-use App\Models\Keluarga;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class KeluargaPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -19,19 +17,18 @@ class KeluargaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_keluarga');
+        return $user->can('view_any_user');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
      * @return bool
      */
-    public function view(User $user, Keluarga $keluarga): bool
+    public function view(User $user): bool
     {
-        return ($keluarga->status_verifikasi === StatusVerifikasiEnum::VERIFIED) && $user->can('view_keluarga');
+        return $user->can('view_user');
     }
 
     /**
@@ -42,31 +39,29 @@ class KeluargaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_keluarga');
+        return $user->can('create_user');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
      * @return bool
      */
-    public function update(User $user, Keluarga $keluarga): bool
+    public function update(User $user): bool
     {
-        return $user->hasRole(['super_admin', 'admin']) && $user->can('update_keluarga');
+        return $user->can('update_user');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
      * @return bool
      */
-    public function delete(User $user, Keluarga $keluarga): bool
+    public function delete(User $user): bool
     {
-        return $user->can('delete_keluarga');
+        return $user->can('delete_user');
     }
 
     /**
@@ -84,12 +79,11 @@ class KeluargaPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
      * @return bool
      */
-    public function forceDelete(User $user, Keluarga $keluarga): bool
+    public function forceDelete(User $user): bool
     {
-        return $user->can('force_delete_keluarga');
+        return $user->can('force_delete_user');
     }
 
     /**
@@ -107,10 +101,9 @@ class KeluargaPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
      * @return bool
      */
-    public function restore(User $user, Keluarga $keluarga): bool
+    public function restore(User $user): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -127,13 +120,12 @@ class KeluargaPolicy
     }
 
     /**
-     * Determine whether the user can replicate.
+     * Determine whether the user can bulk restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
      * @return bool
      */
-    public function replicate(User $user, Keluarga $keluarga): bool
+    public function replicate(User $user): bool
     {
         return $user->can('{{ Replicate }}');
     }
@@ -148,16 +140,4 @@ class KeluargaPolicy
     {
         return $user->can('{{ Reorder }}');
     }
-
-    /**
-     * Determine whether the user can reorder.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
-     */
-    public function verifikasi(User $user, Keluarga $keluarga): bool
-    {
-        return $user->hasRole(['super_admin', 'admin']) && $user->can('verifikasi_keluarga');
-    }
-
 }

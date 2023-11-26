@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Enums\StatusVerifikasiEnum;
-use App\Models\Keluarga;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use RingleSoft\LaravelProcessApproval\Models\ProcessApprovalFlow;
 
-class KeluargaPolicy
+class ProcessApprovalFlowPolicy
 {
     use HandlesAuthorization;
 
@@ -19,19 +18,19 @@ class KeluargaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_keluarga');
+        return $user->can('view_any_approval::flow');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
+     * @param  \RingleSoft\LaravelProcessApproval\Models\ProcessApprovalFlow  $processApprovalFlow
      * @return bool
      */
-    public function view(User $user, Keluarga $keluarga): bool
+    public function view(User $user, ProcessApprovalFlow $processApprovalFlow): bool
     {
-        return ($keluarga->status_verifikasi === StatusVerifikasiEnum::VERIFIED) && $user->can('view_keluarga');
+        return $user->can('view_approval::flow');
     }
 
     /**
@@ -42,31 +41,31 @@ class KeluargaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_keluarga');
+        return $user->can('create_approval::flow');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
+     * @param  \RingleSoft\LaravelProcessApproval\Models\ProcessApprovalFlow  $processApprovalFlow
      * @return bool
      */
-    public function update(User $user, Keluarga $keluarga): bool
+    public function update(User $user, ProcessApprovalFlow $processApprovalFlow): bool
     {
-        return $user->hasRole(['super_admin', 'admin']) && $user->can('update_keluarga');
+        return $user->can('update_approval::flow');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
+     * @param  \RingleSoft\LaravelProcessApproval\Models\ProcessApprovalFlow  $processApprovalFlow
      * @return bool
      */
-    public function delete(User $user, Keluarga $keluarga): bool
+    public function delete(User $user, ProcessApprovalFlow $processApprovalFlow): bool
     {
-        return $user->can('delete_keluarga');
+        return $user->can('delete_approval::flow');
     }
 
     /**
@@ -84,12 +83,12 @@ class KeluargaPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
+     * @param  \RingleSoft\LaravelProcessApproval\Models\ProcessApprovalFlow  $processApprovalFlow
      * @return bool
      */
-    public function forceDelete(User $user, Keluarga $keluarga): bool
+    public function forceDelete(User $user, ProcessApprovalFlow $processApprovalFlow): bool
     {
-        return $user->can('force_delete_keluarga');
+        return $user->can('force_delete_approval::flow');
     }
 
     /**
@@ -107,10 +106,10 @@ class KeluargaPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
+     * @param  \RingleSoft\LaravelProcessApproval\Models\ProcessApprovalFlow  $processApprovalFlow
      * @return bool
      */
-    public function restore(User $user, Keluarga $keluarga): bool
+    public function restore(User $user, ProcessApprovalFlow $processApprovalFlow): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -130,10 +129,10 @@ class KeluargaPolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Keluarga  $keluarga
+     * @param  \RingleSoft\LaravelProcessApproval\Models\ProcessApprovalFlow  $processApprovalFlow
      * @return bool
      */
-    public function replicate(User $user, Keluarga $keluarga): bool
+    public function replicate(User $user, ProcessApprovalFlow $processApprovalFlow): bool
     {
         return $user->can('{{ Replicate }}');
     }
@@ -147,17 +146,6 @@ class KeluargaPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
-     */
-    public function verifikasi(User $user, Keluarga $keluarga): bool
-    {
-        return $user->hasRole(['super_admin', 'admin']) && $user->can('verifikasi_keluarga');
     }
 
 }

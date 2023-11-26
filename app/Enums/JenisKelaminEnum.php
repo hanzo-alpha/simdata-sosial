@@ -3,10 +3,9 @@
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum JenisKelaminEnum: int implements HasLabel, HasColor, HasIcon
+enum JenisKelaminEnum: int implements HasLabel, HasColor
 {
     case LAKI = 1;
     case PEREMPUAN = 2;
@@ -28,11 +27,11 @@ enum JenisKelaminEnum: int implements HasLabel, HasColor, HasIcon
         };
     }
 
-    public function getIcon(): ?string
-    {
-        return match ($this) {
-            self::LAKI => 'heroicon-o-user-plus',
-            self::PEREMPUAN => 'heroicon-o-user-minus',
-        };
-    }
+//    public function getIcon(): ?string
+//    {
+//        return match ($this) {
+//            self::LAKI => 'heroicon-o-user-plus',
+//            self::PEREMPUAN => 'heroicon-o-user-minus',
+//        };
+//    }
 }

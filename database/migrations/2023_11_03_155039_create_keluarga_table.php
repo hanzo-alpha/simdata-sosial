@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Alamat;
 use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
@@ -21,7 +20,7 @@ return new class extends Migration {
             $table->string('tempat_lahir', 50);
             $table->dateTime('tgl_lahir');
             $table->string('notelp', 18);
-            $table->foreignIdFor(Alamat::class)->constrained('alamat')->cascadeOnUpdate();
+            $table->string('alamat')->default('Kota Soppeng');
             $table->string('nama_ibu_kandung');
             $table->foreignIdFor(JenisBantuan::class)->constrained('jenis_bantuan')->cascadeOnUpdate();
             $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();

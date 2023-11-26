@@ -13,6 +13,7 @@ use EightyNine\Approvals\Models\ApprovableModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -83,6 +84,11 @@ class Keluarga extends ApprovableModel
     public function address(): MorphOne
     {
         return $this->morphOne(AddressKeluarga::class, 'addressable');
+    }
+
+    public function provinsi(): HasOneThrough
+    {
+        return $this->hasOneThrough(Provinsi::class, AddressKeluarga::class);
     }
 
     public function jenis_bantuan_keluarga(): BelongsToMany
