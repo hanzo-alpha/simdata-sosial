@@ -8,7 +8,6 @@ use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
-use App\Filament\Resources\KeluargaResource\RelationManagers;
 use App\Forms\Components\AddressForm;
 use App\Models\Keluarga;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -39,7 +38,8 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     protected static ?string $slug = 'penerima-manfaat';
     protected static ?string $label = 'Penerima Manfaat';
     protected static ?string $pluralLabel = 'Penerima Manfaat';
-    protected static ?string $navigationGroup = 'Master';
+
+//    protected static ?string $navigationGroup = 'Master';
 
     public static function getPermissionPrefixes(): array
     {
@@ -178,9 +178,9 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
-                    ...\EightyNine\Approvals\Tables\Actions\ApprovalActions::make(
-                        Tables\Actions\Action::make('Done')
-                    ),
+//                    ...\EightyNine\Approvals\Tables\Actions\ApprovalActions::make(
+//                        Tables\Actions\Action::make('Done')
+//                    ),
                 ]),
             ])
             ->bulkActions([
@@ -198,7 +198,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     public static function getRelations(): array
     {
         return [
-            RelationManagers\AddressesRelationManager::class,
+//            RelationManagers\AddressesRelationManager::class,
         ];
     }
 

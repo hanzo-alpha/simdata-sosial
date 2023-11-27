@@ -9,7 +9,7 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Attribute;
-use EightyNine\Approvals\Models\ApprovableModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,7 +18,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Keluarga extends ApprovableModel
+//class Keluarga extends ApprovableModel
+class Keluarga extends Model
 {
     use HasTambahan, HasWilayah, SoftDeletes;
 
