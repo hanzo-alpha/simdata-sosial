@@ -22,7 +22,7 @@ class CreateKeluarga extends CreateRecord
 
         Notification::make()
             ->title('Keluarga Baru')
-            ->icon('heroicon-o-shopping-bag')
+            ->icon('heroicon-o-user')
             ->body("**{$keluarga->nama_lengkap} berhasil dibuat **")
             ->actions([
                 Action::make('Lihat')
@@ -58,8 +58,7 @@ class CreateKeluarga extends CreateRecord
 
             Step::make('Data Lainnya')
                 ->schema([
-                    Section::make()->schema(KeluargaResource::getFormSchema('lainnya'))
-                        ->columns(),
+                    Section::make()->schema(KeluargaResource::getFormSchema('lainnya')),
                 ]),
 
             Step::make('Unggah Data')

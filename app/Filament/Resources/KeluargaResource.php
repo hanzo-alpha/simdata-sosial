@@ -115,9 +115,9 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
-                Tables\Columns\TextColumn::make('address.kec.name')
+                Tables\Columns\TextColumn::make('alamat.kec.name')
                     ->label('Kecamatan')
-                    ->description(fn($record) => 'Kel. ' . $record->address->kel->name)
+                    ->description(fn($record) => 'Kel. ' . $record->alamat->kel->name)
                     ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_bantuan.alias')
@@ -255,6 +255,11 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ->icon('heroicon-o-calendar')
                             ->weight(FontWeight::SemiBold)
                             ->color('primary'),
+                        TextEntry::make('alamat.full_address')
+                            ->label('Alamat')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
                     ])->columns(3),
 
                 Section::make('Data Alamat')
@@ -262,35 +267,41 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->schema([
                         Grid::make(3)
                             ->schema([
-                                TextEntry::make('alamat.alamat')
+                                TextEntry::make('alamat.full_address')
                                     ->label('Alamat'),
-                                TextEntry::make('alamat.latitude')
-                                    ->label('Latitude'),
-                                TextEntry::make('alamat.longitude')
-                                    ->label('longitude'),
-                            ]),
-                        Grid::make(4)
-                            ->schema([
-                                TextEntry::make('alamat.prov.name')
-                                    ->label('Provinsi'),
-                                TextEntry::make('alamat.kab.name')
-                                    ->label('Kabupaten'),
                                 TextEntry::make('alamat.kec.name')
                                     ->label('Kecamatan'),
                                 TextEntry::make('alamat.kel.name')
                                     ->label('Kelurahan'),
+//                                TextEntry::make('alamat.full_address')
+//                                    ->label('Alamat Lengkap'),
+//                                TextEntry::make('alamat.latitude')
+//                                    ->label('Latitude'),
+//                                TextEntry::make('alamat.longitude')
+//                                    ->label('longitude'),
                             ]),
+//                        Grid::make(4)
+//                            ->schema([
+//                                TextEntry::make('alamat.prov.name')
+//                                    ->label('Provinsi'),
+//                                TextEntry::make('alamat.kab.name')
+//                                    ->label('Kabupaten'),
+//                                TextEntry::make('alamat.kec.name')
+//                                    ->label('Kecamatan'),
+//                                TextEntry::make('alamat.kel.name')
+//                                    ->label('Kelurahan'),
+//                            ]),
 
-                        Grid::make(4)->schema([
-                            TextEntry::make('alamat.dusun')
-                                ->label('Dusun'),
-                            TextEntry::make('alamat.no_rt')
-                                ->label('No. RT'),
-                            TextEntry::make('alamat.no_rw')
-                                ->label('No. RW'),
-                            TextEntry::make('alamat.kodepos')
-                                ->label('Kode Pos'),
-                        ])
+//                        Grid::make(4)->schema([
+//                            TextEntry::make('alamat.dusun')
+//                                ->label('Dusun'),
+//                            TextEntry::make('alamat.no_rt')
+//                                ->label('No. RT'),
+//                            TextEntry::make('alamat.no_rw')
+//                                ->label('No. RW'),
+//                            TextEntry::make('alamat.kodepos')
+//                                ->label('Kode Pos'),
+//                        ])
                     ])->columns(3),
 
                 Section::make('Data Pendukung')
