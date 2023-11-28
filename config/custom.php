@@ -6,6 +6,9 @@ return [
         'kodekab' => '7312',
         'kodepos' => '90861',
     ],
+    'jenis_bantuan_default' => [
+        'id' => [3, 4, 5]
+    ],
     'app' => [
         'name' => 'SIMDATA RASTRA',
         'logo' => null,

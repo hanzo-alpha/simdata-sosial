@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Alamat extends Model
 {
@@ -13,7 +13,6 @@ class Alamat extends Model
     protected $table = 'alamat';
 
     protected $fillable = [
-        'keluarga_id',
         'alamat',
         'no_rt',
         'no_rw',
@@ -26,7 +25,25 @@ class Alamat extends Model
         'location',
         'latitude',
         'longitude',
+        'full_address',
     ];
+
+    private function getAlamatLengkap(array $attributes): string
+    {
+        $sep = ', ';
+
+        return $attributes['alamat'] . $sep . $attributes['provinsi'] . $sep . $attributes['kabupaten'] .
+            $sep . $attributes['kecamatan'] . $sep . $attributes['kelurahan'] . $sep . $attributes['dusun'] .
+            $sep . $attributes['no_rt'] . $sep . $attributes['no_rw'] . $sep . $attributes['kodepos'];
+    }
+
+    public function fullAddress(): Attribute
+    {
+        return Attribute::make(
+            get: static fn($value) => $value,
+            set: static fn($value, $attributes) => $this->getAlamatLengkap($attributes)
+        );
+    }
 
     public function location(): Attribute
     {
@@ -39,15 +56,15 @@ class Alamat extends Model
                 'lng' => (float) $attributes['longitude'],
             ], JSON_THROW_ON_ERROR),
             set: static fn($value) => [
-                'latitude' => $value['lat'],
-                'longitude' => $value['lng'],
+                'lat' => $value['lat'],
+                'lng' => $value['lng'],
             ],
         );
     }
 
-    public function keluarga(): BelongsToMany
+    public function keluarga(): MorphToMany
     {
-        return $this->belongsToMany(Keluarga::class, 'alamat_keluarga');
+        return $this->morphedByMany(Keluarga::class, 'alamatable');
     }
 
     /**

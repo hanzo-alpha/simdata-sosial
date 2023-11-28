@@ -8,7 +8,7 @@ use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
-use App\Forms\Components\AddressForm;
+use App\Forms\Components\AlamatForm;
 use App\Models\Keluarga;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn;
@@ -144,9 +144,6 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
-                ApprovalStatusColumn::make('approvalStatus.status')
-                    ->toggleable()
-                    ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('status_verifikasi')
                     ->badge(),
                 Tables\Columns\IconColumn::make('status_keluarga')
@@ -265,22 +262,22 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->schema([
                         Grid::make(3)
                             ->schema([
-                                TextEntry::make('address.alamat')
+                                TextEntry::make('alamat.alamat')
                                     ->label('Alamat'),
-                                TextEntry::make('address.latitude')
+                                TextEntry::make('alamat.latitude')
                                     ->label('Latitude'),
-                                TextEntry::make('address.longitude')
+                                TextEntry::make('alamat.longitude')
                                     ->label('longitude'),
                             ]),
                         Grid::make(4)
                             ->schema([
-                                TextEntry::make('address.prov.name')
+                                TextEntry::make('alamat.prov.name')
                                     ->label('Provinsi'),
-                                TextEntry::make('address.kab.name')
+                                TextEntry::make('alamat.kab.name')
                                     ->label('Kabupaten'),
-                                TextEntry::make('address.kec.name')
+                                TextEntry::make('alamat.kec.name')
                                     ->label('Kecamatan'),
-                                TextEntry::make('address.kel.name')
+                                TextEntry::make('alamat.kel.name')
                                     ->label('Kelurahan'),
                             ]),
 
@@ -366,7 +363,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()
-            ->with(['anggota', 'alamat', 'jenis_bantuan']);
+            ->with(['alamat', 'jenis_bantuan']);
     }
 
     public static function getFormSchema(string $section = null): array
@@ -376,35 +373,52 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 Forms\Components\Select::make('jenis_bantuan_id')
                     ->required()
                     ->searchable()
-                    ->relationship('jenis_bantuan', 'nama_bantuan')
+                    ->relationship(
+                        name: 'jenis_bantuan',
+                        titleAttribute: 'alias',
+                        modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                    )
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        return '<strong>' . $record->alias . '</strong><br>' . $record->nama_bantuan;
+                    })->allowHtml()
                     ->preload()
+                    ->default(3)
+                    ->lazy()
                     ->optionsLimit(20),
                 Forms\Components\Select::make('pendidikan_terakhir_id')
                     ->required()
                     ->searchable()
                     ->relationship('pendidikan_terakhir', 'nama_pendidikan')
                     ->preload()
+                    ->default(5)
+                    ->lazy()
                     ->optionsLimit(20),
                 Forms\Components\Select::make('hubungan_keluarga_id')
                     ->required()
                     ->searchable()
                     ->relationship('hubungan_keluarga', 'nama_hubungan')
                     ->preload()
+                    ->lazy()
+                    ->default(1)
                     ->optionsLimit(20),
                 Forms\Components\Select::make('jenis_pekerjaan_id')
                     ->required()
                     ->searchable()
                     ->relationship('jenis_pekerjaan', 'nama_pekerjaan')
+                    ->default(6)
                     ->preload()
+                    ->lazy()
                     ->optionsLimit(20),
                 Forms\Components\TextInput::make('nama_ibu_kandung')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('status_kawin')
                     ->searchable()
-                    ->options(StatusKawinEnum::class),
+                    ->options(StatusKawinEnum::class)
+                    ->default(StatusKawinEnum::KAWIN),
                 Forms\Components\Select::make('jenis_kelamin')
-                    ->options(JenisKelaminEnum::class),
+                    ->options(JenisKelaminEnum::class)
+                    ->default(JenisKelaminEnum::LAKI),
                 Forms\Components\Select::make('status_verifikasi')
                     ->options(StatusVerifikasiEnum::class)
                     ->default(StatusVerifikasiEnum::UNVERIFIED)
@@ -420,7 +434,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
 
         if ($section === 'alamat') {
             return [
-                AddressForm::make('address')
+                AlamatForm::make('alamat')
                     ->columnSpan('full'),
             ];
         }

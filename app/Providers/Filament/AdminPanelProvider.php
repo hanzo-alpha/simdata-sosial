@@ -48,7 +48,6 @@ class AdminPanelProvider extends PanelProvider
                     ->enableTwoFactorAuthentication()
                     ->enableSanctumTokens(),
                 SpotlightPlugin::make(),
-//                ApprovalPlugin::make(),
                 FilamentShieldPlugin::make()
                     ->gridColumns([
                         'default' => 1,

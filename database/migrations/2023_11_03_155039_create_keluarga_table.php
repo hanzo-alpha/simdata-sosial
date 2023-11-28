@@ -13,6 +13,7 @@ return new class extends Migration {
     {
         Schema::create('keluarga', static function (Blueprint $table) {
             $table->id();
+            $table->morphs('alamatable');
             $table->uuid('dtks_id')->nullable()->default(Str::uuid()->toString());
             $table->string('nokk', 20);
             $table->string('nik', 20);
@@ -20,7 +21,7 @@ return new class extends Migration {
             $table->string('tempat_lahir', 50);
             $table->dateTime('tgl_lahir');
             $table->string('notelp', 18);
-            $table->string('alamat')->default('Kota Soppeng');
+            $table->string('alamat')->default('Jalan Salotungo No. 10');
             $table->string('nama_ibu_kandung');
             $table->foreignIdFor(JenisBantuan::class)->constrained('jenis_bantuan')->cascadeOnUpdate();
             $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();

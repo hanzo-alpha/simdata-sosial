@@ -4,7 +4,6 @@ namespace App\Forms\Components;
 
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -53,104 +52,47 @@ class AlamatForm extends Field
         return [
             Grid::make()
                 ->schema([
-                    Geocomplete::make('alamat')
-                        ->countries(['id'])
-                        ->updateLatLng()
-                        ->geocodeOnLoad()
-                        ->columnSpanFull()
-                        ->reverseGeocode([
-                            'country' => '%C',
-                            'city' => '%L',
-                            'district' => '%D',
-                            'zip' => '%z',
-                            'state' => '%A1',
-                            'street' => '%S %n',
-                        ]),
-
-//                    Map::make('location')
-//                        ->mapControls([
-//                            'mapTypeControl' => true,
-//                            'scaleControl' => true,
-//                            'streetViewControl' => true,
-//                            'rotateControl' => true,
-//                            'fullscreenControl' => true,
-//                            'searchBoxControl' => false, // creates geocomplete field inside map
-//                            'zoomControl' => false,
-//                        ])
-//                        ->height(fn() => '400px')
-//                        ->autocomplete(fieldName: 'full_address', countries: ['id'])
-//                        ->autocompleteReverse(true)
-//                        ->draggable()
-//                        ->clickable()
-//                        ->geolocate()
+//                    Geocomplete::make('alamat')
+//                        ->countries(['id'])
+//                        ->updateLatLng()
+//                        ->geocodeOnLoad()
+//                        ->columnSpanFull()
 //                        ->reverseGeocode([
+//                            'country' => '%C',
 //                            'city' => '%L',
+//                            'city_district' => '%D',
 //                            'zip' => '%z',
 //                            'state' => '%A1',
-//                            'street' => '%n %S',
-//                        ])
-//                        ->defaultLocation([-4.366561933335206, 119.89695254227935])
-//                        ->defaultZoom(16)
-//                        ->columnSpan('full')
-//                        ->live(true)
-//                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
-//                            $set('latitude', $state['lat']);
-//                            $set('longitude', $state['lng']);
-//                        }),
-//                    TextInput::make('alamat')->nullable(),
-                    Grid::make(2)->schema([
-                        TextInput::make('latitude')
-                            ->live(true)
-                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                $set('location', [
-                                    'lat' => floatVal($state),
-                                    'lng' => (float) $get('longitude'),
-                                ]);
-                            })
-                            ->lazy(), // important to use lazy, to avoid updates as you type
-                        TextInput::make('longitude')
-                            ->live(true)
-                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                $set('location', [
-                                    'lat' => (float) $get('latitude'),
-                                    'lng' => floatVal($state),
-                                ]);
-                            })
-                            ->lazy(),
-                    ]),
+//                            'street' => '%S %n',
+//                        ]),
+                    TextInput::make('alamat')
+                        ->required()
+                        ->columnSpanFull(),
+//                    Grid::make(2)->schema([
+//                        TextInput::make('latitude')
+//                            ->reactive()
+//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+//                                $set('location', [
+//                                    'lat' => floatVal($state),
+//                                    'lng' => floatVal($get('longitude')),
+//                                ]);
+//                            })
+//                            ->lazy(), // important to use lazy, to avoid updates as you type
+//                        TextInput::make('longitude')
+//                            ->reactive()
+//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+//                                $set('location', [
+//                                    'lat' => (float) $get('latitude'),
+//                                    'lng' => floatVal($state),
+//                                ]);
+//                            })
+//                            ->lazy(),
+//                    ]),
                 ]),
-
-//            Grid::make(2)
-//                ->schema([
-//                    Select::make('provinsi')
-//                        ->searchable()
-//                        ->options(Provinsi::pluck('name', 'code'))
-//                        ->default(config('custom.default.kodeprov'))
-//                        ->preload()
-//                        ->live(true)
-//                        ->optionsLimit(20)
-//                        ->label('Provinsi'),
-//                    Select::make('kabupaten')
-//                        ->nullable()
-//                        ->options(function (callable $get) {
-//                            $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-//                            $kab = $kab ?? config('custom.default.kodeprov');
-//                            if (!$kab) {
-//                                return Kabupaten::where('provinsi_code', config('custom.default.kodekab'))
-//                                    ->pluck('name', 'code');
-//                            }
-//
-//                            return $kab->pluck('name', 'code');
-//                        })
-//                        ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null))
-//                        ->reactive()
-//                        ->searchable(),
-//                ]),
-
             Grid::make(2)
                 ->schema([
                     Select::make('kecamatan')
-                        ->nullable()
+                        ->required()
                         ->searchable()
                         ->reactive()
                         ->options(function (callable $get) {
@@ -167,7 +109,7 @@ class AlamatForm extends Field
                         ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
-                        ->nullable()
+                        ->required()
                         ->options(function (callable $get) {
                             $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
                             if (!$kel) {
@@ -197,13 +139,18 @@ class AlamatForm extends Field
             Grid::make(4)
                 ->schema([
                     TextInput::make('dusun')
-                        ->label('Dusun'),
+                        ->label('Dusun')
+                        ->nullable(),
                     TextInput::make('no_rt')
-                        ->label('RT'),
+                        ->label('RT')
+                        ->nullable(),
                     TextInput::make('no_rw')
-                        ->label('RW'),
+                        ->label('RW')
+                        ->nullable(),
                     TextInput::make('kodepos')
-                        ->label('Kodepos'),
+                        ->label('Kodepos')
+                        ->default('90861')
+                        ->required(),
                 ]),
         ];
     }

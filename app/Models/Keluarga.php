@@ -12,7 +12,6 @@ use Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -62,19 +61,9 @@ class Keluarga extends Model
         'location',
     ];
 
-    public function anggota(): HasMany
-    {
-        return $this->hasMany(Anggota::class);
-    }
-
-    public function anggota_keluarga(): BelongsToMany
-    {
-        return $this->belongsToMany(Anggota::class, 'anggota_keluarga');
-    }
-
     public function alamat(): MorphOne
     {
-        return $this->morphOne(AddressKeluarga::class, 'addressable');
+        return $this->morphOne(AlamatKeluarga::class, 'alamatable');
     }
 
     public function addresses(): MorphToMany

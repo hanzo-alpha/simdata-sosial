@@ -33,7 +33,6 @@ class CreateKeluarga extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['alamat_id'] = 1;
         $data['dtks_id'] = \Str::uuid()->toString();
         $data['status_verifikasi'] = !auth()->user()?->role('super_admin') ? StatusVerifikasiEnum::UNVERIFIED : $data['status_verifikasi'];
         return $data;
