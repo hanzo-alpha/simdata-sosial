@@ -1,9 +1,8 @@
-<p align="center"><a href="https://github.com/hanzo-alpha/simdata-sosial" target="_blank"><img src="https://banners.beyondco.de/SIMDADU.png?theme=dark&packageManager=composer+require&packageName=hanzo-alpha%2Fsimdata-sosial&pattern=brickWall&style=style_1&description=Sistem+Informasi+Rumah+Data+Terpadu&md=1&showWatermark=1&fontSize=100px&images=home" width="400" alt="Laravel Logo"></a></p>
+<img src="https://banners.beyondco.de/SIMDADU.png?theme=dark&packageManager=composer+require&packageName=hanzo-alpha%2Fsimdata-sosial&pattern=brickWall&style=style_1&description=Sistem+Informasi+Rumah+Data+Terpadu&md=1&showWatermark=1&fontSize=100px&images=home">
 
 <p align="center">
 <a href="https://github.com/hanzo-alpha/simdata-sosial"><img src="https://img.shields.io/github/downloads/hanzo-alpha/simdata-sosial/total" alt="Total Downloads"></a>
-<a href="https://github.com/hanzo-alpha/simdata-sosial"><img src="https://img.shields.io/github/issues-pr/hanzo-alpha/simdata-sosial
-" alt="Pull Request Open"></a>
+<a href="https://github.com/hanzo-alpha/simdata-sosial"><img src="https://img.shields.io/github/issues-pr/hanzo-alpha/simdata-sosial" alt="Pull Request Open"></a>
 <a href="https://github.com/hanzo-alpha/simdata-sosial"><img src="https://img.shields.io/github/license/hanzo-alpha/simdata-sosial?style=flat-square&logo=mit" alt="License"></a>
 </p>
 
