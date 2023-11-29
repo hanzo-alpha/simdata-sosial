@@ -61,18 +61,16 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
-                            ->schema(static::getFormSchema())
-                            ->columns(2),
+                            ->schema(static::getFormSchema()),
                         Forms\Components\Section::make('Alamat Keluarga')
                             ->schema(static::getFormSchema('alamat')),
                         Forms\Components\Section::make('Data Lainnya')
-                            ->schema(static::getFormSchema('lainnya'))
-                            ->columns(2),
+                            ->schema(static::getFormSchema('lainnya'))->columns(2),
                         Forms\Components\Section::make('Unggah Data')
                             ->schema(static::getFormSchema('upload')),
                     ])
                     ->columnSpan(['lg' => fn(?Keluarga $record) => $record === null ? 3 : 2]),
-            ])->columns(2);
+            ]);
     }
 
     public static function table(Table $table): Table

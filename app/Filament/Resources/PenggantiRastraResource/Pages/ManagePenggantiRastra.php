@@ -6,7 +6,7 @@ use App\Filament\Resources\PenggantiRastraResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManagePenggantiRastras extends ManageRecords
+class ManagePenggantiRastra extends ManageRecords
 {
     protected static string $resource = PenggantiRastraResource::class;
 

@@ -71,11 +71,6 @@ class Keluarga extends Model
         return $this->morphToMany(Alamat::class, 'alamatable');
     }
 
-//    public function address(): MorphOne
-//    {
-//        return $this->morphOne(AddressKeluarga::class, 'addressable');
-//    }
-
     public function provinsi(): HasOneThrough
     {
         return $this->hasOneThrough(Provinsi::class, AddressKeluarga::class);
