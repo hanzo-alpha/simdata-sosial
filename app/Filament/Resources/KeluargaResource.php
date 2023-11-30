@@ -9,6 +9,7 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
 use App\Forms\Components\AlamatForm;
+use App\Forms\Components\PpksForm;
 use App\Models\Keluarga;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn;
@@ -119,32 +120,36 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_bantuan.alias')
+                    ->label('Alias')
                     ->badge()
                     ->color(fn($record) => $record->jenis_bantuan->warna)
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('pendidikan_terakhir.nama_pendidikan')
-                    ->numeric()
+                    ->label('Pendidikan')
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('hubungan_keluarga.nama_hubungan')
-                    ->numeric()
+                    ->label('Hubungan Keluarga')
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('jenis_pekerjaan.nama_pekerjaan')
-                    ->numeric()
+                    ->label('Pekerjaan')
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
                 Tables\Columns\IconColumn::make('status_kawin')
+                    ->label('Status Kawin')
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('status_verifikasi')
+                    ->label('Status Verifikasi')
                     ->badge(),
                 Tables\Columns\IconColumn::make('status_keluarga')
+                    ->label('Status Aktif')
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
@@ -156,9 +161,11 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_kawin')
+                    ->label('Status Kawin')
                     ->options(StatusKawinEnum::class)
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
+                    ->label('Status Verifikasi')
                     ->options(StatusVerifikasiEnum::class)
                     ->searchable(),
                 SelectFilter::make('status_keluarga')
@@ -173,9 +180,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
-//                    ...\EightyNine\Approvals\Tables\Actions\ApprovalActions::make(
-//                        Tables\Actions\Action::make('Done')
-//                    ),
+                    Tables\Actions\DeleteAction::make(),
                 ]),
             ])
             ->bulkActions([
@@ -391,8 +396,9 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                         return '<strong>' . $record->alias . '</strong><br>' . $record->nama_bantuan;
                     })->allowHtml()
                     ->preload()
-                    ->default(3)
+                    ->default(4)
                     ->lazy()
+                    ->native(false)
                     ->optionsLimit(20),
                 Forms\Components\Select::make('pendidikan_terakhir_id')
                     ->required()
@@ -438,6 +444,12 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->offLabel('Non Aktif')
                     ->onLabel('Aktif')
                     ->default(true),
+            ];
+        }
+
+        if ($section === 'ppks') {
+            return [
+                PpksForm::make('ppks')
             ];
         }
 

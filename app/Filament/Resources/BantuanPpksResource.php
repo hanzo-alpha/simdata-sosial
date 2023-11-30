@@ -37,10 +37,8 @@ class BantuanPpksResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('jenis_bantuan_id')
                     ->relationship('jenis_bantuan', 'nama_bantuan')
+                    ->default(4)
                     ->required(),
-                Forms\Components\TextInput::make('anggaran_id')
-                    ->required()
-                    ->numeric(),
                 TableRepeater::make('jenis_ppks')->schema([
                     Forms\Components\Select::make('kriteria_ppks')
                         ->options(KriteriaPelayanan::pluck('nama_kriteria', 'id'))
