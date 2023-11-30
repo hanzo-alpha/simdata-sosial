@@ -2049,13 +2049,10 @@
     window.Sortable = go;
     var wi = e => {
         e.directive("sortable", t => {
-            let n = parseInt(t.dataset?.sortableAnimationDuration);
-            n !== 0 && !n && (n = 300), t.sortable = go.create(t, {
+            t.sortable = go.create(t, {
                 draggable: "[x-sortable-item]",
                 handle: "[x-sortable-handle]",
-                dataIdAttr: "x-sortable-item",
-                animation: n,
-                ghostClass: "fi-sortable-ghost"
+                dataIdAttr: "x-sortable-item"
             })
         })
     };

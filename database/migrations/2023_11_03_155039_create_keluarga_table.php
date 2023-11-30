@@ -21,7 +21,17 @@ return new class extends Migration {
             $table->string('tempat_lahir', 50);
             $table->dateTime('tgl_lahir');
             $table->string('notelp', 18);
-            $table->string('alamat')->default('Jalan Salotungo No. 10');
+            $table->string('alamat_penerima')->default('Jalan Salotungo No. 10');
+            $table->string('no_rt')->nullable();
+            $table->string('no_rw')->nullable();
+            $table->string('provinsi')->nullable()->default('73');
+            $table->string('kabupaten')->nullable()->default('7312');
+            $table->string('kecamatan');
+            $table->string('kelurahan');
+            $table->string('dusun')->nullable();
+            $table->string('kodepos')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->string('nama_ibu_kandung');
             $table->foreignIdFor(JenisBantuan::class)->constrained('jenis_bantuan')->cascadeOnUpdate();
             $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();
@@ -32,6 +42,8 @@ return new class extends Migration {
             $table->tinyInteger('status_keluarga')->nullable()->default(0);
             $table->json('unggah_foto')->nullable();
             $table->json('unggah_dokumen')->nullable();
+            $table->string('alamat_lengkap_penerima')->virtualAs("CONCAT(alamat_penerima, ', ',
+             'RT. ' ,no_rt, ', ', 'RW. ', no_rw, ', ', dusun, ' ', kodepos)");
             $table->timestamps();
             $table->softDeletes();
         });

@@ -50,8 +50,8 @@ class AlamatForm extends Field
     public function getChildComponents(): array
     {
         return [
-            Grid::make()
-                ->schema([
+//            Grid::make()
+//                ->schema([
 //                    Geocomplete::make('alamat')
 //                        ->countries(['id'])
 //                        ->updateLatLng()
@@ -65,11 +65,10 @@ class AlamatForm extends Field
 //                            'state' => '%A1',
 //                            'street' => '%S %n',
 //                        ]),
-                    TextInput::make('alamat')
-                        ->required()
-                        ->columnSpanFull(),
 //                    Grid::make(2)->schema([
 //                        TextInput::make('latitude')
+//                            ->disabled()
+//                            ->dehydrated()
 //                            ->reactive()
 //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
 //                                $set('location', [
@@ -79,6 +78,8 @@ class AlamatForm extends Field
 //                            })
 //                            ->lazy(), // important to use lazy, to avoid updates as you type
 //                        TextInput::make('longitude')
+//                            ->disabled()
+//                            ->dehydrated()
 //                            ->reactive()
 //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
 //                                $set('location', [
@@ -88,15 +89,14 @@ class AlamatForm extends Field
 //                            })
 //                            ->lazy(),
 //                    ]),
-                ]),
+//                ]),
             Grid::make(2)
                 ->schema([
                     Select::make('kecamatan')
                         ->required()
                         ->searchable()
                         ->reactive()
-                        ->options(function (callable $get) {
-//                            $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
+                        ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
                             if (!$kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
@@ -105,7 +105,6 @@ class AlamatForm extends Field
 
                             return $kab->pluck('name', 'code');
                         })
-//                            ->hidden(fn (callable $get) => ! $get('kabupaten'))
                         ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
@@ -120,20 +119,7 @@ class AlamatForm extends Field
                             return $kel->pluck('name', 'code');
                         })
                         ->reactive()
-                        ->searchable()
-//                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                        ->afterStateUpdated(function (callable $set, $state) {
-                            $village = Kelurahan::where('code', $state)->first();
-                            if ($village) {
-                                $set('latitude', $village['latitude']);
-                                $set('longitude', $village['longitude']);
-                                $set('location', [
-                                    'lat' => (float) $village['latitude'],
-                                    'lng' => (float) $village['longitude'],
-                                ]);
-                            }
-
-                        }),
+                        ->searchable(),
                 ]),
 
             Grid::make(4)

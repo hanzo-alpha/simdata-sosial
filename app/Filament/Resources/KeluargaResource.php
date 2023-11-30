@@ -8,12 +8,15 @@ use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
-use App\Forms\Components\AlamatForm;
 use App\Forms\Components\PpksForm;
+use App\Models\Kecamatan;
 use App\Models\Keluarga;
+use App\Models\Kelurahan;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn;
+use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\ImageEntry;
@@ -66,7 +69,8 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                         Forms\Components\Section::make('Alamat Keluarga')
                             ->schema(static::getFormSchema('alamat')),
                         Forms\Components\Section::make('Data Lainnya')
-                            ->schema(static::getFormSchema('lainnya'))->columns(2),
+                            ->schema(static::getFormSchema('lainnya'))
+                            ->columns(2),
                         Forms\Components\Section::make('Unggah Data')
                             ->schema(static::getFormSchema('upload')),
                     ])
@@ -80,9 +84,10 @@ class KeluargaResource extends Resource implements HasShieldPermissions
             ->columns([
                 Tables\Columns\ImageColumn::make('unggah_foto')
                     ->label('Foto Rumah')
-//                    ->square()
                     ->stacked()
                     ->limit(3)
+                    ->toggleable()
+                    ->toggledHiddenByDefault()
                     ->limitedRemainingText(true),
                 Tables\Columns\TextColumn::make('dtks_id')
                     ->label('DTKS ID')
@@ -114,13 +119,13 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->boolean()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
-                Tables\Columns\TextColumn::make('alamat.kec.name')
+                Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
-                    ->description(fn($record) => 'Kel. ' . $record->alamat->kel->name)
+                    ->description(fn($record) => 'Kel. ' . $record->kel->name)
                     ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_bantuan.alias')
-                    ->label('Alias')
+                    ->label('Bantuan')
                     ->badge()
                     ->color(fn($record) => $record->jenis_bantuan->warna)
                     ->sortable()
@@ -258,7 +263,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ->icon('heroicon-o-calendar')
                             ->weight(FontWeight::SemiBold)
                             ->color('primary'),
-                        TextEntry::make('alamat.full_address')
+                        TextEntry::make('alamat_penerima')
                             ->label('Alamat')
                             ->icon('heroicon-o-map-pin')
                             ->weight(FontWeight::SemiBold)
@@ -268,43 +273,25 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                 Section::make('Data Alamat')
                     ->description('Berisi informasi tentang alamat dan lokasi keluarga')
                     ->schema([
-                        Grid::make(3)
+                        Grid::make(1)
                             ->schema([
-                                TextEntry::make('alamat.full_address')
-                                    ->label('Alamat'),
-                                TextEntry::make('alamat.kec.name')
-                                    ->label('Kecamatan'),
-                                TextEntry::make('alamat.kel.name')
-                                    ->label('Kelurahan'),
-//                                TextEntry::make('alamat.full_address')
-//                                    ->label('Alamat Lengkap'),
-//                                TextEntry::make('alamat.latitude')
-//                                    ->label('Latitude'),
-//                                TextEntry::make('alamat.longitude')
-//                                    ->label('longitude'),
+                                TextEntry::make('alamat_lengkap_penerima')
+                                    ->label('Alamat')
+                                    ->icon('heroicon-o-map-pin')
+                                    ->weight(FontWeight::SemiBold)
+                                    ->color('primary'),
                             ]),
-//                        Grid::make(4)
-//                            ->schema([
-//                                TextEntry::make('alamat.prov.name')
-//                                    ->label('Provinsi'),
-//                                TextEntry::make('alamat.kab.name')
-//                                    ->label('Kabupaten'),
-//                                TextEntry::make('alamat.kec.name')
-//                                    ->label('Kecamatan'),
-//                                TextEntry::make('alamat.kel.name')
-//                                    ->label('Kelurahan'),
-//                            ]),
-
-//                        Grid::make(4)->schema([
-//                            TextEntry::make('alamat.dusun')
-//                                ->label('Dusun'),
-//                            TextEntry::make('alamat.no_rt')
-//                                ->label('No. RT'),
-//                            TextEntry::make('alamat.no_rw')
-//                                ->label('No. RW'),
-//                            TextEntry::make('alamat.kodepos')
-//                                ->label('Kode Pos'),
-//                        ])
+                        Grid::make(4)
+                            ->schema([
+                                TextEntry::make('kec.name')
+                                    ->label('Kecamatan'),
+                                TextEntry::make('kel.name')
+                                    ->label('Kelurahan'),
+                                TextEntry::make('latitude')
+                                    ->label('Latitude'),
+                                TextEntry::make('longitude')
+                                    ->label('Longitude'),
+                            ]),
                     ])->columns(3),
 
                 Section::make('Data Pendukung')
@@ -355,9 +342,6 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ->hiddenLabel()
                             ->visibility('private')
                             ->columnSpanFull()
-//                            ->width(800)
-//                            ->height(600)
-//                            ->size(400)
                             ->extraImgAttributes([
                                 'alt' => 'foto rumah',
                                 'loading' => 'lazy'
@@ -455,8 +439,91 @@ class KeluargaResource extends Resource implements HasShieldPermissions
 
         if ($section === 'alamat') {
             return [
-                AlamatForm::make('alamat')
-                    ->columnSpan('full'),
+                Geocomplete::make('alamat_penerima')
+                    ->countries(['id'])
+                    ->updateLatLng()
+                    ->geocodeOnLoad()
+                    ->columnSpanFull()
+                    ->reverseGeocode([
+                        'country' => '%C',
+                        'city' => '%L',
+                        'city_district' => '%D',
+                        'zip' => '%z',
+                        'state' => '%A1',
+                        'street' => '%S %n',
+                    ]),
+                Forms\Components\Grid::make()->schema([
+                    TextInput::make('latitude')
+                        ->disabled()
+                        ->dehydrated()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                            $set('location', [
+                                'lat' => floatVal($state),
+                                'lng' => floatVal($get('longitude')),
+                            ]);
+                        })
+                        ->lazy(), // important to use lazy, to avoid updates as you type
+                    TextInput::make('longitude')
+                        ->disabled()
+                        ->dehydrated()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                            $set('location', [
+                                'lat' => (float) $get('latitude'),
+                                'lng' => floatVal($state),
+                            ]);
+                        })
+                        ->lazy(),
+                ]),
+                Forms\Components\Grid::make(2)
+                    ->schema([
+                        Select::make('kecamatan')
+                            ->required()
+                            ->searchable()
+                            ->reactive()
+                            ->options(function () {
+                                $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
+                                if (!$kab) {
+                                    return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
+                                        ->pluck('name', 'code');
+                                }
+
+                                return $kab->pluck('name', 'code');
+                            })
+                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+
+                        Select::make('kelurahan')
+                            ->required()
+                            ->options(function (callable $get) {
+                                $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
+                                if (!$kel) {
+                                    return Kelurahan::where('kecamatan_code', '731211')
+                                        ->pluck('name', 'code');
+                                }
+
+                                return $kel->pluck('name', 'code');
+                            })
+                            ->reactive()
+                            ->searchable(),
+                    ]),
+
+                Forms\Components\Grid::make(4)
+                    ->schema([
+                        TextInput::make('dusun')
+                            ->label('Dusun')
+                            ->nullable(),
+                        TextInput::make('no_rt')
+                            ->label('RT')
+                            ->nullable(),
+                        TextInput::make('no_rw')
+                            ->label('RW')
+                            ->nullable(),
+                        TextInput::make('kodepos')
+                            ->label('Kodepos')
+                            ->default('90861')
+                            ->required(),
+                    ]),
             ];
         }
 
