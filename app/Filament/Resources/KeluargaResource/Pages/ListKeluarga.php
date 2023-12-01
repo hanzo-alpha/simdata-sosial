@@ -2,11 +2,14 @@
 
 namespace App\Filament\Resources\KeluargaResource\Pages;
 
+use App\Exports\ExportKeluarga;
+use App\Filament\Imports\KeluargaImporter;
 use App\Filament\Resources\KeluargaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
+use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ListKeluarga extends ListRecords
 {
@@ -16,6 +19,14 @@ class ListKeluarga extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            ExportAction::make()->label('Ekspor Ke Excel')
+                ->exports([
+                    ExportKeluarga::make()
+                ]),
+            Actions\ImportAction::make()
+                ->importer(KeluargaImporter::class)
+                ->maxRows(10000)
+                ->chunkSize(250),
         ];
     }
 

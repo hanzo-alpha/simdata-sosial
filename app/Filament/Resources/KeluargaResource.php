@@ -381,6 +381,9 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     })->allowHtml()
                     ->preload()
                     ->default(4)
+                    ->afterStateUpdated(function ($state) {
+
+                    })
                     ->lazy()
                     ->native(false)
                     ->optionsLimit(20),
