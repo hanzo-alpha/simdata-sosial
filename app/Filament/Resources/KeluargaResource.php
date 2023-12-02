@@ -9,7 +9,6 @@ use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
-use App\Forms\Components\PpksForm;
 use App\Models\Kecamatan;
 use App\Models\Keluarga;
 use App\Models\Kelurahan;
@@ -17,7 +16,6 @@ use App\Models\KriteriaPelayanan;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
-use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -85,11 +83,23 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     public static function table(Table $table): Table
     {
         return $table
+//            ->contentGrid([
+//                'md' => 2,
+//                'xl' => 3,
+//                'lg' => 4,
+//            ])
+//            ->recordClasses(fn(Model $record) => match ($record->status_verifikasi) {
+//                'UNVERIFIED' => 'border-s-2 border-red-600 dark:border-red-300',
+//                'REVIEW' => 'border-s-2 border-orange-600 dark:border-orange-300',
+//                'VERIFIED' => 'border-s-2 border-green-600 dark:border-green-300',
+//                default => null,
+//            })
             ->columns([
                 Tables\Columns\ImageColumn::make('unggah_foto')
                     ->label('Foto Rumah')
                     ->stacked()
                     ->limit(3)
+                    ->grow(false)
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->limitedRemainingText(true),
@@ -97,7 +107,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->label('DTKS ID')
                     ->description(fn($record) => $record->nama_lengkap)
                     ->sortable()
-//                    ->limit(10)
+                    ->limit(13)
                     ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
