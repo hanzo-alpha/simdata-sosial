@@ -27,7 +27,6 @@ class PenerimaManfaatMap extends MapTableWidget
 
     protected int|string|array $columnSpan = 'full';
 
-
     protected function getTableQuery(): Builder
     {
         return Keluarga::query()->latest();
