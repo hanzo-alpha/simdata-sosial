@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\StatusVerifikasiEnum;
 use App\Models\Keluarga;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -31,7 +30,7 @@ class KeluargaPolicy
      */
     public function view(User $user, Keluarga $keluarga): bool
     {
-        return ($keluarga->status_verifikasi === StatusVerifikasiEnum::VERIFIED) && $user->can('view_keluarga');
+        return $user->can('view_keluarga');
     }
 
     /**
@@ -54,7 +53,7 @@ class KeluargaPolicy
      */
     public function update(User $user, Keluarga $keluarga): bool
     {
-        return $user->hasRole(['super_admin', 'admin']) && $user->can('update_keluarga');
+        return $user->can('update_keluarga');
     }
 
     /**
@@ -147,17 +146,6 @@ class KeluargaPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
-     */
-    public function verifikasi(User $user, Keluarga $keluarga): bool
-    {
-        return $user->hasRole(['super_admin', 'admin']) && $user->can('verifikasi_keluarga');
     }
 
 }

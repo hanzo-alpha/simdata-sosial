@@ -10,7 +10,7 @@ return [
         'id' => [3, 4, 5]
     ],
     'app' => [
-        'name' => 'SIMDATA RASTRA',
+        'name' => 'Rumah Data Terpadu Dinas Sosial Kabupaten Soppeng',
         'logo' => null,
         'logo_dark' => null,
         'favicon' => null,

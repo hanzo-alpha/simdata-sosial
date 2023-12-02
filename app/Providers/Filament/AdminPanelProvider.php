@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\KeluargaChart;
+use App\Filament\Widgets\KeluargaMap;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -30,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('app')
             ->spa()
             ->login()
             ->colors([
@@ -102,9 +104,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-//                AccountWidget::class,
-//                FilamentInfoWidget::class,
-//                KeluargaChart::class
+
             ])
             ->middleware([
                 EncryptCookies::class,

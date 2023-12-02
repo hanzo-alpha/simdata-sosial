@@ -60,7 +60,10 @@ return [
         ],
 
         'widgets' => [
-            'AccountWidget', 'FilamentInfoWidget',
+            'AccountWidget',
+            'FilamentInfoWidget',
+            'PenerimaManfaatMap',
+            'PenerimaManfaatChart'
         ],
 
         'resources' => [],

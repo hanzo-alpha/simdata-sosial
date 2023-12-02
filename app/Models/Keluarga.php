@@ -33,7 +33,17 @@ class Keluarga extends Model
         'tempat_lahir',
         'tgl_lahir',
         'notelp',
-        'alamat_id',
+        'alamat_penerima',
+        'provinsi',
+        'kabupaten',
+        'kecamatan',
+        'kelurahan',
+        'no_rt',
+        'no_rw',
+        'dusun',
+        'kodepos',
+        'latitude',
+        'longitude',
         'nama_ibu_kandung',
         'jenis_bantuan_id',
         'pendidikan_terakhir_id',
@@ -55,6 +65,7 @@ class Keluarga extends Model
         'status_verifikasi' => StatusVerifikasiEnum::class,
         'unggah_foto' => 'array',
         'unggah_dokumen' => 'array',
+        'alamat_penerima' => 'string'
     ];
 
     protected $appends = [
