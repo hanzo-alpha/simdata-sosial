@@ -19,11 +19,12 @@ class ListKeluarga extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            ExportAction::make()->label('Ekspor Ke Excel')
+            ExportAction::make()->label('Ekspor XLS')
                 ->exports([
                     ExportKeluarga::make()
                 ]),
             Actions\ImportAction::make()
+                ->label('Impor CSV')
                 ->importer(KeluargaImporter::class)
                 ->maxRows(10000)
                 ->chunkSize(250),

@@ -23,11 +23,11 @@ export default defineConfig({
 function detectServerConfig(host) {
     let keyPath = resolve(
         homedir(),
-        "D:/Development/laragon/etc/ssl/laragon.key"
+        "C:/laragon/etc/ssl/laragon.key"
     );
     let certificatePath = resolve(
         homedir(),
-        "D:/Development/laragon/etc/ssl/laragon.crt"
+        "C:/laragon/etc/ssl/laragon.crt"
     );
 
     if (!fs.existsSync(keyPath)) {

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
@@ -12,8 +13,11 @@ use App\Forms\Components\PpksForm;
 use App\Models\Kecamatan;
 use App\Models\Keluarga;
 use App\Models\Kelurahan;
+use App\Models\KriteriaPelayanan;
+use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -380,11 +384,9 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                         return '<strong>' . $record->alias . '</strong><br>' . $record->nama_bantuan;
                     })->allowHtml()
                     ->preload()
-                    ->default(4)
-                    ->afterStateUpdated(function ($state) {
-
-                    })
+//                    ->default(4)
                     ->lazy()
+                    ->live(true)
                     ->native(false)
                     ->optionsLimit(20),
                 Forms\Components\Select::make('pendidikan_terakhir_id')
@@ -436,7 +438,28 @@ class KeluargaResource extends Resource implements HasShieldPermissions
 
         if ($section === 'ppks') {
             return [
-                PpksForm::make('ppks')
+                Forms\Components\Grid::make()
+                    ->schema([
+                        Select::make('jenis_pelayanan_id')
+                            ->relationship('jenis_pelayanan', 'nama_ppks')
+                            ->required(),
+                        Select::make('jenis_bantuan_id')
+                            ->relationship('jenis_bantuan', 'nama_bantuan')
+                            ->default(4)
+                            ->required(),
+                        TableRepeater::make('jenis_ppks')->schema([
+                            Select::make('kriteria_ppks')
+                                ->options(KriteriaPelayanan::pluck('nama_kriteria', 'id'))
+                        ]),
+                        TextInput::make('penghasilan_rata_rata')
+                            ->numeric(),
+                        ToggleButton::make('status_rumah_tinggal'),
+                        Select::make('status_kondisi_rumah')
+                            ->options(StatusKondisiRumahEnum::class)
+                            ->preload()
+                            ->lazy(),
+                        ToggleButton::make('status_bantuan'),
+                    ])->visible(fn(Forms\Get $get) => $get('jenis_bantuan_id')),
             ];
         }
 
