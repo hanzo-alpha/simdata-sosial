@@ -41,9 +41,9 @@ class KeluargaResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $slug = 'penerima-manfaat';
-    protected static ?string $label = 'Penerima Manfaat';
-    protected static ?string $pluralLabel = 'Penerima Manfaat';
+    protected static ?string $slug = 'keluarga';
+    protected static ?string $label = 'Keluarga';
+    protected static ?string $pluralLabel = 'Keluarga';
 
 //    protected static ?string $navigationGroup = 'Master';
 

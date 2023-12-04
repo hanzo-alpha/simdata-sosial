@@ -7,13 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('bantuan_bpjs', static function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->morphs('familyable');
-            $table->json('attachments')->nullable();
-            $table->json('bukti_foto')->nullable();
-            $table->tinyInteger('status_bpjs')->nullable();
+            $table->string('nama_image');
+            $table->string('path_url')->nullable();
+            $table->morphs('imageable');
             $table->timestamps();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('images');
     }
 };

@@ -92,6 +92,9 @@ class AlamatForm extends Field
 //                ]),
             Grid::make(2)
                 ->schema([
+                    TextInput::make('alamat')
+                        ->required()
+                        ->columnSpanFull(),
                     Select::make('kecamatan')
                         ->required()
                         ->searchable()

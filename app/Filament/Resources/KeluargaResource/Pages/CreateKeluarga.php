@@ -101,7 +101,7 @@ class CreateKeluarga extends CreateRecord
                     Section::make()->schema(KeluargaResource::getFormSchema('lainnya'))->columns(),
                 ]),
 
-            Step::make('Data Rumah')
+            Step::make('Verifikasi')
                 ->schema([
                     Section::make()->schema(KeluargaResource::getFormSchema('upload')),
                 ])
