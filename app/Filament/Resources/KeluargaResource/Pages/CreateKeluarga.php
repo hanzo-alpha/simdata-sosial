@@ -96,6 +96,11 @@ class CreateKeluarga extends CreateRecord
                     Section::make()->schema(KeluargaResource::getFormSchema('alamat')),
                 ]),
 
+            Step::make('Data Bantuan')
+                ->schema([
+                    Section::make()->schema(KeluargaResource::getFormSchema('bantuan'))->columns(),
+                ]),
+
             Step::make('Data Pendukung')
                 ->schema([
                     Section::make()->schema(KeluargaResource::getFormSchema('lainnya'))->columns(),

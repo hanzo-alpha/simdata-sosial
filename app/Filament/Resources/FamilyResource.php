@@ -4,11 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusKawinEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\FamilyResource\Pages;
 use App\Filament\Resources\FamilyResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
 use App\Forms\Components\BantuanForm;
-use App\Forms\Components\ImageForm;
 use App\Models\Family;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class FamilyResource extends Resource
@@ -41,12 +42,10 @@ class FamilyResource extends Resource
                             Forms\Components\TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
-//                                ->columnSpanFull()
                                 ->maxLength(20),
                             Forms\Components\TextInput::make('nik')
                                 ->label('N I K')
                                 ->required()
-//                                ->columnSpanFull()
                                 ->maxLength(20),
                             Forms\Components\TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
@@ -112,6 +111,11 @@ class FamilyResource extends Resource
                                 ->default(StatusKawinEnum::KAWIN)
                                 ->preload(),
 
+                            Forms\Components\Select::make('status_verifikasi')
+                                ->options(StatusVerifikasiEnum::class)
+                                ->default(StatusVerifikasiEnum::UNVERIFIED)
+                                ->preload(),
+
                             ToggleButton::make('status_family')
                                 ->offColor('danger')
                                 ->onColor('primary')
@@ -119,9 +123,35 @@ class FamilyResource extends Resource
                                 ->onLabel('Aktif')
                                 ->default(true),
                         ]),
-                    Forms\Components\Section::make('Unggah')
+                    Forms\Components\Section::make('Verifikasi Rumah')
                         ->schema([
-                            ImageForm::make('image')
+                            Forms\Components\FileUpload::make('foto')
+                                ->label('Unggah Foto Rumah')
+                                ->getUploadedFileNameForStorageUsing(
+                                    fn(TemporaryUploadedFile $file
+                                    ): string => (string) str($file->getClientOriginalName())
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                )
+                                ->preserveFilenames()
+                                ->multiple()
+                                ->reorderable()
+                                ->appendFiles()
+                                ->openable()
+                                ->required()
+                                ->unique(ignoreRecord: true)
+                                ->helperText('maks. 2MB')
+                                ->maxFiles(3)
+                                ->maxSize(2048)
+                                ->columnSpanFull()
+                                ->imagePreviewHeight('250')
+                                ->previewable(false)
+                                ->image()
+                                ->imageEditor()
+                                ->imageEditorAspectRatios([
+                                    '16:9',
+                                    '4:3',
+                                    '1:1',
+                                ])
                         ]),
                 ])->columns(1),
             ])->columns(3);
@@ -132,12 +162,10 @@ class FamilyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('dtks_id')
+                    ->description(fn($record) => $record->nama_lengkap)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nik')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->description(fn($record) => $record->nik)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
                     ->searchable(),
@@ -145,23 +173,30 @@ class FamilyResource extends Resource
                     ->date('d/M/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('notelp')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat_lengkap_penerima')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_ibu_kandung')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('pendidikan_terakhir.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('pendidikan_terakhir.nama_pendidikan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('hubungan_keluarga.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('hubungan_keluarga.nama_hubungan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\IconColumn::make('status_kawin')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('jenis_kelamin')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('status_family')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('status_kawin')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
+                Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_verifikasi')
+//                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_family')
+                    ->badge(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

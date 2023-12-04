@@ -64,6 +64,7 @@ class ImageForm extends Field
                 ->appendFiles()
                 ->openable()
                 ->required()
+                ->unique(ignoreRecord: true)
                 ->helperText('maks. 2MB')
                 ->maxFiles(3)
                 ->maxSize(2048)

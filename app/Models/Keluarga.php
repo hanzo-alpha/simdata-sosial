@@ -12,7 +12,7 @@ use Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -81,11 +81,11 @@ class Keluarga extends Model
     {
         return $this->morphToMany(Alamat::class, 'alamatable');
     }
-
-    public function provinsi(): HasOneThrough
-    {
-        return $this->hasOneThrough(Provinsi::class, AddressKeluarga::class);
-    }
+//
+//    public function provinsi(): HasOneThrough
+//    {
+//        return $this->hasOneThrough(Provinsi::class, AddressKeluarga::class);
+//    }
 
     public function jenis_bantuan_keluarga(): BelongsToMany
     {
@@ -95,6 +95,16 @@ class Keluarga extends Model
     public function jenis_bantuan(): BelongsTo
     {
         return $this->belongsTo(JenisBantuan::class);
+    }
+
+    public function jenisBantuan(): BelongsToMany
+    {
+        return $this->belongsToMany(JenisBantuan::class);
+    }
+
+    public function bantuan_bpjs(): HasOne
+    {
+        return $this->hasOne(BantuanBpjs::class);
     }
 
     /**

@@ -26,10 +26,10 @@ class Family extends Model
         'tgl_lahir' => 'datetime',
         'status_kawin' => StatusKawinEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
-        'status_keluarga' => StatusAktif::class,
+        'status_family' => StatusAktif::class,
         'status_verifikasi' => StatusVerifikasiEnum::class,
         'unggah_foto' => 'array',
-        'unggah_dokumen' => 'array',
+        'foto' => 'array',
         'alamat_penerima' => 'string'
     ];
 
