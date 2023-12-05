@@ -122,16 +122,6 @@ class FamilyForm extends Field
                         ->onLabel('Aktif')
                         ->default(true),
                 ])->columns(2),
-
-//            Section::make('Data Alamat')
-//                ->schema([
-//                    AlamatForm::make('alamat')
-//                ]),
-
-//            Section::make('Data Pendukung')
-//                ->schema([
-//
-//                ])->columns(2),
         ];
     }
 

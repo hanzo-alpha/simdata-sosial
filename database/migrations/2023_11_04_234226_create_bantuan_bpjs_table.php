@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->morphs('familyable');
             $table->json('attachments')->nullable();
             $table->json('bukti_foto')->nullable();
-            $table->tinyInteger('status_bpjs')->nullable();
+            $table->string('status_bpjs', 20)->nullable();
             $table->timestamps();
         });
     }

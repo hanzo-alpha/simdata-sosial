@@ -14,7 +14,7 @@ return new class extends Migration {
                 ->nullable()
                 ->constrained('jenis_bantuan')
                 ->cascadeOnDelete();
-            $table->string('nama_bantuan');
+            $table->string('nama_bantuan')->nullable();
             $table->morphs('bantuanable');
             $table->timestamps();
         });

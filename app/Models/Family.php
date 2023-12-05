@@ -36,6 +36,11 @@ class Family extends Model
         return $this->morphOne(AlamatKeluarga::class, 'alamatable');
     }
 
+    public function alamatable(): MorphToMany
+    {
+        return $this->morphedByMany(Alamat::class, 'alamatable');
+    }
+
     public function bantuan_bpjs(): MorphOne
     {
         return $this->morphOne(Bantuan::class, 'bantuanable');
@@ -48,6 +53,11 @@ class Family extends Model
 
     public function bantuan(): MorphToMany
     {
-        return $this->morphedByMany(Bantuan::class, 'bantuanable');
+        return $this->morphToMany(Bantuan::class, 'bantuanable');
     }
+//
+//    public function bantuanable(): MorphToMany
+//    {
+//        return $this->morphedByMany(Bantuan::class, 'bantuanable');
+//    }
 }
