@@ -71,7 +71,7 @@ class BantuanBpjsResource extends Resource
                                     '4:3',
                                     '1:1',
                                 ]),
-                            BantuanForm::make('bantuanable'),
+                            BantuanForm::make('bantuan'),
 
                             Forms\Components\Select::make('status_bpjs')
                                 ->label('Status BPJS')

@@ -11,6 +11,7 @@ return new class extends Migration {
         Schema::create('bantuanables', static function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor('family_id')->nullable()->constrained('family')->cascadeOnDelete();
+            $table->foreignIdFor('bantuan_id')->nullable()->constrained('bantuan')->cascadeOnDelete();
             $table->morphs('bantuanable');
             $table->timestamps();
         });
