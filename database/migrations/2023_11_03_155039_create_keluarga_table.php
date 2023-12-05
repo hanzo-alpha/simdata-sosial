@@ -39,6 +39,7 @@ return new class extends Migration {
             $table->foreignIdFor(JenisPekerjaan::class)->constrained('jenis_pekerjaan')->cascadeOnUpdate();
             $table->tinyInteger('status_kawin')->nullable()->default(1);
             $table->tinyInteger('jenis_kelamin')->nullable()->default(1);
+            $table->string('status_verifikasi')->nullable();
             $table->tinyInteger('status_keluarga')->nullable()->default(0);
             $table->json('unggah_foto')->nullable();
             $table->json('unggah_dokumen')->nullable();

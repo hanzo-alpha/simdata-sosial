@@ -9,9 +9,8 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Family extends Model
@@ -28,9 +27,8 @@ class Family extends Model
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_family' => StatusAktif::class,
         'status_verifikasi' => StatusVerifikasiEnum::class,
-        'unggah_foto' => 'array',
-        'foto' => 'array',
-        'alamat_penerima' => 'string'
+//        'unggah_foto' => 'array',
+//        'foto' => 'array',
     ];
 
     public function alamat(): MorphOne
@@ -38,9 +36,9 @@ class Family extends Model
         return $this->morphOne(AlamatKeluarga::class, 'alamatable');
     }
 
-    public function familyable(): MorphTo
+    public function bantuan_bpjs(): MorphOne
     {
-        return $this->morphTo();
+        return $this->morphOne(Bantuan::class, 'bantuanable');
     }
 
     public function image(): MorphOne
@@ -48,8 +46,8 @@ class Family extends Model
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function bantuan(): MorphMany
+    public function bantuan(): MorphToMany
     {
-        return $this->morphMany(Bantuan::class, 'bantuanable');
+        return $this->morphedByMany(Bantuan::class, 'bantuanable');
     }
 }

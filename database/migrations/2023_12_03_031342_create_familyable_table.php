@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\HubunganKeluarga;
+use App\Models\JenisPekerjaan;
+use App\Models\PendidikanTerakhir;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,30 +19,22 @@ return new class extends Migration {
             $table->string('tempat_lahir', 50);
             $table->dateTime('tgl_lahir');
             $table->string('notelp', 18);
-            $table->string('alamat_penerima')->default('Jalan Salotungo No. 10');
-            $table->string('no_rt')->nullable();
-            $table->string('no_rw')->nullable();
-            $table->string('dusun')->nullable();
-            $table->string('kecamatan');
-            $table->string('kelurahan');
-            $table->string('kodepos')->nullable();
             $table->string('nama_ibu_kandung');
+            $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();
+            $table->foreignIdFor(HubunganKeluarga::class)->constrained('hubungan_keluarga')->cascadeOnUpdate();
+            $table->foreignIdFor(JenisPekerjaan::class)->constrained('jenis_pekerjaan')->cascadeOnUpdate();
             $table->tinyInteger('status_kawin')
                 ->nullable()
                 ->default(1);
             $table->tinyInteger('jenis_kelamin')
                 ->nullable()
                 ->default(1);
-            $table->tinyInteger('status_keluarga')
+            $table->string('status_verifikasi')
                 ->nullable()
                 ->default(0);
-            $table->foreignIdFor(\App\Models\Image::class)
+            $table->tinyInteger('status_family')
                 ->nullable()
-                ->constrained('images')
-                ->cascadeOnDelete();
-
-            $table->string('alamat_lengkap_penerima')->virtualAs("CONCAT(alamat_penerima, ', ',
-             'RT. ' ,no_rt, ', ', 'RW. ', no_rw, ', ', dusun, ' ', kodepos)");
+                ->default(0);
 
             $table->timestamps();
             $table->softDeletes();

@@ -7,6 +7,7 @@ use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\FamilyResource\Pages;
 use App\Filament\Resources\FamilyResource\RelationManagers;
+use App\Filament\Resources\FamilyResource\Widgets\FamilyOverview;
 use App\Forms\Components\AlamatForm;
 use App\Forms\Components\BantuanForm;
 use App\Models\Family;
@@ -17,7 +18,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class FamilyResource extends Resource
@@ -50,12 +50,10 @@ class FamilyResource extends Resource
                             Forms\Components\TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
                                 ->required()
-                                ->columnSpanFull()
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('nama_ibu_kandung')
                                 ->label('Nama Ibu Kandung')
                                 ->required()
-                                ->columnSpanFull()
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('tempat_lahir')
                                 ->label('Tempat Lahir')
@@ -107,53 +105,56 @@ class FamilyResource extends Resource
                     Forms\Components\Section::make('Status')
                         ->schema([
                             Forms\Components\Select::make('status_kawin')
+                                ->label('Status Kawin')
                                 ->options(StatusKawinEnum::class)
                                 ->default(StatusKawinEnum::KAWIN)
                                 ->preload(),
 
                             Forms\Components\Select::make('status_verifikasi')
+                                ->label('Status Verifikasi')
                                 ->options(StatusVerifikasiEnum::class)
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload(),
 
                             ToggleButton::make('status_family')
+                                ->label('Status Aktif')
                                 ->offColor('danger')
                                 ->onColor('primary')
                                 ->offLabel('Non Aktif')
                                 ->onLabel('Aktif')
                                 ->default(true),
                         ]),
-                    Forms\Components\Section::make('Verifikasi Rumah')
-                        ->schema([
-                            Forms\Components\FileUpload::make('foto')
-                                ->label('Unggah Foto Rumah')
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn(TemporaryUploadedFile $file
-                                    ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                                )
-                                ->preserveFilenames()
-                                ->multiple()
-                                ->reorderable()
-                                ->appendFiles()
-                                ->openable()
-                                ->required()
-                                ->unique(ignoreRecord: true)
-                                ->helperText('maks. 2MB')
-                                ->maxFiles(3)
-                                ->maxSize(2048)
-                                ->columnSpanFull()
-                                ->imagePreviewHeight('250')
-                                ->previewable(false)
-                                ->image()
-                                ->imageEditor()
-                                ->imageEditorAspectRatios([
-                                    '16:9',
-                                    '4:3',
-                                    '1:1',
-                                ])
-                        ]),
                 ])->columns(1),
+//                Forms\Components\Section::make('Verifikasi Rumah')
+//                    ->schema([
+//                        Forms\Components\FileUpload::make('foto')
+//                            ->label('Unggah Foto Rumah')
+//                            ->getUploadedFileNameForStorageUsing(
+//                                fn(TemporaryUploadedFile $file
+//                                ): string => (string) str($file->getClientOriginalName())
+//                                    ->prepend(date('d-m-Y-H-i-s') . '-'),
+//                            )
+//                            ->preserveFilenames()
+//                            ->multiple()
+//                            ->reorderable()
+//                            ->appendFiles()
+//                            ->openable()
+//                            ->required()
+//                            ->unique(ignoreRecord: true)
+//                            ->helperText('maks. 2MB')
+//                            ->maxFiles(3)
+//                            ->maxSize(2048)
+//                            ->columnSpanFull()
+//                            ->imagePreviewHeight('250')
+//                            ->previewable(false)
+//                            ->image()
+//                            ->imageEditor()
+//                            ->imageEditorAspectRatios([
+//                                '16:9',
+//                                '4:3',
+//                                '1:1',
+//                            ])
+//                    ]),
             ])->columns(3);
     }
 
@@ -162,20 +163,25 @@ class FamilyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('dtks_id')
+                    ->label('DTKS ID')
                     ->description(fn($record) => $record->nama_lengkap)
+                    ->limit(14)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
+                    ->label('No. KK / NIK')
                     ->description(fn($record) => $record->nik)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
+                    ->label('Tempat Tgl Lahir')
+                    ->formatStateUsing(fn($record) => $record->tempat_lahir . ', ' . $record->tgl_lahir->locale('id')
+                            ->format('d M Y')
+                    )
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tgl_lahir')
-                    ->date('d/M/Y')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('notelp')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('alamat_lengkap_penerima')
+                Tables\Columns\TextColumn::make('alamat.alamat_lengkap')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_ibu_kandung')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -193,18 +199,21 @@ class FamilyResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_verifikasi')
-//                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Verifikasi Rumah')
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_family')
+                    ->label('Status')
                     ->badge(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -227,6 +236,13 @@ class FamilyResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            FamilyOverview::class
         ];
     }
 
