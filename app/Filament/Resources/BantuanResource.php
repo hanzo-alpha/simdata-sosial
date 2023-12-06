@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BantuanResource\Pages;
 use App\Filament\Resources\BantuanResource\RelationManagers;
 use App\Models\Bantuan;
+use App\Models\JenisBantuan;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,9 +30,9 @@ class BantuanResource extends Resource
         return $table
             ->columns([
 //                Tables\Columns\TextColumn::make('bantuan.nama_bantuan'),
-                Tables\Columns\TextColumn::make('nama_bantuan'),
-                Tables\Columns\TextColumn::make('alias'),
-                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('jenis_bantuan_id')
+                    ->label('Nama Bantuan')
+                    ->formatStateUsing(fn($state) => JenisBantuan::find($state)?->nama_bantuan),
             ])
             ->filters([
                 //

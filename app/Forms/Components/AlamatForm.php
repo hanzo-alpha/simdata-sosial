@@ -147,9 +147,9 @@ class AlamatForm extends Field
             $address = $record?->getRelationValue($this->getRelationship());
 
             $component->state($address ? $address->toArray() : [
-                'provinsi' => null,
+                'provinsi' => '73',
                 'alamat' => null,
-                'kabupaten' => null,
+                'kabupaten' => '7312',
                 'kecamatan' => null,
                 'kelurahan' => null,
                 'no_rt' => null,

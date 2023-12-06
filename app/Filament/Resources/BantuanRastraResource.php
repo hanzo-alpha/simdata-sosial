@@ -2,14 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Resources\BantuanRastraResource\RelationManagers;
+use App\Forms\Components\AlamatForm;
+use App\Forms\Components\FamilyForm;
 use App\Models\BantuanRastra;
+use App\Models\JenisBantuan;
 use Filament\Forms;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanRastraResource extends Resource
 {
@@ -26,32 +34,87 @@ class BantuanRastraResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('keluarga_id')
-                    ->relationship('keluarga', 'nama_lengkap')
-                    ->required(),
-                Forms\Components\TextInput::make('dtks_id')
-                    ->maxLength(36),
-                Forms\Components\TextInput::make('nik_penerima')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('attachments'),
-                Forms\Components\TextInput::make('bukti_foto'),
-                Forms\Components\TextInput::make('dokumen'),
-                Forms\Components\TextInput::make('location'),
-                Forms\Components\Toggle::make('status_rastra'),
-            ]);
+                Group::make()->schema([
+                    FamilyForm::make('family'),
+                    Section::make('Data Alamat')
+                        ->schema([
+                            AlamatForm::make('alamat')
+                        ]),
+                ])->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Verifikasi')
+                        ->schema([
+                            Forms\Components\FileUpload::make('bukti_foto')
+                                ->label('Unggah Foto Rumah')
+                                ->getUploadedFileNameForStorageUsing(
+                                    fn(TemporaryUploadedFile $file
+                                    ): string => (string) str($file->getClientOriginalName())
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                )
+                                ->preserveFilenames()
+                                ->multiple()
+                                ->reorderable()
+                                ->appendFiles()
+                                ->openable()
+                                ->required()
+                                ->unique(ignoreRecord: true)
+                                ->helperText('maks. 2MB')
+                                ->maxFiles(3)
+                                ->maxSize(2048)
+                                ->columnSpanFull()
+                                ->imagePreviewHeight('250')
+                                ->previewable(false)
+                                ->image()
+                                ->imageEditor()
+                                ->imageEditorAspectRatios([
+                                    '16:9',
+                                    '4:3',
+                                    '1:1',
+                                ]),
+//                            BantuanForm::make('bantuan'),
+
+                            Forms\Components\TextInput::make('location')
+                                ->label('Lokasi'),
+
+                            Forms\Components\Select::make('status_rastra')
+                                ->label('Status Rastra')
+                                ->options(StatusRastra::class)
+                                ->default(StatusRastra::BARU)
+                                ->lazy()
+                                ->preload(),
+
+                            ToggleButton::make('status_aktif')
+                                ->label('Status Aktif')
+                                ->offColor('danger')
+                                ->onColor('primary')
+                                ->offLabel('Non Aktif')
+                                ->onLabel('Aktif')
+                                ->default(true),
+                        ])
+                ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('keluarga.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('family.nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('family.nik')
+                    ->label('N I K')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('dtks_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nik_penerima')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('family.notelp')
+                    ->label('No.Telp/WA')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('bantuan.jenis_bantuan_id')
+                    ->label('Jenis Bantuan')
+                    ->formatStateUsing(fn($record) => JenisBantuan::find($record->bantuan->jenis_bantuan_id)?->alias)
+//                    ->listWithLineBreaks()
+                    ->badge()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('status_rastra')
                     ->boolean(),
             ])
@@ -59,8 +122,8 @@ class BantuanRastraResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -69,10 +132,20 @@ class BantuanRastraResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageBantuanRastras::route('/'),
+            'index' => Pages\ListBantuanRastras::route('/'),
+            'create' => Pages\CreateBantuanRastra::route('/create'),
+            'view' => Pages\ViewBantuanRastra::route('/{record}'),
+            'edit' => Pages\EditBantuanRastra::route('/{record}/edit'),
         ];
     }
 }

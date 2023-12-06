@@ -10,7 +10,6 @@ use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Family extends Model
@@ -35,29 +34,14 @@ class Family extends Model
     {
         return $this->morphOne(AlamatKeluarga::class, 'alamatable');
     }
+//
+//    public function bantuan_bpjs(): MorphTo
+//    {
+//        return $this->morphTo();
+//    }
 
-    public function alamatable(): MorphToMany
-    {
-        return $this->morphedByMany(Alamat::class, 'alamatable');
-    }
-
-    public function bantuan_bpjs(): MorphOne
+    public function bantuan(): MorphOne
     {
         return $this->morphOne(Bantuan::class, 'bantuanable');
     }
-
-    public function image(): MorphOne
-    {
-        return $this->morphOne(Image::class, 'imageable');
-    }
-
-    public function bantuan(): MorphToMany
-    {
-        return $this->morphToMany(Bantuan::class, 'bantuanable');
-    }
-//
-//    public function bantuanable(): MorphToMany
-//    {
-//        return $this->morphedByMany(Bantuan::class, 'bantuanable');
-//    }
 }

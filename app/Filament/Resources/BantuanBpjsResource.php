@@ -9,6 +9,7 @@ use App\Forms\Components\AlamatForm;
 use App\Forms\Components\BantuanForm;
 use App\Forms\Components\FamilyForm;
 use App\Models\BantuanBpjs;
+use App\Models\JenisBantuan;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -34,7 +35,7 @@ class BantuanBpjsResource extends Resource
         return $form
             ->schema([
                 Group::make()->schema([
-                    FamilyForm::make('familyable'),
+                    FamilyForm::make('family'),
                     Section::make('Data Alamat')
                         ->schema([
                             AlamatForm::make('alamat')
@@ -88,18 +89,19 @@ class BantuanBpjsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('familyable.nama_lengkap')
+                Tables\Columns\TextColumn::make('family.nama_lengkap')
                     ->label('Nama Lengkap')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('familyable.nik')
+                Tables\Columns\TextColumn::make('family.nik')
                     ->label('N I K')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('familyable.notelp')
+                Tables\Columns\TextColumn::make('family.notelp')
                     ->label('No.Telp/WA')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bantuan.nama_bantuan')
+                Tables\Columns\TextColumn::make('bantuan.jenis_bantuan_id')
                     ->label('Jenis Bantuan')
-                    ->listWithLineBreaks()
+                    ->formatStateUsing(fn($record) => JenisBantuan::find($record->bantuan->jenis_bantuan_id)?->alias)
+//                    ->listWithLineBreaks()
                     ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_bpjs')

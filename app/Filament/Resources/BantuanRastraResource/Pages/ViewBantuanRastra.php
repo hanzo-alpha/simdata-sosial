@@ -4,16 +4,16 @@ namespace App\Filament\Resources\BantuanRastraResource\Pages;
 
 use App\Filament\Resources\BantuanRastraResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\ViewRecord;
 
-class ManageBantuanRastras extends ManageRecords
+class ViewBantuanRastra extends ViewRecord
 {
     protected static string $resource = BantuanRastraResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }

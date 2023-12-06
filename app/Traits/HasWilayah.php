@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasWilayah
 {
+
+
     public function prov(): BelongsTo
     {
         return $this->belongsTo(Provinsi::class, 'provinsi', 'code');

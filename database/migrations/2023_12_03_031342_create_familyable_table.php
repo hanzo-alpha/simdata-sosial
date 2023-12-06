@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('family', static function (Blueprint $table) {
             $table->id();
+            $table->morphs('familyable');
             $table->uuid('dtks_id')->nullable()->default(Str::uuid()->toString());
             $table->string('nokk', 20);
             $table->string('nik', 20);

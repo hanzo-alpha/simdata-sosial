@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class BantuanForm extends Field
 {
@@ -81,14 +82,14 @@ class BantuanForm extends Field
     {
         parent::setUp();
 
-//        $this->afterStateHydrated(function (BantuanForm $component, ?Model $record) {
-//            $address = $record?->getRelationValue($this->getRelationship());
-//
-//            $component->state($address ? $address->toArray() : [
-////                'jenis_bantuan_id' => null,
-//                'nama_bantuan' => null,
-//            ]);
-//        });
+        $this->afterStateHydrated(function (BantuanForm $component, ?Model $record) {
+            $bantuan = $record?->getRelationValue($this->getRelationship());
+
+            $component->state($bantuan ? $bantuan->toArray() : [
+                'jenis_bantuan_id' => 3,
+                'nama_bantuan' => null,
+            ]);
+        });
 
         $this->dehydrated(false);
     }

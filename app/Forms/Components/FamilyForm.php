@@ -10,6 +10,7 @@ use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Model;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class FamilyForm extends Field
@@ -28,8 +29,8 @@ class FamilyForm extends Field
             return;
         }
 
-        if ($address = $relationship->first()) {
-            $address->update($state);
+        if ($family = $relationship->first()) {
+            $family->update($state);
         } else {
             $relationship->updateOrCreate($state);
         }
@@ -136,27 +137,27 @@ class FamilyForm extends Field
     {
         parent::setUp();
 
-//        $this->afterStateHydrated(function (FamilyForm $component, ?Model $record) {
-//            $family = $record?->getRelationValue($this->getRelationship());
-//
-//            $component->state($family ? $family->toArray() : [
-//                'dtks_id' => null,
-//                'nik' => null,
-//                'nokk' => null,
-//                'nama_lengkap' => null,
-//                'tempat_lahir' => null,
-//                'tgl_lahir' => null,
-//                'notelp' => null,
-//                'nama_ibu_kandung' => null,
-//                'pendidikan_terakhir_id' => null,
-//                'hubungan_keluarga_id' => null,
-//                'jenis_pekerjaan_id' => null,
-//                'status_kawin' => null,
-//                'jenis_kelamin' => null,
-//                'status_verifikasi' => null,
-//                'status_family' => null,
-//            ]);
-//        });
+        $this->afterStateHydrated(function (FamilyForm $component, ?Model $record) {
+            $family = $record?->getRelationValue($this->getRelationship());
+
+            $component->state($family ? $family->toArray() : [
+                'dtks_id' => \Str::uuid()->toString(),
+                'nik' => null,
+                'nokk' => null,
+                'nama_lengkap' => null,
+                'tempat_lahir' => null,
+                'tgl_lahir' => null,
+                'notelp' => null,
+                'nama_ibu_kandung' => null,
+                'pendidikan_terakhir_id' => 5,
+                'hubungan_keluarga_id' => 7,
+                'jenis_pekerjaan_id' => 6,
+                'status_kawin' => StatusKawinEnum::KAWIN,
+                'jenis_kelamin' => JenisKelaminEnum::LAKI,
+                'status_verifikasi' => StatusVerifikasiEnum::UNVERIFIED,
+                'status_family' => 1,
+            ]);
+        });
 
         $this->dehydrated(false);
     }
