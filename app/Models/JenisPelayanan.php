@@ -15,7 +15,6 @@ class JenisPelayanan extends Model
     protected $fillable = [
         'nama_ppks',
         'alias',
-        'deskripsi',
     ];
 
     public function kriteria_pelayanan(): BelongsToMany

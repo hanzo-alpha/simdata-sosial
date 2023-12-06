@@ -33,6 +33,7 @@ return new class extends Migration {
             $table->string('dir')->nullable();
             $table->string('gelombang')->nullable();
             $table->string('status_pkh')->nullable()->default('PKH');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

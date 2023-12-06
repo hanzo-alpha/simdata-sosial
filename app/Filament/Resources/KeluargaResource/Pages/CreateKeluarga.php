@@ -86,27 +86,27 @@ class CreateKeluarga extends CreateRecord
     protected function getSteps(): array
     {
         return [
-            Step::make('Penerima Manfaat')
+            Step::make('Infomasi Keluarga')
                 ->schema([
                     Section::make()->schema(KeluargaResource::getFormSchema())->columns(),
                 ]),
 
-            Step::make('Alamat Penerima')
+            Step::make('Informasi Alamat')
                 ->schema([
                     Section::make()->schema(KeluargaResource::getFormSchema('alamat')),
                 ]),
 
-            Step::make('Data Bantuan')
+            Step::make('Informasi Bantuan')
                 ->schema([
                     Section::make()->schema(KeluargaResource::getFormSchema('bantuan'))->columns(),
                 ]),
 
-            Step::make('Data Pendukung')
+            Step::make('Informasi Lainnya')
                 ->schema([
                     Section::make()->schema(KeluargaResource::getFormSchema('lainnya'))->columns(),
                 ]),
 
-            Step::make('Verifikasi')
+            Step::make('Verifikasi Data')
                 ->schema([
                     Section::make()->schema(KeluargaResource::getFormSchema('upload')),
                 ])

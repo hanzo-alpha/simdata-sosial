@@ -15,7 +15,6 @@ class KriteriaPelayanan extends Model
     protected $fillable = [
         'jenis_pelayanan_id',
         'nama_kriteria',
-        'deskripsi',
     ];
 
     public function jenisPelayanan(): BelongsTo

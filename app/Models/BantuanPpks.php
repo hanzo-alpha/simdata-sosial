@@ -2,34 +2,31 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use App\Enums\StatusAktif;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Traits\HasKeluarga;
+use App\Traits\HasTambahan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BantuanPpks extends Model
 {
-    use HasKeluarga;
+    use HasKeluarga, HasTambahan, SoftDeletes;
 
-    protected $fillable = [
-        'keluarga_id',
-        'jenis_ppks',
-        'jenis_pelayanan_id',
-        'jenis_bantuan_id',
-        'penghasilan_rata_rata',
-        'status_rumah_tinggal',
-        'status_kondisi_rumah',
-        'anggaran_id',
-        'status_bantuan',
-    ];
+    protected $table = 'bantuan_ppks';
+
+    protected $guarded = [];
 
     protected $casts = [
-        'jenis_ppks' => 'array',
+        'kriteria_pelayanan' => 'array',
         'status_rumah_tinggal' => StatusRumahEnum::class,
         'status_bantuan' => StatusAktif::class,
-        'status_kondisi_rumah' => StatusKondisiRumahEnum::class
+        'status_kondisi_rumah' => StatusKondisiRumahEnum::class,
+        'penghasilan_rata_rata' => MoneyCast::class
     ];
 
     public function jenis_pelayanan(): BelongsTo
@@ -37,9 +34,14 @@ class BantuanPpks extends Model
         return $this->belongsTo(JenisPelayanan::class);
     }
 
-    public function jenis_bantuan(): BelongsTo
+//    public function kriteria_pelayanan(): BelongsToMany
+//    {
+//        return $this->belongsToMany(KriteriaPelayanan::class, 'kriteria_jenis_pelayanan');
+//    }
+
+    public function alamat(): MorphOne
     {
-        return $this->belongsTo(JenisBantuan::class);
+        return $this->morphOne(AlamatKeluarga::class, 'alamatable');
     }
 
 

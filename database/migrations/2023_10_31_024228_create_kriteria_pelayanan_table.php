@@ -14,7 +14,6 @@ return new class extends Migration {
                 ->constrained('jenis_pelayanan')
                 ->cascadeOnUpdate();
             $table->string('nama_kriteria');
-            $table->string('deskripsi');
         });
     }
 

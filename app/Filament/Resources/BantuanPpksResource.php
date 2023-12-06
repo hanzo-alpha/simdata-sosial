@@ -2,23 +2,35 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JenisKelaminEnum;
+use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKondisiRumahEnum;
+use App\Enums\StatusRumahEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Resources\BantuanPpksResource\RelationManagers;
+use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
-use App\Models\KriteriaPelayanan;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanPpksResource extends Resource
 {
     protected static ?string $model = BantuanPpks::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-
+    protected static ?string $navigationIcon = 'heroicon-o-window';
     protected static ?string $slug = 'bantuan-ppks';
     protected static ?string $label = 'Bantuan PPKS';
     protected static ?string $pluralLabel = 'Bantuan PPKS';
@@ -29,44 +41,198 @@ class BantuanPpksResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('keluarga_id')
-                    ->relationship('keluarga', 'nama_lengkap')
-                    ->required(),
-                Forms\Components\Select::make('jenis_pelayanan_id')
-                    ->relationship('jenis_pelayanan', 'nama_ppks')
-                    ->required(),
-                Forms\Components\Select::make('jenis_bantuan_id')
-                    ->relationship('jenis_bantuan', 'nama_bantuan')
-                    ->default(4)
-                    ->required(),
-                TableRepeater::make('jenis_ppks')->schema([
-                    Forms\Components\Select::make('kriteria_ppks')
-                        ->options(KriteriaPelayanan::pluck('nama_kriteria', 'id'))
-                ]),
-                Forms\Components\TextInput::make('penghasilan_rata_rata')
-                    ->numeric(),
-                Forms\Components\Toggle::make('status_rumah_tinggal'),
-                Forms\Components\TextInput::make('status_kondisi_rumah')
-                    ->maxLength(50),
-                Forms\Components\Toggle::make('status_bantuan'),
-            ]);
+                Forms\Components\Group::make()->schema([
+                    Section::make('Data Keluarga')
+                        ->schema([
+                            TextInput::make('dtks_id')
+                                ->maxLength(36)
+                                ->hidden()
+                                ->dehydrated()
+                                ->default(\Str::uuid()->toString()),
+                            TextInput::make('nokk')
+                                ->label('No. Kartu Keluarga (KK)')
+                                ->required()
+                                ->maxLength(20),
+                            TextInput::make('nik')
+                                ->label('N I K')
+                                ->required()
+                                ->maxLength(20),
+                            TextInput::make('nama_lengkap')
+                                ->label('Nama Lengkap')
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('nama_ibu_kandung')
+                                ->label('Nama Ibu Kandung')
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('tempat_lahir')
+                                ->label('Tempat Lahir')
+                                ->required()
+                                ->maxLength(50),
+                            DatePicker::make('tgl_lahir')
+                                ->displayFormat('d/M/Y')
+                                ->label('Tgl. Lahir')
+                                ->required(),
+                            TextInput::make('notelp')
+                                ->label('No. Telp/WA')
+                                ->required()
+                                ->maxLength(18),
+
+                            Select::make('jenis_kelamin')
+                                ->options(JenisKelaminEnum::class)
+                                ->default(JenisKelaminEnum::LAKI),
+
+                            Select::make('jenis_pekerjaan_id')
+                                ->relationship('jenis_pekerjaan', 'nama_pekerjaan')
+                                ->searchable()
+                                ->optionsLimit(15)
+                                ->default(6)
+                                ->preload(),
+                            Select::make('pendidikan_terakhir_id')
+                                ->relationship('pendidikan_terakhir', 'nama_pendidikan')
+                                ->searchable()
+                                ->default(5)
+                                ->optionsLimit(15)
+                                ->preload(),
+                            Select::make('hubungan_keluarga_id')
+                                ->relationship('hubungan_keluarga', 'nama_hubungan')
+                                ->searchable()
+                                ->default(7)
+                                ->optionsLimit(15)
+                                ->preload(),
+                            TextInput::make('penghasilan_rata_rata')
+                                ->prefix('Rp. ')
+                                ->numeric(),
+                        ])->columns(2),
+
+                    Section::make('Jenis Pelayanan / PMKS')
+                        ->schema([
+                            Select::make('jenis_pelayanan_id')
+                                ->required()
+                                ->searchable(['nama_ppks', 'alias'])
+                                ->relationship('jenis_pelayanan', 'nama_ppks')
+                                ->preload()
+                                ->lazy()
+                                ->optionsLimit(5),
+                            TableRepeater::make('kriteria_pelayanan')
+                                ->schema([
+                                    TextInput::make('nama_kriteria')
+                                        ->hiddenLabel()
+                                ])
+                                ->collapsible()
+                        ])->columns(1),
+
+                    Section::make('Data Alamat')
+                        ->schema([
+                            AlamatForm::make('alamat')
+                        ]),
+                ])->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()->schema([
+                    Section::make('Status')
+                        ->schema([
+                            Select::make('jenis_bantuan_id')
+                                ->required()
+                                ->searchable()
+                                ->disabled()
+                                ->relationship(
+                                    name: 'jenis_bantuan',
+                                    titleAttribute: 'alias',
+                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                                )
+                                ->default(5)
+                                ->dehydrated(),
+
+                            Select::make('status_kawin')
+                                ->options(StatusKawinEnum::class)
+                                ->default(StatusKawinEnum::KAWIN)
+                                ->preload(),
+
+                            Select::make('status_verifikasi')
+                                ->label('Status Verifikasi')
+                                ->options(StatusVerifikasiEnum::class)
+                                ->default(StatusVerifikasiEnum::UNVERIFIED)
+                                ->preload(),
+
+                            Forms\Components\Select::make('status_rumah_tinggal')
+                                ->label('Status Rumah Tinggal')
+                                ->options(StatusRumahEnum::class)
+                                ->default(StatusRumahEnum::MILIK_SENDIRI)
+                                ->lazy()
+                                ->preload(),
+
+                            Forms\Components\Select::make('status_kondisi_rumah')
+                                ->label('Status Kondisi Rumah')
+                                ->options(StatusKondisiRumahEnum::class)
+                                ->default(StatusKondisiRumahEnum::BAIK)
+                                ->lazy()
+                                ->preload(),
+
+                            ToggleButton::make('status_aktif')
+                                ->label('Status Aktif')
+                                ->offColor('danger')
+                                ->onColor('primary')
+                                ->offLabel('Non Aktif')
+                                ->onLabel('Aktif')
+                                ->default(true),
+                        ]),
+                    Forms\Components\Section::make('Verifikasi')
+                        ->schema([
+                            Forms\Components\FileUpload::make('bukti_foto')
+                                ->label('Unggah Foto Rumah')
+                                ->getUploadedFileNameForStorageUsing(
+                                    fn(TemporaryUploadedFile $file
+                                    ): string => (string) str($file->getClientOriginalName())
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                )
+                                ->preserveFilenames()
+                                ->multiple()
+                                ->reorderable()
+                                ->appendFiles()
+                                ->openable()
+                                ->required()
+                                ->unique(ignoreRecord: true)
+                                ->helperText('maks. 2MB')
+                                ->maxFiles(3)
+                                ->maxSize(2048)
+                                ->columnSpanFull()
+                                ->imagePreviewHeight('250')
+                                ->previewable(false)
+                                ->image()
+                                ->imageEditor()
+                                ->imageEditorAspectRatios([
+                                    '16:9',
+                                    '4:3',
+                                    '1:1',
+                                ]),
+
+
+                        ])
+                ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('keluarga.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('nik')
+                    ->label('N I K')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jenis_pelayanan.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('nokk')
+                    ->label('No. KK')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jenis_bantuan.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('notelp')
+                    ->label('No.Telp/WA')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('anggaran_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
+                    ->label('Jenis Bantuan')
+                    ->badge()
+                    ->color(fn($record): string => $record->jenis_bantuan->warna)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
                     ->numeric()
@@ -77,21 +243,16 @@ class BantuanPpksResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status_bantuan')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -100,10 +261,28 @@ class BantuanPpksResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageBantuanPpks::route('/'),
+            'index' => Pages\ListBantuanPpks::route('/'),
+            'create' => Pages\CreateBantuanPpks::route('/create'),
+            'view' => Pages\ViewBantuanPpks::route('/{record}'),
+            'edit' => Pages\EditBantuanPpks::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

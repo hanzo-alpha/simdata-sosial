@@ -35,14 +35,20 @@ class JenisPelayananResource extends Resource
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('alias')
+                            ->nullable()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('deskripsi'),
                     ])
                 ]),
 
                 Forms\Components\Group::make()->schema([
                     \Awcodes\FilamentTableRepeater\Components\TableRepeater::make('kriteria_pelayanan')
                         ->relationship('kriteria_pelayanan')
+                        ->schema([
+                            Forms\Components\TextInput::make('nama_kriteria')
+                                ->required()
+                                ->hiddenLabel()
+                        ])
+                        ->defaultItems(1)
 //                    TableRepeater::make('kriteria_pelayanan')
 //                        ->relationship('kriteria_pelayanan')
 //                        ->defaultItems(1)
@@ -64,16 +70,18 @@ class JenisPelayananResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama_ppks')
                     ->label('Nama PPKS')
-                    ->description(fn($record) => Str::words($record->deskripsi, 5))
+                    ->description(fn($record) => Str::words($record->deskripsi, 9))
                     ->weight(FontWeight::SemiBold)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kriteria_pelayanan.nama_kriteria')
                     ->label('Kriteria')
                     ->badge()->wrap()
+                    ->color('success')
                     ->size('xs'),
                 Tables\Columns\TextColumn::make('alias')
                     ->badge()
+                    ->color('warning')
                     ->sortable()
                     ->searchable(),
             ])

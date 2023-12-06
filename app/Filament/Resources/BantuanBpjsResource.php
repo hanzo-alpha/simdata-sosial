@@ -2,22 +2,28 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusBpjsEnum;
+use App\Enums\StatusKawinEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
 use App\Filament\Resources\BantuanBpjsResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
-use App\Forms\Components\BantuanForm;
-use App\Forms\Components\FamilyForm;
 use App\Models\BantuanBpjs;
-use App\Models\JenisBantuan;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanBpjsResource extends Resource
 {
@@ -35,7 +41,71 @@ class BantuanBpjsResource extends Resource
         return $form
             ->schema([
                 Group::make()->schema([
-                    FamilyForm::make('family'),
+                    Section::make('Data Keluarga')
+                        ->schema([
+                            TextInput::make('dtks_id')
+                                ->maxLength(36)
+                                ->hidden()
+                                ->dehydrated()
+                                ->default(\Str::uuid()->toString()),
+                            TextInput::make('nokk')
+                                ->label('No. Kartu Keluarga (KK)')
+                                ->required()
+                                ->maxLength(20),
+                            TextInput::make('nik')
+                                ->label('N I K')
+                                ->required()
+                                ->maxLength(20),
+                            TextInput::make('nama_lengkap')
+                                ->label('Nama Lengkap')
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('nama_ibu_kandung')
+                                ->label('Nama Ibu Kandung')
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('tempat_lahir')
+                                ->label('Tempat Lahir')
+                                ->required()
+                                ->maxLength(50),
+                            DatePicker::make('tgl_lahir')
+                                ->displayFormat('d/M/Y')
+                                ->label('Tgl. Lahir')
+                                ->required(),
+                            TextInput::make('notelp')
+                                ->label('No. Telp/WA')
+                                ->required()
+                                ->maxLength(18),
+
+                            Select::make('jenis_kelamin')
+                                ->options(JenisKelaminEnum::class)
+                                ->default(JenisKelaminEnum::LAKI),
+
+                            Select::make('jenis_pekerjaan_id')
+                                ->relationship('jenis_pekerjaan', 'nama_pekerjaan')
+                                ->searchable()
+                                ->optionsLimit(15)
+                                ->default(6)
+                                ->preload(),
+                            Select::make('pendidikan_terakhir_id')
+                                ->relationship('pendidikan_terakhir', 'nama_pendidikan')
+                                ->searchable()
+                                ->default(5)
+                                ->optionsLimit(15)
+                                ->preload(),
+                            Select::make('hubungan_keluarga_id')
+                                ->relationship('hubungan_keluarga', 'nama_hubungan')
+                                ->searchable()
+                                ->default(7)
+                                ->optionsLimit(15)
+                                ->preload(),
+                            Select::make('status_kawin')
+                                ->options(StatusKawinEnum::class)
+                                ->default(StatusKawinEnum::KAWIN)
+                                ->preload(),
+
+
+                        ])->columns(2),
                     Section::make('Data Alamat')
                         ->schema([
                             AlamatForm::make('alamat')
@@ -43,6 +113,41 @@ class BantuanBpjsResource extends Resource
                 ])->columnSpan(['lg' => 2]),
 
                 Forms\Components\Group::make()->schema([
+                    Section::make('Status')
+                        ->schema([
+                            Select::make('jenis_bantuan_id')
+                                ->required()
+                                ->searchable()
+                                ->disabled()
+                                ->relationship(
+                                    name: 'jenis_bantuan',
+                                    titleAttribute: 'alias',
+                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                                )
+                                ->default(3)
+                                ->dehydrated(),
+
+                            Select::make('status_verifikasi')
+                                ->label('Status Verifikasi')
+                                ->options(StatusVerifikasiEnum::class)
+                                ->default(StatusVerifikasiEnum::UNVERIFIED)
+                                ->preload(),
+
+                            Forms\Components\Select::make('status_bpjs')
+                                ->label('Status BPJS')
+                                ->options(StatusBpjsEnum::class)
+                                ->default(StatusBpjsEnum::BARU)
+                                ->lazy()
+                                ->preload(),
+
+                            ToggleButton::make('status_aktif')
+                                ->label('Status Aktif')
+                                ->offColor('danger')
+                                ->onColor('primary')
+                                ->offLabel('Non Aktif')
+                                ->onLabel('Aktif')
+                                ->default(true),
+                        ]),
                     Forms\Components\Section::make('Verifikasi')
                         ->schema([
                             Forms\Components\FileUpload::make('bukti_foto')
@@ -72,14 +177,8 @@ class BantuanBpjsResource extends Resource
                                     '4:3',
                                     '1:1',
                                 ]),
-                            BantuanForm::make('bantuan'),
 
-                            Forms\Components\Select::make('status_bpjs')
-                                ->label('Status BPJS')
-                                ->options(StatusBpjsEnum::class)
-                                ->default(StatusBpjsEnum::BARU)
-                                ->lazy()
-                                ->preload(),
+
                         ])
                 ])->columnSpan(1),
             ])->columns(3);
@@ -89,20 +188,23 @@ class BantuanBpjsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('family.nama_lengkap')
-                    ->label('Nama Lengkap')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('family.nik')
+                Tables\Columns\TextColumn::make('nik')
                     ->label('N I K')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('family.notelp')
-                    ->label('No.Telp/WA')
+                Tables\Columns\TextColumn::make('nokk')
+                    ->label('No. KK')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bantuan.jenis_bantuan_id')
+                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('notelp')
+                    ->label('No.Telp/WA')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
                     ->label('Jenis Bantuan')
-                    ->formatStateUsing(fn($record) => JenisBantuan::find($record->bantuan->jenis_bantuan_id)?->alias)
-//                    ->listWithLineBreaks()
                     ->badge()
+                    ->color(fn($record): string => $record->jenis_bantuan->warna)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_bpjs')
                     ->label('Status BPJS')
@@ -140,5 +242,13 @@ class BantuanBpjsResource extends Resource
             'view' => Pages\ViewBantuanBpjs::route('/{record}'),
             'edit' => Pages\EditBantuanBpjs::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }
