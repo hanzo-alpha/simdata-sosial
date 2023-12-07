@@ -154,7 +154,9 @@ class BantuanPpksResource extends Resource
                                 ->label('Status Verifikasi')
                                 ->options(StatusVerifikasiEnum::class)
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
-                                ->preload(),
+                                ->preload()
+                                ->visible(fn() => auth()->user()?->hasRole(['super_admin', 'admin'])),
+
 
                             Forms\Components\Select::make('status_rumah_tinggal')
                                 ->label('Status Rumah Tinggal')

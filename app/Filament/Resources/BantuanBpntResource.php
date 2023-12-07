@@ -37,7 +37,7 @@ class BantuanBpntResource extends Resource
         return $form
             ->schema([
                 FileUpload::make('attachment')
-                    ->label('Impor')
+                    ->label('Unggah Data BPNT')
                     ->hiddenLabel()
                     ->columnSpanFull()
                     ->preserveFilenames()

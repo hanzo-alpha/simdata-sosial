@@ -131,7 +131,9 @@ class BantuanRastraResource extends Resource
                                 ->label('Status Verifikasi')
                                 ->options(StatusVerifikasiEnum::class)
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
-                                ->preload(),
+                                ->preload()
+                                ->visible(fn() => auth()->user()?->hasRole(['super_admin', 'admin'])),
+
 
                             Forms\Components\Select::make('status_rastra')
                                 ->label('Status Rastra')

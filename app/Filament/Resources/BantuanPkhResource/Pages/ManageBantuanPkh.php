@@ -18,11 +18,11 @@ class ManageBantuanPkh extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Impor Data')
-                ->modalHeading('Impor Data Bantuan PKH')
+                ->label('Unggah Data')
+                ->modalHeading('Unggah Data Bantuan PKH')
                 ->createAnother(false)
-                ->modalDescription('Impor data PKH ke database dari file excel')
-                ->modalSubmitActionLabel('Import')
+                ->modalDescription('Unggah data PKH ke database dari file excel')
+                ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-down-tray')
                 ->mutateFormDataUsing(function ($data) {
                     $import = Excel::import(new ImportBantuanPkh, $data['attachment'], 'public');
@@ -35,6 +35,7 @@ class ManageBantuanPkh extends ManageRecords
                 })
                 ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)
+                ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.bantuan-pkh.index'))
                 ->modalWidth('lg'),
         ];

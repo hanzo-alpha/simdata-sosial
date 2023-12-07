@@ -42,4 +42,16 @@ class BantuanBpjs extends Model
     {
         return $this->belongsToMany(Bantuan::class, 'jenis_bantuan');
     }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (BantuanBpjs $bantuanBpjs) {
+//            Family::create([
+//                'dtks_id' => $bantuanBpjs
+//            ]);
+        });
+    }
 }

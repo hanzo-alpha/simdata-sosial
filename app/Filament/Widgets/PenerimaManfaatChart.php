@@ -115,9 +115,6 @@ class PenerimaManfaatChart extends ApexChartWidget
             // Move to the previous month
             $currentDate->subMonth();
         }
-//        ksort($results);
-//
-//        dd($results);
 
         return [
             'chart' => [

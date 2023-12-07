@@ -18,11 +18,11 @@ class ManageBantuanBpnt extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Impor Data')
-                ->modalHeading('Impor Data Bantuan BPNT')
+                ->label('Unggah Data')
+                ->modalHeading('Unggah Data Bantuan BPNT')
                 ->createAnother(false)
-                ->modalDescription('Impor data BPNT ke database dari file excel')
-                ->modalSubmitActionLabel('Import')
+                ->modalDescription('Unggah data BPNT ke database dari file excel')
+                ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-down-tray')
                 ->mutateFormDataUsing(function ($data) {
                     $import = Excel::import(new ImportBantuanBpnt, $data['attachment'], 'public');
@@ -35,6 +35,7 @@ class ManageBantuanBpnt extends ManageRecords
                 })
                 ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)
+                ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.bantuan-bpnt.index'))
                 ->modalWidth('lg'),
         ];
