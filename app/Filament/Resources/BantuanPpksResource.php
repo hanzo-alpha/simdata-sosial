@@ -119,6 +119,8 @@ class BantuanPpksResource extends Resource
                                     TextInput::make('nama_kriteria')
                                         ->hiddenLabel()
                                 ])
+                                ->reorderable()
+                                ->cloneable()
                                 ->collapsible()
                         ])->columns(1),
 

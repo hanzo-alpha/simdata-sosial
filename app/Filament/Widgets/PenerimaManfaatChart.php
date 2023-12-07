@@ -3,8 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\StatusVerifikasiEnum;
-use App\Models\Keluarga;
+use App\Models\BantuanBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
@@ -24,10 +25,10 @@ class PenerimaManfaatChart extends ApexChartWidget
      *
      * @var string|null
      */
-    protected static ?string $heading = 'Penerima Manfaat Statistik';
+    protected static ?string $heading = 'Penerima Manfaat Bantuan BPJS';
     protected static ?string $pollingInterval = null;
     protected static bool $deferLoading = true;
-    public ?string $filter = 'today';
+    public ?string $filter = null;
     protected int|string|array $columnSpan = 'full';
 
     protected function getFilters(): ?array
@@ -83,19 +84,40 @@ class PenerimaManfaatChart extends ApexChartWidget
 //        $dateStart = $this->filterFormData['date_start'];
 //        $dateEnd = $this->filterFormData['date_end'];
 
-        $keluarga = Keluarga::query()
-            ->when($activeFilter, function (Builder $query) use ($activeFilter) {
-                $filter = match ($activeFilter) {
-                    'today' => now(),
-                    'week' => now()->subWeek(),
-                    'month' => now()->subMonth(),
-                    'year' => now()->subYear()
-                };
+        $currentDate = Carbon::now();
 
-                return $query->where('created_at', $filter);
-            })
-            ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
-            ->get();
+        $results = [];
+
+        for ($i = 0; $i < 12; $i++) {
+            // Get the first and last day of the month
+            $firstDayOfMonth = $currentDate->copy()->startOfMonth()->toDateTimeString();
+            $lastDayOfMonth = $currentDate->copy()->endOfMonth()->toDateTimeString();
+
+            // Query the database
+            $sales = BantuanBpjs::query()
+//                ->whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
+                ->when($activeFilter, function (Builder $query) use ($currentDate, $activeFilter) {
+                    $filter = match ($activeFilter) {
+                        'today' => Carbon::now(),
+                        'week' => now()->subWeek(),
+                        'month' => now()->subMonth(),
+                        'year' => now()->subYear()
+                    };
+
+                    return $query->where('created_at', $filter);
+                })
+                ->where('status_verifikasi', '=', StatusVerifikasiEnum::UNVERIFIED)
+                ->count();
+
+            // Save the result
+            $results[$currentDate->locale(config('app.locale'))->format('M')] = $sales;
+
+            // Move to the previous month
+            $currentDate->subMonth();
+        }
+//        ksort($results);
+//
+//        dd($results);
 
         return [
             'chart' => [
@@ -104,12 +126,12 @@ class PenerimaManfaatChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => 'Keluarga Chart',
-                    'data' => [7, 10, 13, 15, 18, 20, 24, 30, 35, 38, 40, 41],
+                    'name' => 'Total Bantuan BPJS',
+                    'data' => array_values($results),
                 ],
             ],
             'xaxis' => [
-                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Nov', 'Des'],
+                'categories' => array_keys($results),
                 'labels' => [
                     'style' => [
                         'fontFamily' => 'inherit',
