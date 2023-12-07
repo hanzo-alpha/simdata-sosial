@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources\FamilyResource\Pages;
 
+use App\Exports\ExportKeluarga;
 use App\Filament\Resources\FamilyResource;
 use Filament\Actions;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
+use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ListFamilies extends ListRecords
 {
@@ -16,6 +20,11 @@ class ListFamilies extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            ExportAction::make()->label('Ekspor XLS')
+                ->color('success')
+                ->exports([
+                    ExportKeluarga::make()
+                ]),
             Actions\CreateAction::make(),
         ];
     }
@@ -25,5 +34,10 @@ class ListFamilies extends ListRecords
         return [
             FamilyResource\Widgets\FamilyOverview::class,
         ];
+    }
+
+    protected function paginateTableQuery(Builder $query): Paginator
+    {
+        return $query->fastPaginate($this->getTableRecordsPerPage());
     }
 }

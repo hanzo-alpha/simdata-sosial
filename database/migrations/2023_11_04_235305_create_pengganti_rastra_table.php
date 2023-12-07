@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('pengganti_rastras', static function (Blueprint $table) {
+        Schema::create('pengganti_rastra', static function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Keluarga::class)->constrained('keluarga')->cascadeOnUpdate();
             $table->string('nokk_pengganti', 20);

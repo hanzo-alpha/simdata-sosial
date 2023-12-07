@@ -3,9 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
+use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
 use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
+use App\Exports\ExportBantuanBpjs;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
 use App\Filament\Resources\BantuanBpjsResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
@@ -17,12 +19,19 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanBpjsResource extends Resource
@@ -213,8 +222,22 @@ class BantuanBpjsResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('jenis_bantuan_id')
+                    ->label('Jenis Bantuan')
+                    ->relationship('jenis_bantuan', 'alias')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('status_verifikasi')
+                    ->label('Status Verifikasi')
+                    ->options(StatusVerifikasiEnum::class)
+                    ->searchable(),
+                SelectFilter::make('status_bpjs')
+                    ->label('Status Bpjs')
+                    ->options(StatusBpjsEnum::class)
+                    ->searchable(),
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -225,8 +248,160 @@ class BantuanBpjsResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->label('Ekspor Ke Excel')
+                        ->exports([
+                            ExportBantuanBpjs::make()
+                        ]),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                \Filament\Infolists\Components\Section::make('Informasi Keluarga')
+                    ->schema([
+                        TextEntry::make('dtks_id')
+                            ->label('DTKS ID')
+                            ->weight(FontWeight::SemiBold)
+                            ->copyable()
+                            ->icon('heroicon-o-identification')
+                            ->color('primary'),
+                        TextEntry::make('nokk')
+                            ->label('No. Kartu Keluarga (KK)')
+                            ->weight(FontWeight::SemiBold)
+                            ->copyable()
+                            ->icon('heroicon-o-identification')
+                            ->color('primary'),
+                        TextEntry::make('nik')
+                            ->label('No. Induk Kependudukan (NIK)')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-identification')
+                            ->copyable()
+                            ->color('primary'),
+                        TextEntry::make('nama_lengkap')
+                            ->label('Nama Lengkap')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-user')
+                            ->color('primary'),
+                        TextEntry::make('notelp')
+                            ->label('No. Telp/WA')
+                            ->icon('heroicon-o-device-phone-mobile')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('tempat_lahir')
+                            ->label('Tempat Lahir')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-home')
+                            ->color('primary'),
+                        TextEntry::make('tgl_lahir')
+                            ->label('Tanggal Lahir')
+                            ->date('d F Y')
+                            ->icon('heroicon-o-calendar')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('alamat.alamat')
+                            ->label('Alamat')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                    ])->columns(3),
+
+                \Filament\Infolists\Components\Section::make('Informasi Alamat')
+                    ->schema([
+                        Grid::make(1)
+                            ->schema([
+                                TextEntry::make('alamat.alamat_lengkap')
+                                    ->label('Alamat')
+                                    ->icon('heroicon-o-map-pin')
+                                    ->weight(FontWeight::SemiBold)
+                                    ->color('primary'),
+                            ]),
+                        Grid::make(4)
+                            ->schema([
+                                TextEntry::make('alamat.kec.name')
+                                    ->label('Kecamatan'),
+                                TextEntry::make('alamat.kel.name')
+                                    ->label('Kelurahan'),
+                                TextEntry::make('alamat.latitude')
+                                    ->label('Latitude')
+                                    ->state('-'),
+                                TextEntry::make('alamat.longitude')
+                                    ->label('Longitude')
+                                    ->state('-'),
+                            ]),
+                    ])->columns(3),
+
+                \Filament\Infolists\Components\Section::make('Informasi Bantuan')
+                    ->schema([
+                        TextEntry::make('jenis_bantuan.nama_bantuan')
+                            ->label('Jenis Bantuan')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('jenis_pekerjaan.nama_pekerjaan')
+                            ->label('Jenis Pekerjaan')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('pendidikan_terakhir.nama_pendidikan')
+                            ->label('Pendidikan Terakhir')
+                            ->icon('heroicon-o-academic-cap')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('hubungan_keluarga.nama_hubungan')
+                            ->label('Hubungan Keluarga')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('nama_ibu_kandung')
+                            ->label('Nama Ibu Kandung')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('jenis_kelamin')
+                            ->label('Jenis Kelamin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('status_kawin')
+                                    ->label('Status Kawin')
+                                    ->badge(),
+                                TextEntry::make('status_verifikasi')
+                                    ->label('Verifikasi Berkas/Foto')
+                                    ->badge(),
+                                TextEntry::make('status_bpjs')
+                                    ->label('Status BPJS')
+                                    ->badge(),
+                            ]),
+                    ])
+                    ->columns(3),
+
+                \Filament\Infolists\Components\Section::make('Foto Rumah')
+                    ->schema([
+                        ImageEntry::make('bukti_foto')
+                            ->hiddenLabel()
+                            ->visibility('private')
+                            ->columnSpanFull()
+                            ->extraImgAttributes([
+                                'alt' => 'foto rumah',
+                                'loading' => 'lazy'
+                            ])
+                            ->limit(3)
+                            ->limitedRemainingText()
+                    ])->columns(3)
+
+            ]);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->with(['nama_lengkap', 'dtks_id', 'nik', 'nokk']);
     }
 
     public static function getRelations(): array

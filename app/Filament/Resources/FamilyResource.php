@@ -3,8 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
+use App\Enums\StatusAktif;
 use App\Enums\StatusKawinEnum;
 use App\Enums\StatusVerifikasiEnum;
+use App\Exports\ExportKeluarga;
 use App\Filament\Resources\FamilyResource\Pages;
 use App\Filament\Resources\FamilyResource\RelationManagers;
 use App\Filament\Resources\FamilyResource\Widgets\FamilyOverview;
@@ -13,18 +15,33 @@ use App\Forms\Components\BantuanForm;
 use App\Models\Family;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class FamilyResource extends Resource
 {
     protected static ?string $model = Family::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?string $slug = 'family';
+    protected static ?string $label = 'Keluarga';
+    protected static ?string $pluralLabel = 'Keluarga';
+
+
+//    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -206,8 +223,28 @@ class FamilyResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
-            ])
+//                Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('jenis_bantuan_id')
+                    ->label('Jenis Bantuan')
+                    ->relationship('jenis_bantuan', 'alias')
+                    ->preload()
+                    ->searchable(),
+                SelectFilter::make('status_kawin')
+                    ->label('Status Kawin')
+                    ->options(StatusKawinEnum::class)
+                    ->searchable(),
+                SelectFilter::make('status_verifikasi')
+                    ->label('Status Verifikasi')
+                    ->options(StatusVerifikasiEnum::class)
+                    ->searchable(),
+                SelectFilter::make('status_keluarga')
+                    ->label('Status Aktif')
+                    ->options(StatusAktif::class)
+                    ->searchable(),
+
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -220,8 +257,159 @@ class FamilyResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->label('Ekspor Ke Excel')
+                        ->exports([
+                            ExportKeluarga::make()
+                        ]),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Informasi Keluarga')
+                    ->schema([
+                        TextEntry::make('dtks_id')
+                            ->label('DTKS ID')
+                            ->weight(FontWeight::SemiBold)
+                            ->copyable()
+                            ->icon('heroicon-o-identification')
+                            ->color('primary'),
+                        TextEntry::make('nokk')
+                            ->label('No. Kartu Keluarga (KK)')
+                            ->weight(FontWeight::SemiBold)
+                            ->copyable()
+                            ->icon('heroicon-o-identification')
+                            ->color('primary'),
+                        TextEntry::make('nik')
+                            ->label('No. Induk Kependudukan (NIK)')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-identification')
+                            ->copyable()
+                            ->color('primary'),
+                        TextEntry::make('nama_lengkap')
+                            ->label('Nama Lengkap')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-user')
+                            ->color('primary'),
+                        TextEntry::make('notelp')
+                            ->label('No. Telp/WA')
+                            ->icon('heroicon-o-device-phone-mobile')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('tempat_lahir')
+                            ->label('Tempat Lahir')
+                            ->weight(FontWeight::SemiBold)
+                            ->icon('heroicon-o-home')
+                            ->color('primary'),
+                        TextEntry::make('tgl_lahir')
+                            ->label('Tanggal Lahir')
+                            ->date('d F Y')
+                            ->icon('heroicon-o-calendar')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('alamat_penerima')
+                            ->label('Alamat')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                    ])->columns(3),
+
+                Section::make('Informasi Alamat')
+                    ->schema([
+                        Grid::make(1)
+                            ->schema([
+                                TextEntry::make('alamat_lengkap_penerima')
+                                    ->label('Alamat')
+                                    ->icon('heroicon-o-map-pin')
+                                    ->weight(FontWeight::SemiBold)
+                                    ->color('primary'),
+                            ]),
+                        Grid::make(4)
+                            ->schema([
+                                TextEntry::make('kec.name')
+                                    ->label('Kecamatan'),
+                                TextEntry::make('kel.name')
+                                    ->label('Kelurahan'),
+                                TextEntry::make('latitude')
+                                    ->label('Latitude'),
+                                TextEntry::make('longitude')
+                                    ->label('Longitude'),
+                            ]),
+                    ])->columns(3),
+
+                Section::make('Informasi Bantuan')
+                    ->schema([
+                        TextEntry::make('jenis_bantuan.nama_bantuan')
+                            ->label('Jenis Bantuan')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('jenis_pekerjaan.nama_pekerjaan')
+                            ->label('Jenis Pekerjaan')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('pendidikan_terakhir.nama_pendidikan')
+                            ->label('Pendidikan Terakhir')
+                            ->icon('heroicon-o-academic-cap')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('hubungan_keluarga.nama_hubungan')
+                            ->label('Hubungan Keluarga')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('nama_ibu_kandung')
+                            ->label('Nama Ibu Kandung')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('jenis_kelamin')
+                            ->label('Jenis Kelamin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('status_kawin')
+                                    ->label('Status Kawin')
+                                    ->badge(),
+                                TextEntry::make('status_verifikasi')
+                                    ->label('Verifikasi Berkas/Foto')
+                                    ->badge(),
+                                TextEntry::make('status_keluarga')
+                                    ->label('Status Aktif')
+                                    ->badge(),
+                            ]),
+                    ])
+                    ->columns(3),
+
+                Section::make('Foto Rumah')
+                    ->schema([
+                        ImageEntry::make('unggah_foto')
+                            ->hiddenLabel()
+                            ->visibility('private')
+                            ->columnSpanFull()
+                            ->extraImgAttributes([
+                                'alt' => 'foto rumah',
+                                'loading' => 'lazy'
+                            ])
+                            ->limit(3)
+                            ->limitedRemainingText()
+                    ])->columns(3)
+
+            ]);
+    }
+
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status_family', StatusAktif::AKTIF)->count();
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->with(['alamat', 'jenis_bantuan']);
     }
 
     public static function getEloquentQuery(): Builder

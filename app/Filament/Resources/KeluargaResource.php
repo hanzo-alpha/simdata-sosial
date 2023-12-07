@@ -46,6 +46,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     protected static ?string $slug = 'keluarga';
     protected static ?string $label = 'Keluarga';
     protected static ?string $pluralLabel = 'Keluarga';
+    protected static bool $shouldRegisterNavigation = false;
 
 //    protected static ?string $navigationGroup = 'Master';
 
