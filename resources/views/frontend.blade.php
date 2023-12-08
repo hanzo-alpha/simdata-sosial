@@ -47,7 +47,7 @@
             @if (Route::has('filament.admin.auth.login'))
                 <div class="hidden lg:flex items-center ms-3">
                     @auth
-                        <a href="{{ url('/app') }}"
+                        <a href="{{ route('filament.admin.pages.dashboard') }}"
                            class="bg-primary text-white px-4 py-2 rounded inline-flex items-center
                            text-sm">Dashboard</a>
                     @else
