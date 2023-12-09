@@ -564,7 +564,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->afterStateUpdated(function (Forms\Get $get, Select $component) {
                         $component->getContainer()
                             ->getComponent('typeFields')
-                            ->getChildComponentContainer()
+                            ?->getChildComponentContainer()
                             ->fill();
                     })->key('typeFields')
                     ->live()

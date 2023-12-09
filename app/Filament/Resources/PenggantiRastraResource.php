@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
 use App\Filament\Resources\PenggantiRastraResource\Pages;
+use App\Models\Keluarga;
 use App\Models\PenggantiRastra;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -29,15 +30,16 @@ class PenggantiRastraResource extends Resource
         return $form
             ->schema([
                 Select::make('keluarga_id')
-                    ->relationship('keluarga', 'nik')
+                    ->relationship('bantuan_rastra', 'nama_lengkap')
+                    ->label('Penerima Manfaat Rastra')
                     ->searchable()
                     ->native(false)
-//                    ->preload()
-//                    ->getSearchResultsUsing(fn(string $search): array => Keluarga::where('nama_lengkap', 'like',
-//                        "%{$search}%")
-//                        ->orWhere('nik', 'like', "%{$search}%")
-//                        ->orWhere('nokk', 'like', "%{$search}%")
-//                        ->limit(50)->pluck('nik', 'id')->toArray())
+                    ->preload()
+                    ->getSearchResultsUsing(fn(string $search): array => Keluarga::where('nama_lengkap', 'like',
+                        "%{$search}%")
+                        ->orWhere('nik', 'like', "%{$search}%")
+                        ->orWhere('nokk', 'like', "%{$search}%")
+                        ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(function ($record) {
                         return '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap;
                     })->allowHtml()
@@ -75,26 +77,26 @@ class PenggantiRastraResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('keluarga.nik')
-                    ->searchable()
-                    ->sortable()
-                    ->description(fn($record) => $record->keluarga->nokk)
-                    ->label('NIK & NO. KK Lama'),
-                Tables\Columns\TextColumn::make('keluarga.nama_lengkap')
-                    ->searchable()
-                    ->sortable()
-//                    ->description(fn($record) => $record->keluarga->alamat->alamat)
-                    ->label('Nama & Alamat Lama'),
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
                     ->sortable()
                     ->description(fn($record) => $record->nokk_pengganti)
-                    ->label('NIK & No. KK Baru'),
+                    ->label('NIK & NO. KK Baru'),
                 Tables\Columns\TextColumn::make('nama_pengganti')
                     ->searchable()
                     ->sortable()
-//                    ->description(fn($record) => $record->alamat_pengganti)
-                    ->label('Nama & Alamat Baru'),
+                    ->description(fn($record) => $record->alamat_pengganti)
+                    ->label('NAMA & ALAMAT BARU'),
+                Tables\Columns\TextColumn::make('nik_lama')
+                    ->searchable()
+                    ->sortable()
+                    ->description(fn($record) => $record->nokk_lama)
+                    ->label('NIK & NO.KK Lama'),
+                Tables\Columns\TextColumn::make('nama_lama')
+                    ->searchable()
+                    ->sortable()
+                    ->description(fn($record) => $record->alamat_lama)
+                    ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')
                     ->badge()
