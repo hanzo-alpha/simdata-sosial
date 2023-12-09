@@ -11,8 +11,8 @@ enum AlasanEnum: string implements HasLabel, HasColor, HasIcon
 
     case PINDAH = 'PINDAH';
     case MENINGGAL = 'MENINGGAL';
-    case GANDA = 'DATA GANDA';
-    case MAMPU = 'SUDAH MAMPU';
+    case GANDA = 'GANDA';
+    case MAMPU = 'MAMPU';
 
     public function getLabel(): ?string
     {

@@ -5,37 +5,31 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusKawinEnum: int implements HasLabel, HasColor
+enum StatusKawinBpjsEnum: int implements HasLabel, HasColor
 {
     case KAWIN = 1;
-    case BELUMKAWIN = 2;
-    case CERAI_HIDUP = 3;
-    case CERAI_MATI = 4;
-    case JANDA = 5;
-    case DUDA = 6;
+    case BELUM_KAWIN = 2;
+    case JANDA = 3;
+    case DUDA = 4;
 
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::KAWIN => 'KAWIN',
-            self::BELUMKAWIN => 'BELUM KAWIN',
-            self::CERAI_HIDUP => 'CERAI HIDUP',
-            self::CERAI_MATI => 'CERAI MATI',
-            self::JANDA => 'JANDA',
-            self::DUDA => 'DUDA',
+            self::KAWIN => 'Kawin',
+            self::BELUM_KAWIN => 'Belum Kawin',
+            self::JANDA => 'Janda',
+            self::DUDA => 'Duda',
         };
     }
 
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::KAWIN => 'success',
-            self::BELUMKAWIN => 'warning',
-            self::CERAI_HIDUP => 'secondary',
-            self::CERAI_MATI => 'danger',
-            self::JANDA => 'info',
-            self::DUDA => 'primary',
+            self::KAWIN => 'primary',
+            self::BELUM_KAWIN => 'danger',
+            self::JANDA => 'warning',
+            self::DUDA => 'info',
         };
     }
 

@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\FamilyResource\Pages;
@@ -14,6 +14,7 @@ use App\Forms\Components\AlamatForm;
 use App\Forms\Components\BantuanForm;
 use App\Models\Family;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\ImageEntry;
@@ -99,7 +100,18 @@ class FamilyResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Data Pendukung')
                         ->schema([
-                            BantuanForm::make('bantuan'),
+//                            BantuanForm::make('bantuan'),
+                            Select::make('jenis_bantuan_id')
+                                ->required()
+                                ->searchable()
+                                ->disabled()
+                                ->relationship(
+                                    name: 'jenis_bantuan',
+                                    titleAttribute: 'alias',
+                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                                )
+                                ->default(3)
+                                ->dehydrated(),
                             Forms\Components\Select::make('jenis_pekerjaan_id')
                                 ->relationship('jenis_pekerjaan', 'nama_pekerjaan')
                                 ->searchable()
@@ -123,8 +135,8 @@ class FamilyResource extends Resource
                         ->schema([
                             Forms\Components\Select::make('status_kawin')
                                 ->label('Status Kawin')
-                                ->options(StatusKawinEnum::class)
-                                ->default(StatusKawinEnum::KAWIN)
+                                ->options(StatusKawinBpjsEnum::class)
+                                ->default(StatusKawinBpjsEnum::KAWIN)
                                 ->preload(),
 
                             Forms\Components\Select::make('status_verifikasi')
@@ -231,7 +243,7 @@ class FamilyResource extends Resource
                     ->searchable(),
                 SelectFilter::make('status_kawin')
                     ->label('Status Kawin')
-                    ->options(StatusKawinEnum::class)
+                    ->options(StatusKawinBpjsEnum::class)
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')

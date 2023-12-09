@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
@@ -184,7 +184,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->searchable(),
                 SelectFilter::make('status_kawin')
                     ->label('Status Kawin')
-                    ->options(StatusKawinEnum::class)
+                    ->options(StatusKawinBpjsEnum::class)
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')
@@ -412,8 +412,8 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->maxLength(255),
                 Forms\Components\Select::make('status_kawin')
                     ->searchable()
-                    ->options(StatusKawinEnum::class)
-                    ->default(StatusKawinEnum::KAWIN),
+                    ->options(StatusKawinBpjsEnum::class)
+                    ->default(StatusKawinBpjsEnum::KAWIN),
                 Forms\Components\Select::make('jenis_kelamin')
                     ->options(JenisKelaminEnum::class)
                     ->default(JenisKelaminEnum::LAKI),

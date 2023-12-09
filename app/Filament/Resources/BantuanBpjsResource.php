@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
+use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanBpjs;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
 use App\Filament\Resources\BantuanBpjsResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
+use App\Forms\Components\FamilyForm;
 use App\Models\BantuanBpjs;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
@@ -19,6 +23,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -104,16 +109,16 @@ class BantuanBpjsResource extends Resource
                             Select::make('hubungan_keluarga_id')
                                 ->relationship('hubungan_keluarga', 'nama_hubungan')
                                 ->searchable()
-                                ->default(7)
+                                ->default(1)
                                 ->optionsLimit(15)
                                 ->preload(),
                             Select::make('status_kawin')
-                                ->options(StatusKawinEnum::class)
-                                ->default(StatusKawinEnum::KAWIN)
+                                ->options(StatusKawinBpjsEnum::class)
+                                ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
                                 ->preload(),
 
-
                         ])->columns(2),
+//                    FamilyForm::make('family'),
                     Section::make('Data Alamat')
                         ->schema([
                             AlamatForm::make('alamat')
@@ -145,51 +150,78 @@ class BantuanBpjsResource extends Resource
 
                             Forms\Components\Select::make('status_bpjs')
                                 ->label('Status BPJS')
+                                ->enum(StatusBpjsEnum::class)
                                 ->options(StatusBpjsEnum::class)
-                                ->default(StatusBpjsEnum::BARU)
-                                ->lazy()
+                                ->default(StatusBpjsEnum::PENGAKTIFAN)
+                                ->live()
                                 ->preload(),
+
+                            Select::make('mutasi.keluarga_id')
+                                ->label('Keluarga Yang Diganti')
+                                ->required()
+                                ->options(BantuanBpjs::query()->where('status_bpjs',
+                                    StatusBpjsEnum::PENGAKTIFAN)->pluck('nama_lengkap', 'id'))
+                                ->searchable(['nama_lengkap', 'nik', 'nokk'])
+//                                ->getOptionLabelFromRecordUsing(function ($record) {
+//                                    return '<strong>' . $record->family->nama_lengkap . '</strong><br>' . $record->nik;
+//                                })->allowHtml()
+                                ->optionsLimit(15)
+                                ->lazy()
+                                ->visible(fn(Get $get) => $get('status_bpjs') === StatusBpjsEnum::MUTASI)
+                                ->preload(),
+
+                            Select::make('mutasi.alasan_dimutasi')
+                                ->searchable()
+                                ->options(AlasanEnum::class)
+                                ->enum(AlasanEnum::class)
+                                ->native(false)
+                                ->preload()
+                                ->lazy()
+                                ->required()
+                                ->visible(fn(Get $get) => $get('status_bpjs') === StatusBpjsEnum::MUTASI)
+                                ->default(AlasanEnum::PINDAH)
+                                ->optionsLimit(15),
 
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
-                                ->offColor('danger')
-                                ->onColor('primary')
-                                ->offLabel('Non Aktif')
-                                ->onLabel('Aktif')
-                                ->default(true),
+                                ->offColor(StatusAktif::NONAKTIF->getColor())
+                                ->onColor(StatusAktif::AKTIF->getColor())
+                                ->offLabel(StatusAktif::NONAKTIF->getLabel())
+                                ->onLabel(StatusAktif::AKTIF->getLabel())
+                                ->default(0),
                         ]),
-                    Forms\Components\Section::make('Verifikasi')
-                        ->schema([
-                            Forms\Components\FileUpload::make('bukti_foto')
-                                ->label('Unggah Foto Rumah')
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn(TemporaryUploadedFile $file
-                                    ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                                )
-                                ->preserveFilenames()
-                                ->multiple()
-                                ->reorderable()
-                                ->appendFiles()
-                                ->openable()
-                                ->required()
-                                ->unique(ignoreRecord: true)
-                                ->helperText('maks. 2MB')
-                                ->maxFiles(3)
-                                ->maxSize(2048)
-                                ->columnSpanFull()
-                                ->imagePreviewHeight('250')
-                                ->previewable(false)
-                                ->image()
-                                ->imageEditor()
-                                ->imageEditorAspectRatios([
-                                    '16:9',
-                                    '4:3',
-                                    '1:1',
-                                ]),
-
-
-                        ])
+//                    Forms\Components\Section::make('Verifikasi')
+//                        ->schema([
+//                            Forms\Components\FileUpload::make('bukti_foto')
+//                                ->label('Unggah Foto Rumah')
+//                                ->getUploadedFileNameForStorageUsing(
+//                                    fn(TemporaryUploadedFile $file
+//                                    ): string => (string) str($file->getClientOriginalName())
+//                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+//                                )
+//                                ->preserveFilenames()
+//                                ->multiple()
+//                                ->reorderable()
+//                                ->appendFiles()
+//                                ->openable()
+//                                ->required()
+//                                ->unique(ignoreRecord: true)
+//                                ->helperText('maks. 2MB')
+//                                ->maxFiles(3)
+//                                ->maxSize(2048)
+//                                ->columnSpanFull()
+//                                ->imagePreviewHeight('250')
+//                                ->previewable(false)
+//                                ->image()
+//                                ->imageEditor()
+//                                ->imageEditorAspectRatios([
+//                                    '16:9',
+//                                    '4:3',
+//                                    '1:1',
+//                                ]),
+//
+//
+//                        ])
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -218,6 +250,9 @@ class BantuanBpjsResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_bpjs')
                     ->label('Status BPJS')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_aktif')
+                    ->label('Status Aktif')
                     ->badge(),
             ])
             ->filters([
@@ -298,7 +333,13 @@ class BantuanBpjsResource extends Resource
                                 ->color('primary'),
                             TextEntry::make('tgl_lahir')
                                 ->label('Tanggal Lahir')
-                                ->date('d F Y')
+                                ->formatStateUsing(function ($record) {
+                                    $tglLahir = Carbon::parse($record->tgl_lahir);
+                                    $umur = hitung_umur($tglLahir);
+
+                                    $tgl = $tglLahir->format('d F Y');
+                                    return $tgl . ' (' . $umur . ' tahun)';
+                                })
                                 ->icon('heroicon-o-calendar')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
@@ -311,7 +352,7 @@ class BantuanBpjsResource extends Resource
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
                         ->schema([
                             TextEntry::make('alamat.alamat_lengkap')
-                                ->label('Alamat')
+                                ->label('Alamat Lengkap')
                                 ->columnSpanFull()
                                 ->icon('heroicon-o-map-pin')
                                 ->weight(FontWeight::SemiBold)
@@ -330,16 +371,16 @@ class BantuanBpjsResource extends Resource
                 ])->columnSpan(2),
 
                 \Filament\Infolists\Components\Group::make([
-                    \Filament\Infolists\Components\Section::make('Foto Rumah')
-                        ->schema([
-                            ImageEntry::make('bukti_foto')
-                                ->hiddenLabel()
-                                ->visibility('private')
-                                ->extraImgAttributes([
-                                    'alt' => 'foto rumah',
-                                    'loading' => 'lazy'
-                                ])
-                        ])->columns(3),
+//                    \Filament\Infolists\Components\Section::make('Foto Rumah')
+//                        ->schema([
+//                            ImageEntry::make('bukti_foto')
+//                                ->hiddenLabel()
+//                                ->visibility('private')
+//                                ->extraImgAttributes([
+//                                    'alt' => 'foto rumah',
+//                                    'loading' => 'lazy'
+//                                ])
+//                        ])->columns(3),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->schema([
@@ -353,7 +394,7 @@ class BantuanBpjsResource extends Resource
                                 ->color('primary'),
                             TextEntry::make('pendidikan_terakhir.nama_pendidikan')
                                 ->label('Pendidikan Terakhir')
-                                ->icon('heroicon-o-academic-cap')
+//                                ->icon('heroicon-o-academic-cap')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
                             TextEntry::make('hubungan_keluarga.nama_hubungan')
@@ -367,7 +408,7 @@ class BantuanBpjsResource extends Resource
                             TextEntry::make('jenis_kelamin')
                                 ->label('Jenis Kelamin')
                                 ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
+                                ->badge(),
                             TextEntry::make('status_kawin')
                                 ->label('Status Kawin')
                                 ->badge(),
@@ -375,6 +416,9 @@ class BantuanBpjsResource extends Resource
                                 ->label('Verifikasi Berkas/Foto')
                                 ->badge(),
                             TextEntry::make('status_bpjs')
+                                ->label('Status BPJS')
+                                ->badge(),
+                            TextEntry::make('status_aktif')
                                 ->label('Status Aktif')
                                 ->badge(),
                         ])

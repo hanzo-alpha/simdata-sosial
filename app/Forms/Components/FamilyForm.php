@@ -3,7 +3,7 @@
 namespace App\Forms\Components;
 
 use App\Enums\JenisKelaminEnum;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusVerifikasiEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Field;
@@ -101,27 +101,13 @@ class FamilyForm extends Field
                     Select::make('hubungan_keluarga_id')
                         ->relationship('hubungan_keluarga', 'nama_hubungan')
                         ->searchable()
-                        ->default(7)
+                        ->default(1)
                         ->optionsLimit(15)
                         ->preload(),
                     Select::make('status_kawin')
-                        ->options(StatusKawinEnum::class)
-                        ->default(StatusKawinEnum::KAWIN)
+                        ->options(StatusKawinBpjsEnum::class)
+                        ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
                         ->preload(),
-
-                    Select::make('status_verifikasi')
-                        ->label('Status Verifikasi')
-                        ->options(StatusVerifikasiEnum::class)
-                        ->default(StatusVerifikasiEnum::UNVERIFIED)
-                        ->preload(),
-
-                    ToggleButton::make('status_family')
-                        ->label('Status Aktif')
-                        ->offColor('danger')
-                        ->onColor('primary')
-                        ->offLabel('Non Aktif')
-                        ->onLabel('Aktif')
-                        ->default(true),
                 ])->columns(2),
         ];
     }
@@ -152,7 +138,7 @@ class FamilyForm extends Field
                 'pendidikan_terakhir_id' => 5,
                 'hubungan_keluarga_id' => 7,
                 'jenis_pekerjaan_id' => 6,
-                'status_kawin' => StatusKawinEnum::KAWIN,
+                'status_kawin' => StatusKawinBpjsEnum::KAWIN,
                 'jenis_kelamin' => JenisKelaminEnum::LAKI,
                 'status_verifikasi' => StatusVerifikasiEnum::UNVERIFIED,
                 'status_family' => 1,

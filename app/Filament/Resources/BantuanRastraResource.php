@@ -9,7 +9,9 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Resources\BantuanRastraResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
+use App\Forms\Components\FamilyForm;
 use App\Models\BantuanRastra;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -44,6 +46,7 @@ class BantuanRastraResource extends Resource
                 Group::make()->schema([
                     Section::make('Data Keluarga')
                         ->schema(BantuanRastra::getKeluargaForm())->columns(2),
+//                    FamilyForm::make('family'),
                     Section::make('Data Alamat')
                         ->schema([
                             AlamatForm::make('alamat')
@@ -182,7 +185,14 @@ class BantuanRastraResource extends Resource
                                 ->color('primary'),
                             TextEntry::make('tgl_lahir')
                                 ->label('Tanggal Lahir')
-                                ->date('d F Y')
+//                                ->date('d F Y')
+                                ->formatStateUsing(function ($record) {
+                                    $tglLahir = Carbon::parse($record->tgl_lahir);
+                                    $umur = hitung_umur($tglLahir);
+
+                                    $tgl = $tglLahir->format('d F Y');
+                                    return $tgl . ' (' . $umur . ' tahun)';
+                                })
                                 ->icon('heroicon-o-calendar')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),

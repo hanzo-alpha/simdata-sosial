@@ -48,6 +48,7 @@ return new class extends Migration {
                 ->default(0);
             $table->json('bukti_foto')->nullable();
             $table->tinyInteger('status_rastra')->nullable();
+            $table->json('pengganti_rastra')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

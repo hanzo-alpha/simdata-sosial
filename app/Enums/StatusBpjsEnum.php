@@ -8,35 +8,31 @@ use Filament\Support\Contracts\HasLabel;
 
 enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
 {
-    case BARU = 'BARU';
     case PENGAKTIFAN = 'PENGAKTIFAN';
-    case PENGALIHAN = 'PENGALIHAN';
+    case MUTASI = 'MUTASI';
 
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::BARU => 'BARU',
             self::PENGAKTIFAN => 'PENGAKTIFAN',
-            self::PENGALIHAN => 'PENGALIHAN',
+            self::MUTASI => 'MUTASI',
         };
     }
 
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::BARU => 'success',
-            self::PENGAKTIFAN => 'info',
-            self::PENGALIHAN => 'danger',
+            self::PENGAKTIFAN => 'success',
+            self::MUTASI => 'danger',
         };
     }
 
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::BARU => 'heroicon-o-user-plus',
-            self::PENGAKTIFAN => 'heroicon-o-user',
-            self::PENGALIHAN => 'heroicon-o-user-minus',
+            self::PENGAKTIFAN => 'heroicon-o-user-plus',
+            self::MUTASI => 'heroicon-o-user-minus',
         };
     }
 }

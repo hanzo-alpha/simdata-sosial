@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
@@ -59,7 +59,7 @@ class Keluarga extends Model
 
     protected $casts = [
         'tgl_lahir' => 'datetime',
-        'status_kawin' => StatusKawinEnum::class,
+        'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_keluarga' => StatusAktif::class,
         'status_verifikasi' => StatusVerifikasiEnum::class,

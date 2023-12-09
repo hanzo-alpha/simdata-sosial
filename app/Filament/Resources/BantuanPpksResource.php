@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
@@ -166,8 +166,8 @@ class BantuanPpksResource extends Resource
                                 ->optionsLimit(5),
 
                             Select::make('status_kawin')
-                                ->options(StatusKawinEnum::class)
-                                ->default(StatusKawinEnum::KAWIN)
+                                ->options(StatusKawinBpjsEnum::class)
+                                ->default(StatusKawinBpjsEnum::KAWIN)
                                 ->preload(),
 
                             Select::make('status_verifikasi')

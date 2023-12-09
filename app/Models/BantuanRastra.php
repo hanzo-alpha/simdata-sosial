@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasKeluarga;
@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -39,11 +40,21 @@ class BantuanRastra extends Model
         'dtks_id' => 'string',
         'bukti_foto' => 'array',
         'pengganti_rastra' => 'array',
-        'status_kawin' => StatusKawinEnum::class,
+        'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rastra' => StatusRastra::class,
         'status_aktif' => StatusAktif::class
     ];
+
+    public function family(): MorphOne
+    {
+        return $this->morphOne(Family::class, 'familyable');
+    }
+
+    public function familyable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 
     public function alamat(): MorphOne
     {
@@ -135,8 +146,8 @@ class BantuanRastra extends Model
                 ->optionsLimit(15)
                 ->preload(),
             Select::make('status_kawin')
-                ->options(StatusKawinEnum::class)
-                ->default(StatusKawinEnum::KAWIN)
+                ->options(StatusKawinBpjsEnum::class)
+                ->default(StatusKawinBpjsEnum::KAWIN)
                 ->preload(),
         ];
     }
@@ -173,12 +184,12 @@ class BantuanRastra extends Model
 
             Select::make('pengganti_rastra.keluarga_id')
                 ->label('Keluarga Yang Diganti')
-                ->searchable(['nama_lengkap', 'nik', 'nokk'])
                 ->required()
-                ->options(self::where('status_rastra', StatusRastra::BARU)->pluck('nama_lengkap', 'id'))
-                ->getOptionLabelFromRecordUsing(function ($record) {
-                    return '<strong>' . $record->nama_lengkap . '</strong><br>' . $record->nik;
-                })->allowHtml()
+                ->options(self::query()->where('status_rastra', StatusRastra::BARU)->pluck('nama_lengkap', 'id'))
+                ->searchable(['nama_lengkap', 'nik', 'nokk'])
+//                ->getOptionLabelFromRecordUsing(function ($record) {
+//                    return '<strong>' . $record->family->nama_lengkap . '</strong><br>' . $record->nik;
+//                })->allowHtml()
                 ->optionsLimit(15)
                 ->lazy()
                 ->visible(fn(Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)

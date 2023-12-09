@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Traits\HasKeluarga;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
@@ -27,8 +27,9 @@ class BantuanBpjs extends Model
 
     protected $casts = [
         'dkts_id' => 'string',
-        'bukti_foto' => 'array',
-        'status_kawin' => StatusKawinEnum::class,
+//        'bukti_foto' => 'array',
+        'mutasi' => 'array',
+        'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_bpjs' => StatusBpjsEnum::class,
         'status_aktif' => StatusAktif::class
@@ -47,17 +48,5 @@ class BantuanBpjs extends Model
     public function bantuan_bpjs(): BelongsToMany
     {
         return $this->belongsToMany(Bantuan::class, 'jenis_bantuan');
-    }
-
-    /**
-     * The "booted" method of the model.
-     */
-    protected static function booted(): void
-    {
-        static::created(function (BantuanBpjs $bantuanBpjs) {
-//            Family::create([
-//                'dtks_id' => $bantuanBpjs
-//            ]);
-        });
     }
 }

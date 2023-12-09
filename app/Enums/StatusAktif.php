@@ -5,6 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use phpDocumentor\Reflection\Types\Boolean;
 
 enum StatusAktif: int implements HasLabel, HasColor, HasIcon
 {
@@ -24,7 +25,7 @@ enum StatusAktif: int implements HasLabel, HasColor, HasIcon
     {
         return match ($this) {
             self::AKTIF => 'success',
-            self::NONAKTIF => 'info',
+            self::NONAKTIF => 'danger',
         };
     }
 

@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Casts\MoneyCast;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Traits\HasKeluarga;
@@ -28,7 +28,7 @@ class BantuanPpks extends Model
 
     protected $casts = [
         'kriteria_pelayanan' => 'array',
-        'status_kawin' => StatusKawinEnum::class,
+        'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rumah_tinggal' => StatusRumahEnum::class,
         'status_bantuan' => StatusAktif::class,

@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->dateTime('tgl_lahir');
             $table->string('notelp', 18);
             $table->string('nama_ibu_kandung');
+            $table->string('nomor_kartu', 20)->nullable();
             $table->foreignIdFor(JenisBantuan::class)
                 ->nullable()
                 ->constrained('jenis_bantuan')
@@ -48,6 +49,7 @@ return new class extends Migration {
                 ->default(0);
             $table->json('bukti_foto')->nullable();
             $table->string('status_bpjs', 20)->nullable();
+            $table->json('mutasi')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

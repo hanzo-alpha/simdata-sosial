@@ -2,15 +2,19 @@
 
 namespace App\Forms\Components;
 
+use App\Enums\AlasanEnum;
+use App\Enums\StatusRastra;
+use App\Models\Family;
 use App\Models\JenisBantuan;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class BantuanForm extends Field
+class BantuanRastraForm extends Field
 {
     public ?string $relationship = null;
 
@@ -43,31 +47,40 @@ class BantuanForm extends Field
     public function getChildComponents(): array
     {
         return [
-            Select::make('jenis_bantuan_id')
+            Select::make('status_rastra')
+                ->label('Status Rastra')
+                ->enum(StatusRastra::class)
+                ->options(StatusRastra::class)
+                ->default(StatusRastra::BARU)
+                ->live()
+                ->preload(),
+
+            Select::make('pengganti_rastra.keluarga_id')
+                ->label('Keluarga Yang Diganti')
                 ->required()
-                ->searchable()
-                ->relationship(
-                    name: 'jenis_bantuan',
-                    titleAttribute: 'alias',
-                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
-                )
-//                                ->getOptionLabelFromRecordUsing(function ($record) {
-//                                    return '<strong>' . $record->alias . '</strong><br>' . $record->nama_bantuan;
-//                                })->allowHtml()
-                ->preload()
-                ->default(3)
+//                ->relationship('bantuan_rastra.family','nama_lengkap')
+                ->options(Family::query()->pluck('nama_lengkap', 'id'))
+                ->searchable(['nama_lengkap', 'nik', 'nokk'])
+//                ->options(self::where('status_rastra', StatusRastra::BARU)->pluck('nama_lengkap', 'id'))
+//                ->getOptionLabelFromRecordUsing(function ($record) {
+//                    return '<strong>' . $record->family->nama_lengkap . '</strong><br>' . $record->nik;
+//                })->allowHtml()
+                ->optionsLimit(15)
                 ->lazy()
-                ->live(true)
-//                ->afterStateUpdated(
-//                    fn(Set $set, JenisBantuan $bantuan, $state) => $set(
-//                        'nama_bantuan', $bantuan->find($state)->alias
-//                    )
-//                )
+                ->visible(fn(Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
+                ->preload(),
+
+            Select::make('pengganti_rastra.alasan_dikeluarkan')
+                ->searchable()
+                ->options(AlasanEnum::class)
+                ->enum(AlasanEnum::class)
                 ->native(false)
-                ->optionsLimit(20),
-            TextInput::make('nama_bantuan')
-                ->hidden()
-                ->dehydrated()
+                ->preload()
+                ->lazy()
+                ->required()
+                ->visible(fn(Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
+                ->default(AlasanEnum::PINDAH)
+                ->optionsLimit(15),
         ];
     }
 
@@ -82,7 +95,7 @@ class BantuanForm extends Field
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (BantuanForm $component, ?Model $record) {
+        $this->afterStateHydrated(function (BantuanRastraForm $component, ?Model $record) {
             $bantuan = $record?->getRelationValue($this->getRelationship());
 
             $component->state($bantuan ? $bantuan->toArray() : [

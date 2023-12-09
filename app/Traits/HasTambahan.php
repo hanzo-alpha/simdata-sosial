@@ -12,21 +12,21 @@ trait HasTambahan
 {
     public function jenis_bantuan(): BelongsTo
     {
-        return $this->belongsTo(JenisBantuan::class);
+        return $this->belongsTo(JenisBantuan::class)->orderBy('id');
     }
 
     public function pendidikan_terakhir(): BelongsTo
     {
-        return $this->belongsTo(PendidikanTerakhir::class);
+        return $this->belongsTo(PendidikanTerakhir::class)->orderBy('id');
     }
 
     public function hubungan_keluarga(): BelongsTo
     {
-        return $this->belongsTo(HubunganKeluarga::class);
+        return $this->belongsTo(HubunganKeluarga::class)->orderBy('id');
     }
 
     public function jenis_pekerjaan(): BelongsTo
     {
-        return $this->belongsTo(JenisPekerjaan::class);
+        return $this->belongsTo(JenisPekerjaan::class)->orderBy('id');
     }
 }

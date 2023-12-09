@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Family extends Model
@@ -22,7 +24,7 @@ class Family extends Model
 
     protected $casts = [
         'tgl_lahir' => 'datetime',
-        'status_kawin' => StatusKawinEnum::class,
+        'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_family' => StatusAktif::class,
         'status_verifikasi' => StatusVerifikasiEnum::class,
@@ -35,10 +37,10 @@ class Family extends Model
         return $this->morphOne(AlamatKeluarga::class, 'alamatable');
     }
 //
-//    public function bantuan_bpjs(): MorphTo
-//    {
-//        return $this->morphTo();
-//    }
+    public function bantuanRastra(): MorphTo
+    {
+        return $this->morphTo();
+    }
 
     public function bantuan(): MorphOne
     {
