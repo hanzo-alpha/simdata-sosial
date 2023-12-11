@@ -72,8 +72,9 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
             ->where('name', \Str::ucfirst($row['kelurahan']))
             ->first()?->code;
 
-//        $tgl = Carbon::parse($row['tgl_lahir']);
-//        dd($row, $tgl);
+//        $tgllahir = trim($row['tgl_lahir']);
+//        $tgl = Carbon::create($tgllahir)->format('Y-m-d');
+//        dd($row, $tgllahir);
 
 
         return new DataUsulanAktifTmt([
@@ -81,7 +82,7 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
             'nik_tmt' => $row['nik'] ?? 'TIDAK ADA NIK',
             'nama_lengkap' => $row['nama_lengkap_tmt'] ?? 'TIDAK ADA NAMA',
             'tempat_lahir' => $row['tempat_lahir'] ?? 'TIDAK ADA',
-            'tgl_lahir' => now()->format('Y-m-d'),
+            'tgl_lahir' => $row['tgl_lahir'] ?? now()->format('Y-m-d'),
             'jenis_kelamin' => $row['jenis_kelamin'],
             'status_nikah' => $row['status_nikah'],
             'alamat' => $row['alamat_tempat_tinggal'],
@@ -91,9 +92,9 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
             'kecamatan' => $kecamatan ?? $row['kecamatan'],
             'kelurahan' => $kelurahan ?? $row['kelurahan'],
             'status_aktif' => StatusAktif::AKTIF,
-            'status_bpjs' => null,
+            'status_bpjs' => $row['status_aktif'],
             'status_usulan' => null,
-            'keterangan' => $row['status_aktif'],
+            'keterangan' => null,
             'bulan' => 10,
             'tahun' => now()->year
         ]);
@@ -112,11 +113,9 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
     public function rules(): array
     {
         return [
-            'no_kk' => Rule::unique('usulan_pengaktifan_tmt', 'nokk_tmt'),
             'nik' => Rule::unique('usulan_pengaktifan_tmt', 'nik_tmt'),
 
             // Above is alias for as it always validates in batches
-            '*.no_kk' => Rule::unique('usulan_pengaktifan_tmt', 'nokk_tmt'),
             '*.nik' => Rule::unique('usulan_pengaktifan_tmt', 'nik_tmt'),
 
             // Can also use callback validation rules

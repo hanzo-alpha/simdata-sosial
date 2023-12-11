@@ -97,7 +97,7 @@ class UsulanPengaktifanTmtResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
                     ->label('Tempat Lahir')
-//                    ->description(fn($record) => $record->tgl_lahir->format('d/M/Y'))
+                    ->description(fn($record) => $record->tgl_lahir->format('d/M/Y'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tgl_lahir')
@@ -123,8 +123,9 @@ class UsulanPengaktifanTmtResource extends Resource
                         $rw = $record['norw'];
                         $dusun = $record['dusun'];
                         $kodepos = $record['kodepos'];
-
-                        return $dusun . ' ' . $rt . '/' . $rw . ' ' . $kodepos;
+                        $kec = $record->kec?->name;
+                        $kel = $record->kel?->name;
+                        return $dusun . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kec.kecamatan')
@@ -137,6 +138,8 @@ class UsulanPengaktifanTmtResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('bulan')
+                    ->date('M'),
                 Tables\Columns\TextColumn::make('dusun')
                     ->label('Dusun')
                     ->sortable()
