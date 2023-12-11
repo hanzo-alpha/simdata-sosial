@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Filament\Resources\BantuanPkhResource\Pages;
+namespace App\Filament\Resources\DataPesertaJamkesdaResource\Pages;
 
-use App\Filament\Resources\BantuanPkhResource;
-use App\Imports\ImportBantuanPkh;
+use App\Filament\Resources\DataPesertaJamkesdaResource;
+use App\Imports\ImportPesertaJamkesda;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ManageBantuanPkh extends ManageRecords
+class ManageDataPesertaJamkesda extends ManageRecords
 {
-    protected static string $resource = BantuanPkhResource::class;
+    protected static string $resource = DataPesertaJamkesdaResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
                 ->label('Unggah Data')
-                ->modalHeading('Unggah Data Bantuan PKH')
                 ->createAnother(false)
-                ->modalDescription('Unggah data PKH ke database dari file excel')
+                ->modalHeading('Unggah Data Peserta JAMKESDA')
+                ->modalDescription('Unggah Peserta JAMKESDA ke database')
                 ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-down-tray')
-                ->mutateFormDataUsing(function ($data) {
-                    $import = Excel::import(new ImportBantuanPkh, $data['attachment'], 'public');
+                ->action(function (array $data): void {
+                    $import = Excel::import(new ImportPesertaJamkesda, $data['attachment'], 'public');
                     if ($import) {
                         Notification::make()
-                            ->title('Data PKH Berhasil di impor')
+                            ->title('Usulan Peserta JAMKESDA Berhasil di impor')
                             ->success()
                             ->sendToDatabase(auth()->user());
                     }
@@ -36,7 +36,7 @@ class ManageBantuanPkh extends ManageRecords
                 ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->successRedirectUrl(route('filament.admin.resources.bantuan-pkh.index'))
+                ->successRedirectUrl(route('filament.admin.resources.peserta-jamkesda.index'))
                 ->modalWidth('lg'),
         ];
     }

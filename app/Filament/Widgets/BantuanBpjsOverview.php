@@ -56,7 +56,7 @@ class BantuanBpjsOverview extends BaseWidget
                 value: BantuanBpjs::query()
                     ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
                     ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
-                    ->where('status_bpjs', StatusBpjsEnum::MUTASI)
+                    ->where('status_bpjs', StatusBpjsEnum::PENGALIHAN)
                     ->count())
 //                ->description('3% increase')
 //                ->descriptionIcon('heroicon-m-arrow-trending-up')

@@ -32,13 +32,13 @@ class BantuanRastra extends Model
     use HasKeluarga, HasTambahan, HasWilayah;
     use SoftDeletes;
 
-    public $timestamps = false;
     protected $table = 'bantuan_rastra';
     protected $guarded = [];
 
     protected $casts = [
         'dtks_id' => 'string',
         'bukti_foto' => 'array',
+        'attachments' => 'array',
         'pengganti_rastra' => 'array',
         'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
@@ -185,7 +185,9 @@ class BantuanRastra extends Model
             Select::make('pengganti_rastra.keluarga_id')
                 ->label('Keluarga Yang Diganti')
                 ->required()
-                ->options(self::query()->where('status_rastra', StatusRastra::BARU)->pluck('nama_lengkap', 'id'))
+                ->options(self::query()
+                    ->where('status_rastra', StatusRastra::BARU)
+                    ->pluck('nama_lengkap', 'id'))
                 ->searchable(['nama_lengkap', 'nik', 'nokk'])
 //                ->getOptionLabelFromRecordUsing(function ($record) {
 //                    return '<strong>' . $record->family->nama_lengkap . '</strong><br>' . $record->nik;
@@ -222,6 +224,28 @@ class BantuanRastra extends Model
         return [
             FileUpload::make('bukti_foto')
                 ->label('Unggah Foto Rumah')
+                ->getUploadedFileNameForStorageUsing(
+                    fn(TemporaryUploadedFile $file
+                    ): string => (string) str($file->getClientOriginalName())
+                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                )
+                ->preserveFilenames()
+                ->multiple()
+                ->reorderable()
+                ->appendFiles()
+                ->openable()
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->helperText('maks. 2MB')
+                ->maxFiles(3)
+                ->maxSize(2048)
+                ->columnSpanFull()
+                ->imagePreviewHeight('250')
+                ->previewable(false)
+                ->image(),
+
+            FileUpload::make('bukti_file')
+                ->label('Unggah File')
                 ->getUploadedFileNameForStorageUsing(
                     fn(TemporaryUploadedFile $file
                     ): string => (string) str($file->getClientOriginalName())

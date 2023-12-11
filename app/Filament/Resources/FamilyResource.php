@@ -11,7 +11,6 @@ use App\Filament\Resources\FamilyResource\Pages;
 use App\Filament\Resources\FamilyResource\RelationManagers;
 use App\Filament\Resources\FamilyResource\Widgets\FamilyOverview;
 use App\Forms\Components\AlamatForm;
-use App\Forms\Components\BantuanForm;
 use App\Models\Family;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -42,7 +41,7 @@ class FamilyResource extends Resource
     protected static ?string $pluralLabel = 'Keluarga';
 
 
-//    protected static bool $shouldRegisterNavigation = false;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

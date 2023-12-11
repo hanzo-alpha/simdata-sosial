@@ -9,7 +9,6 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Resources\BantuanRastraResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
-use App\Forms\Components\FamilyForm;
 use App\Models\BantuanRastra;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -83,6 +82,7 @@ class BantuanRastraResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat.alamat_lengkap')
                     ->label('Alamat')
+                    ->words(5)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('notelp')

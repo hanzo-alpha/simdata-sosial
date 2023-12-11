@@ -250,16 +250,30 @@ class BantuanPpksResource extends Resource
                 Tables\Columns\TextColumn::make('jenis_bantuan.alias')
                     ->label('Jenis Bantuan')
                     ->badge()
+                    ->alignCenter()
                     ->color(fn($record): string => $record->jenis_bantuan->warna)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
+                    ->alignCenter()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('status_rumah_tinggal')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('status_rumah_tinggal')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('status_kondisi_rumah')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('status_bantuan')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge(),
+                Tables\Columns\IconColumn::make('status_aktif')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable()
+                    ->alignCenter()
                     ->boolean(),
             ])
             ->filters([

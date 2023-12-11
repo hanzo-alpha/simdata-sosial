@@ -22,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::preventSilentlyDiscardingAttributes($this->app->isLocal());
+        Model::preventLazyLoading($this->app->isLocal());
+
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
 

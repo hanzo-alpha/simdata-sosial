@@ -6,33 +6,33 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusAktif: int implements HasLabel, HasColor, HasIcon
+enum StatusUsulanEnum: string implements HasLabel, HasColor, HasIcon
 {
-    case AKTIF = 1;
-    case NONAKTIF = 0;
+    case BERHASIL = 'BERHASIL';
+    case GAGAL = 'GAGAL';
 
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::AKTIF => 'AKTIF',
-            self::NONAKTIF => 'NON AKTIF',
+            self::BERHASIL => 'BERHASIL',
+            self::GAGAL => 'GAGAL',
         };
     }
 
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::AKTIF => 'success',
-            self::NONAKTIF => 'danger',
+            self::BERHASIL => 'success',
+            self::GAGAL => 'danger',
         };
     }
 
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::AKTIF => 'heroicon-o-check-circle',
-            self::NONAKTIF => 'heroicon-o-minus-circle',
+            self::BERHASIL => 'heroicon-o-check-circle',
+            self::GAGAL => 'heroicon-o-minus-circle',
         };
     }
 }
