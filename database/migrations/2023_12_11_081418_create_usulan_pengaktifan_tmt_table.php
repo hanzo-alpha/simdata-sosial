@@ -26,6 +26,8 @@ return new class extends Migration {
             $table->boolean('status_aktif')->nullable();
             $table->string('status_usulan')->nullable();
             $table->string('status_bpjs')->nullable();
+            $table->string('bulan', 10)->nullable();
+            $table->unsignedInteger('tahun')->default(now()->year)->nullable();
             $table->string('keterangan')->nullable();
             $table->softDeletes();
             $table->timestamps();

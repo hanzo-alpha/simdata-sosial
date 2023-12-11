@@ -44,6 +44,7 @@ class BantuanPpksResource extends Resource
     protected static ?string $pluralLabel = 'Bantuan PPKS';
     protected static ?string $navigationLabel = 'Bantuan PPKS';
     protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {

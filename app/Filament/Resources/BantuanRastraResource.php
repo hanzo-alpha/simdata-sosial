@@ -37,6 +37,7 @@ class BantuanRastraResource extends Resource
     protected static ?string $label = 'Bantuan Rastra';
     protected static ?string $pluralLabel = 'Bantuan Rastra';
     protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

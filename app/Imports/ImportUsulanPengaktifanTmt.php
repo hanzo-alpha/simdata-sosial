@@ -3,10 +3,12 @@
 namespace App\Imports;
 
 use App\Enums\StatusAktif;
+use App\Enums\StatusUsulanEnum;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\UsulanPengaktifanTmt as DataUsulanAktifTmt;
 use Filament\Notifications\Notification;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -21,7 +23,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Events\ImportFailed;
 
 class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, ShouldQueue,
-    SkipsEmptyRows, WithUpserts, WithValidation
+    SkipsEmptyRows
 {
 
     public function registerEvents(): array
@@ -72,31 +74,26 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
             ->where('name', \Str::ucfirst($row['kelurahan']))
             ->first()?->code;
 
-//        $tgllahir = trim($row['tgl_lahir']);
-//        $tgl = Carbon::create($tgllahir)->format('Y-m-d');
-//        dd($row, $tgllahir);
-
-
         return new DataUsulanAktifTmt([
             'nokk_tmt' => $row['no_kk'] ?? 'TIDAK ADA NOMOR KK',
             'nik_tmt' => $row['nik'] ?? 'TIDAK ADA NIK',
-            'nama_lengkap' => $row['nama_lengkap_tmt'] ?? 'TIDAK ADA NAMA',
+            'nama_lengkap' => $row['nama_lengkap'] ?? 'TIDAK ADA NAMA',
             'tempat_lahir' => $row['tempat_lahir'] ?? 'TIDAK ADA',
-            'tgl_lahir' => $row['tgl_lahir'] ?? now()->format('Y-m-d'),
-            'jenis_kelamin' => $row['jenis_kelamin'],
-            'status_nikah' => $row['status_nikah'],
-            'alamat' => $row['alamat_tempat_tinggal'],
-            'nort' => $row['rt'],
-            'norw' => $row['rw'],
+            'tgl_lahir' => now()->format('Y-m-d'),
+            'jenis_kelamin' => $row['jenis_kelamin'] ?? 1,
+            'status_nikah' => $row['status_nikah'] ?? 1,
+            'alamat' => $row['alamat_tempat_tinggal'] ?? '-',
+            'nort' => $row['rt'] ?? '001',
+            'norw' => $row['rw'] ?? '002',
             'kodepos' => $row['kode_pos'],
             'kecamatan' => $kecamatan ?? $row['kecamatan'],
             'kelurahan' => $kelurahan ?? $row['kelurahan'],
             'status_aktif' => StatusAktif::AKTIF,
-            'status_bpjs' => $row['status_aktif'],
-            'status_usulan' => null,
-            'keterangan' => null,
-            'bulan' => 10,
-            'tahun' => now()->year
+            'status_bpjs' => $row['status_aktif'] ?? StatusAktif::AKTIF,
+            'status_usulan' => StatusUsulanEnum::ONPROGRESS,
+            'keterangan' => $row['keterangan'],
+            'bulan' => $row['periode_bulan'] ?? now()->month,
+            'tahun' => $row['tahun'] ?? now()->year
         ]);
     }
 
@@ -110,25 +107,25 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
         return 500;
     }
 
-    public function rules(): array
-    {
-        return [
-            'nik' => Rule::unique('usulan_pengaktifan_tmt', 'nik_tmt'),
-
-            // Above is alias for as it always validates in batches
-            '*.nik' => Rule::unique('usulan_pengaktifan_tmt', 'nik_tmt'),
-
-            // Can also use callback validation rules
-//            '0' => function ($attribute, $value, $onFailure) {
-//                if ($value !== 'Patrick Brouwers') {
-//                    $onFailure('Name is not Patrick Brouwers');
-//                }
-//            }
-        ];
-    }
-
-    public function uniqueBy()
-    {
-        return 'nik_tmt';
-    }
+//    public function rules(): array
+//    {
+//        return [
+//            'nik' => Rule::unique('usulan_pengaktifan_tmt', 'nik_tmt'),
+//
+//            // Above is alias for as it always validates in batches
+//            '*.nik' => Rule::unique('usulan_pengaktifan_tmt', 'nik_tmt'),
+//
+//            // Can also use callback validation rules
+////            '0' => function ($attribute, $value, $onFailure) {
+////                if ($value !== 'Patrick Brouwers') {
+////                    $onFailure('Name is not Patrick Brouwers');
+////                }
+////            }
+//        ];
+//    }
+//
+//    public function uniqueBy(): string
+//    {
+//        return 'nik_tmt';
+//    }
 }

@@ -48,6 +48,7 @@ class BantuanBpjsResource extends Resource
     protected static ?string $pluralLabel = 'Bantuan BPJS';
     protected static ?string $navigationLabel = 'Bantuan BPJS';
     protected static ?string $navigationGroup = 'Bantuan';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -167,7 +168,7 @@ class BantuanBpjsResource extends Resource
 //                                })->allowHtml()
                                 ->optionsLimit(15)
                                 ->lazy()
-                                ->visible(fn(Get $get) => $get('status_bpjs') === StatusBpjsEnum::MUTASI)
+                                ->visible(fn(Get $get) => $get('status_bpjs') === StatusBpjsEnum::PENGAKTIFAN)
                                 ->preload(),
 
                             Select::make('mutasi.alasan_dimutasi')
@@ -178,7 +179,7 @@ class BantuanBpjsResource extends Resource
                                 ->preload()
                                 ->lazy()
                                 ->required()
-                                ->visible(fn(Get $get) => $get('status_bpjs') === StatusBpjsEnum::MUTASI)
+                                ->visible(fn(Get $get) => $get('status_bpjs') === StatusBpjsEnum::PENGAKTIFAN)
                                 ->default(AlasanEnum::PINDAH)
                                 ->optionsLimit(15),
 

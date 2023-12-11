@@ -31,6 +31,8 @@ class BantuanBpntResource extends Resource
     protected static ?string $navigationLabel = 'Bantuan BPNT';
     protected static ?string $navigationGroup = 'Bantuan';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form

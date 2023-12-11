@@ -11,6 +11,7 @@ use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use LaracraftTech\LaravelDateScopes\DateScopes;
 
 class UsulanPengaktifanTmt extends Model
 {

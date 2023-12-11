@@ -10,6 +10,7 @@ enum StatusUsulanEnum: string implements HasLabel, HasColor, HasIcon
 {
     case BERHASIL = 'BERHASIL';
     case GAGAL = 'GAGAL';
+    case ONPROGRESS = 'SEDANG PROSES';
 
 
     public function getLabel(): ?string
@@ -17,6 +18,7 @@ enum StatusUsulanEnum: string implements HasLabel, HasColor, HasIcon
         return match ($this) {
             self::BERHASIL => 'BERHASIL',
             self::GAGAL => 'GAGAL',
+            self::ONPROGRESS => 'SEDANG PROSES',
         };
     }
 
@@ -25,6 +27,7 @@ enum StatusUsulanEnum: string implements HasLabel, HasColor, HasIcon
         return match ($this) {
             self::BERHASIL => 'success',
             self::GAGAL => 'danger',
+            self::ONPROGRESS => 'info',
         };
     }
 
@@ -33,6 +36,7 @@ enum StatusUsulanEnum: string implements HasLabel, HasColor, HasIcon
         return match ($this) {
             self::BERHASIL => 'heroicon-o-check-circle',
             self::GAGAL => 'heroicon-o-minus-circle',
+            self::ONPROGRESS => 'heroicon-o-arrow-path',
         };
     }
 }

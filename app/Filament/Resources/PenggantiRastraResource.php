@@ -24,6 +24,7 @@ class PenggantiRastraResource extends Resource
     protected static ?string $pluralLabel = 'Pengganti RASTRA';
     protected static ?string $navigationLabel = 'Pengganti RASTRA';
     protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {

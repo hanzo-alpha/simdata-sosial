@@ -2,14 +2,25 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JenisKelaminEnum;
+use App\Enums\StatusAktif;
+use App\Enums\StatusBpjsEnum;
+use App\Enums\StatusKawinBpjsEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\UsulanPengaktifanTmtResource\Pages;
 use App\Filament\Resources\UsulanPengaktifanTmtResource\RelationManagers;
 use App\Models\UsulanPengaktifanTmt;
+use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class UsulanPengaktifanTmtResource extends Resource
 {
@@ -19,30 +30,14 @@ class UsulanPengaktifanTmtResource extends Resource
     protected static ?string $slug = 'usulan-pengaktifan-tmt';
     protected static ?string $label = 'Usulan Pengaktifan TMT';
     protected static ?string $pluralLabel = 'Usulan Pengaktifan TMT';
-    protected static ?string $navigationLabel = 'Usulan Pengaktifan TMT';
-    protected static ?string $navigationGroup = 'Bantuan BPJS';
+    protected static ?string $navigationLabel = 'Bantuan BPJS';
+    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-//                FileUpload::make('attachment')
-//                    ->label('Impor')
-//                    ->hiddenLabel()
-//                    ->columnSpanFull()
-//                    ->preserveFilenames()
-//                    ->previewable(false)
-//                    ->directory('upload')
-//                    ->maxSize(5120)
-//                    ->reorderable()
-//                    ->appendFiles()
-//                    ->storeFiles(false)
-//                    ->acceptedFileTypes([
-//                        'application/vnd.ms-excel',
-//                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//                        'text/csv'
-//                    ])
-//                    ->hiddenOn(['edit', 'view']),
                 Forms\Components\TextInput::make('nokk_tmt')
                     ->required()
                     ->maxLength(20),
@@ -83,17 +78,15 @@ class UsulanPengaktifanTmtResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nokk_tmt')
-                    ->label('No. KK')
+                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
                     ->sortable()
+                    ->description(fn($record) => 'NO.KK : ' . $record->nokk_tmt)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik_tmt')
                     ->label('NIK')
                     ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nama_lengkap')
-                    ->label('Nama Lengkap')
-                    ->sortable()
+                    ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
                     ->label('Tempat Lahir')
@@ -118,6 +111,7 @@ class UsulanPengaktifanTmtResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->description(function ($record) {
                         $rt = $record['nort'];
                         $rw = $record['norw'];
@@ -139,7 +133,8 @@ class UsulanPengaktifanTmtResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bulan')
-                    ->date('M'),
+                    ->label('Periode')
+                    ->formatStateUsing(fn($record) => $record->bulan . ' ' . $record->tahun),
                 Tables\Columns\TextColumn::make('dusun')
                     ->label('Dusun')
                     ->sortable()
@@ -157,8 +152,24 @@ class UsulanPengaktifanTmtResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('status_aktif')
+                    ->label('Status Aktif')
+                    ->options(StatusAktif::class)
+                    ->preload(),
+                SelectFilter::make('status_bpjs')
+                    ->label('Status BPJS')
+                    ->options(StatusBpjsEnum::class),
+                SelectFilter::make('status_nikah')
+                    ->label('Status Nikah')
+                    ->options(StatusKawinBpjsEnum::class),
+                SelectFilter::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options(JenisKelaminEnum::class),
+                DateRangeFilter::make('created_at')
+                    ->label('Rentang Tanggal')
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -169,14 +180,25 @@ class UsulanPengaktifanTmtResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageUsulanPengaktifanTmt::route('/'),
+            'index' => Pages\ListUsulanPengaktifanTmt::route('/'),
+            'create' => Pages\CreateUsulanPengaktifanTmt::route('/create'),
+            'view' => Pages\ViewUsulanPengaktifanTmt::route('/{record}'),
+            'edit' => Pages\EditUsulanPengaktifanTmt::route('/{record}/edit'),
         ];
     }
 }
