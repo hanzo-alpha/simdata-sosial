@@ -88,7 +88,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationCountBadge()
             ])
             ->databaseNotifications()
-            ->databaseNotificationsPolling('10s')
+            ->databaseNotificationsPolling('30s')
             ->favicon(asset('favicon-white.png'))
             ->brandName(config('custom.app.name'))
             ->brandLogo(asset('images/logo/svg/logo-rumahdata-no-background.svg'))

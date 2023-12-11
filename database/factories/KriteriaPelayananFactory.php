@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\KriteriaPelayanan;
+use App\Models\SubJenisDisabilitas;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class KriteriaPelayananFactory extends Factory
 {
-    protected $model = KriteriaPelayanan::class;
+    protected $model = SubJenisDisabilitas::class;
 
     public function definition(): array
     {

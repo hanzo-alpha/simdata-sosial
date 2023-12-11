@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\JenisDisabilitas;
 use App\Models\JenisPelayanan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -8,17 +9,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('kriteria_pelayanan', function (Blueprint $table) {
+        Schema::create('sub_jenis_disabilitas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(JenisPelayanan::class)
-                ->constrained('jenis_pelayanan')
+            $table->foreignIdFor(JenisDisabilitas::class)
+                ->constrained('jenis_disabilitas')
                 ->cascadeOnUpdate();
-            $table->string('nama_kriteria');
+            $table->string('nama_sub_jenis');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('kriteria_pelayanan');
+        Schema::dropIfExists('sub_jenis_disabilitas');
     }
 };

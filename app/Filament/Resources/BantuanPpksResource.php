@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JenisAnggaranEnum;
+use App\Enums\JenisBansosDiterimaEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusKawinBpjsEnum;
@@ -13,6 +15,8 @@ use App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Resources\BantuanPpksResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
+use App\Models\JenisDisabilitas;
+use App\Models\SubJenisDisabilitas;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -20,7 +24,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Group;
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -30,7 +33,6 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
@@ -39,10 +41,10 @@ class BantuanPpksResource extends Resource
     protected static ?string $model = BantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-window';
-    protected static ?string $slug = 'bantuan-ppks';
-    protected static ?string $label = 'Bantuan PPKS';
-    protected static ?string $pluralLabel = 'Bantuan PPKS';
-    protected static ?string $navigationLabel = 'Bantuan PPKS';
+    protected static ?string $slug = 'bantuan-penyandang-disabilitas';
+    protected static ?string $label = 'Bantuan Penyandang Disabilitas';
+    protected static ?string $pluralLabel = 'Bantuan Penyandang Disabilitas';
+    protected static ?string $navigationLabel = 'Bantuan Disabilitas';
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 5;
 
@@ -54,12 +56,12 @@ class BantuanPpksResource extends Resource
                     Section::make('Data Keluarga')
                         ->schema([
                             TextInput::make('dtks_id')
+                                ->label('DTKS ID')
                                 ->maxLength(36)
                                 ->hidden()
-                                ->dehydrated()
                                 ->required()
-                                ->unique(ignoreRecord: true)
-                                ->default(\Str::uuid()->toString()),
+                                ->dehydrated()
+                                ->unique(ignoreRecord: true),
                             TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
@@ -113,9 +115,18 @@ class BantuanPpksResource extends Resource
                                 ->default(7)
                                 ->optionsLimit(15)
                                 ->preload(),
+                            Select::make('status_kawin')
+                                ->options(StatusKawinBpjsEnum::class)
+                                ->default(StatusKawinBpjsEnum::KAWIN)
+                                ->preload(),
                             TextInput::make('penghasilan_rata_rata')
                                 ->prefix('Rp. ')
                                 ->numeric(),
+
+                            TextInput::make('jumlah_bantuan')
+                                ->default(1)
+                                ->numeric(),
+
                         ])->columns(2),
 
 //                    Section::make('Jenis Pelayanan / PMKS')
@@ -144,12 +155,12 @@ class BantuanPpksResource extends Resource
                 ])->columnSpan(['lg' => 2]),
 
                 Forms\Components\Group::make()->schema([
-                    Section::make('Status')
+                    Section::make('Status PPKS/PMKS')
                         ->schema([
                             Select::make('jenis_bantuan_id')
                                 ->required()
                                 ->searchable()
-                                ->disabled()
+                                ->hidden()
                                 ->relationship(
                                     name: 'jenis_bantuan',
                                     titleAttribute: 'alias',
@@ -158,27 +169,44 @@ class BantuanPpksResource extends Resource
                                 ->default(4)
                                 ->dehydrated(),
 
-                            Select::make('jenis_pelayanan_id')
+                            Select::make('bantuan_yang_pernah_diterima')
+                                ->multiple()
+                                ->searchable()
+                                ->options(JenisBansosDiterimaEnum::class)
+                                ->default(JenisBansosDiterimaEnum::NON_BANSOS)
+                                ->preload(),
+
+                            Select::make('jenis_disabilitas_id')
+                                ->label('Jenis Disabilitas')
                                 ->required()
-                                ->searchable(['nama_ppks', 'alias'])
-                                ->relationship('jenis_pelayanan', 'nama_ppks')
+                                ->searchable(['nama_penyandang', 'alias'])
+                                ->options(JenisDisabilitas::pluck('nama_penyandang', 'id'))
+                                ->preload()
+                                ->live()
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('sub_jenis_disabilitas', null))
+                                ->optionsLimit(5),
+
+                            Select::make('sub_jenis_disabilitas')
+                                ->label('Sub Jenis Disabilitas')
+                                ->required()
+                                ->multiple()
+                                ->searchable()
+                                ->options(function (callable $set, callable $get) {
+                                    return SubJenisDisabilitas::find($get('jenis_disabilitas_id'))?->pluck('nama_sub_jenis',
+                                        'id');
+                                })
                                 ->preload()
                                 ->lazy()
                                 ->optionsLimit(5),
 
-                            Select::make('status_kawin')
-                                ->options(StatusKawinBpjsEnum::class)
-                                ->default(StatusKawinBpjsEnum::KAWIN)
+                            Select::make('jenis_anggaran')
+                                ->options(JenisAnggaranEnum::class)
+                                ->default(JenisAnggaranEnum::APBD)
                                 ->preload(),
 
-                            Select::make('status_verifikasi')
-                                ->label('Status Verifikasi')
-                                ->options(StatusVerifikasiEnum::class)
-                                ->default(StatusVerifikasiEnum::UNVERIFIED)
-                                ->preload()
-                                ->visible(fn() => auth()->user()
-                                        ?->hasRole(['super_admin', 'admin'])
-                                    || auth()->user()->is_admin),
+                            TextInput::make('tahun_anggaran')
+                                ->default(now()->year)
+                                ->numeric(),
 
                             Forms\Components\Select::make('status_rumah_tinggal')
                                 ->label('Status Rumah Tinggal')
@@ -194,6 +222,15 @@ class BantuanPpksResource extends Resource
                                 ->lazy()
                                 ->preload(),
 
+                            Select::make('status_verifikasi')
+                                ->label('Status Verifikasi')
+                                ->options(StatusVerifikasiEnum::class)
+                                ->default(StatusVerifikasiEnum::UNVERIFIED)
+                                ->preload()
+                                ->visible(fn() => auth()->user()
+                                        ?->hasRole(['super_admin', 'admin'])
+                                    || auth()->user()->is_admin),
+
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
                                 ->offColor('danger')
@@ -202,31 +239,31 @@ class BantuanPpksResource extends Resource
                                 ->onLabel('Aktif')
                                 ->default(true),
                         ]),
-                    Forms\Components\Section::make('Verifikasi')
-                        ->schema([
-                            Forms\Components\FileUpload::make('bukti_foto')
-                                ->label('Unggah Foto Rumah')
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn(TemporaryUploadedFile $file
-                                    ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                                )
-                                ->preserveFilenames()
-                                ->multiple()
-                                ->reorderable()
-                                ->appendFiles()
-                                ->openable()
-                                ->required()
-                                ->helperText('maks. 2MB')
-                                ->maxFiles(3)
-                                ->maxSize(2048)
-                                ->columnSpanFull()
-                                ->imagePreviewHeight('250')
-                                ->previewable(false)
-                                ->image(),
-
-
-                        ])
+//                    Forms\Components\Section::make('Verifikasi')
+//                        ->schema([
+//                            Forms\Components\FileUpload::make('bukti_foto')
+//                                ->label('Unggah Foto Rumah')
+//                                ->getUploadedFileNameForStorageUsing(
+//                                    fn(TemporaryUploadedFile $file
+//                                    ): string => (string) str($file->getClientOriginalName())
+//                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+//                                )
+//                                ->preserveFilenames()
+//                                ->multiple()
+//                                ->reorderable()
+//                                ->appendFiles()
+//                                ->openable()
+//                                ->required()
+//                                ->helperText('maks. 2MB')
+//                                ->maxFiles(3)
+//                                ->maxSize(2048)
+//                                ->columnSpanFull()
+//                                ->imagePreviewHeight('250')
+//                                ->previewable(false)
+//                                ->image(),
+//
+//
+//                        ])
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -369,6 +406,16 @@ class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-map-pin')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
+                            TextEntry::make('penghasilan_rata_rata')
+                                ->label('Penghasilan Rata-Rata')
+                                ->icon('heroicon-o-banknotes')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                            TextEntry::make('jumlah_bantuan')
+                                ->label('Jumlah Bantuan')
+                                ->icon('heroicon-o-bookmark')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
                         ->schema([
@@ -392,20 +439,24 @@ class BantuanPpksResource extends Resource
                 ])->columnSpan(2),
 
                 Group::make([
-                    \Filament\Infolists\Components\Section::make('Foto Rumah')
-                        ->schema([
-                            ImageEntry::make('bukti_foto')
-                                ->hiddenLabel()
-                                ->visibility('private')
-                                ->extraImgAttributes([
-                                    'alt' => 'foto rumah',
-                                    'loading' => 'lazy'
-                                ])
-                        ])->columns(3),
+//                    \Filament\Infolists\Components\Section::make('Foto Rumah')
+//                        ->schema([
+//                            ImageEntry::make('bukti_foto')
+//                                ->hiddenLabel()
+//                                ->visibility('private')
+//                                ->extraImgAttributes([
+//                                    'alt' => 'foto rumah',
+//                                    'loading' => 'lazy'
+//                                ])
+//                        ])->columns(3),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->schema([
-                            TextEntry::make('jenis_bantuan.alias')
+//                            TextEntry::make('jenis_bantuan.alias')
+//                                ->label('Jenis Bantuan')
+//                                ->weight(FontWeight::SemiBold)
+//                                ->color('primary'),
+                            TextEntry::make('bantuan_yang_pernah_diterima')
                                 ->label('Jenis Bantuan')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
@@ -433,17 +484,19 @@ class BantuanPpksResource extends Resource
                             TextEntry::make('status_kawin')
                                 ->label('Status Kawin')
                                 ->badge(),
-                            TextEntry::make('status_verifikasi')
-                                ->label('Verifikasi Berkas/Foto')
+                            TextEntry::make('jenis_anggaran')
+                                ->label('Jenis Anggaran')
                                 ->badge(),
-                            TextEntry::make('status_aktif')
-                                ->label('Status Aktif')
-                                ->badge(),
+                            TextEntry::make('tahun_anggaran')
+                                ->label('Tahun Anggaran'),
                             TextEntry::make('status_rumah_tinggal')
                                 ->label('Rumah Tinggal')
                                 ->badge(),
                             TextEntry::make('status_kondisi_rumah')
                                 ->label('Kondisi Rumah')
+                                ->badge(),
+                            TextEntry::make('status_aktif')
+                                ->label('Status Aktif')
                                 ->badge(),
                         ])
                         ->columns(2),

@@ -14,7 +14,7 @@ use App\Filament\Resources\KeluargaResource\Pages;
 use App\Models\Kecamatan;
 use App\Models\Keluarga;
 use App\Models\Kelurahan;
-use App\Models\KriteriaPelayanan;
+use App\Models\SubJenisDisabilitas;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
@@ -443,7 +443,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ->required(),
                         TableRepeater::make('jenis_ppks')->schema([
                             Select::make('kriteria_ppks')
-                                ->options(KriteriaPelayanan::pluck('nama_kriteria', 'id'))
+                                ->options(SubJenisDisabilitas::pluck('nama_kriteria', 'id'))
                         ]),
                         TextInput::make('penghasilan_rata_rata')
                             ->numeric(),

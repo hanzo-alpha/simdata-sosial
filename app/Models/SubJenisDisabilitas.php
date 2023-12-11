@@ -6,19 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class KriteriaPelayanan extends Model
+class SubJenisDisabilitas extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'kriteria_pelayanan';
+    protected $table = 'sub_jenis_disabilitas';
     protected $fillable = [
-        'jenis_pelayanan_id',
-        'nama_kriteria',
+        'jenis_disabilitas_id',
+        'nama_sub_jenis',
     ];
 
-    public function jenisPelayanan(): BelongsTo
+    public function jenis_disabilitas(): BelongsTo
     {
-        return $this->belongsTo(JenisPelayanan::class);
+        return $this->belongsTo(JenisDisabilitas::class);
     }
 }

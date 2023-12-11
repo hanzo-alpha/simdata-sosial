@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use App\Enums\JenisAnggaranEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusKawinBpjsEnum;
@@ -13,7 +14,6 @@ use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -27,7 +27,6 @@ class BantuanPpks extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'kriteria_pelayanan' => 'array',
         'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rumah_tinggal' => StatusRumahEnum::class,
@@ -35,17 +34,22 @@ class BantuanPpks extends Model
         'status_kondisi_rumah' => StatusKondisiRumahEnum::class,
         'penghasilan_rata_rata' => MoneyCast::class,
         'bukti_foto' => 'array',
-        'status_aktif' => StatusAktif::class
+        'sub_jenis_disabilitas' => 'array',
+        'status_aktif' => StatusAktif::class,
+        'bantuan_yang_pernah_diterima' => 'array',
+        'jenis_anggaran' => JenisAnggaranEnum::class,
+        'jumlah_bantuan' => 'integer',
+        'tahun_anggaran' => 'integer'
     ];
 
-    public function jenis_pelayanan(): BelongsTo
+    public function jenis_disabilitas(): BelongsTo
     {
-        return $this->belongsTo(JenisPelayanan::class);
+        return $this->belongsTo(JenisDisabilitas::class);
     }
 
-    public function kriteriaPelayanan(): BelongsToMany
+    public function subjenisdisabilitas(): BelongsTo
     {
-        return $this->belongsToMany(KriteriaPelayanan::class, 'kriteria_jenis_pelayanan');
+        return $this->belongsTo(SubJenisDisabilitas::class);
     }
 
     public function alamat(): MorphOne

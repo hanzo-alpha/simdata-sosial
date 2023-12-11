@@ -2,6 +2,7 @@
 
 use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
+use App\Models\JenisDisabilitas;
 use App\Models\JenisPekerjaan;
 use App\Models\JenisPelayanan;
 use App\Models\PendidikanTerakhir;
@@ -42,9 +43,14 @@ return new class extends Migration {
                 ->nullable()
                 ->default(0);
             $table->json('bukti_foto')->nullable();
-            $table->json('kriteria_pelayanan')->nullable();
-            $table->foreignIdFor(JenisPelayanan::class)->constrained('jenis_pelayanan')->cascadeOnUpdate();
+            $table->json('sub_jenis_disabilitas')->nullable();
+            $table->foreignIdFor(JenisDisabilitas::class)->constrained('jenis_disabilitas')
+                ->cascadeOnUpdate();
             $table->integer('penghasilan_rata_rata')->nullable();
+            $table->json('bantuan_yang_pernah_diterima')->nullable();
+            $table->unsignedInteger('tahun_anggaran')->nullable();
+            $table->string('jenis_anggaran', 10)->nullable();
+            $table->unsignedInteger('jumlah_bantuan')->nullable();
             $table->unsignedtinyInteger('status_rumah_tinggal')->nullable();
             $table->string('status_kondisi_rumah')->nullable();
             $table->tinyInteger('status_bantuan')->nullable();
