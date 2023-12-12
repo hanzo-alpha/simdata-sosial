@@ -52,9 +52,9 @@ manfaat yang layak untuk mendapatkan bantuan dari pemerintah.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Hanzo Alpha via [hanzo.
-asashi.dev@gmail.com]
-(mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Laravel, please send an e-mail to Hanzo Alpha
+via [hanzo.asashi.dev@gmail.com](mailto:hanzo.asashi.dev@gmail.com). All security vulnerabilities will be promptly
+addressed.
 
 ## License
 
