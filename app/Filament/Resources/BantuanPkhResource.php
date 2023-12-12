@@ -17,7 +17,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class BantuanPkhResource extends Resource
@@ -144,6 +146,34 @@ class BantuanPkhResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+//            ->striped()
+            ->deferLoading()
+            ->recordClasses(fn(Model $record) => match ($record->status_pkh) {
+                'draft' => 'opacity-30',
+                'reviewing' => 'border-s-2 border-orange-600 dark:border-orange-300',
+                'PKH' => 'border-s-2 border-green-600 dark:border-green-300',
+                default => null,
+            })
+            ->groups([
+                Tables\Grouping\Group::make('kec.name')
+                    ->label('Kecamatan')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Tables\Grouping\Group::make('kel.name')
+                    ->label('Kelurahan')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false)
+            ])
+            ->defaultGroup('kec.name')
+            ->groupRecordsTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Kelompokkan Data'),
+            )
+            ->groupingSettingsInDropdownOnDesktop()
+//            ->groupingSettingsHidden()
+//            ->paginated([10, 25, 50, 100, 'all'])
+            ->defaultPaginationPageOption(25)
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')
@@ -191,6 +221,12 @@ class BantuanPkhResource extends Resource
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->sortable()
+                    ->toggleable()
+                    ->description(fn($record) => 'Kec. ' . $record->kec->name . ' | Kel. ' . $record->kel->name)
+//                    ->toggledHiddenByDefault()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('prov.name')
                     ->sortable()
                     ->toggleable()
@@ -202,15 +238,13 @@ class BantuanPkhResource extends Resource
                     ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
-                    ->sortable()
-                    ->toggleable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kel.name')
+                    ->label('Kecamatan')
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('alamat')
+                Tables\Columns\TextColumn::make('kel.name')
+                    ->label('Kelurahan')
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault()
@@ -234,20 +268,24 @@ class BantuanPkhResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dir')
                     ->sortable()
+                    ->alignCenter()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
+//                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gelombang')
                     ->sortable()
+                    ->alignCenter()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
+//                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_pkh')
                     ->label('Status')
+                    ->alignCenter()
                     ->badge()
                     ->sortable()
                     ->searchable(),
             ])
+            ->searchPlaceholder('Cari...')
             ->filters([
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal'),

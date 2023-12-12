@@ -109,7 +109,7 @@ class BantuanRastraResource extends Resource
             ->filters([
                 SelectFilter::make('alamat')
                     ->label('Kecamatan')
-                    ->relationship('kec', 'name', fn(Builder $query) => $query->where('kabupaten_code', config
+                    ->relationship('alamat.kec', 'name', fn(Builder $query) => $query->where('kabupaten_code', config
                     ('custom.default.kodekab')))
                     ->preload()
                     ->searchable(),
