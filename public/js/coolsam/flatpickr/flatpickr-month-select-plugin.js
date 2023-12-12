@@ -39,7 +39,6 @@
         while (node.firstChild)
             node.removeChild(node.firstChild);
     }
-
     function getEventTarget(event) {
         try {
             if (typeof event.composedPath === "function") {
@@ -58,14 +57,12 @@
         altFormat: "F Y",
         theme: "light",
     };
-
     function monthSelectPlugin(pluginConfig) {
         var config = __assign(__assign({}, defaultConfig), pluginConfig);
         return function (fp) {
             fp.config.dateFormat = config.dateFormat;
             fp.config.altFormat = config.altFormat;
             var self = {monthsContainer: null};
-
             function clearUnnecessaryDOMElements() {
                 if (!fp.rContainer)
                     return;
@@ -77,7 +74,6 @@
                     element.parentNode.removeChild(element);
                 }
             }
-
             function build() {
                 if (!fp.rContainer)
                     return;
@@ -87,7 +83,6 @@
                 fp.rContainer.appendChild(self.monthsContainer);
                 fp.calendarContainer.classList.add("flatpickr-monthSelect-theme-" + config.theme);
             }
-
             function buildMonths() {
                 if (!self.monthsContainer)
                     return;
@@ -114,7 +109,6 @@
                 else
                     fp.nextMonthNav.classList.remove("flatpickr-disabled");
             }
-
             function bindEvents() {
                 fp._bind(fp.prevMonthNav, "click", function (e) {
                     e.preventDefault();
@@ -135,7 +129,6 @@
                         fp.onMouseOver(getEventTarget(e), "flatpickr-monthSelect-month");
                 });
             }
-
             function setCurrentlySelected() {
                 if (!fp.rContainer)
                     return;
@@ -151,7 +144,6 @@
                     month.classList.add("selected");
                 }
             }
-
             function selectYear() {
                 var selectedDate = fp.selectedDates[0];
                 if (selectedDate) {
@@ -180,7 +172,6 @@
                 }
                 setCurrentlySelected();
             }
-
             function selectMonth(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -199,7 +190,6 @@
                         fp.close();
                 }
             }
-
             function setMonth(date) {
                 var selectedDate = new Date(fp.currentYear, date.getMonth(), date.getDate());
                 var selectedDates = [];
@@ -224,14 +214,12 @@
                 fp.setDate(selectedDates, true);
                 setCurrentlySelected();
             }
-
             var shifts = {
                 37: -1,
                 39: 1,
                 40: 3,
                 38: -3,
             };
-
             function onKeyDown(_, __, ___, e) {
                 var shouldMove = shifts[e.keyCode] !== undefined;
                 if (!shouldMove && e.keyCode !== 13) {
@@ -253,7 +241,6 @@
                     setMonth(document.activeElement.dateObj);
                 }
             }
-
             function closeHook() {
                 var _a;
                 if (((_a = fp.config) === null || _a === void 0 ? void 0 : _a.mode) === "range" && fp.selectedDates.length === 1)
@@ -261,14 +248,12 @@
                 if (!fp.selectedDates.length)
                     buildMonths();
             }
-
             // Help the prev/next year nav honor config.minDate (see 3fa5a69)
             function stubCurrentMonth() {
                 config._stubbedCurrentMonth = fp._initialDate.getMonth();
                 fp._initialDate.setMonth(config._stubbedCurrentMonth);
                 fp.currentMonth = config._stubbedCurrentMonth;
             }
-
             function unstubCurrentMonth() {
                 if (!config._stubbedCurrentMonth)
                     return;
@@ -276,7 +261,6 @@
                 fp.currentMonth = config._stubbedCurrentMonth;
                 delete config._stubbedCurrentMonth;
             }
-
             function destroyPluginInstance() {
                 if (self.monthsContainer !== null) {
                     var months = self.monthsContainer.querySelectorAll(".flatpickr-monthSelect-month");
@@ -285,7 +269,6 @@
                     }
                 }
             }
-
             return {
                 onParseConfig: function () {
                     fp.config.enableTime = false;

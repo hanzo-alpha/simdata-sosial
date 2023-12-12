@@ -3,8 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\StatusBpjsEnum;
-use App\Enums\StatusVerifikasiEnum;
-use App\Models\BantuanBpjs;
+use App\Models\UsulanPengaktifanTmt;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -22,29 +21,29 @@ class BantuanBpjsOverview extends BaseWidget
         $endDate = $this->filters['endDate'] ?? null;
 
         return [
+//            Stat::make(
+//                label: 'Total Belum Terverifikasi',
+//                value: BantuanBpjs::query()
+//                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
+//                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
+//                    ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
+//                    ->count())
+////                ->description('32k increase')
+////                ->descriptionIcon('heroicon-m-arrow-trending-up')
+//                ->color('success'),
             Stat::make(
-                label: 'Total Belum Terverifikasi',
-                value: BantuanBpjs::query()
+                label: 'Total Peserta Baru',
+                value: UsulanPengaktifanTmt::query()
                     ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
                     ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
-                    ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
+                    ->where('status_bpjs', StatusBpjsEnum::BARU)
                     ->count())
 //                ->description('32k increase')
 //                ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success'),
             Stat::make(
-                label: 'Total Sudah Terverifikasi',
-                value: BantuanBpjs::query()
-                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
-                    ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
-                    ->count())
-//                ->description('32k increase')
-//                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('success'),
-            Stat::make(
-                label: 'Total Bantuan Pengaktifan BPJS',
-                value: BantuanBpjs::query()
+                label: 'Total Pengaktifan BPJS',
+                value: UsulanPengaktifanTmt::query()
                     ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
                     ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
                     ->where('status_bpjs', StatusBpjsEnum::PENGAKTIFAN)
@@ -52,8 +51,8 @@ class BantuanBpjsOverview extends BaseWidget
 //                ->description('7% increase')
 //                ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('danger'),
-            Stat::make(label: 'Total Bantuan Pengalihan BPJS',
-                value: BantuanBpjs::query()
+            Stat::make(label: 'Total Pengalihan BPJS',
+                value: UsulanPengaktifanTmt::query()
                     ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
                     ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
                     ->where('status_bpjs', StatusBpjsEnum::PENGALIHAN)

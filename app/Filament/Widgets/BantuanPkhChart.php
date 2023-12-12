@@ -29,6 +29,7 @@ class BantuanPkhChart extends ApexChartWidget
     protected static bool $deferLoading = true;
     public ?string $filter = null;
     protected int|string|array $columnSpan = 'full';
+    protected static bool $isDiscovered = false;
 
     protected function getFilters(): ?array
     {

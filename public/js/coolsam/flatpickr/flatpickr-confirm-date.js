@@ -49,7 +49,6 @@
         showAlways: false,
         theme: "light",
     };
-
     function confirmDatePlugin(pluginConfig) {
         var config = __assign(__assign({}, defaultConfig), pluginConfig);
         var confirmContainer;

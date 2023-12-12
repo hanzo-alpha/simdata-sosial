@@ -2,11 +2,13 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\StatusVerifikasiEnum;
-use App\Models\BantuanBpjs;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
+use App\Models\UsulanPengaktifanTmt;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class PenerimaManfaatChart extends ApexChartWidget
@@ -28,38 +30,48 @@ class PenerimaManfaatChart extends ApexChartWidget
     protected static ?string $heading = 'Penerima Manfaat Bantuan BPJS';
     protected static ?string $pollingInterval = null;
     protected static bool $deferLoading = true;
-    public ?string $filter = null;
+//    public ?string $filter = null;
     protected int|string|array $columnSpan = 'full';
 
-    protected function getFilters(): ?array
-    {
-        return [
-            'today' => 'Hari Ini',
-            'week' => 'Minggu Lalu',
-            'month' => 'Bulan Ini',
-            'year' => 'Tahun Ini',
-        ];
-    }
-
-//    protected function getFormSchema(): array
+//    protected function getFilters(): ?array
 //    {
 //        return [
-//
-//            TextInput::make('title')
-//                ->default('My Chart')
-//                ->reactive()
-//                ->afterStateUpdated(function () {
-//                    $this->updateChartOptions();
-//                }),
-//
-//            DatePicker::make('date_start')
-//                ->default('2023-01-01'),
-//
-//            DatePicker::make('date_end')
-//                ->default('2023-12-31')
-//
+//            'today' => 'Hari Ini',
+//            'week' => 'Minggu Lalu',
+//            'month' => 'Bulan Ini',
+//            'year' => 'Tahun Ini',
 //        ];
 //    }
+
+    protected function getFormSchema(): array
+    {
+        return [
+
+            Select::make('kecamatan')
+                ->options(Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))->pluck('name', 'code'))
+                ->reactive()
+                ->afterStateUpdated(function (callable $set) {
+                    $set('kelurahan', null);
+                    $this->updateChartOptions();
+                }),
+
+            Select::make('kelurahan')
+                ->options(function (callable $get) {
+                    return Kelurahan::where('kecamatan_code', $get('kecamatan'))->pluck('name', 'code');
+                })
+                ->reactive()
+                ->afterStateUpdated(function () {
+                    $this->updateChartOptions();
+                }),
+
+            DatePicker::make('date_start')
+                ->default('2023-01-01'),
+
+            DatePicker::make('date_end')
+                ->default('2023-12-31')
+
+        ];
+    }
 
 
     /**
@@ -78,42 +90,19 @@ class PenerimaManfaatChart extends ApexChartWidget
         //slow query
         sleep(1);
 
-        $activeFilter = $this->filter;
+//        $activeFilter = $this->filter;
 
-//        $title = $this->filterFormData['title'];
-//        $dateStart = $this->filterFormData['date_start'];
-//        $dateEnd = $this->filterFormData['date_end'];
+        $title = $this->filterFormData['kecamatan'];
+        $dateStart = $this->filterFormData['date_start'];
+        $dateEnd = $this->filterFormData['date_end'];
 
         $currentDate = Carbon::now();
 
         $results = [];
 
-        for ($i = 0; $i < 12; $i++) {
-            // Get the first and last day of the month
-            $firstDayOfMonth = $currentDate->copy()->startOfMonth()->toDateTimeString();
-            $lastDayOfMonth = $currentDate->copy()->endOfMonth()->toDateTimeString();
-
-            // Query the database
-            $sales = BantuanBpjs::query()
-//                ->whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
-                ->when($activeFilter, function (Builder $query) use ($currentDate, $activeFilter) {
-                    $filter = match ($activeFilter) {
-                        'today' => Carbon::now(),
-                        'week' => now()->subWeek(),
-                        'month' => now()->subMonth(),
-                        'year' => now()->subYear()
-                    };
-
-                    return $query->where('created_at', $filter);
-                })
-                ->where('status_verifikasi', '=', StatusVerifikasiEnum::UNVERIFIED)
-                ->count();
-
-            // Save the result
-            $results[$currentDate->locale(config('app.locale'))->format('M')] = $sales;
-
-            // Move to the previous month
-            $currentDate->subMonth();
+        $kec = Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))->pluck('name', 'code');
+        foreach ($kec as $key => $item) {
+            $results[$item] = UsulanPengaktifanTmt::where('kecamatan', 'like', $key)->get()->count();
         }
 
         return [

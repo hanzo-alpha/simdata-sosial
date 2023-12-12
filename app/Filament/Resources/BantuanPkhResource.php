@@ -18,6 +18,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class BantuanPkhResource extends Resource
 {
@@ -248,7 +249,8 @@ class BantuanPkhResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                DateScopeFilter::make('created_at'),
+                DateRangeFilter::make('created_at')
+                    ->label('Rentang Tanggal'),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

@@ -25,6 +25,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class BantuanRastraResource extends Resource
@@ -106,9 +107,10 @@ class BantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                SelectFilter::make('jenis_bantuan_id')
-                    ->label('Jenis Bantuan')
-                    ->relationship('jenis_bantuan', 'alias')
+                SelectFilter::make('alamat')
+                    ->label('Kecamatan')
+                    ->relationship('kec', 'name', fn(Builder $query) => $query->where('kabupaten_code', config
+                    ('custom.default.kodekab')))
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
@@ -120,8 +122,10 @@ class BantuanRastraResource extends Resource
                     ->options(StatusRastra::class)
                     ->searchable(),
                 SelectFilter::make('status_aktif')
-                    ->label('Status Rastra')
+                    ->label('Status Aktif')
                     ->options(StatusAktif::class),
+                DateRangeFilter::make('created_at')
+                    ->label('Rentang Tanggal'),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
