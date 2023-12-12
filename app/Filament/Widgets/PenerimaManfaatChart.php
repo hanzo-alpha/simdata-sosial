@@ -33,6 +33,10 @@ class PenerimaManfaatChart extends ApexChartWidget
 //    public ?string $filter = null;
     protected int|string|array $columnSpan = 'full';
 
+    protected static ?int $sort = 3;
+
+    protected static bool $isDiscovered = false;
+
 //    protected function getFilters(): ?array
 //    {
 //        return [

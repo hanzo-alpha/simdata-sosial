@@ -12,10 +12,22 @@ use Illuminate\Database\Eloquent\Builder;
 
 class BantuanChartWidget extends ChartWidget
 {
-    protected static ?string $heading = 'Bantuan Statistik';
+    protected static ?string $heading = 'Bantuan Statistik Per Kecamatan';
     protected static ?string $maxHeight = '300px';
     protected static ?string $pollingInterval = null;
     protected int|string|array $columnSpan = 'full';
+    protected static ?int $sort = 2;
+
+    protected function getOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'display' => true,
+                ],
+            ],
+        ];
+    }
 
     protected function getData(): array
     {
@@ -51,22 +63,30 @@ class BantuanChartWidget extends ChartWidget
                     'label' => 'Bantuan BPJS',
 //                    'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
                     'data' => array_values($results),
+//                    'backgroundColor' => '#9BD0F5',
+//                    'borderColor' => '#36A2EB'
                 ],
                 [
                     'label' => 'Bantuan PKH',
                     'data' => array_values($pkhresults),
+//                    'backgroundColor' => '#FF6384',
+                    'borderColor' => '#FFB1C1'
                 ],
                 [
                     'label' => 'Bantuan BPNT',
                     'data' => array_values($bpntresults),
+//                    'backgroundColor' => '#9BD0F5',
+                    'borderColor' => '#36A2EB'
                 ],
                 [
                     'label' => 'Bantuan PPKS',
                     'data' => array_values($ppksresults),
+                    'borderColor' => '#e8c838'
                 ],
                 [
                     'label' => 'Bantuan RASTRA',
                     'data' => array_values($rastraresults),
+                    'borderColor' => '#20d669'
                 ],
             ],
 //            'labels' => $data->map(fn(TrendValue $value) => $value->date),

@@ -4,7 +4,6 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\KeluargaChart;
 use App\Filament\Widgets\KeluargaMap;
-use App\Filament\Widgets\PenerimaManfaatChart;
 use App\Filament\Widgets\PenerimaManfaatMap;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -117,7 +116,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                PenerimaManfaatChart::class,
+//                PenerimaManfaatChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

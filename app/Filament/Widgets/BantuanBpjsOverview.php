@@ -14,6 +14,7 @@ class BantuanBpjsOverview extends BaseWidget
     use InteractsWithPageFilters;
 
     protected static bool $isDiscovered = false;
+    protected static ?int $sort = 1;
 
     protected function getStats(): array
     {
