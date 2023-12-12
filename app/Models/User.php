@@ -15,7 +15,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles, HasPanelShield;
+    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasRoles, HasPanelShield;
 
     /**
      * The attributes that are mass assignable.
@@ -50,6 +51,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, '@simdata-sosial.local') && $this->hasVerifiedEmail();
+        return str_ends_with($this->email, '@simdata-sosial.local');
     }
 }

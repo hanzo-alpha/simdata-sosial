@@ -14,9 +14,9 @@ use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
 use App\Models\JenisPelayanan;
-use App\Models\KriteriaPelayanan;
 use App\Models\PendidikanTerakhir;
 use App\Models\PenggantiRastra;
+use App\Models\SubJenisDisabilitas;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
 use App\Policies\AlamatPolicy;
@@ -61,7 +61,7 @@ class AuthServiceProvider extends ServiceProvider
         JenisBantuan::class => JenisBantuanPolicy::class,
         JenisPekerjaan::class => JenisPekerjaanPolicy::class,
         JenisPelayanan::class => JenisPelayananPolicy::class,
-        KriteriaPelayanan::class => KriteriaPelayananPolicy::class,
+        SubJenisDisabilitas::class => KriteriaPelayananPolicy::class,
         MediaPolicy::class => MediaPolicy::class,
         PendidikanTerakhir::class => PendidikanTerakhirPolicy::class,
         PenggantiRastra::class => PenggantiRastraPolicy::class,

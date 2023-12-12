@@ -2,10 +2,13 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\StatusVerifikasiEnum;
-use App\Models\Keluarga;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
+use App\Models\UsulanPengaktifanTmt;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class PenerimaManfaatChart extends ApexChartWidget
@@ -24,41 +27,55 @@ class PenerimaManfaatChart extends ApexChartWidget
      *
      * @var string|null
      */
-    protected static ?string $heading = 'Penerima Manfaat Statistik';
+    protected static ?string $heading = 'Penerima Manfaat Bantuan BPJS';
     protected static ?string $pollingInterval = null;
     protected static bool $deferLoading = true;
-    public ?string $filter = 'today';
+//    public ?string $filter = null;
     protected int|string|array $columnSpan = 'full';
 
-    protected function getFilters(): ?array
-    {
-        return [
-            'today' => 'Hari Ini',
-            'week' => 'Minggu Lalu',
-            'month' => 'Bulan Ini',
-            'year' => 'Tahun Ini',
-        ];
-    }
+    protected static ?int $sort = 3;
 
-//    protected function getFormSchema(): array
+    protected static bool $isDiscovered = false;
+
+//    protected function getFilters(): ?array
 //    {
 //        return [
-//
-//            TextInput::make('title')
-//                ->default('My Chart')
-//                ->reactive()
-//                ->afterStateUpdated(function () {
-//                    $this->updateChartOptions();
-//                }),
-//
-//            DatePicker::make('date_start')
-//                ->default('2023-01-01'),
-//
-//            DatePicker::make('date_end')
-//                ->default('2023-12-31')
-//
+//            'today' => 'Hari Ini',
+//            'week' => 'Minggu Lalu',
+//            'month' => 'Bulan Ini',
+//            'year' => 'Tahun Ini',
 //        ];
 //    }
+
+    protected function getFormSchema(): array
+    {
+        return [
+
+            Select::make('kecamatan')
+                ->options(Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))->pluck('name', 'code'))
+                ->reactive()
+                ->afterStateUpdated(function (callable $set) {
+                    $set('kelurahan', null);
+                    $this->updateChartOptions();
+                }),
+
+            Select::make('kelurahan')
+                ->options(function (callable $get) {
+                    return Kelurahan::where('kecamatan_code', $get('kecamatan'))->pluck('name', 'code');
+                })
+                ->reactive()
+                ->afterStateUpdated(function () {
+                    $this->updateChartOptions();
+                }),
+
+            DatePicker::make('date_start')
+                ->default('2023-01-01'),
+
+            DatePicker::make('date_end')
+                ->default('2023-12-31')
+
+        ];
+    }
 
 
     /**
@@ -77,25 +94,20 @@ class PenerimaManfaatChart extends ApexChartWidget
         //slow query
         sleep(1);
 
-        $activeFilter = $this->filter;
+//        $activeFilter = $this->filter;
 
-//        $title = $this->filterFormData['title'];
-//        $dateStart = $this->filterFormData['date_start'];
-//        $dateEnd = $this->filterFormData['date_end'];
+        $title = $this->filterFormData['kecamatan'];
+        $dateStart = $this->filterFormData['date_start'];
+        $dateEnd = $this->filterFormData['date_end'];
 
-        $keluarga = Keluarga::query()
-            ->when($activeFilter, function (Builder $query) use ($activeFilter) {
-                $filter = match ($activeFilter) {
-                    'today' => now(),
-                    'week' => now()->subWeek(),
-                    'month' => now()->subMonth(),
-                    'year' => now()->subYear()
-                };
+        $currentDate = Carbon::now();
 
-                return $query->where('created_at', $filter);
-            })
-            ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
-            ->get();
+        $results = [];
+
+        $kec = Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))->pluck('name', 'code');
+        foreach ($kec as $key => $item) {
+            $results[$item] = UsulanPengaktifanTmt::where('kecamatan', 'like', $key)->get()->count();
+        }
 
         return [
             'chart' => [
@@ -104,12 +116,12 @@ class PenerimaManfaatChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => 'Keluarga Chart',
-                    'data' => [7, 10, 13, 15, 18, 20, 24, 30, 35, 38, 40, 41],
+                    'name' => 'Total Bantuan BPJS',
+                    'data' => array_values($results),
                 ],
             ],
             'xaxis' => [
-                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Nov', 'Des'],
+                'categories' => array_keys($results),
                 'labels' => [
                     'style' => [
                         'fontFamily' => 'inherit',

@@ -25,8 +25,8 @@ enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::BARU => 'success',
-            self::PENGAKTIFAN => 'info',
+            self::BARU => 'primary',
+            self::PENGAKTIFAN => 'success',
             self::PENGALIHAN => 'danger',
         };
     }
@@ -34,9 +34,9 @@ enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::BARU => 'heroicon-o-user-plus',
-            self::PENGAKTIFAN => 'heroicon-o-user',
-            self::PENGALIHAN => 'heroicon-o-user-minus',
+            self::BARU => 'heroicon-o-plus-small',
+            self::PENGAKTIFAN => 'heroicon-o-check',
+            self::PENGALIHAN => 'heroicon-o-arrow-path-rounded-square',
         };
     }
 }

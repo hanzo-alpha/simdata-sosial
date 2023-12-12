@@ -4,20 +4,20 @@ namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinEnum;
+use App\Enums\StatusBpjsEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
+use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportKeluarga;
 use App\Filament\Resources\KeluargaResource\Pages;
-use App\Forms\Components\PpksForm;
 use App\Models\Kecamatan;
 use App\Models\Keluarga;
 use App\Models\Kelurahan;
-use App\Models\KriteriaPelayanan;
+use App\Models\SubJenisDisabilitas;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
-use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -43,9 +43,10 @@ class KeluargaResource extends Resource implements HasShieldPermissions
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $slug = 'penerima-manfaat';
-    protected static ?string $label = 'Penerima Manfaat';
-    protected static ?string $pluralLabel = 'Penerima Manfaat';
+    protected static ?string $slug = 'keluarga';
+    protected static ?string $label = 'Keluarga';
+    protected static ?string $pluralLabel = 'Keluarga';
+    protected static bool $shouldRegisterNavigation = false;
 
 //    protected static ?string $navigationGroup = 'Master';
 
@@ -85,11 +86,23 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     public static function table(Table $table): Table
     {
         return $table
+//            ->contentGrid([
+//                'md' => 2,
+//                'xl' => 3,
+//                'lg' => 4,
+//            ])
+//            ->recordClasses(fn(Model $record) => match ($record->status_verifikasi) {
+//                'UNVERIFIED' => 'border-s-2 border-red-600 dark:border-red-300',
+//                'REVIEW' => 'border-s-2 border-orange-600 dark:border-orange-300',
+//                'VERIFIED' => 'border-s-2 border-green-600 dark:border-green-300',
+//                default => null,
+//            })
             ->columns([
                 Tables\Columns\ImageColumn::make('unggah_foto')
                     ->label('Foto Rumah')
                     ->stacked()
                     ->limit(3)
+                    ->grow(false)
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->limitedRemainingText(true),
@@ -97,7 +110,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->label('DTKS ID')
                     ->description(fn($record) => $record->nama_lengkap)
                     ->sortable()
-//                    ->limit(10)
+                    ->limit(13)
                     ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
@@ -171,7 +184,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->searchable(),
                 SelectFilter::make('status_kawin')
                     ->label('Status Kawin')
-                    ->options(StatusKawinEnum::class)
+                    ->options(StatusKawinBpjsEnum::class)
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')
@@ -225,8 +238,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     {
         return $infolist
             ->schema([
-                Section::make('Data Pribadi')
-                    ->description('Berisi informasi dasar keluarga')
+                Section::make('Informasi Keluarga')
                     ->schema([
                         TextEntry::make('dtks_id')
                             ->label('DTKS ID')
@@ -274,8 +286,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ->color('primary'),
                     ])->columns(3),
 
-                Section::make('Data Alamat')
-                    ->description('Berisi informasi tentang alamat dan lokasi keluarga')
+                Section::make('Informasi Alamat')
                     ->schema([
                         Grid::make(1)
                             ->schema([
@@ -298,7 +309,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ]),
                     ])->columns(3),
 
-                Section::make('Data Pendukung')
+                Section::make('Informasi Bantuan')
                     ->schema([
                         TextEntry::make('jenis_bantuan.nama_bantuan')
                             ->label('Jenis Bantuan')
@@ -372,23 +383,6 @@ class KeluargaResource extends Resource implements HasShieldPermissions
     {
         if ($section === 'lainnya') {
             return [
-                Forms\Components\Select::make('jenis_bantuan_id')
-                    ->required()
-                    ->searchable()
-                    ->relationship(
-                        name: 'jenis_bantuan',
-                        titleAttribute: 'alias',
-                        modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
-                    )
-                    ->getOptionLabelFromRecordUsing(function ($record) {
-                        return '<strong>' . $record->alias . '</strong><br>' . $record->nama_bantuan;
-                    })->allowHtml()
-                    ->preload()
-//                    ->default(4)
-                    ->lazy()
-                    ->live(true)
-                    ->native(false)
-                    ->optionsLimit(20),
                 Forms\Components\Select::make('pendidikan_terakhir_id')
                     ->required()
                     ->searchable()
@@ -418,8 +412,8 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                     ->maxLength(255),
                 Forms\Components\Select::make('status_kawin')
                     ->searchable()
-                    ->options(StatusKawinEnum::class)
-                    ->default(StatusKawinEnum::KAWIN),
+                    ->options(StatusKawinBpjsEnum::class)
+                    ->default(StatusKawinBpjsEnum::KAWIN),
                 Forms\Components\Select::make('jenis_kelamin')
                     ->options(JenisKelaminEnum::class)
                     ->default(JenisKelaminEnum::LAKI),
@@ -449,7 +443,7 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ->required(),
                         TableRepeater::make('jenis_ppks')->schema([
                             Select::make('kriteria_ppks')
-                                ->options(KriteriaPelayanan::pluck('nama_kriteria', 'id'))
+                                ->options(SubJenisDisabilitas::pluck('nama_kriteria', 'id'))
                         ]),
                         TextInput::make('penghasilan_rata_rata')
                             ->numeric(),
@@ -550,6 +544,55 @@ class KeluargaResource extends Resource implements HasShieldPermissions
                             ->default('90861')
                             ->required(),
                     ]),
+            ];
+        }
+
+        if ($section === 'bantuan') {
+            return [
+                Forms\Components\Select::make('jenis_bantuan_id')
+                    ->required()
+                    ->searchable()
+                    ->relationship(
+                        name: 'jenis_bantuan',
+                        titleAttribute: 'alias',
+                        modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                    )
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        return '<strong>' . $record->alias . '</strong><br>' . $record->nama_bantuan;
+                    })->allowHtml()
+                    ->preload()
+                    ->afterStateUpdated(function (Forms\Get $get, Select $component) {
+                        $component->getContainer()
+                            ->getComponent('typeFields')
+                            ?->getChildComponentContainer()
+                            ->fill();
+                    })->key('typeFields')
+                    ->live()
+                    ->native(false)
+                    ->optionsLimit(20),
+
+                Forms\Components\Grid::make(1)->schema(fn(Forms\Get $get): array => match ($get('jenis_bantuan_id')) {
+                    3 => Select::make('status_bpjs')
+                        ->options(StatusBpjsEnum::class)
+                        ->visible(fn(Forms\Get $get) => $get('jenis_bantuan_id') === 3)
+                        ->preload(),
+                    default => []
+                }),
+
+                Select::make('status_bpjs')
+                    ->options(StatusBpjsEnum::class)
+                    ->visible(fn(Forms\Get $get) => $get('jenis_bantuan_id') === 3)
+                    ->preload(),
+
+                Select::make('status_rastra')
+                    ->options(StatusRastra::class)
+                    ->visible(fn(Forms\Get $get) => $get('jenis_bantuan_id') === 4)
+                    ->preload(),
+
+                Select::make('status_ppks')
+                    ->options(StatusKondisiRumahEnum::class)
+                    ->visible(fn(Forms\Get $get) => $get('jenis_bantuan_id') === 5)
+                    ->preload()
             ];
         }
 

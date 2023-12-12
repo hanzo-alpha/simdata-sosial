@@ -11,20 +11,20 @@ class AlamatKeluarga extends Model
     use HasWilayah;
 
     protected $table = 'alamat_keluarga';
-    protected $fillable = [
-        'alamat',
-        'provinsi',
-        'kabupaten',
-        'kecamatan',
-        'kelurahan',
-        'no_rt',
-        'no_rw',
-        'dusun',
-        'kodepos',
-        'latitude',
-        'longitude',
-        'location',
-    ];
+//    protected $fillable = [
+//        'alamat',
+//        'provinsi',
+//        'kabupaten',
+//        'kecamatan',
+//        'kelurahan',
+//        'no_rt',
+//        'no_rw',
+//        'dusun',
+//        'kodepos',
+//        'latitude',
+//        'longitude',
+//        'location',
+//    ];
 
     public function alamatable(): MorphTo
     {

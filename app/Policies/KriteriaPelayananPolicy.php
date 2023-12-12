@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\KriteriaPelayanan;
+use App\Models\SubJenisDisabilitas;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class KriteriaPelayananPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\KriteriaPelayanan  $kriteriaPelayanan
+     * @param  \App\Models\SubJenisDisabilitas  $kriteriaPelayanan
      * @return bool
      */
-    public function view(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
+    public function view(User $user, SubJenisDisabilitas $kriteriaPelayanan): bool
     {
         return $user->can('view_kriteria::pelayanan');
     }
@@ -48,10 +48,10 @@ class KriteriaPelayananPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\KriteriaPelayanan  $kriteriaPelayanan
+     * @param  \App\Models\SubJenisDisabilitas  $kriteriaPelayanan
      * @return bool
      */
-    public function update(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
+    public function update(User $user, SubJenisDisabilitas $kriteriaPelayanan): bool
     {
         return $user->can('update_kriteria::pelayanan');
     }
@@ -60,10 +60,10 @@ class KriteriaPelayananPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\KriteriaPelayanan  $kriteriaPelayanan
+     * @param  \App\Models\SubJenisDisabilitas  $kriteriaPelayanan
      * @return bool
      */
-    public function delete(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
+    public function delete(User $user, SubJenisDisabilitas $kriteriaPelayanan): bool
     {
         return $user->can('delete_kriteria::pelayanan');
     }
@@ -83,10 +83,10 @@ class KriteriaPelayananPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\KriteriaPelayanan  $kriteriaPelayanan
+     * @param  \App\Models\SubJenisDisabilitas  $kriteriaPelayanan
      * @return bool
      */
-    public function forceDelete(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
+    public function forceDelete(User $user, SubJenisDisabilitas $kriteriaPelayanan): bool
     {
         return $user->can('force_delete_kriteria::pelayanan');
     }
@@ -106,10 +106,10 @@ class KriteriaPelayananPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\KriteriaPelayanan  $kriteriaPelayanan
+     * @param  \App\Models\SubJenisDisabilitas  $kriteriaPelayanan
      * @return bool
      */
-    public function restore(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
+    public function restore(User $user, SubJenisDisabilitas $kriteriaPelayanan): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -129,10 +129,10 @@ class KriteriaPelayananPolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\KriteriaPelayanan  $kriteriaPelayanan
+     * @param  \App\Models\SubJenisDisabilitas  $kriteriaPelayanan
      * @return bool
      */
-    public function replicate(User $user, KriteriaPelayanan $kriteriaPelayanan): bool
+    public function replicate(User $user, SubJenisDisabilitas $kriteriaPelayanan): bool
     {
         return $user->can('{{ Replicate }}');
     }

@@ -42,7 +42,7 @@ class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, W
             'tahap' => $row['tahap'],
             'bansos' => $row['bansos'],
             'bank' => $row['bank'],
-            'jenis_bantuan_id' => $jenisBantuan ?? 1,
+            'jenis_bantuan_id' => $jenisBantuan ?? 2,
             'alamat' => $row['alamat'],
             'no_rt' => $row['no_rt'],
             'no_rw' => $row['no_rw'],

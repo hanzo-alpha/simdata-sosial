@@ -10,7 +10,6 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
 use AymanAlhattami\FilamentDateScopesFilter\DateScopeFilter;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -19,6 +18,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class BantuanBpntResource extends Resource
 {
@@ -32,27 +32,29 @@ class BantuanBpntResource extends Resource
     protected static ?string $navigationLabel = 'Bantuan BPNT';
     protected static ?string $navigationGroup = 'Bantuan';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                FileUpload::make('attachment')
-                    ->label('Impor')
-                    ->hiddenLabel()
-                    ->columnSpanFull()
-                    ->preserveFilenames()
-                    ->previewable(false)
-                    ->directory('upload')
-                    ->maxSize(5120)
-                    ->reorderable()
-                    ->appendFiles()
-                    ->storeFiles(false)
-                    ->acceptedFileTypes([
-                        'application/vnd.ms-excel',
-                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        'text/csv'
-                    ])
-                    ->visibleOn('create'),
+//                FileUpload::make('attachment')
+//                    ->label('Unggah Data BPNT')
+//                    ->hiddenLabel()
+//                    ->columnSpanFull()
+//                    ->preserveFilenames()
+//                    ->previewable(false)
+//                    ->directory('upload')
+//                    ->maxSize(5120)
+//                    ->reorderable()
+//                    ->appendFiles()
+//                    ->storeFiles(false)
+//                    ->acceptedFileTypes([
+//                        'application/vnd.ms-excel',
+//                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+//                        'text/csv'
+//                    ])
+//                    ->visibleOn('create'),
 
                 Section::make('Data Pribadi')->schema([
                     TextInput::make('dtks_id'),
@@ -265,7 +267,8 @@ class BantuanBpntResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                DateScopeFilter::make('created_at'),
+                DateRangeFilter::make('created_at')
+                    ->label('Rentang Tanggal'),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -281,10 +284,20 @@ class BantuanBpntResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageBantuanBpnt::route('/'),
+            'index' => Pages\ListBantuanBpnt::route('/'),
+            'create' => Pages\CreateBantuanBpnt::route('/create'),
+            'view' => Pages\ViewBantuanBpnt::route('/{record}'),
+            'edit' => Pages\EditBantuanBpnt::route('/{record}/edit'),
         ];
     }
 }

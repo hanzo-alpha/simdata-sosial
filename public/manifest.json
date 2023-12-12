@@ -1,0 +1,17 @@
+{
+    "name": "Rumah Data Terpadu Dinas Sosial",
+    "short_name": "SIMDADU",
+    "start_url": "/index.php",
+    "background_color": "#6777ef",
+    "description": "Sistem Informasi Managemen Rumah Data Terpadu",
+    "display": "fullscreen",
+    "theme_color": "#6777ef",
+    "icons": [
+        {
+            "src": "/logo-white.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

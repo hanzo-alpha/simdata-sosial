@@ -12,6 +12,7 @@ return new class extends Migration {
         Schema::create('jenis_bantuan_keluarga', static function (Blueprint $table) {
             $table->foreignIdFor(JenisBantuan::class)->constrained('jenis_bantuan')->cascadeOnUpdate();
             $table->foreignIdFor(Keluarga::class)->constrained('keluarga')->cascadeOnUpdate();
+            $table->morphs('bantuanable');
         });
     }
 };

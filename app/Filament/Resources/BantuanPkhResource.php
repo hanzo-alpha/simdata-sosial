@@ -3,13 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BantuanPkhResource\Pages;
+use App\Filament\Resources\BantuanPkhResource\RelationManagers;
 use App\Models\BantuanPkh;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
 use AymanAlhattami\FilamentDateScopesFilter\DateScopeFilter;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -18,6 +18,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class BantuanPkhResource extends Resource
 {
@@ -30,36 +31,19 @@ class BantuanPkhResource extends Resource
     protected static ?string $pluralLabel = 'Bantuan PKH';
     protected static ?string $navigationLabel = 'Bantuan PKH';
     protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                FileUpload::make('attachment')
-                    ->label('Impor')
-                    ->hiddenLabel()
-                    ->columnSpanFull()
-                    ->preserveFilenames()
-                    ->previewable(false)
-                    ->directory('upload')
-                    ->maxSize(5120)
-                    ->reorderable()
-                    ->appendFiles()
-                    ->storeFiles(false)
-                    ->acceptedFileTypes([
-                        'application/vnd.ms-excel',
-                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        'text/csv'
-                    ])
-                    ->visibleOn('create'),
-
                 Section::make('Data Pribadi')->schema([
                     TextInput::make('dtks_id'),
                     TextInput::make('nokk'),
                     TextInput::make('nik_ktp'),
                     TextInput::make('nama_penerima'),
                 ])
-                    ->visibleOn(['edit', 'view'])
+//                    ->visibleOn(['edit', 'view'])
                     ->columns(2),
                 Section::make('Data Bantuan')->schema([
                     TextInput::make('tahap'),
@@ -69,7 +53,7 @@ class BantuanPkhResource extends Resource
                     TextInput::make('dir'),
                     TextInput::make('gelombang'),
                 ])
-                    ->visibleOn(['edit', 'view'])
+//                    ->visibleOn(['edit', 'view'])
                     ->columns(2),
                 Section::make('Data Alamat')->schema([
                     TextInput::make('alamat')->columnSpanFull(),
@@ -97,7 +81,7 @@ class BantuanPkhResource extends Resource
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
                             ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
                     ])
-                        ->visibleOn(['edit', 'view'])
+//                        ->visibleOn(['edit', 'view'])
                         ->columns(2),
                     Grid::make()->schema([
                         Select::make('kecamatan')
@@ -142,17 +126,17 @@ class BantuanPkhResource extends Resource
 
                             }),
                     ])
-                        ->visibleOn(['edit', 'view'])
+//                        ->visibleOn(['edit', 'view'])
                         ->columns(2),
                     Grid::make()->schema([
                         TextInput::make('dusun'),
                         TextInput::make('no_rt'),
                         TextInput::make('no_rw'),
                     ])
-                        ->visibleOn(['edit', 'view'])
+//                        ->visibleOn(['edit', 'view'])
                         ->columns(3),
                 ])
-                    ->visibleOn(['edit', 'view'])
+//                    ->visibleOn(['edit', 'view'])
                     ->columns(2),
             ]);
     }
@@ -265,7 +249,8 @@ class BantuanPkhResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                DateScopeFilter::make('created_at'),
+                DateRangeFilter::make('created_at')
+                    ->label('Rentang Tanggal'),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -281,10 +266,20 @@ class BantuanPkhResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageBantuanPkh::route('/'),
+            'index' => Pages\ListBantuanPkh::route('/'),
+            'create' => Pages\CreateBantuanPkh::route('/create'),
+            'view' => Pages\ViewBantuanPkh::route('/{record}'),
+            'edit' => Pages\EditBantuanPkh::route('/{record}/edit'),
         ];
     }
 }

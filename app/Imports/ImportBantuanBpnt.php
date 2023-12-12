@@ -27,7 +27,6 @@ class ImportBantuanBpnt implements ToModel, WithBatchInserts, WithChunkReading, 
         $kabupaten = Kabupaten::query()->where('name', \Str::ucfirst($row['nama_kab']))->first()->code;
         $kecamatan = Kecamatan::query()->where('name', \Str::ucfirst($row['nama_kec']))->first()->code;
         $kelurahan = Kelurahan::query()->where('name', \Str::ucfirst($row['nama_kel']))->first()->code;
-        $kel = Kelurahan::query()->where('code', $row['kode_wilayah'])->first()->code;
 
         $jenisBantuan = JenisBantuan::where('alias', \Str::upper($row['bansos']))->first()->id;
         return new DataBpnt([

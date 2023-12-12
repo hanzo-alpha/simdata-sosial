@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KriteriaPelayananResource\Pages;
 use App\Filament\Resources\KriteriaPelayananResource\RelationManagers;
-use App\Models\KriteriaPelayanan;
+use App\Models\SubJenisDisabilitas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 
 class KriteriaPelayananResource extends Resource
 {
-    protected static ?string $model = KriteriaPelayanan::class;
+    protected static ?string $model = SubJenisDisabilitas::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
     protected static ?string $slug = 'kriteria-pelayanan';

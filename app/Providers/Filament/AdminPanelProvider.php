@@ -4,16 +4,18 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\KeluargaChart;
 use App\Filament\Widgets\KeluargaMap;
+use App\Filament\Widgets\PenerimaManfaatMap;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\MaxWidth;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -31,12 +33,22 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->topNavigation()
+//            ->sidebarCollapsibleOnDesktop()
             ->id('admin')
-            ->path('app')
+            ->path('dashboard')
             ->spa()
             ->login()
+            ->profile()
+            ->passwordReset()
+            ->maxContentWidth(MaxWidth::Full)
             ->colors([
-                'primary' => Color::Blue,
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'primary' => Color::Indigo,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
             ->plugins([
                 BreezyCore::make()
@@ -45,7 +57,7 @@ class AdminPanelProvider extends PanelProvider
                         shouldRegisterNavigation: false,
                         // Adds a main navigation item for the My Profile page (default = false)
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
-                        slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
+                        slug: 'profil-saya' // Sets the slug for the profile page (default = 'my-profile')
                     )
                     ->enableTwoFactorAuthentication()
                     ->enableSanctumTokens(),
@@ -75,7 +87,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationCountBadge()
             ])
             ->databaseNotifications()
-//            ->databaseNotificationsPolling('30s')
+            ->databaseNotificationsPolling('30s')
             ->favicon(asset('favicon-white.png'))
             ->brandName(config('custom.app.name'))
             ->brandLogo(asset('images/logo/svg/logo-rumahdata-no-background.svg'))
@@ -86,15 +98,15 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->font(config('custom.app.font', 'Inter'))
             ->pages([
-                Pages\Dashboard::class,
+//                Pages\Dashboard::class,
             ])
             ->navigationGroups([
-                NavigationGroup::make('master')
-                    ->label('Master')
-                    ->collapsible()
-                    ->collapsed(),
                 NavigationGroup::make('bantuan')
                     ->label('Bantuan')
+                    ->collapsible()
+                    ->collapsed(),
+                NavigationGroup::make('master')
+                    ->label('Master')
                     ->collapsible()
                     ->collapsed(),
                 NavigationGroup::make('pengaturan')
@@ -104,7 +116,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-
+//                PenerimaManfaatChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -121,6 +133,8 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->renderHook('panels::head.start', fn(): View => view('pwa-head'))
+            ->renderHook('panels::body.end', fn(): View => view('pwa-script'))
             ->resources([
                 config('filament-logger.activity_resource')
             ])

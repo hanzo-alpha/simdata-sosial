@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Alamat extends Model
@@ -43,6 +44,11 @@ class Alamat extends Model
             get: static fn($value) => $value,
             set: static fn($value, $attributes) => $this->getAlamatLengkap($attributes)
         );
+    }
+
+    public function alamatable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     public function location(): Attribute

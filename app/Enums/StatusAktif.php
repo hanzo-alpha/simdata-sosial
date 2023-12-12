@@ -15,8 +15,8 @@ enum StatusAktif: int implements HasLabel, HasColor, HasIcon
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::AKTIF => 'Aktif',
-            self::NONAKTIF => 'Non Aktif',
+            self::AKTIF => 'AKTIF',
+            self::NONAKTIF => 'NON AKTIF',
         };
     }
 
@@ -24,7 +24,7 @@ enum StatusAktif: int implements HasLabel, HasColor, HasIcon
     {
         return match ($this) {
             self::AKTIF => 'success',
-            self::NONAKTIF => 'info',
+            self::NONAKTIF => 'danger',
         };
     }
 

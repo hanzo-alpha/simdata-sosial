@@ -92,6 +92,9 @@ class AlamatForm extends Field
 //                ]),
             Grid::make(2)
                 ->schema([
+                    TextInput::make('alamat')
+                        ->required()
+                        ->columnSpanFull(),
                     Select::make('kecamatan')
                         ->required()
                         ->searchable()
@@ -110,13 +113,8 @@ class AlamatForm extends Field
                     Select::make('kelurahan')
                         ->required()
                         ->options(function (callable $get) {
-                            $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                            if (!$kel) {
-                                return Kelurahan::where('kecamatan_code', '731211')
-                                    ->pluck('name', 'code');
-                            }
-
-                            return $kel->pluck('name', 'code');
+                            return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck('name',
+                                'code');
                         })
                         ->reactive()
                         ->searchable(),
@@ -149,9 +147,9 @@ class AlamatForm extends Field
             $address = $record?->getRelationValue($this->getRelationship());
 
             $component->state($address ? $address->toArray() : [
-                'provinsi' => null,
+                'provinsi' => '73',
                 'alamat' => null,
-                'kabupaten' => null,
+                'kabupaten' => '7312',
                 'kecamatan' => null,
                 'kelurahan' => null,
                 'no_rt' => null,
