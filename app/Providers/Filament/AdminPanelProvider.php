@@ -46,9 +46,10 @@ class AdminPanelProvider extends PanelProvider
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
                 'info' => Color::Blue,
-                'primary' => Color::Indigo,
+                'primary' => Color::Amber,
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
+                'secondary' => Color::Indigo,
             ])
             ->plugins([
                 BreezyCore::make()
@@ -90,9 +91,9 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('30s')
             ->favicon(asset('favicon-white.png'))
             ->brandName(config('custom.app.name'))
-            ->brandLogo(asset('images/logo/svg/logo-rumahdata-no-background.svg'))
+            ->brandLogo(asset('images/logo/rumah-data-terpadu/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
-            ->darkModeBrandLogo(asset('images/logo/logo-white.png'))
+            ->darkModeBrandLogo(asset('images/logo/simdadu-white.png'))
             ->darkMode(config('custom.app.dark_mode', true))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

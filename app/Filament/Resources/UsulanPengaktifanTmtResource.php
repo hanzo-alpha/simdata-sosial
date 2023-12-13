@@ -167,7 +167,7 @@ class UsulanPengaktifanTmtResource extends Resource
                     ->options(JenisKelaminEnum::class),
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal')
-            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([

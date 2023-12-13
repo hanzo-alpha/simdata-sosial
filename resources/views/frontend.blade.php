@@ -35,8 +35,8 @@
         <nav class="flex items-center">
             <!-- Navbar Brand Logo -->
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset('images/logo/simdata/logo-brand.png') }}" class="h-8 logo-dark" alt="Logo Dark">
-                <img src="{{ asset('images/logo/simdata/logo-white-transparent-2.png') }}" class="h-8 logo-light"
+                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8 logo-dark" alt="Logo Dark">
+                <img src="{{ asset('images/logo/simdadu-white.png') }}" class="h-8 logo-light"
                      alt="Logo Light">
             </a>
 
@@ -81,7 +81,7 @@
         <!-- Mobile Menu Topbar Logo (Header) -->
         <div class="p-6 flex items-center justify-between">
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset('images/logo/simdata/logo-brand.png') }}" class="h-8" alt="Logo">
+                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8" alt="Logo">
             </a>
 
             <button data-fc-dismiss class="flex items-center px-2">
@@ -118,9 +118,8 @@
 
     <section class="relative py-16 sm:py-24 md:py-44">
         <div class="container">
-
             <div class="grid lg:grid-cols-2 grid-cols-1 gap-16 items-center">
-                <div class="order-2 lg:order-1 text-center sm:text-start">
+                <div class="relative 2xl:w-[128%]">
                     <h1 class="text-3xl/tight sm:text-4xl/tight lg:text-5xl/tight font-semibold mb-7">Aplikasi
                         Rumah Data
                         <span
@@ -128,8 +127,13 @@
                              after:bottom-0 after:end-0">Terpadu Dinas Sosial</span>
                         Kabupaten Soppeng
                     </h1>
-                    <p class="text-gray-500">Sistem informasi managemen bantuan sosial pada Dinas Sosial Kabupaten
-                        Soppeng</p>
+                    <p class="text-gray-500">
+                        Sistem informasi managemen bantuan sosial pada Dinas Sosial Kabupaten Soppeng
+                    </p>
+                    {{--                    <div class="absolute bottom-10 inset-x-9 hidden sm:block">--}}
+                    {{--                        <img src="{{ asset('images/logo/logo-soppeng.png') }}" alt="logo-soppeng"--}}
+                    {{--                             class="w-16 h-16" data-aos="fade-left" data-aos-duration="600">--}}
+                    {{--                    </div>--}}
                 </div>
 
                 <div class="order-1 lg:order-2">
@@ -137,7 +141,7 @@
                         <div
                             class="before:w-28 before:h-28 sm:before:absolute before:-z-10 before:-bottom-8 before:-start-8 before:bg-[url('../images/pattern/dot3.svg')] hidden sm:block"></div>
 
-                        <img src="{{ asset('frontend/images/hero/dashboard.png') }}" alt="desktop-img"
+                        <img src="{{ asset('frontend/images/hero/dashboard1.png') }}" alt="desktop-img"
                              class="w-full h-full bg-white p-2 rounded-lg shadow-lg shadow-black/5" data-aos="fade-left"
                              data-aos-duration="600">
                     </div>
@@ -181,7 +185,7 @@
                 </li>
             </ul>
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset('images/logo/simdata/logo-brand.png') }}" class="h-8 mx-auto" alt="logo brand">
+                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8 mx-auto" alt="logo brand">
             </a>
         </div>
     </div>

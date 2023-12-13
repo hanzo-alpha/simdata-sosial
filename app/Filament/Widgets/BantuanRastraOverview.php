@@ -17,36 +17,46 @@ class BantuanRastraOverview extends BaseWidget
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
 
+        $query = BantuanRastra::query()
+            ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
+            ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate));
+
+        $verified = $query->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)->count();
+        $unverified = $query->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED);
+        $review = $query->where('status_verifikasi', StatusVerifikasiEnum::REVIEW)->count();
+
+//        dd($verified);
+
         return [
             Stat::make(
-                label: 'Total KPM RASTRA Tidak Terverifikasi',
+                label: 'KPM RASTRA Tidak Terverifikasi',
                 value: BantuanRastra::query()
                     ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
                     ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
                     ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
                     ->count())
-//                ->description('32k increase')
-//                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->description('Total KPM RASTRA yang belum terverifikasi')
+                ->descriptionIcon('heroicon-o-document-minus')
                 ->color('danger'),
             Stat::make(
-                label: 'Total KPM RASTRA Terverifikasi',
+                label: 'KPM RASTRA Terverifikasi',
                 value: BantuanRastra::query()
                     ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
                     ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
                     ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
                     ->count())
-//                ->description('7% increase')
-//                ->descriptionIcon('heroicon-m-arrow-trending-down')
+                ->description('Total KPM RASTRA yang sudah terverifikasi')
+                ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success'),
-            Stat::make(label: 'Total KPM RASTRA Ditinjau',
+            Stat::make(label: 'KPM RASTRA Ditinjau',
                 value: BantuanRastra::query()
                     ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
                     ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
                     ->where('status_verifikasi', StatusVerifikasiEnum::REVIEW)
                     ->count())
-//                ->description('3% increase')
-//                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('warning'),
+                ->description('Total KPM RASTRA dalam proses peninjauan')
+                ->descriptionIcon('heroicon-o-exclamation-circle')
+                ->color('info'),
         ];
     }
 }

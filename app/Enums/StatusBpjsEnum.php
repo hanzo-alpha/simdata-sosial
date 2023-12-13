@@ -11,6 +11,7 @@ enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
     case BARU = 'BARU';
     case PENGAKTIFAN = 'PENGAKTIFAN';
     case PENGALIHAN = 'PENGALIHAN';
+    case NONAKTIF = 'TIDAK AKTIF';
 
 
     public function getLabel(): ?string
@@ -19,6 +20,7 @@ enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
             self::BARU => 'BARU',
             self::PENGAKTIFAN => 'PENGAKTIFAN',
             self::PENGALIHAN => 'PENGALIHAN',
+            self::NONAKTIF => 'NON AKTIF',
         };
     }
 
@@ -27,7 +29,8 @@ enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
         return match ($this) {
             self::BARU => 'primary',
             self::PENGAKTIFAN => 'success',
-            self::PENGALIHAN => 'danger',
+            self::PENGALIHAN => 'info',
+            self::NONAKTIF => 'danger',
         };
     }
 
@@ -37,6 +40,7 @@ enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
             self::BARU => 'heroicon-o-plus-small',
             self::PENGAKTIFAN => 'heroicon-o-check',
             self::PENGALIHAN => 'heroicon-o-arrow-path-rounded-square',
+            self::NONAKTIF => 'heroicon-o-user-minus',
         };
     }
 }

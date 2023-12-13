@@ -8,6 +8,7 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Resources\BantuanRastraResource\RelationManagers;
+use App\Filament\Widgets\BantuanRastraOverview;
 use App\Forms\Components\AlamatForm;
 use App\Models\BantuanRastra;
 use Carbon\Carbon;
@@ -288,6 +289,13 @@ class BantuanRastraResource extends Resource
         return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            BantuanRastraOverview::class,
+        ];
+    }
+
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()
@@ -304,7 +312,7 @@ class BantuanRastraResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBantuanRastras::route('/'),
+            'index' => Pages\ListBantuanRastra::route('/'),
             'create' => Pages\CreateBantuanRastra::route('/create'),
             'view' => Pages\ViewBantuanRastra::route('/{record}'),
             'edit' => Pages\EditBantuanRastra::route('/{record}/edit'),

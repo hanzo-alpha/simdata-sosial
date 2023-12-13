@@ -159,6 +159,7 @@ class BantuanRastra extends Model
                 ->required()
                 ->searchable()
                 ->disabled()
+                ->hidden()
                 ->relationship(
                     name: 'jenis_bantuan',
                     titleAttribute: 'alias',
@@ -244,27 +245,27 @@ class BantuanRastra extends Model
                 ->previewable(false)
                 ->image(),
 
-            FileUpload::make('bukti_file')
-                ->label('Unggah File')
-                ->getUploadedFileNameForStorageUsing(
-                    fn(TemporaryUploadedFile $file
-                    ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                )
-                ->preserveFilenames()
-                ->multiple()
-                ->reorderable()
-                ->appendFiles()
-                ->openable()
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->helperText('maks. 2MB')
-                ->maxFiles(3)
-                ->maxSize(2048)
-                ->columnSpanFull()
-                ->imagePreviewHeight('250')
-                ->previewable(false)
-                ->image(),
+//            FileUpload::make('bukti_file')
+//                ->label('Unggah File')
+//                ->getUploadedFileNameForStorageUsing(
+//                    fn(TemporaryUploadedFile $file
+//                    ): string => (string) str($file->getClientOriginalName())
+//                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+//                )
+//                ->preserveFilenames()
+//                ->multiple()
+//                ->reorderable()
+//                ->appendFiles()
+//                ->openable()
+//                ->required()
+//                ->unique(ignoreRecord: true)
+//                ->helperText('maks. 2MB')
+//                ->maxFiles(3)
+//                ->maxSize(2048)
+//                ->columnSpanFull()
+//                ->imagePreviewHeight('250')
+//                ->previewable(false)
+//                ->image(),
         ];
     }
 }
