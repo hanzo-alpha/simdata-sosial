@@ -32,9 +32,17 @@ class JenisDisabilitasResource extends Resource
                 Forms\Components\TextInput::make('alias')
                     ->maxLength(255),
                 Forms\Components\Repeater::make('sub_jenis_disabilitas')
+                    ->label('Sub Jenis Disabilitas')
                     ->relationship()
-                    ->simple(Forms\Components\TextInput::make('nama_sub_jenis')),
-            ]);
+                    ->simple(
+                        Forms\Components\TextInput::make('nama_sub_jenis')
+                            ->label('Nama Sub Jenis')
+                            ->required()
+                    )
+                    ->addActionLabel('Tambah Sub Jenis Disabilitas')
+                    ->reorderableWithButtons()
+                    ->columnSpan('full'),
+            ])->inlineLabel()->columns(1);
     }
 
     public static function table(Table $table): Table

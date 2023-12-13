@@ -124,29 +124,10 @@ class BantuanPpksResource extends Resource
                                 ->numeric(),
 
                             TextInput::make('jumlah_bantuan')
-                                ->default(1)
+                                ->default(0)
                                 ->numeric(),
 
                         ])->columns(2),
-
-//                    Section::make('Jenis Pelayanan / PMKS')
-//                        ->schema([
-//                            Select::make('jenis_pelayanan_id')
-//                                ->required()
-//                                ->searchable(['nama_ppks', 'alias'])
-//                                ->relationship('jenis_pelayanan', 'nama_ppks')
-//                                ->preload()
-//                                ->lazy()
-//                                ->optionsLimit(5),
-//                            TableRepeater::make('kriteria_pelayanan')
-//                                ->schema([
-//                                    TextInput::make('nama_kriteria')
-//                                        ->hiddenLabel()
-//                                ])
-//                                ->reorderable()
-//                                ->cloneable()
-//                                ->collapsible()
-//                        ])->columns(1),
 
                     Section::make('Data Alamat')
                         ->schema([
@@ -183,8 +164,7 @@ class BantuanPpksResource extends Resource
                                 ->options(JenisDisabilitas::pluck('nama_penyandang', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('sub_jenis_disabilitas', null))
-                                ->optionsLimit(5),
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('sub_jenis_disabilitas', null)),
 
                             Select::make('sub_jenis_disabilitas')
                                 ->label('Sub Jenis Disabilitas')
@@ -192,12 +172,11 @@ class BantuanPpksResource extends Resource
                                 ->multiple()
                                 ->searchable()
                                 ->options(function (callable $set, callable $get) {
-                                    return SubJenisDisabilitas::find($get('jenis_disabilitas_id'))?->pluck('nama_sub_jenis',
-                                        'id');
+                                    return SubJenisDisabilitas::where('jenis_disabilitas_id',
+                                        $get('jenis_disabilitas_id'))
+                                        ?->pluck('nama_sub_jenis', 'id');
                                 })
-                                ->preload()
-                                ->lazy()
-                                ->optionsLimit(5),
+                                ->preload(),
 
                             Select::make('jenis_anggaran')
                                 ->options(JenisAnggaranEnum::class)
