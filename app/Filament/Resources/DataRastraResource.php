@@ -4,14 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
-use App\Enums\StatusAktif;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\DataRastraResource\Pages;
 use App\Filament\Resources\DataRastraResource\RelationManagers;
-use App\Forms\Components\AlamatForm;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Rastra;
@@ -32,7 +30,6 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -106,6 +103,7 @@ class DataRastraResource extends Resource
                                 ->default(StatusKawinBpjsEnum::KAWIN)
                                 ->preload(),
                             Geocomplete::make('alamat_kpm')
+                                ->required()
                                 ->countries(['id'])
                                 ->updateLatLng()
                                 ->geocodeOnLoad()
@@ -119,6 +117,31 @@ class DataRastraResource extends Resource
                                     'state' => '%A1',
                                     'street' => '%S %n',
                                 ]),
+                            Select::make('kecamatan')
+                                ->required()
+                                ->searchable()
+                                ->reactive()
+                                ->options(function () {
+                                    $kab = Kecamatan::query()->where('kabupaten_code',
+                                        config('custom.default.kodekab'));
+                                    if (!$kab) {
+                                        return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
+                                            ->pluck('name', 'code');
+                                    }
+
+                                    return $kab->pluck('name', 'code');
+                                })
+                                ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+
+                            Select::make('kelurahan')
+                                ->required()
+                                ->options(function (callable $get) {
+                                    return Kelurahan::query()->where('kecamatan_code',
+                                        $get('kecamatan'))?->pluck('name',
+                                        'code');
+                                })
+                                ->reactive()
+                                ->searchable(),
                             Grid::make(2)->schema([
                                 TextInput::make('lat')
                                     ->disabled()
@@ -151,31 +174,6 @@ class DataRastraResource extends Resource
                                     })
                                     ->lazy(),
                             ]),
-                            Select::make('kecamatan')
-                                ->required()
-                                ->searchable()
-                                ->reactive()
-                                ->options(function () {
-                                    $kab = Kecamatan::query()->where('kabupaten_code',
-                                        config('custom.default.kodekab'));
-                                    if (!$kab) {
-                                        return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
-                                            ->pluck('name', 'code');
-                                    }
-
-                                    return $kab->pluck('name', 'code');
-                                })
-                                ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
-
-                            Select::make('kelurahan')
-                                ->required()
-                                ->options(function (callable $get) {
-                                    return Kelurahan::query()->where('kecamatan_code',
-                                        $get('kecamatan'))?->pluck('name',
-                                        'code');
-                                })
-                                ->reactive()
-                                ->searchable(),
                         ])->columns(2),
                 ])->columnSpan(['lg' => 2]),
 
@@ -217,32 +215,29 @@ class DataRastraResource extends Resource
                                 ->live()
                                 ->preload(),
 
-//                            Select::make('pengganti_rastra.keluarga_id')
-//                                ->label('Keluarga Yang Diganti')
-//                                ->required()
-//                                ->options(Rastra::query()
-//                                    ->where('status_penyerahan', StatusRastra::BARU)
-//                                    ->pluck('nama_kpm', 'id'))
-//                                ->searchable(['nama_lengkap', 'nik', 'nokk'])
-//                                ->getOptionLabelFromRecordUsing(function ($record) {
-//                                    return '<strong>' . $record->family->nama_lengkap . '</strong><br>' . $record->nik;
-//                                })->allowHtml()
-//                                ->optionsLimit(15)
-//                                ->lazy()
-//                                ->visible(fn(Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
-//                                ->preload(),
-//
-//                            Select::make('pengganti_rastra.alasan_dikeluarkan')
-//                                ->searchable()
-//                                ->options(AlasanEnum::class)
-//                                ->enum(AlasanEnum::class)
-//                                ->native(false)
-//                                ->preload()
-//                                ->lazy()
-//                                ->required()
-//                                ->visible(fn(Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
-//                                ->default(AlasanEnum::PINDAH)
-//                                ->optionsLimit(15),
+                            Select::make('pengganti_rastra.keluarga_id')
+                                ->label('Keluarga Yang Diganti')
+                                ->required()
+                                ->options(Rastra::query()
+                                    ->where('status_penyerahan', StatusRastra::BARU)
+                                    ->pluck('nama_kpm', 'id'))
+                                ->searchable(['nama_lengkap', 'nik', 'nokk'])
+                                ->optionsLimit(15)
+                                ->lazy()
+                                ->visible(fn(Get $get) => $get('status_penyerahan') === StatusRastra::PENGGANTI)
+                                ->preload(),
+
+                            Select::make('pengganti_rastra.alasan_dikeluarkan')
+                                ->searchable()
+                                ->options(AlasanEnum::class)
+                                ->enum(AlasanEnum::class)
+                                ->native(false)
+                                ->preload()
+                                ->lazy()
+                                ->required()
+                                ->visible(fn(Get $get) => $get('status_penyerahan') === StatusRastra::PENGGANTI)
+                                ->default(AlasanEnum::PINDAH)
+                                ->optionsLimit(15),
 
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')

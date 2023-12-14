@@ -40,6 +40,7 @@ class BantuanRastra extends Model
         'bukti_foto' => 'array',
         'attachments' => 'array',
         'pengganti_rastra' => 'array',
+        'tgl_lahir' => 'date',
         'status_kawin' => StatusKawinBpjsEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rastra' => StatusRastra::class,

@@ -21,7 +21,8 @@ class DataPesertaJamkesdaResource extends Resource
     protected static ?string $label = 'Peserta Jamkesda';
     protected static ?string $pluralLabel = 'Peserta Jamkesda';
     protected static ?string $navigationLabel = 'Peserta Jamkesda';
-    protected static ?string $navigationGroup = 'Bantuan BPJS';
+    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {

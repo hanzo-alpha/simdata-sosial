@@ -32,8 +32,10 @@ class Rastra extends Model
         'lat' => 'string',
         'lng' => 'string',
         'lokasi_map' => 'array',
+        'tgl_lahir' => 'date',
         'status_verifikasi' => StatusVerifikasiEnum::class,
-        'status_penyerahan' => StatusRastra::class
+        'status_penyerahan' => StatusRastra::class,
+        'pengganti_rastra' => 'array'
     ];
 
     /**

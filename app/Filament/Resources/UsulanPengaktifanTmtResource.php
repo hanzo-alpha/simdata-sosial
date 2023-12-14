@@ -7,14 +7,11 @@ use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
-use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\UsulanPengaktifanTmtResource\Pages;
 use App\Filament\Resources\UsulanPengaktifanTmtResource\RelationManagers;
-use App\Forms\Components\AlamatForm;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\UsulanPengaktifanTmt;
-use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -24,8 +21,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -145,7 +140,8 @@ class UsulanPengaktifanTmtResource extends Resource
                                 ->enum(StatusUsulanEnum::class)
                                 ->options(StatusUsulanEnum::class)
                                 ->default(StatusUsulanEnum::ONPROGRESS)
-                                ->live()
+                                ->lazy()
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->preload(),
 
                             ToggleButton::make('status_aktif')
@@ -154,9 +150,11 @@ class UsulanPengaktifanTmtResource extends Resource
                                 ->onColor(StatusAktif::AKTIF->getColor())
                                 ->offLabel(StatusAktif::NONAKTIF->getLabel())
                                 ->onLabel(StatusAktif::AKTIF->getLabel())
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->default(0),
 
                             Forms\Components\Textarea::make('keterangan')
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->autosize()
                         ]),
                 ])->columns(1),

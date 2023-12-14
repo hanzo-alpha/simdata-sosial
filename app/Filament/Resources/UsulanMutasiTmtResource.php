@@ -24,7 +24,8 @@ class UsulanMutasiTmtResource extends Resource
     protected static ?string $label = 'Usulan Mutasi TMT';
     protected static ?string $pluralLabel = 'Usulan Mutasi TMT';
     protected static ?string $navigationLabel = 'Usulan Mutasi TMT';
-    protected static ?string $navigationGroup = 'Bantuan BPJS';
+    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {

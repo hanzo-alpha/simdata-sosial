@@ -33,6 +33,7 @@ return new class extends Migration {
             $table->string('status_penyerahan', 25)->nullable();
             $table->boolean('status_aktif')->nullable();
             $table->string('status_verifikasi', 25)->nullable();
+            $table->json('pengganti_rastra')->nullable();
             $table->timestamps();
         });
     }

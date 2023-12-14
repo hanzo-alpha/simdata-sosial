@@ -14,6 +14,15 @@ class ExportBantuanBpjs extends ExcelExport
         $this->askForFilename();
         $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
         $this->askForWriterType();
+        $this->modifyQueryUsing(fn($query) => $query->with([
+            'alamat',
+            'alamat.kec',
+            'alamat.kel',
+            'jenis_bantuan',
+            'pendidikan_terakhir',
+            'hubungan_keluarga',
+            'jenis_pekerjaan'
+        ]));
         $this->withColumns([
             Column::make('dtks_id')->heading('DTKS ID'),
             Column::make('nokk')->heading('No. KK'),
