@@ -2,9 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Widgets\KeluargaChart;
-use App\Filament\Widgets\KeluargaMap;
-use App\Filament\Widgets\PenerimaManfaatMap;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
