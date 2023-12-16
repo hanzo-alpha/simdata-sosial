@@ -272,6 +272,11 @@ class UsulanPengaktifanTmtResource extends Resource
             ]);
     }
 
+//    public static function getNavigationBadge(): ?string
+//    {
+//        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+//    }
+
     public static function getRelations(): array
     {
         return [

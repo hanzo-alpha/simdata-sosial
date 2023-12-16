@@ -16,8 +16,8 @@ use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use Maatwebsite\Excel\Concerns\SkipsErrors;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -29,9 +29,9 @@ use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
 class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, ShouldQueue,
-    SkipsEmptyRows, WithValidation, WithUpserts
+    SkipsEmptyRows, WithValidation, WithUpserts, SkipsOnFailure, SkipsOnError
 {
-    use Importable, SkipsFailures, SkipsErrors;
+    use Importable;
 
     public function registerEvents(): array
     {
@@ -87,20 +87,7 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
             default => null
         };
 
-        $bulan = match ($row['periode_bulan']) {
-            'JANUARI' => 1,
-            'FEBRUARI' => 2,
-            'MARET' => 3,
-            'APRIL' => 4,
-            'MEI' => 5,
-            'JUNI' => 6,
-            'JULI' => 7,
-            'AGUSTUS' => 8,
-            'SEPTEMBER' => 10,
-            'NOVEMBER' => 11,
-            'DESEMBER' => 12,
-            default => null
-        };
+        $bulan = bulan_to_integer($row['periode_bulan']);
 
         return new DataUsulanAktifTmt([
             'nokk_tmt' => $row['no_kk'] ?? 'TIDAK ADA NOMOR KK',
@@ -170,6 +157,6 @@ class ImportUsulanPengaktifanTmt implements ToModel, WithBatchInserts, WithChunk
 
     public function uniqueBy(): array
     {
-        return ['nik', 'no_kk'];
+        return ['nik'];
     }
 }

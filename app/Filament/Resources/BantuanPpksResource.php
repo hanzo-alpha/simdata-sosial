@@ -485,10 +485,10 @@ class BantuanPpksResource extends Resource
             ])->columns(3);
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
-    }
+//    public static function getNavigationBadge(): ?string
+//    {
+//        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+//    }
 
     public static function getGlobalSearchEloquentQuery(): Builder
     {
