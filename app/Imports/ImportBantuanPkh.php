@@ -13,20 +13,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use Maatwebsite\Excel\Concerns\SkipsOnError;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Validators\Failure;
-use Throwable;
 
 class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithValidation,
-    SkipsEmptyRows, SkipsOnFailure, SkipsOnError
+    SkipsEmptyRows, WithUpserts
 {
-    use Importable;
+    use Importable, SkipsFailures, SkipsErrors;
 
 //    use Importable, SkipsFailures, SkipsErrors;
     /**
@@ -100,18 +99,29 @@ class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, W
         ];
     }
 
-    public function onError(Throwable $e)
-    {
-        dd($e);
-    }
+//    public function onError(Throwable $e)
+//    {
+//        dd($e);
+//    }
 
-    public function onFailure(Failure ...$failures)
+//    public function onFailure(Failure ...$failures)
+//    {
+//        foreach ($failures as $failure) {
+//            $baris = $failure->row();
+//            $errmsg = $failure->errors()[0];
+//            $values = $failure->values();
+//
+//            Notification::make('Failure Import')
+//                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+//                ->body('NIK : ' . $values['nik'] . ' | No.KK : ' . $values['no_kk'] . ' | Nama : ' . $values['nama_lengkap'])
+//                ->danger()
+//                ->sendToDatabase(auth()->user())
+//                ->broadcast(User::where('is_admin', 1)->get());
+//        }
+//    }
+
+    public function uniqueBy(): array
     {
-        dd($failures);
-//        return Notification::make('Failure')
-//            ->danger()
-//            ->title($failures)
-//            ->send()
-//            ->sendToDatabase(auth()->user());
+        return ['nik', 'iddtks'];
     }
 }

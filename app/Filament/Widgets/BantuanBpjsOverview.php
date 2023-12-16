@@ -18,49 +18,101 @@ class BantuanBpjsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $startDate = $this->filters['startDate'] ?? null;
-        $endDate = $this->filters['endDate'] ?? null;
+        $dateRange = $this->filters['daterange'] ?? null;
+        $kecamatan = $this->filters['kecamatan'] ?? null;
+        $kelurahan = $this->filters['kelurahan'] ?? null;
+
+        $all = UsulanPengaktifanTmt::query()
+            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
+            ->when($dateRange, function (Builder $query) use ($dateRange) {
+                $dates = explode('-', $dateRange);
+                return $query
+                    ->whereDate('created_at', '<=', $dates[0])
+                    ->whereDate('created_at', '>=', $dates[1]);
+            })
+            ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+                return $query->where('kecamatan', $kecamatan);
+            })
+            ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+                return $query->where('kelurahan', $kelurahan);
+            })
+            ->count();
+
+        $verified = UsulanPengaktifanTmt::query()
+            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
+            ->when($dateRange, function (Builder $query) use ($dateRange) {
+                $dates = explode('-', $dateRange);
+                return $query
+                    ->whereDate('created_at', '<=', $dates[0])
+                    ->whereDate('created_at', '>=', $dates[1]);
+            })
+            ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+                return $query->where('kecamatan', $kecamatan);
+            })
+            ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+                return $query->where('kelurahan', $kelurahan);
+            })
+            ->where('status_bpjs', StatusBpjsEnum::BARU)
+            ->count();
+
+        $unverified = UsulanPengaktifanTmt::query()
+            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
+            ->when($dateRange, function (Builder $query) use ($dateRange) {
+                $dates = explode('-', $dateRange);
+                return $query
+                    ->whereDate('created_at', '<=', $dates[0])
+                    ->whereDate('created_at', '>=', $dates[1]);
+            })
+            ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+                return $query->where('kecamatan', $kecamatan);
+            })
+            ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+                return $query->where('kelurahan', $kelurahan);
+            })
+            ->where('status_bpjs', StatusBpjsEnum::PENGAKTIFAN)
+            ->count();
+
+        $review = UsulanPengaktifanTmt::query()
+            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
+            ->when($dateRange, function (Builder $query) use ($dateRange) {
+                $dates = explode('-', $dateRange);
+                return $query
+                    ->whereDate('created_at', '<=', $dates[0])
+                    ->whereDate('created_at', '>=', $dates[1]);
+            })
+            ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+                return $query->where('kecamatan', $kecamatan);
+            })
+            ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+                return $query->where('kelurahan', $kelurahan);
+            })
+            ->where('status_bpjs', StatusBpjsEnum::PENGALIHAN)
+            ->count();
 
         return [
-//            Stat::make(
-//                label: 'Total Belum Terverifikasi',
-//                value: BantuanBpjs::query()
-//                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-//                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
-//                    ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
-//                    ->count())
-////                ->description('32k increase')
-////                ->descriptionIcon('heroicon-m-arrow-trending-up')
-//                ->color('success'),
             Stat::make(
-                label: 'Total Peserta Baru',
-                value: UsulanPengaktifanTmt::query()
-                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
-                    ->where('status_bpjs', StatusBpjsEnum::BARU)
-                    ->count())
-//                ->description('32k increase')
-//                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('success'),
-            Stat::make(
-                label: 'Total Pengaktifan BPJS',
-                value: UsulanPengaktifanTmt::query()
-                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
-                    ->where('status_bpjs', StatusBpjsEnum::PENGAKTIFAN)
-                    ->count())
-//                ->description('7% increase')
-//                ->descriptionIcon('heroicon-m-arrow-trending-down')
+                label: 'KPM BPJS',
+                value: \Number::abbreviate($all, 2))
+                ->description('Total Seluruh KPM BPJS')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),
-            Stat::make(label: 'Total Pengalihan BPJS',
-                value: UsulanPengaktifanTmt::query()
-                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
-                    ->where('status_bpjs', StatusBpjsEnum::PENGALIHAN)
-                    ->count())
-//                ->description('3% increase')
-//                ->descriptionIcon('heroicon-m-arrow-trending-up')
+            Stat::make(
+                label: 'KPM BPJS Baru',
+                value: \Number::abbreviate($verified, 2))
+                ->description('Total KPM BPJS Baru')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('info'),
+            Stat::make(
+                label: 'Pengaktifan KPM BPJS',
+                value: \Number::abbreviate($unverified, 2))
+                ->description('Total Pengaktifan KPM BPJS')
+                ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
+            Stat::make(label: 'Pengalihan KPM BPJS',
+                value: \Number::abbreviate($review, 2))
+                ->description('Total Pengalihan KPM BPJS')
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('warning'),
         ];
     }
 }

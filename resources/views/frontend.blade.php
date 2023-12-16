@@ -12,6 +12,7 @@
 
     <!-- Theme favicon -->
     <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">
+    {{--    <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">--}}
 
     <!--Swiper slider css-->
     <link href="{{ asset('frontend/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css">
@@ -201,16 +202,16 @@
 <!-- =========== Back To Top End =========== -->
 
 <!-- Frost Plugin Js -->
-<script src="{{ asset('frontend/libs/@frostui/tailwindcss/frostui.js') }}"></script>
+<script src="{{ asset('frontend/libs/@frostui/tailwindcss/frostui.js') }}" type="text/javascript"></script>
 
 <!-- Swiper Plugin Js -->
-<script src="{{ asset('frontend/libs/swiper/swiper-bundle.min.js') }}"></script>
+<script src="{{ asset('frontend/libs/swiper/swiper-bundle.min.js') }}" type="text/javascript"></script>
 
 <!-- Animation on Scroll Plugin Js -->
-<script src="{{ asset('frontend/libs/aos/aos.js') }}"></script>
+<script src="{{ asset('frontend/libs/aos/aos.js') }}" type="text/javascript"></script>
 
 <!-- Theme Js -->
-<script src="{{ asset('frontend/js/theme.min.js') }}"></script>
+<script src="{{ asset('frontend/js/theme.min.js') }}" type="text/javascript"></script>
 
 </body>
 

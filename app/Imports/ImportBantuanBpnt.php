@@ -9,6 +9,8 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
+use App\Models\User;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
@@ -107,11 +109,19 @@ class ImportBantuanBpnt implements ToModel, WithBatchInserts, WithChunkReading, 
 
     public function onFailure(Failure ...$failures)
     {
-        dd($failures);
-//        return Notification::make('Failure')
-//            ->danger()
-//            ->title($failures)
-//            ->send()
-//            ->sendToDatabase(auth()->user());
+        if (!blank($failures)) {
+            foreach ($failures as $failure) {
+                $baris = $failure->row();
+                $errmsg = $failure->errors()[0];
+                $values = $failure->values();
+
+                Notification::make('Failure Import')
+                    ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+                    ->body('NIK : ' . $values['nik'] . ' | No.KK : ' . $values['no_kk'] . ' | Nama : ' . $values['nama_lengkap'])
+                    ->danger()
+                    ->sendToDatabase(auth()->user())
+                    ->broadcast(User::where('is_admin', 1)->get());
+            }
+        }
     }
 }

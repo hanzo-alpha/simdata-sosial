@@ -135,7 +135,9 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->renderHook('panels::head.start', fn(): View => view('pwa-head'))
+            ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('pwa-script'))
+            ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([
                 config('filament-logger.activity_resource')
             ])

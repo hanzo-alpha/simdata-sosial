@@ -173,7 +173,7 @@ class BantuanPkhResource extends Resource
             ->groupingSettingsInDropdownOnDesktop()
 //            ->groupingSettingsHidden()
 //            ->paginated([10, 25, 50, 100, 'all'])
-            ->defaultPaginationPageOption(25)
+            ->defaultPaginationPageOption(10)
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')

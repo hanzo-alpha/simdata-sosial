@@ -27,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
 
+//        Livewire::setScriptRoute(static function ($handle) {
+//            return Route::get('/custom/livewire/livewire.js', $handle);
+//        });
+
         Model::unguard();
 //        if (app()->environment('production')) {
 //            URL::forceScheme('https');

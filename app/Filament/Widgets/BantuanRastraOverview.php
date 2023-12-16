@@ -14,25 +14,34 @@ class BantuanRastraOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $startDate = $this->filters['startDate'] ?? null;
-        $endDate = $this->filters['endDate'] ?? null;
-
-        $query = BantuanRastra::query()
-            ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-            ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate));
-
-        $verified = $query->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)->count();
-        $unverified = $query->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED);
-        $review = $query->where('status_verifikasi', StatusVerifikasiEnum::REVIEW)->count();
-
-//        dd($verified);
+        $dateRange = $this->filters['daterange'] ?? null;
+        $kecamatan = $this->filters['kecamatan'] ?? null;
+        $kelurahan = $this->filters['kelurahan'] ?? null;
 
         return [
             Stat::make(
                 label: 'KPM RASTRA Tidak Terverifikasi',
                 value: BantuanRastra::query()
-                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
+                    ->when($dateRange, function (Builder $query) use ($dateRange) {
+                        $dates = explode('-', $dateRange);
+                        return $query
+                            ->whereDate('created_at', '>=', $dates[0])
+                            ->whereDate('created_at', '<=', $dates[1]);
+                    })
+                    ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+                        return $query->whereHas('alamat', function (Builder $query) use ($kecamatan) {
+                            return $query->whereHas('kec', function (Builder $query) use ($kecamatan) {
+                                return $query->where('code', $kecamatan);
+                            });
+                        });
+                    })
+                    ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+                        return $query->whereHas('alamat', function (Builder $query) use ($kelurahan) {
+                            return $query->whereHas('kel', function (Builder $query) use ($kelurahan) {
+                                return $query->where('code', $kelurahan);
+                            });
+                        });
+                    })
                     ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
                     ->count())
                 ->description('Total KPM RASTRA yang belum terverifikasi')
@@ -41,8 +50,26 @@ class BantuanRastraOverview extends BaseWidget
             Stat::make(
                 label: 'KPM RASTRA Terverifikasi',
                 value: BantuanRastra::query()
-                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
+                    ->when($dateRange, function (Builder $query) use ($dateRange) {
+                        $dates = explode('-', $dateRange);
+                        return $query
+                            ->whereDate('created_at', '>=', $dates[0])
+                            ->whereDate('created_at', '<=', $dates[1]);
+                    })
+                    ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+                        return $query->whereHas('alamat', function (Builder $query) use ($kecamatan) {
+                            return $query->whereHas('kec', function (Builder $query) use ($kecamatan) {
+                                return $query->where('code', $kecamatan);
+                            });
+                        });
+                    })
+                    ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+                        return $query->whereHas('alamat', function (Builder $query) use ($kelurahan) {
+                            return $query->whereHas('kel', function (Builder $query) use ($kelurahan) {
+                                return $query->where('code', $kelurahan);
+                            });
+                        });
+                    })
                     ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
                     ->count())
                 ->description('Total KPM RASTRA yang sudah terverifikasi')
@@ -50,8 +77,26 @@ class BantuanRastraOverview extends BaseWidget
                 ->color('success'),
             Stat::make(label: 'KPM RASTRA Ditinjau',
                 value: BantuanRastra::query()
-                    ->when($startDate, fn(Builder $builder) => $builder->whereDate('created_at', '>=', $startDate))
-                    ->when($endDate, fn(Builder $builder) => $builder->whereDate('created_at', '<=', $endDate))
+                    ->when($dateRange, function (Builder $query) use ($dateRange) {
+                        $dates = explode('-', $dateRange);
+                        return $query
+                            ->whereDate('created_at', '>=', $dates[0])
+                            ->whereDate('created_at', '<=', $dates[1]);
+                    })
+                    ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+                        return $query->whereHas('alamat', function (Builder $query) use ($kecamatan) {
+                            return $query->whereHas('kec', function (Builder $query) use ($kecamatan) {
+                                return $query->where('code', $kecamatan);
+                            });
+                        });
+                    })
+                    ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+                        return $query->whereHas('alamat', function (Builder $query) use ($kelurahan) {
+                            return $query->whereHas('kel', function (Builder $query) use ($kelurahan) {
+                                return $query->where('code', $kelurahan);
+                            });
+                        });
+                    })
                     ->where('status_verifikasi', StatusVerifikasiEnum::REVIEW)
                     ->count())
                 ->description('Total KPM RASTRA dalam proses peninjauan')
