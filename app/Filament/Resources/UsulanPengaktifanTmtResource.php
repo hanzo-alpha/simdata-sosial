@@ -33,9 +33,10 @@ class UsulanPengaktifanTmtResource extends Resource
     protected static ?string $slug = 'usulan-pengaktifan-tmt';
     protected static ?string $label = 'Usulan Pengaktifan TMT';
     protected static ?string $pluralLabel = 'Usulan Pengaktifan TMT';
-    protected static ?string $navigationLabel = 'Bantuan BPJS';
+    protected static ?string $navigationLabel = 'Usulan BPJS';
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 1;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

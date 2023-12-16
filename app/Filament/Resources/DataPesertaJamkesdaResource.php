@@ -24,7 +24,7 @@ class DataPesertaJamkesdaResource extends Resource
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 8;
 
-    protected static bool $shouldRegisterNavigation = false;
+//    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -62,30 +62,6 @@ class DataPesertaJamkesdaResource extends Resource
                 Forms\Components\TextInput::make('alamat')
                     ->maxLength(255)
                     ->visibleOn(['edit', 'view']),
-//                Forms\Components\TextInput::make('no_rt')
-//                    ->maxLength(255)
-//                    ->visibleOn(['edit', 'view']),
-//                Forms\Components\TextInput::make('no_rw')
-//                    ->maxLength(255)
-//                    ->visibleOn(['edit', 'view']),
-//                Forms\Components\TextInput::make('dusun')
-//                    ->maxLength(255)
-//                    ->visibleOn(['edit', 'view']),
-//                Forms\Components\TextInput::make('kabupaten')
-//                    ->maxLength(255)
-//                    ->visibleOn(['edit', 'view']),
-//                Forms\Components\TextInput::make('kecamatan')
-//                    ->maxLength(255)
-//                    ->visibleOn(['edit', 'view']),
-//                Forms\Components\TextInput::make('kelurahan')
-//                    ->maxLength(255)
-//                    ->visibleOn(['edit', 'view']),
-//                Forms\Components\Toggle::make('bulan')
-//                    ->visibleOn(['edit', 'view']),
-//                Forms\Components\TextInput::make('tahun')
-//                    ->numeric()
-//                    ->default(2023)
-//                    ->visibleOn(['edit', 'view']),
             ]);
     }
 
@@ -101,26 +77,9 @@ class DataPesertaJamkesdaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->searchable(),
-//                Tables\Columns\TextColumn::make('no_rt')
-//                    ->searchable(),
-//                Tables\Columns\TextColumn::make('no_rw')
-//                    ->searchable(),
-//                Tables\Columns\TextColumn::make('dusun')
-//                    ->searchable(),
-//                Tables\Columns\TextColumn::make('kabupaten')
-//                    ->searchable(),
-//                Tables\Columns\TextColumn::make('kecamatan')
-//                    ->searchable(),
-//                Tables\Columns\TextColumn::make('kelurahan')
-//                    ->searchable(),
-//                Tables\Columns\IconColumn::make('bulan')
-//                    ->boolean(),
-//                Tables\Columns\TextColumn::make('tahun')
-//                    ->numeric()
-//                    ->sortable(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

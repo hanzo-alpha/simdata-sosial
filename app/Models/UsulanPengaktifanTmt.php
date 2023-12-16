@@ -27,6 +27,4 @@ class UsulanPengaktifanTmt extends Model
         'status_usulan' => StatusUsulanEnum::class,
         'status_bpjs' => StatusBpjsEnum::class,
     ];
-
-    protected $dates = ['tgl_lahir'];
 }

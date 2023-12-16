@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-@php
-    $asset = '';
-    if(app()->environment('production')){
-        $asset .= 'public/';
-    }
-@endphp
 <head>
     <meta charset="utf-8"/>
     <title>{{ $title ?? 'Home' }} | {{ config('custom.app.name') }}</title>
@@ -16,20 +10,20 @@
     <meta content="coderthemes" name="author"/>
 
     <!-- Theme favicon -->
-    <link rel="shortcut icon" href="{{ asset($asset . 'favicon-white.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">
     {{--    <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">--}}
 
     <!--Swiper slider css-->
-    <link href="{{ asset($asset . 'frontend/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('frontend/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css">
 
     <!-- Animation on Scroll css -->
-    <link href="{{ asset($asset . 'frontend/libs/aos/aos.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('frontend/libs/aos/aos.css') }}" rel="stylesheet" type="text/css">
 
     <!-- Style css -->
-    <link href="{{ asset($asset . 'frontend/css/style.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('frontend/css/style.min.css') }}" rel="stylesheet" type="text/css">
 
     <!-- Icons css -->
-    <link href="{{ asset($asset . 'frontend/css/icons.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('frontend/css/icons.min.css') }}" rel="stylesheet" type="text/css">
 </head>
 
 <body class="text-gray-700">
@@ -41,8 +35,8 @@
         <nav class="flex items-center">
             <!-- Navbar Brand Logo -->
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset($asset . 'images/logo/simdadu-color.png') }}" class="h-8 logo-dark" alt="Logo Dark">
-                <img src="{{ asset($asset . 'images/logo/simdadu-white.png') }}" class="h-8 logo-light"
+                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8 logo-dark" alt="Logo Dark">
+                <img src="{{ asset('images/logo/simdadu-white.png') }}" class="h-8 logo-light"
                      alt="Logo Light">
             </a>
 
@@ -87,7 +81,7 @@
         <!-- Mobile Menu Topbar Logo (Header) -->
         <div class="p-6 flex items-center justify-between">
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset($asset . 'images/logo/simdadu-color.png') }}" class="h-8" alt="Logo">
+                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8" alt="Logo">
             </a>
 
             <button data-fc-dismiss class="flex items-center px-2">
@@ -147,7 +141,7 @@
                         <div
                             class="before:w-28 before:h-28 sm:before:absolute before:-z-10 before:-bottom-8 before:-start-8 before:bg-[url('../images/pattern/dot3.svg')] hidden sm:block"></div>
 
-                        <img src="{{ asset($asset . 'frontend/images/hero/dashboard1.png') }}" alt="desktop-img"
+                        <img src="{{ asset('frontend/images/hero/dashboard1.png') }}" alt="desktop-img"
                              class="w-full h-full bg-white p-2 rounded-lg shadow-lg shadow-black/5" data-aos="fade-left"
                              data-aos-duration="600">
                     </div>
@@ -157,7 +151,7 @@
     </section>
 
     <div class="absolute bottom-0 inset-x-0 hidden sm:block">
-        <img src="{{ asset($asset . 'frontend/images/shapes/white-wave.svg') }}" alt="svg"
+        <img src="{{ asset('frontend/images/shapes/white-wave.svg') }}" alt="svg"
              class="w-full -scale-x-100 -scale-y-100">
     </div>
 
@@ -191,7 +185,7 @@
                 </li>
             </ul>
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset($asset . 'images/logo/simdadu-color.png') }}" class="h-8 mx-auto" alt="logo brand">
+                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8 mx-auto" alt="logo brand">
             </a>
         </div>
     </div>
@@ -207,16 +201,16 @@
 <!-- =========== Back To Top End =========== -->
 
 <!-- Frost Plugin Js -->
-<script src="{{ asset($asset . 'frontend/libs/@frostui/tailwindcss/frostui.js') }}" type="text/javascript"></script>
+<script src="{{ asset('frontend/libs/@frostui/tailwindcss/frostui.js') }}" type="text/javascript"></script>
 
 <!-- Swiper Plugin Js -->
-<script src="{{ asset($asset . 'frontend/libs/swiper/swiper-bundle.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('frontend/libs/swiper/swiper-bundle.min.js') }}" type="text/javascript"></script>
 
 <!-- Animation on Scroll Plugin Js -->
-<script src="{{ asset($asset . 'frontend/libs/aos/aos.js') }}" type="text/javascript"></script>
+<script src="{{ asset('frontend/libs/aos/aos.js') }}" type="text/javascript"></script>
 
 <!-- Theme Js -->
-<script src="{{ asset($asset . 'frontend/js/theme.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('frontend/js/theme.min.js') }}" type="text/javascript"></script>
 
 </body>
 

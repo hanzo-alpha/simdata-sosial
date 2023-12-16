@@ -66,8 +66,10 @@ if (!function_exists('bulan_to_integer')) {
 }
 
 if (!function_exists('bulan_to_string')) {
-    function bulan_to_string($bulan, $short = false): int
+    function bulan_to_string(int|string $bulan, $short = false): string
     {
+        $bulan = is_int($bulan) ? $bulan : (int) $bulan;
+
         if ($short) {
             return match ($bulan) {
                 1 => 'JAN',
@@ -81,8 +83,7 @@ if (!function_exists('bulan_to_string')) {
                 9 => 'SEP',
                 10 => 'OKT',
                 11 => 'NOV',
-                12 => 'DES',
-                default => null
+                12 => 'DES'
             };
         }
 
@@ -98,8 +99,7 @@ if (!function_exists('bulan_to_string')) {
             9 => 'SEPTEMBER',
             10 => 'OKTOBER',
             11 => 'NOVEMBER',
-            12 => 'DESEMBER',
-            default => null
+            12 => 'DESEMBER'
         };
     }
 }
