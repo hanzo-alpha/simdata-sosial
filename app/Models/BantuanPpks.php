@@ -54,7 +54,7 @@ class BantuanPpks extends Model
 
     public function alamat(): MorphOne
     {
-        return $this->morphOne(AlamatKeluarga::class, 'alamatable');
+        return $this->morphOne(Alamat::class, 'alamatable');
     }
 
 

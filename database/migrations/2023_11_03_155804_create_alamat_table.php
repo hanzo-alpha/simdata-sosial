@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('alamat_keluarga', static function (Blueprint $table) {
+        Schema::create('alamat', static function (Blueprint $table) {
             $table->id();
             $table->morphs('alamatable');
             $table->text('alamat');
@@ -28,5 +28,10 @@ return new class extends Migration {
 
             $table->timestamps();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('alamat');
     }
 };

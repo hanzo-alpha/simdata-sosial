@@ -9,7 +9,6 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use AymanAlhattami\FilamentDateScopesFilter\DateScopeFilter;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -40,24 +39,6 @@ class BantuanBpntResource extends Resource
     {
         return $form
             ->schema([
-//                FileUpload::make('attachment')
-//                    ->label('Unggah Data BPNT')
-//                    ->hiddenLabel()
-//                    ->columnSpanFull()
-//                    ->preserveFilenames()
-//                    ->previewable(false)
-//                    ->directory('upload')
-//                    ->maxSize(5120)
-//                    ->reorderable()
-//                    ->appendFiles()
-//                    ->storeFiles(false)
-//                    ->acceptedFileTypes([
-//                        'application/vnd.ms-excel',
-//                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//                        'text/csv'
-//                    ])
-//                    ->visibleOn('create'),
-
                 Section::make('Data Pribadi')->schema([
                     TextInput::make('dtks_id'),
                     TextInput::make('nokk'),

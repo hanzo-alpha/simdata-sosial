@@ -11,10 +11,7 @@ use App\Traits\HasWilayah;
 use Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 //class Keluarga extends ApprovableModel
@@ -23,39 +20,6 @@ class Keluarga extends Model
     use HasTambahan, HasWilayah, SoftDeletes;
 
     protected $table = 'keluarga';
-
-    protected $fillable = [
-        'name',
-        'dtks_id',
-        'nokk',
-        'nik',
-        'nama_lengkap',
-        'tempat_lahir',
-        'tgl_lahir',
-        'notelp',
-        'alamat_penerima',
-        'provinsi',
-        'kabupaten',
-        'kecamatan',
-        'kelurahan',
-        'no_rt',
-        'no_rw',
-        'dusun',
-        'kodepos',
-        'latitude',
-        'longitude',
-        'nama_ibu_kandung',
-        'jenis_bantuan_id',
-        'pendidikan_terakhir_id',
-        'hubungan_keluarga_id',
-        'jenis_pekerjaan_id',
-        'status_kawin',
-        'jenis_kelamin',
-        'status_keluarga',
-        'status_verifikasi',
-        'unggah_foto',
-        'unggah_dokumen',
-    ];
 
     protected $casts = [
         'tgl_lahir' => 'datetime',
@@ -74,37 +38,12 @@ class Keluarga extends Model
 
     public function alamat(): MorphOne
     {
-        return $this->morphOne(AlamatKeluarga::class, 'alamatable');
-    }
-
-    public function alamatables(): MorphToMany
-    {
-        return $this->morphToMany(Alamat::class, 'alamatable');
-    }
-//
-//    public function provinsi(): HasOneThrough
-//    {
-//        return $this->hasOneThrough(Provinsi::class, AddressKeluarga::class);
-//    }
-
-    public function jenis_bantuan_keluarga(): BelongsToMany
-    {
-        return $this->belongsToMany(JenisBantuan::class, 'jenis_bantuan_keluarga');
+        return $this->morphOne(Alamat::class, 'alamatable');
     }
 
     public function jenis_bantuan(): BelongsTo
     {
         return $this->belongsTo(JenisBantuan::class);
-    }
-
-    public function jenisBantuan(): BelongsToMany
-    {
-        return $this->belongsToMany(JenisBantuan::class);
-    }
-
-    public function bantuan_bpjs(): HasOne
-    {
-        return $this->hasOne(BantuanBpjs::class);
     }
 
     /**

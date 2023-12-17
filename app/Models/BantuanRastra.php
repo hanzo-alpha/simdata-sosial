@@ -19,10 +19,7 @@ use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -52,34 +49,9 @@ class BantuanRastra extends Model
         return $this->morphOne(Family::class, 'familyable');
     }
 
-    public function familyable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
     public function alamat(): MorphOne
     {
-        return $this->morphOne(AlamatKeluarga::class, 'alamatable');
-    }
-
-    public function address(): BelongsTo
-    {
-        return $this->belongsTo(AlamatKeluarga::class);
-    }
-
-    public function alamatKeluarga(): BelongsToMany
-    {
-        return $this->belongsToMany(Alamat::class, 'alamat_keluarga');
-    }
-
-    public function jenisBantuan(): MorphOne
-    {
-        return $this->morphOne(JenisBantuan::class, 'bantuanable');
-    }
-
-    public function keluarga(): HasMany
-    {
-        return $this->hasMany(Keluarga::class, 'jenis_bantuan_keluarga');
+        return $this->morphOne(Alamat::class, 'alamatable');
     }
 
     public function pengganti_rastra(): BelongsTo

@@ -52,15 +52,15 @@ class Kelurahan extends Model
         return $this->belongsTo(Kecamatan::class, 'kecamatan_code', 'code');
     }
 
-    public function kep(): HasOneThrough
-    {
-        return $this->hasOneThrough(
-            Pulau::class,
-            Kabupaten::class,
-            'code',
-            'kabupaten_code',
-            'code',
-            'code'
-        );
-    }
+//    public function kep(): HasOneThrough
+//    {
+//        return $this->hasOneThrough(
+//            Pulau::class,
+//            Kabupaten::class,
+//            'code',
+//            'kabupaten_code',
+//            'code',
+//            'code'
+//        );
+//    }
 }
