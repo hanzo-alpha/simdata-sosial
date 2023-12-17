@@ -38,8 +38,6 @@ class BantuanBpjsResource extends Resource
     protected static ?string $navigationLabel = 'Bantuan BPJS';
     protected static ?string $navigationGroup = 'Bantuan';
 
-//    protected static bool $shouldRegisterNavigation = false;
-
     public static function form(Form $form): Form
     {
         return $form

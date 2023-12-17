@@ -2,9 +2,9 @@
 
 use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
-use App\Models\JenisDisabilitas;
 use App\Models\JenisPekerjaan;
 use App\Models\JenisPelayanan;
+use App\Models\JenisPpks;
 use App\Models\PendidikanTerakhir;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -43,9 +43,12 @@ return new class extends Migration {
                 ->nullable()
                 ->default(0);
             $table->json('bukti_foto')->nullable();
-            $table->json('sub_jenis_disabilitas')->nullable();
-            $table->foreignIdFor(JenisDisabilitas::class)->constrained('jenis_disabilitas')
-                ->cascadeOnUpdate();
+            $table->foreignIdFor(JenisPpks::class)->constrained('jenis_ppks')
+                ->cascadeOnUpdate()->cascadeOnDelete();
+//            $table->foreignIdFor(JenisDisabilitas::class)->constrained('jenis_disabilitas')
+//                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->json('kriteria_ppks')->nullable();
+            $table->json('sub_kriteria_ppks')->nullable();
             $table->integer('penghasilan_rata_rata')->nullable();
             $table->json('bantuan_yang_pernah_diterima')->nullable();
             $table->unsignedInteger('tahun_anggaran')->nullable();

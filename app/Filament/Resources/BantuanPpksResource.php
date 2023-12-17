@@ -16,6 +16,7 @@ use App\Filament\Resources\BantuanPpksResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
 use App\Models\JenisDisabilitas;
+use App\Models\JenisPpks;
 use App\Models\SubJenisDisabilitas;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -41,10 +42,10 @@ class BantuanPpksResource extends Resource
     protected static ?string $model = BantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-window';
-    protected static ?string $slug = 'bantuan-penyandang-disabilitas';
-    protected static ?string $label = 'Bantuan Penyandang Disabilitas';
-    protected static ?string $pluralLabel = 'Bantuan Penyandang Disabilitas';
-    protected static ?string $navigationLabel = 'Bantuan Disabilitas';
+    protected static ?string $slug = 'bantuan-ppks';
+    protected static ?string $label = 'Bantuan PPKS';
+    protected static ?string $pluralLabel = 'Bantuan PPKS';
+    protected static ?string $navigationLabel = 'Bantuan PPKS';
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 5;
 
@@ -156,6 +157,14 @@ class BantuanPpksResource extends Resource
                                 ->options(JenisBansosDiterimaEnum::class)
                                 ->default(JenisBansosDiterimaEnum::NON_BANSOS)
                                 ->preload(),
+
+                            Select::make('jenis_ppks_id')
+                                ->label('Jenis PPKS')
+                                ->required()
+                                ->searchable(['nama_ppks', 'alias'])
+                                ->options(JenisPpks::pluck('nama_ppks', 'id'))
+                                ->preload()
+                                ->live(),
 
                             Select::make('jenis_disabilitas_id')
                                 ->label('Jenis Disabilitas')

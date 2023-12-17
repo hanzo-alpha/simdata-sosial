@@ -27,6 +27,8 @@ class UsulanMutasiTmtResource extends Resource
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 7;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form

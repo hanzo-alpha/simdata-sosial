@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\JenisDisabilitasResource\Pages;
 use App\Filament\Resources\JenisDisabilitasResource\RelationManagers;
 use App\Models\JenisDisabilitas;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -49,13 +51,21 @@ class JenisDisabilitasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_penyandang')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('alias')
+                BadgeableColumn::make('nama_penyandang')
+                    ->label('Jenis Disabilitas')
+                    ->suffixBadges([
+                        Badge::make('alias')
+                            ->label(fn($record) => $record->alias)
+                            ->color('primary')
+                    ])
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sub_jenis_disabilitas.nama_sub_jenis')
-                    ->listWithLineBreaks()
+                    ->label('Kriteria Disabilitas')
+                    ->wrap()
+                    ->inline()
                     ->badge()
+                    ->color('gray')
             ])
             ->filters([
                 //
