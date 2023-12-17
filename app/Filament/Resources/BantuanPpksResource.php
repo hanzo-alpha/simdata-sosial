@@ -16,6 +16,7 @@ use App\Filament\Resources\BantuanPpksResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
 use App\Models\JenisDisabilitas;
+use App\Models\JenisPpks;
 use App\Models\SubJenisDisabilitas;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -41,10 +42,10 @@ class BantuanPpksResource extends Resource
     protected static ?string $model = BantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-window';
-    protected static ?string $slug = 'bantuan-penyandang-disabilitas';
-    protected static ?string $label = 'Bantuan Penyandang Disabilitas';
-    protected static ?string $pluralLabel = 'Bantuan Penyandang Disabilitas';
-    protected static ?string $navigationLabel = 'Bantuan Disabilitas';
+    protected static ?string $slug = 'bantuan-ppks';
+    protected static ?string $label = 'Bantuan PPKS';
+    protected static ?string $pluralLabel = 'Bantuan PPKS';
+    protected static ?string $navigationLabel = 'Bantuan PPKS';
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 5;
 
@@ -124,29 +125,10 @@ class BantuanPpksResource extends Resource
                                 ->numeric(),
 
                             TextInput::make('jumlah_bantuan')
-                                ->default(1)
+                                ->default(0)
                                 ->numeric(),
 
                         ])->columns(2),
-
-//                    Section::make('Jenis Pelayanan / PMKS')
-//                        ->schema([
-//                            Select::make('jenis_pelayanan_id')
-//                                ->required()
-//                                ->searchable(['nama_ppks', 'alias'])
-//                                ->relationship('jenis_pelayanan', 'nama_ppks')
-//                                ->preload()
-//                                ->lazy()
-//                                ->optionsLimit(5),
-//                            TableRepeater::make('kriteria_pelayanan')
-//                                ->schema([
-//                                    TextInput::make('nama_kriteria')
-//                                        ->hiddenLabel()
-//                                ])
-//                                ->reorderable()
-//                                ->cloneable()
-//                                ->collapsible()
-//                        ])->columns(1),
 
                     Section::make('Data Alamat')
                         ->schema([
@@ -176,6 +158,14 @@ class BantuanPpksResource extends Resource
                                 ->default(JenisBansosDiterimaEnum::NON_BANSOS)
                                 ->preload(),
 
+                            Select::make('jenis_ppks_id')
+                                ->label('Jenis PPKS')
+                                ->required()
+                                ->searchable(['nama_ppks', 'alias'])
+                                ->options(JenisPpks::pluck('nama_ppks', 'id'))
+                                ->preload()
+                                ->live(),
+
                             Select::make('jenis_disabilitas_id')
                                 ->label('Jenis Disabilitas')
                                 ->required()
@@ -183,8 +173,7 @@ class BantuanPpksResource extends Resource
                                 ->options(JenisDisabilitas::pluck('nama_penyandang', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('sub_jenis_disabilitas', null))
-                                ->optionsLimit(5),
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('sub_jenis_disabilitas', null)),
 
                             Select::make('sub_jenis_disabilitas')
                                 ->label('Sub Jenis Disabilitas')
@@ -192,12 +181,11 @@ class BantuanPpksResource extends Resource
                                 ->multiple()
                                 ->searchable()
                                 ->options(function (callable $set, callable $get) {
-                                    return SubJenisDisabilitas::find($get('jenis_disabilitas_id'))?->pluck('nama_sub_jenis',
-                                        'id');
+                                    return SubJenisDisabilitas::where('jenis_disabilitas_id',
+                                        $get('jenis_disabilitas_id'))
+                                        ?->pluck('nama_sub_jenis', 'id');
                                 })
-                                ->preload()
-                                ->lazy()
-                                ->optionsLimit(5),
+                                ->preload(),
 
                             Select::make('jenis_anggaran')
                                 ->options(JenisAnggaranEnum::class)
@@ -506,10 +494,10 @@ class BantuanPpksResource extends Resource
             ])->columns(3);
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
-    }
+//    public static function getNavigationBadge(): ?string
+//    {
+//        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+//    }
 
     public static function getGlobalSearchEloquentQuery(): Builder
     {

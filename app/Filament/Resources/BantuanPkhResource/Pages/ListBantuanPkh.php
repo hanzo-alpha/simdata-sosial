@@ -12,7 +12,6 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ListBantuanPkh extends ListRecords
 {
@@ -49,13 +48,26 @@ class ListBantuanPkh extends ListRecords
                         ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
-                    $import = Excel::import(new ImportBantuanPkh, $data['attachment'], 'public');
+                    $import = new ImportBantuanPkh();
+                    $import->import($data['attachment'], 'public');
+//                    $import = Excel::import(new ImportBantuanPkh, $data['attachment'], 'public');
+
+
                     if ($import) {
                         Notification::make()
                             ->title('Data PKH Berhasil di impor')
                             ->success()
                             ->sendToDatabase(auth()->user());
+                    } else {
+                        Notification::make()
+                            ->title('Data PKH Gagal di impor')
+                            ->danger()
+                            ->sendToDatabase(auth()->user());
                     }
+
+//                   Log::error($import->errors());
+
+
                 })
                 ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)

@@ -7,8 +7,8 @@ use Filament\Support\Contracts\HasLabel;
 
 enum StatusKawinBpjsEnum: int implements HasLabel, HasColor
 {
-    case KAWIN = 1;
-    case BELUM_KAWIN = 2;
+    case BELUM_KAWIN = 1;
+    case KAWIN = 2;
     case JANDA = 3;
     case DUDA = 4;
 

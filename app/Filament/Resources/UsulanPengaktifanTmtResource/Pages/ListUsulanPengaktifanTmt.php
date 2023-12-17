@@ -24,9 +24,8 @@ class ListUsulanPengaktifanTmt extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
             ExportAction::make()->label('Ekspor Data')
-                ->color('info')
+                ->color('success')
                 ->exports([
                     ExportUsulanPengaktifanTmt::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
@@ -40,7 +39,7 @@ class ListUsulanPengaktifanTmt extends ListRecords
                 ->modalHeading('Unggah Usulan Pengaktifan TMT')
                 ->modalDescription('Unggah Usulan Pengaktifan TMT ke database')
                 ->modalSubmitActionLabel('Unggah')
-                ->color('success')
+                ->color('info')
                 ->modalIcon('heroicon-o-arrow-up-tray')
                 ->form([
                     FileUpload::make('attachment')
@@ -62,7 +61,9 @@ class ListUsulanPengaktifanTmt extends ListRecords
 //                        ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
-                    $import = Excel::import(new ImportUsulanPengaktifanTmt, $data['attachment'], 'public');
+                    $import = new ImportUsulanPengaktifanTmt();
+                    $import->import($data['attachment'], 'public');
+//                    $import = Excel::import(new ImportUsulanPengaktifanTmt, $data['attachment'], 'public');
                     if ($import) {
                         Notification::make()
                             ->title('Usulan Pengaktifan TMT Berhasil di impor')
@@ -80,6 +81,9 @@ class ListUsulanPengaktifanTmt extends ListRecords
                 ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.usulan-pengaktifan-tmt.index'))
                 ->modalWidth('md'),
+
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-plus'),
         ];
     }
 

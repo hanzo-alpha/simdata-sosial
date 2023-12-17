@@ -8,6 +8,7 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Resources\BantuanRastraResource\RelationManagers;
+use App\Filament\Widgets\BantuanRastraOverview;
 use App\Forms\Components\AlamatForm;
 use App\Models\BantuanRastra;
 use Carbon\Carbon;
@@ -109,7 +110,7 @@ class BantuanRastraResource extends Resource
             ->filters([
                 SelectFilter::make('alamat')
                     ->label('Kecamatan')
-                    ->relationship('kec', 'name', fn(Builder $query) => $query->where('kabupaten_code', config
+                    ->relationship('alamat.kec', 'name', fn(Builder $query) => $query->where('kabupaten_code', config
                     ('custom.default.kodekab')))
                     ->preload()
                     ->searchable(),
@@ -283,9 +284,16 @@ class BantuanRastraResource extends Resource
             ])->columns(3);
     }
 
-    public static function getNavigationBadge(): ?string
+//    public static function getNavigationBadge(): ?string
+//    {
+//        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+//    }
+
+    public static function getWidgets(): array
     {
-        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+        return [
+            BantuanRastraOverview::class,
+        ];
     }
 
     public static function getGlobalSearchEloquentQuery(): Builder
@@ -304,7 +312,7 @@ class BantuanRastraResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBantuanRastras::route('/'),
+            'index' => Pages\ListBantuanRastra::route('/'),
             'create' => Pages\CreateBantuanRastra::route('/create'),
             'view' => Pages\ViewBantuanRastra::route('/{record}'),
             'edit' => Pages\EditBantuanRastra::route('/{record}/edit'),

@@ -2,9 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Widgets\KeluargaChart;
-use App\Filament\Widgets\KeluargaMap;
-use App\Filament\Widgets\PenerimaManfaatMap;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -46,9 +43,10 @@ class AdminPanelProvider extends PanelProvider
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
                 'info' => Color::Blue,
-                'primary' => Color::Indigo,
+                'primary' => Color::Amber,
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
+                'secondary' => Color::Indigo,
             ])
             ->plugins([
                 BreezyCore::make()
@@ -88,11 +86,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
-            ->favicon(asset('favicon-white.png'))
+            ->favicon(asset('images/logos/favicon-white.png'))
             ->brandName(config('custom.app.name'))
-            ->brandLogo(asset('images/logo/svg/logo-rumahdata-no-background.svg'))
+            ->brandLogo(asset('images/logos/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
-            ->darkModeBrandLogo(asset('images/logo/logo-white.png'))
+            ->darkModeBrandLogo(asset('images/logos/logo-white.png'))
             ->darkMode(config('custom.app.dark_mode', true))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -134,7 +132,9 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->renderHook('panels::head.start', fn(): View => view('pwa-head'))
+            ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('pwa-script'))
+            ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([
                 config('filament-logger.activity_resource')
             ])

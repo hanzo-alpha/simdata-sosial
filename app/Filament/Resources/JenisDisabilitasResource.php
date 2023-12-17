@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\JenisDisabilitasResource\Pages;
 use App\Filament\Resources\JenisDisabilitasResource\RelationManagers;
 use App\Models\JenisDisabilitas;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,22 +34,38 @@ class JenisDisabilitasResource extends Resource
                 Forms\Components\TextInput::make('alias')
                     ->maxLength(255),
                 Forms\Components\Repeater::make('sub_jenis_disabilitas')
+                    ->label('Sub Jenis Disabilitas')
                     ->relationship()
-                    ->simple(Forms\Components\TextInput::make('nama_sub_jenis')),
-            ]);
+                    ->simple(
+                        Forms\Components\TextInput::make('nama_sub_jenis')
+                            ->label('Nama Sub Jenis')
+                            ->required()
+                    )
+                    ->addActionLabel('Tambah Sub Jenis Disabilitas')
+                    ->reorderableWithButtons()
+                    ->columnSpan('full'),
+            ])->inlineLabel()->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_penyandang')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('alias')
+                BadgeableColumn::make('nama_penyandang')
+                    ->label('Jenis Disabilitas')
+                    ->suffixBadges([
+                        Badge::make('alias')
+                            ->label(fn($record) => $record->alias)
+                            ->color('primary')
+                    ])
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sub_jenis_disabilitas.nama_sub_jenis')
-                    ->listWithLineBreaks()
+                    ->label('Kriteria Disabilitas')
+                    ->wrap()
+                    ->inline()
                     ->badge()
+                    ->color('gray')
             ])
             ->filters([
                 //

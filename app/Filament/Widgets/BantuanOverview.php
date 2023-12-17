@@ -11,7 +11,10 @@ class BantuanOverview extends MultiWidget
 
     public array $widgets = [
         BantuanBpjsOverview::class,
-        BantuanRastraOverview::class
+        BantuanRastraOverview::class,
+        BantuanPkhOverview::class,
+        BantuanBpntOverview::class,
+        BantuanPpksOverview::class,
     ];
 
     public function shouldPersistMultiWidgetTabsInSession(): bool

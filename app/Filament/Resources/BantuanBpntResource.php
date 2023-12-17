@@ -9,7 +9,6 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use AymanAlhattami\FilamentDateScopesFilter\DateScopeFilter;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -17,7 +16,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class BantuanBpntResource extends Resource
@@ -38,24 +39,6 @@ class BantuanBpntResource extends Resource
     {
         return $form
             ->schema([
-//                FileUpload::make('attachment')
-//                    ->label('Unggah Data BPNT')
-//                    ->hiddenLabel()
-//                    ->columnSpanFull()
-//                    ->preserveFilenames()
-//                    ->previewable(false)
-//                    ->directory('upload')
-//                    ->maxSize(5120)
-//                    ->reorderable()
-//                    ->appendFiles()
-//                    ->storeFiles(false)
-//                    ->acceptedFileTypes([
-//                        'application/vnd.ms-excel',
-//                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//                        'text/csv'
-//                    ])
-//                    ->visibleOn('create'),
-
                 Section::make('Data Pribadi')->schema([
                     TextInput::make('dtks_id'),
                     TextInput::make('nokk'),
@@ -162,6 +145,33 @@ class BantuanBpntResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferLoading()
+            ->recordClasses(fn(Model $record) => match ($record->status_bpnt) {
+                'draft' => 'opacity-30',
+                'reviewing' => 'border-s-2 border-orange-600 dark:border-orange-300',
+                'PKH' => 'border-s-2 border-green-600 dark:border-green-300',
+                default => null,
+            })
+            ->groups([
+                Tables\Grouping\Group::make('kec.name')
+                    ->label('Kecamatan')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Tables\Grouping\Group::make('kel.name')
+                    ->label('Kelurahan')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false)
+            ])
+            ->defaultGroup('kec.name')
+            ->groupRecordsTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Kelompokkan Data'),
+            )
+            ->groupingSettingsInDropdownOnDesktop()
+//            ->groupingSettingsHidden()
+//            ->paginated([10, 25, 50, 100, 'all'])
+            ->defaultPaginationPageOption(25)
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')
@@ -209,6 +219,12 @@ class BantuanBpntResource extends Resource
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->sortable()
+                    ->toggleable()
+                    ->description(fn($record) => 'Kec. ' . $record->kec->name . ' | Kel. ' . $record->kel->name)
+//                    ->toggledHiddenByDefault()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('prov.name')
                     ->sortable()
                     ->toggleable()
@@ -220,15 +236,13 @@ class BantuanBpntResource extends Resource
                     ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
-                    ->sortable()
-                    ->toggleable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kec.name')
+                    ->label('Kecamatan')
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('alamat')
+                Tables\Columns\TextColumn::make('kel.name')
+                    ->label('Kelurahan')
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault()
@@ -252,13 +266,15 @@ class BantuanBpntResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dir')
                     ->sortable()
+                    ->alignCenter()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
+//                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gelombang')
                     ->sortable()
+                    ->alignCenter()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
+//                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_bpnt')
                     ->label('Status')

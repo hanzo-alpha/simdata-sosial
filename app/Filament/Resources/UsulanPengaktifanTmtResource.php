@@ -6,21 +6,24 @@ use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
 use App\Enums\StatusKawinBpjsEnum;
-use App\Enums\StatusVerifikasiEnum;
+use App\Enums\StatusUsulanEnum;
 use App\Filament\Resources\UsulanPengaktifanTmtResource\Pages;
 use App\Filament\Resources\UsulanPengaktifanTmtResource\RelationManagers;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\UsulanPengaktifanTmt;
-use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class UsulanPengaktifanTmtResource extends Resource
 {
@@ -30,48 +33,133 @@ class UsulanPengaktifanTmtResource extends Resource
     protected static ?string $slug = 'usulan-pengaktifan-tmt';
     protected static ?string $label = 'Usulan Pengaktifan TMT';
     protected static ?string $pluralLabel = 'Usulan Pengaktifan TMT';
-    protected static ?string $navigationLabel = 'Bantuan BPJS';
+    protected static ?string $navigationLabel = 'Usulan BPJS';
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 1;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nokk_tmt')
-                    ->required()
-                    ->maxLength(20),
-                Forms\Components\TextInput::make('nik_tmt')
-                    ->required()
-                    ->maxLength(20),
-                Forms\Components\TextInput::make('nama_lengkap')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('tempat_lahir')
-                    ->maxLength(100),
-                Forms\Components\DatePicker::make('tgl_lahir'),
-                Forms\Components\Toggle::make('jenis_kelamin'),
-                Forms\Components\Toggle::make('status_nikah'),
-                Forms\Components\Textarea::make('alamat')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('nort')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('norw')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kodepos')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kecamatan')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kelurahan')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('dusun')
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('status_aktif'),
-            ]);
+                Forms\Components\Group::make([
+                    Forms\Components\Section::make('Data Keluarga')
+                        ->schema([
+                            Forms\Components\TextInput::make('nokk_tmt')
+                                ->label('No. Kartu Keluarga (KK)')
+                                ->required()
+                                ->maxLength(20),
+                            Forms\Components\TextInput::make('nik_tmt')
+                                ->label('N I K')
+                                ->required()
+                                ->maxLength(20),
+                            Forms\Components\TextInput::make('nama_lengkap')
+                                ->label('Nama Lengkap')
+                                ->required()
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('tempat_lahir')
+                                ->label('Tempat Lahir')
+                                ->maxLength(100),
+                            Forms\Components\DatePicker::make('tgl_lahir')
+                                ->label('Tgl. Lahir')
+                                ->displayFormat('d/M/Y'),
+                            Forms\Components\Select::make('jenis_kelamin')
+                                ->label('Jenis Kelamin')
+                                ->options(JenisKelaminEnum::class)
+                                ->default(JenisKelaminEnum::LAKI),
+                        ])->columns(2),
+                    Forms\Components\Section::make('Alamat')
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    TextInput::make('alamat')
+                                        ->required()
+                                        ->columnSpanFull(),
+                                    Select::make('kecamatan')
+                                        ->required()
+                                        ->searchable()
+                                        ->reactive()
+                                        ->options(function () {
+                                            $kab = Kecamatan::query()->where('kabupaten_code',
+                                                config('custom.default.kodekab'));
+                                            if (!$kab) {
+                                                return Kecamatan::where('kabupaten_code',
+                                                    config('custom.default.kodekab'))
+                                                    ->pluck('name', 'code');
+                                            }
+
+                                            return $kab->pluck('name', 'code');
+                                        })
+                                        ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+
+                                    Select::make('kelurahan')
+                                        ->required()
+                                        ->options(function (callable $get) {
+                                            return Kelurahan::query()->where('kecamatan_code',
+                                                $get('kecamatan'))?->pluck('name',
+                                                'code');
+                                        })
+                                        ->reactive()
+                                        ->searchable(),
+                                ]),
+
+                            Grid::make(4)
+                                ->schema([
+                                    TextInput::make('dusun')
+                                        ->label('Dusun')
+                                        ->nullable(),
+                                    TextInput::make('nort')
+                                        ->label('RT')
+                                        ->nullable(),
+                                    TextInput::make('norw')
+                                        ->label('RW')
+                                        ->nullable(),
+                                    TextInput::make('kodepos')
+                                        ->label('Kodepos')
+                                        ->default('90861')
+                                        ->required(),
+                                ]),
+                        ]),
+                ])->columnSpan(2),
+                Forms\Components\Group::make([
+                    Forms\Components\Section::make('Status')
+                        ->schema([
+                            Select::make('status_nikah')
+                                ->options(StatusKawinBpjsEnum::class)
+                                ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
+                                ->preload(),
+                            Forms\Components\Select::make('status_bpjs')
+                                ->label('Status BPJS')
+                                ->enum(StatusBpjsEnum::class)
+                                ->options(StatusBpjsEnum::class)
+                                ->default(StatusBpjsEnum::PENGAKTIFAN)
+                                ->live()
+                                ->preload(),
+
+                            Forms\Components\Select::make('status_usulan')
+                                ->label('Status TL')
+                                ->enum(StatusUsulanEnum::class)
+                                ->options(StatusUsulanEnum::class)
+                                ->default(StatusUsulanEnum::ONPROGRESS)
+                                ->lazy()
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->preload(),
+
+                            ToggleButton::make('status_aktif')
+                                ->label('Status Aktif')
+                                ->offColor(StatusAktif::NONAKTIF->getColor())
+                                ->onColor(StatusAktif::AKTIF->getColor())
+                                ->offLabel(StatusAktif::NONAKTIF->getLabel())
+                                ->onLabel(StatusAktif::AKTIF->getLabel())
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->default(0),
+
+                            Forms\Components\Textarea::make('keterangan')
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->autosize()
+                        ]),
+                ])->columns(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -167,7 +255,7 @@ class UsulanPengaktifanTmtResource extends Resource
                     ->options(JenisKelaminEnum::class),
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal')
-            ], layout: Tables\Enums\FiltersLayout::AboveContent)
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
@@ -184,6 +272,11 @@ class UsulanPengaktifanTmtResource extends Resource
                 ]),
             ]);
     }
+
+//    public static function getNavigationBadge(): ?string
+//    {
+//        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+//    }
 
     public static function getRelations(): array
     {

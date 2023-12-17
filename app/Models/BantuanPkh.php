@@ -15,29 +15,6 @@ class BantuanPkh extends Model
 
     protected $table = 'bantuan_pkh';
     protected $guarded = [];
-//    protected $fillable = [
-//        'dtks_id',
-//        'nokk',
-//        'nik_ktp',
-//        'nama_penerima',
-//        'kode_wilayah',
-//        'tahap',
-//        'bansos',
-//        'jenis_bantuan',
-//        'bank',
-//        'nominal',
-//        'provinsi',
-//        'kabupaten',
-//        'kecamatan',
-//        'kelurahan',
-//        'alamat',
-//        'no_rt',
-//        'no_rw',
-//        'dusun',
-//        'dir',
-//        'gelombang',
-//        'status_pkh',
-//    ];
 
     protected $casts = [
         'dtks_id' => 'string',

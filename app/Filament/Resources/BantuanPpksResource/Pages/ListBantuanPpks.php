@@ -4,6 +4,7 @@ namespace App\Filament\Resources\BantuanPpksResource\Pages;
 
 use App\Exports\ExportBantuanPpks;
 use App\Filament\Resources\BantuanPpksResource;
+use App\Imports\ImportBantuanPpks;
 use App\Models\BantuanPpks;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
@@ -27,8 +28,6 @@ class ListBantuanPpks extends ListRecords
                 ->exports([
                     ExportBantuanPpks::make()
                 ]),
-
-            Actions\CreateAction::make(),
 
             Actions\Action::make('import')
                 ->model(BantuanPpks::class)
@@ -66,10 +65,14 @@ class ListBantuanPpks extends ListRecords
                     }
                 })
                 ->icon('heroicon-o-arrow-up-tray')
+                ->color('info')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.bantuan-pkh.index'))
                 ->modalWidth('lg'),
+
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-plus'),
 
         ];
     }

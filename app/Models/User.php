@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\StatusAdminEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -27,6 +28,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'is_admin'
     ];
 
     /**
@@ -47,10 +49,11 @@ class User extends Authenticatable implements FilamentUser
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_admin' => StatusAdminEnum::class
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, '@simdata-sosial.local');
+        return true;
     }
 }

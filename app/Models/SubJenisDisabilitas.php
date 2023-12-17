@@ -12,10 +12,10 @@ class SubJenisDisabilitas extends Model
 
     public $timestamps = false;
     protected $table = 'sub_jenis_disabilitas';
-    protected $fillable = [
-        'jenis_disabilitas_id',
-        'nama_sub_jenis',
-    ];
+//    protected $fillable = [
+//        'jenis_disabilitas_id',
+//        'nama_sub_jenis',
+//    ];
 
     public function jenis_disabilitas(): BelongsTo
     {

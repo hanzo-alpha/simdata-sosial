@@ -12,7 +12,6 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ListBantuanBpnt extends ListRecords
 {
@@ -49,11 +48,18 @@ class ListBantuanBpnt extends ListRecords
                         ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
-                    $import = Excel::import(new ImportBantuanBpnt, $data['attachment'], 'public');
+                    $import = new ImportBantuanBpnt();
+                    $import->import($data['attachment'], 'public');
+//                    $import = Excel::import(new ImportBantuanBpnt, $data['attachment'], 'public');
                     if ($import) {
                         Notification::make()
-                            ->title('Data BPNT Berhasil di impor')
+                            ->title('Data Bantuan BPNT Berhasil di impor')
                             ->success()
+                            ->sendToDatabase(auth()->user());
+                    } else {
+                        Notification::make()
+                            ->title('Data Bantuan BPNT Gagal di impor')
+                            ->danger()
                             ->sendToDatabase(auth()->user());
                     }
                 })

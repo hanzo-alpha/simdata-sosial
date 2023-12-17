@@ -14,6 +14,7 @@
         "awcodes/filament-curator": "^3.1",
         "awcodes/filament-table-repeater": "^2.0",
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
+        "barryvdh/laravel-dompdf": "^2.0",
         "bezhansalleh/filament-shield": "^3.0",
         "cheesegrits/filament-google-maps": "^3.0",
         "codewithdennis/filament-select-tree": "^3.1",
@@ -36,14 +37,15 @@
         "z3d0x/filament-logger": "^0.6.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.9",
         "fakerphp/faker": "^1.9.1",
+        "ladumor/laravel-pwa": "^v0.0.4",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
-        "ladumor/laravel-pwa": "^v0.0.4",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^2.0"
     },
