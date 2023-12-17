@@ -10,7 +10,7 @@
     <meta content="coderthemes" name="author"/>
 
     <!-- Theme favicon -->
-    <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/logos/reno-dinsos-favicon-white.png') }}">
     {{--    <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">--}}
 
     <!--Swiper slider css-->
@@ -35,8 +35,10 @@
         <nav class="flex items-center">
             <!-- Navbar Brand Logo -->
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8 logo-dark" alt="Logo Dark">
-                <img src="{{ asset('images/logo/simdadu-white.png') }}" class="h-8 logo-light"
+                <img src="{{ asset('images/logos/logo-color.png') }}"
+                     class="h-10 logo-dark" alt="Logo Dark">
+                <img src="{{ asset('images/logos/logo-color.png') }}"
+                     class="h-10 logo-light"
                      alt="Logo Light">
             </a>
 
@@ -81,7 +83,8 @@
         <!-- Mobile Menu Topbar Logo (Header) -->
         <div class="p-6 flex items-center justify-between">
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8" alt="Logo">
+                <img src="{{ asset('images/logos/logo-color.png') }}" class="h-8"
+                     alt="Logo">
             </a>
 
             <button data-fc-dismiss class="flex items-center px-2">
@@ -185,7 +188,8 @@
                 </li>
             </ul>
             <a href="{{ route('frontend') }}">
-                <img src="{{ asset('images/logo/simdadu-color.png') }}" class="h-8 mx-auto" alt="logo brand">
+                <img src="{{ asset('images/logos/logo-color.png') }}" class="h-8
+                mx-auto" alt="logo brand">
             </a>
         </div>
     </div>
