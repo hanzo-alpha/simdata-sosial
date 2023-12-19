@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\BantuanBpjs;
 use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
@@ -70,7 +71,7 @@ class BantuanChartWidget extends ChartWidget
 //                    })
 //                    ->get()->count();
 //            }
-            $bpjsresults[$item] = UsulanPengaktifanTmt::where('kecamatan', 'like', $key)
+            $bpjsresults[$item] = BantuanBpjs::where('kecamatan', 'like', $key)
 //                ->when($dateRange, function (Builder $query) use ($dateRange) {
 //                    $dates = explode('-', $dateRange);
 //                    return $query

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Exports\ExportBantuanBpjs;
+use App\Filament\Imports\BantuanBpjsImporter;
 use App\Filament\Resources\BantuanBpjsResource;
 use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
@@ -28,6 +29,11 @@ class ListBantuanBpjs extends ListRecords
                     ExportBantuanBpjs::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
                 ]),
+//            Actions\ImportAction::make('import')
+//                ->importer(BantuanBpjsImporter::class)
+//                ->options([
+//                    'updateExisting' => true,
+//                ]),
 
             Actions\Action::make('import')
                 ->model(BantuanBpjs::class)
@@ -51,15 +57,13 @@ class ListBantuanBpjs extends ListRecords
                         ->storeFiles(false)
                         ->acceptedFileTypes([
                             'application/vnd.ms-excel',
-                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                            'text/csv'
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         ])
 //                        ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
                     $import = new ImportBantuanBpjs();
                     $import->import($data['attachment'], 'public');
-//                    $import = Excel::import(new ImportUsulanPengaktifanTmt, $data['attachment'], 'public');
                     if ($import) {
                         Notification::make()
                             ->title('Bantuan BPJS Berhasil di impor')

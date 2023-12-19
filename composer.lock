@@ -206,16 +206,16 @@
         },
         {
             "name": "awcodes/filament-curator",
-            "version": "v3.2.4",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awcodes/filament-curator.git",
-                "reference": "3a0dd57cf004e4ac25b4667d0041f7be97b4d8bd"
+                "reference": "25ccd022081e8fd6c82e5fb461aaaea2e79967fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awcodes/filament-curator/zipball/3a0dd57cf004e4ac25b4667d0041f7be97b4d8bd",
-                "reference": "3a0dd57cf004e4ac25b4667d0041f7be97b4d8bd",
+                "url": "https://api.github.com/repos/awcodes/filament-curator/zipball/25ccd022081e8fd6c82e5fb461aaaea2e79967fa",
+                "reference": "25ccd022081e8fd6c82e5fb461aaaea2e79967fa",
                 "shasum": ""
             },
             "require": {
@@ -269,7 +269,7 @@
             ],
             "support": {
                 "issues": "https://github.com/awcodes/filament-curator/issues",
-                "source": "https://github.com/awcodes/filament-curator/tree/v3.2.4"
+                "source": "https://github.com/awcodes/filament-curator/tree/v3.3.0"
             },
             "funding": [
                 {
@@ -277,7 +277,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-13T15:22:14+00:00"
+            "time": "2023-12-18T17:46:47+00:00"
         },
         {
             "name": "awcodes/filament-table-repeater",
@@ -547,16 +547,16 @@
         },
         {
             "name": "bezhansalleh/filament-shield",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bezhanSalleh/filament-shield.git",
-                "reference": "919856a29f76ce73eec417dcfd564c93994df0fd"
+                "reference": "e4d6ee81d3d15c94dfe7a5bfb0262050e4324398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bezhanSalleh/filament-shield/zipball/919856a29f76ce73eec417dcfd564c93994df0fd",
-                "reference": "919856a29f76ce73eec417dcfd564c93994df0fd",
+                "url": "https://api.github.com/repos/bezhanSalleh/filament-shield/zipball/e4d6ee81d3d15c94dfe7a5bfb0262050e4324398",
+                "reference": "e4d6ee81d3d15c94dfe7a5bfb0262050e4324398",
                 "shasum": ""
             },
             "require": {
@@ -620,7 +620,7 @@
             ],
             "support": {
                 "issues": "https://github.com/bezhanSalleh/filament-shield/issues",
-                "source": "https://github.com/bezhanSalleh/filament-shield/tree/3.1.1"
+                "source": "https://github.com/bezhanSalleh/filament-shield/tree/3.1.2"
             },
             "funding": [
                 {
@@ -628,20 +628,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-06T17:28:54+00:00"
+            "time": "2023-12-19T05:32:27+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
-            "version": "2.1.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blade-ui-kit/blade-heroicons.git",
-                "reference": "f756c807b0d04afd2caf7079bac26492da9cc6d4"
+                "reference": "bcf4be8f6bbde0bb4c23f2e3fb189b88dec1580a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blade-ui-kit/blade-heroicons/zipball/f756c807b0d04afd2caf7079bac26492da9cc6d4",
-                "reference": "f756c807b0d04afd2caf7079bac26492da9cc6d4",
+                "url": "https://api.github.com/repos/blade-ui-kit/blade-heroicons/zipball/bcf4be8f6bbde0bb4c23f2e3fb189b88dec1580a",
+                "reference": "bcf4be8f6bbde0bb4c23f2e3fb189b88dec1580a",
                 "shasum": ""
             },
             "require": {
@@ -685,19 +685,19 @@
             ],
             "support": {
                 "issues": "https://github.com/blade-ui-kit/blade-heroicons/issues",
-                "source": "https://github.com/blade-ui-kit/blade-heroicons/tree/2.1.0"
+                "source": "https://github.com/blade-ui-kit/blade-heroicons/tree/2.2.1"
             },
             "funding": [
                 {
-                    "url": "https://github.com/caneco",
+                    "url": "https://github.com/sponsors/driesvints",
                     "type": "github"
                 },
                 {
-                    "url": "https://github.com/driesvints",
-                    "type": "github"
+                    "url": "https://www.paypal.com/paypalme/driesvints",
+                    "type": "paypal"
                 }
             ],
-            "time": "2023-01-11T08:38:22+00:00"
+            "time": "2023-12-18T20:44:03+00:00"
         },
         {
             "name": "blade-ui-kit/blade-icons",
@@ -1041,16 +1041,16 @@
         },
         {
             "name": "codewithdennis/filament-select-tree",
-            "version": "v3.1.17",
+            "version": "v3.1.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CodeWithDennis/filament-select-tree.git",
-                "reference": "eed2f0876cff3cfac428ac8ae0532d70c745bed3"
+                "reference": "0a6ff511ccd174db3ec36afb65234afe6a57a4a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CodeWithDennis/filament-select-tree/zipball/eed2f0876cff3cfac428ac8ae0532d70c745bed3",
-                "reference": "eed2f0876cff3cfac428ac8ae0532d70c745bed3",
+                "url": "https://api.github.com/repos/CodeWithDennis/filament-select-tree/zipball/0a6ff511ccd174db3ec36afb65234afe6a57a4a6",
+                "reference": "0a6ff511ccd174db3ec36afb65234afe6a57a4a6",
                 "shasum": ""
             },
             "require": {
@@ -1108,7 +1108,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-15T13:02:21+00:00"
+            "time": "2023-12-17T15:42:51+00:00"
         },
         {
             "name": "composer/semver",
@@ -2259,16 +2259,16 @@
         },
         {
             "name": "filament/actions",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/actions.git",
-                "reference": "d03c8dad2ec4ba21d0bc95cfc26e25435d467a26"
+                "reference": "066c64596a7b2b89b6f7bcd1c8b1281357f194e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/actions/zipball/d03c8dad2ec4ba21d0bc95cfc26e25435d467a26",
-                "reference": "d03c8dad2ec4ba21d0bc95cfc26e25435d467a26",
+                "url": "https://api.github.com/repos/filamentphp/actions/zipball/066c64596a7b2b89b6f7bcd1c8b1281357f194e5",
+                "reference": "066c64596a7b2b89b6f7bcd1c8b1281357f194e5",
                 "shasum": ""
             },
             "require": {
@@ -2306,20 +2306,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-15T12:41:24+00:00"
+            "time": "2023-12-19T13:24:30+00:00"
         },
         {
             "name": "filament/filament",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/panels.git",
-                "reference": "d3ac68cf87a86b54e6d1e5f9e9050608489f67fa"
+                "reference": "855c60a9a55c9d77765435e923da5bd555cf4f88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/panels/zipball/d3ac68cf87a86b54e6d1e5f9e9050608489f67fa",
-                "reference": "d3ac68cf87a86b54e6d1e5f9e9050608489f67fa",
+                "url": "https://api.github.com/repos/filamentphp/panels/zipball/855c60a9a55c9d77765435e923da5bd555cf4f88",
+                "reference": "855c60a9a55c9d77765435e923da5bd555cf4f88",
                 "shasum": ""
             },
             "require": {
@@ -2371,20 +2371,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-15T12:41:24+00:00"
+            "time": "2023-12-19T13:24:32+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "b9e6e9eb0c57c280be0fb529e546cee50534ff32"
+                "reference": "582a1e2628af0d28be751c9e210f481d98397c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/b9e6e9eb0c57c280be0fb529e546cee50534ff32",
-                "reference": "b9e6e9eb0c57c280be0fb529e546cee50534ff32",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/582a1e2628af0d28be751c9e210f481d98397c77",
+                "reference": "582a1e2628af0d28be751c9e210f481d98397c77",
                 "shasum": ""
             },
             "require": {
@@ -2427,20 +2427,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-15T12:41:22+00:00"
+            "time": "2023-12-19T13:24:30+00:00"
         },
         {
             "name": "filament/infolists",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/infolists.git",
-                "reference": "8ecb28d6f2f6145e5d972b0079be3442117a17a7"
+                "reference": "38f16c8a83120d8eba5541ca64317fb99376ac3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/infolists/zipball/8ecb28d6f2f6145e5d972b0079be3442117a17a7",
-                "reference": "8ecb28d6f2f6145e5d972b0079be3442117a17a7",
+                "url": "https://api.github.com/repos/filamentphp/infolists/zipball/38f16c8a83120d8eba5541ca64317fb99376ac3e",
+                "reference": "38f16c8a83120d8eba5541ca64317fb99376ac3e",
                 "shasum": ""
             },
             "require": {
@@ -2478,20 +2478,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-15T12:41:23+00:00"
+            "time": "2023-12-19T13:24:29+00:00"
         },
         {
             "name": "filament/notifications",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
-                "reference": "702dfd12d46e8b431bad6e6b80f63f6638ce6230"
+                "reference": "5b9255c0793751534461cace12febdc0d4cc05bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/notifications/zipball/702dfd12d46e8b431bad6e6b80f63f6638ce6230",
-                "reference": "702dfd12d46e8b431bad6e6b80f63f6638ce6230",
+                "url": "https://api.github.com/repos/filamentphp/notifications/zipball/5b9255c0793751534461cace12febdc0d4cc05bb",
+                "reference": "5b9255c0793751534461cace12febdc0d4cc05bb",
                 "shasum": ""
             },
             "require": {
@@ -2530,20 +2530,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-14T16:20:58+00:00"
+            "time": "2023-12-17T22:25:42+00:00"
         },
         {
             "name": "filament/support",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
-                "reference": "7f82008931af9cc301e0b9c965dd1bcfbc44d584"
+                "reference": "797139451b30a7a9b5bc4b7ecad916ddee1075a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/support/zipball/7f82008931af9cc301e0b9c965dd1bcfbc44d584",
-                "reference": "7f82008931af9cc301e0b9c965dd1bcfbc44d584",
+                "url": "https://api.github.com/repos/filamentphp/support/zipball/797139451b30a7a9b5bc4b7ecad916ddee1075a7",
+                "reference": "797139451b30a7a9b5bc4b7ecad916ddee1075a7",
                 "shasum": ""
             },
             "require": {
@@ -2587,20 +2587,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-14T16:21:19+00:00"
+            "time": "2023-12-19T13:24:32+00:00"
         },
         {
             "name": "filament/tables",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
-                "reference": "a7e3a44e7bc9d7e325857f64d24aa2e344dabd54"
+                "reference": "1a23d48e9a63906f6b60882ab14b9d4a9417de15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/a7e3a44e7bc9d7e325857f64d24aa2e344dabd54",
-                "reference": "a7e3a44e7bc9d7e325857f64d24aa2e344dabd54",
+                "url": "https://api.github.com/repos/filamentphp/tables/zipball/1a23d48e9a63906f6b60882ab14b9d4a9417de15",
+                "reference": "1a23d48e9a63906f6b60882ab14b9d4a9417de15",
                 "shasum": ""
             },
             "require": {
@@ -2640,20 +2640,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-15T12:41:22+00:00"
+            "time": "2023-12-19T13:24:44+00:00"
         },
         {
             "name": "filament/widgets",
-            "version": "v3.1.22",
+            "version": "v3.1.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/widgets.git",
-                "reference": "f7e38b409e419a3675f9f4ed01b3544c566def5e"
+                "reference": "290184b9dfb99436df94a9a0b8511b21811d9e64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/widgets/zipball/f7e38b409e419a3675f9f4ed01b3544c566def5e",
-                "reference": "f7e38b409e419a3675f9f4ed01b3544c566def5e",
+                "url": "https://api.github.com/repos/filamentphp/widgets/zipball/290184b9dfb99436df94a9a0b8511b21811d9e64",
+                "reference": "290184b9dfb99436df94a9a0b8511b21811d9e64",
                 "shasum": ""
             },
             "require": {
@@ -2684,7 +2684,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-12-12T14:20:54+00:00"
+            "time": "2023-12-17T22:26:03+00:00"
         },
         {
             "name": "flowframe/laravel-trend",
@@ -3755,16 +3755,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.37.3",
+            "version": "v10.38.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "996375dd61f8c6e4ac262b57ed485655d71fcbdc"
+                "reference": "531732a17e4d0fa4fc4fb987a72abbdb93537d3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/996375dd61f8c6e4ac262b57ed485655d71fcbdc",
-                "reference": "996375dd61f8c6e4ac262b57ed485655d71fcbdc",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/531732a17e4d0fa4fc4fb987a72abbdb93537d3a",
+                "reference": "531732a17e4d0fa4fc4fb987a72abbdb93537d3a",
                 "shasum": ""
             },
             "require": {
@@ -3953,7 +3953,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-12-13T20:10:58+00:00"
+            "time": "2023-12-19T14:59:00+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -7497,16 +7497,16 @@
         },
         {
             "name": "pxlrbt/filament-excel",
-            "version": "v2.2.0",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pxlrbt/filament-excel.git",
-                "reference": "d2e406c4777e41a49fc1c7cc6ae35825b0a0c61d"
+                "reference": "e6af512fa44c75321eb47d1ebf749c8b919c5330"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pxlrbt/filament-excel/zipball/d2e406c4777e41a49fc1c7cc6ae35825b0a0c61d",
-                "reference": "d2e406c4777e41a49fc1c7cc6ae35825b0a0c61d",
+                "url": "https://api.github.com/repos/pxlrbt/filament-excel/zipball/e6af512fa44c75321eb47d1ebf749c8b919c5330",
+                "reference": "e6af512fa44c75321eb47d1ebf749c8b919c5330",
                 "shasum": ""
             },
             "require": {
@@ -7552,7 +7552,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pxlrbt/filament-excel/issues",
-                "source": "https://github.com/pxlrbt/filament-excel/tree/v2.2.0"
+                "source": "https://github.com/pxlrbt/filament-excel/tree/v2.2.2"
             },
             "funding": [
                 {
@@ -7560,7 +7560,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-14T08:22:10+00:00"
+            "time": "2023-12-19T08:50:59+00:00"
         },
         {
             "name": "pxlrbt/filament-spotlight",
@@ -8441,16 +8441,16 @@
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep",
-            "version": "v1.19",
+            "version": "v1.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/eloquent-has-many-deep.git",
-                "reference": "7a858ba0bfe5d42c06c563175a7255ebb6abad27"
+                "reference": "0643033ee114125ff32e150fbf205fdbad8375b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep/zipball/7a858ba0bfe5d42c06c563175a7255ebb6abad27",
-                "reference": "7a858ba0bfe5d42c06c563175a7255ebb6abad27",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep/zipball/0643033ee114125ff32e150fbf205fdbad8375b3",
+                "reference": "0643033ee114125ff32e150fbf205fdbad8375b3",
                 "shasum": ""
             },
             "require": {
@@ -8475,7 +8475,7 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Staudenmeir\\EloquentHasManyDeep\\EloquentHasManyDeepServiceProvider"
+                        "Staudenmeir\\EloquentHasManyDeep\\IdeHelperServiceProvider"
                     ]
                 }
             },
@@ -8497,7 +8497,7 @@
             "description": "Laravel Eloquent HasManyThrough relationships with unlimited levels",
             "support": {
                 "issues": "https://github.com/staudenmeir/eloquent-has-many-deep/issues",
-                "source": "https://github.com/staudenmeir/eloquent-has-many-deep/tree/v1.19"
+                "source": "https://github.com/staudenmeir/eloquent-has-many-deep/tree/v1.19.1"
             },
             "funding": [
                 {
@@ -8505,7 +8505,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-12-05T11:38:39+00:00"
+            "time": "2023-12-19T11:57:39+00:00"
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep-contracts",
@@ -12935,16 +12935,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.24.4",
+            "version": "1.24.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "6bd0c26f3786cd9b7c359675cb789e35a8e07496"
+                "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6bd0c26f3786cd9b7c359675cb789e35a8e07496",
-                "reference": "6bd0c26f3786cd9b7c359675cb789e35a8e07496",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
+                "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
                 "shasum": ""
             },
             "require": {
@@ -12976,9 +12976,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.4"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.5"
             },
-            "time": "2023-11-26T18:29:22+00:00"
+            "time": "2023-12-16T09:33:33+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -13408,12 +13408,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "3c2385497f806decca1e5abeba3cb8fd7caba4e0"
+                "reference": "98ceed764ff7fcf20081fdc2e0914441f46b0906"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3c2385497f806decca1e5abeba3cb8fd7caba4e0",
-                "reference": "3c2385497f806decca1e5abeba3cb8fd7caba4e0",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/98ceed764ff7fcf20081fdc2e0914441f46b0906",
+                "reference": "98ceed764ff7fcf20081fdc2e0914441f46b0906",
                 "shasum": ""
             },
             "conflict": {
@@ -14034,6 +14034,7 @@
                 "yii2mod/yii2-cms": "<1.9.2",
                 "yiisoft/yii": "<1.1.29",
                 "yiisoft/yii2": "<2.0.38",
+                "yiisoft/yii2-authclient": "<2.2.15",
                 "yiisoft/yii2-bootstrap": "<2.0.4",
                 "yiisoft/yii2-dev": "<2.0.43",
                 "yiisoft/yii2-elasticsearch": "<2.0.5",
@@ -14117,7 +14118,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-15T16:04:17+00:00"
+            "time": "2023-12-18T20:04:29+00:00"
         },
         {
             "name": "sebastian/cli-parser",

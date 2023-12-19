@@ -415,6 +415,14 @@ class BantuanBpjsResource extends Resource
 //        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
 //    }
 
+//    public static function getRecordSubNavigation(\Filament\Resources\Pages\Page $page): array
+//    {
+//        return $page->generateNavigationItems([
+//            Pages\ListBantuanBpjs::class,
+//            Pages\CreateBantuanBpjs::class,
+//        ]);
+//    }
+
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()
