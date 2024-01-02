@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
 use App\Filament\Resources\PenggantiRastraResource\Pages;
+use App\Models\BantuanRastra;
 use App\Models\Keluarga;
 use App\Models\PenggantiRastra;
 use Filament\Forms\Components\Select;
@@ -38,7 +39,7 @@ class PenggantiRastraResource extends Resource
                     ->searchable()
                     ->native(false)
                     ->preload()
-                    ->getSearchResultsUsing(fn(string $search): array => Keluarga::where('nama_lengkap', 'like',
+                    ->getSearchResultsUsing(fn(string $search): array => BantuanRastra::where('nama_lengkap', 'like',
                         "%{$search}%")
                         ->orWhere('nik', 'like', "%{$search}%")
                         ->orWhere('nokk', 'like', "%{$search}%")

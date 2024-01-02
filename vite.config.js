@@ -10,9 +10,9 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/css/app.css',
-                'resources/js/app.js',
-                'resources/css/filament/admin/theme.css'
+                "resources/css/app.css",
+                "resources/js/app.js",
+                "resources/css/filament/admin/theme.css",
             ],
             refresh: true,
         }),
@@ -23,11 +23,11 @@ export default defineConfig({
 function detectServerConfig(host) {
     let keyPath = resolve(
         homedir(),
-        "C:/laragon/etc/ssl/laragon.key"
+        "D:/Development/laragon/etc/ssl/laragon.key"
     );
     let certificatePath = resolve(
         homedir(),
-        "C:/laragon/etc/ssl/laragon.crt"
+        "D:/Development/laragon/etc/ssl/laragon.crt"
     );
 
     if (!fs.existsSync(keyPath)) {

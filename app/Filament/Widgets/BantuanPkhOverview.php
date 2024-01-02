@@ -174,7 +174,7 @@ class BantuanPkhOverview extends BaseWidget
 
         return [
             Stat::make(
-                label: 'KPM Kec. Marioriwawo',
+                label: 'KPM PKH Kec. Marioriwawo',
                 value: \Number::abbreviate($marioriwawo, 2))
                 ->description('Total KPM Kec. Marioriwawo')
                 ->descriptionIcon('heroicon-o-arrow-trending-up')

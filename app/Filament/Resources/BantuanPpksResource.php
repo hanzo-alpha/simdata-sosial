@@ -17,7 +17,9 @@ use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
 use App\Models\JenisDisabilitas;
 use App\Models\JenisPpks;
+use App\Models\KriteriaPpks;
 use App\Models\SubJenisDisabilitas;
+use App\Models\TipePpks;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -158,32 +160,24 @@ class BantuanPpksResource extends Resource
                                 ->default(JenisBansosDiterimaEnum::NON_BANSOS)
                                 ->preload(),
 
-                            Select::make('jenis_ppks_id')
-                                ->label('Jenis PPKS')
+                            Select::make('tipe_ppks_id')
+                                ->label('Kategori PPKS')
                                 ->required()
-                                ->searchable(['nama_ppks', 'alias'])
-                                ->options(JenisPpks::pluck('nama_ppks', 'id'))
-                                ->preload()
-                                ->live(),
-
-                            Select::make('jenis_disabilitas_id')
-                                ->label('Jenis Disabilitas')
-                                ->required()
-                                ->searchable(['nama_penyandang', 'alias'])
-                                ->options(JenisDisabilitas::pluck('nama_penyandang', 'id'))
+                                ->searchable()
+                                ->options(TipePpks::pluck('nama_tipe', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('sub_jenis_disabilitas', null)),
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteria_ppks', null)),
 
-                            Select::make('sub_jenis_disabilitas')
-                                ->label('Sub Jenis Disabilitas')
+                            Select::make('kriteria_ppks')
+                                ->label('Kriteria PPKS')
                                 ->required()
                                 ->multiple()
                                 ->searchable()
                                 ->options(function (callable $set, callable $get) {
-                                    return SubJenisDisabilitas::where('jenis_disabilitas_id',
-                                        $get('jenis_disabilitas_id'))
-                                        ?->pluck('nama_sub_jenis', 'id');
+                                    return KriteriaPpks::where('tipe_ppks_id',
+                                        $get('tipe_ppks_id'))
+                                        ?->pluck('nama_kriteria', 'id');
                                 })
                                 ->preload(),
 
