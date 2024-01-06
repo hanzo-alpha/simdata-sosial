@@ -4,6 +4,7 @@ namespace App\Forms\Components;
 
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -76,7 +77,7 @@ class AlamatForm extends Field
 //                                    'lng' => floatVal($get('longitude')),
 //                                ]);
 //                            })
-//                            ->lazy(), // important to use lazy, to avoid updates as you type
+//                            ->lazy(),
 //                        TextInput::make('longitude')
 //                            ->disabled()
 //                            ->dehydrated()
@@ -155,6 +156,8 @@ class AlamatForm extends Field
                 'no_rt' => null,
                 'no_rw' => null,
                 'dusun' => null,
+//                'latitude' => null,
+//                'longitude' => null,
                 'kodepos' => null,
             ]);
         });

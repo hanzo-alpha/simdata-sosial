@@ -11,6 +11,7 @@ use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -96,12 +97,12 @@ class ImportBantuanBpjs implements ToModel, WithBatchInserts, WithChunkReading, 
 
     public function batchSize(): int
     {
-        return 1000;
+        return 500;
     }
 
     public function chunkSize(): int
     {
-        return 1000;
+        return 500;
     }
 
     public function rules(): array
@@ -116,23 +117,24 @@ class ImportBantuanBpjs implements ToModel, WithBatchInserts, WithChunkReading, 
 
     #[NoReturn] public function onError(Throwable $e): void
     {
-        dd($e);
+        Log::error($e);
     }
 
     public function onFailure(Failure ...$failures): void
     {
         foreach ($failures as $failure) {
-            $baris = $failure->row();
-            $errmsg = $failure->errors()[0];
-            $values = $failure->values();
-
-            Notification::make('Failure Import')
-                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' .
-                $values['nama_lengkap'] ?? '-')
-                ->danger()
-                ->sendToDatabase(auth()->user())
-                ->broadcast(User::where('is_admin', 1)->get());
+            Log::error($failure->errors()[0]);
+//            $baris = $failure->row();
+//            $errmsg = $failure->errors()[0];
+//            $values = $failure->values();
+//
+//            Notification::make('Failure Import')
+//                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+//                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' .
+//                $values['nama_lengkap'] ?? '-')
+//                ->danger()
+//                ->sendToDatabase(auth()->user())
+//                ->broadcast(User::where('is_admin', 1)->get());
         }
     }
 

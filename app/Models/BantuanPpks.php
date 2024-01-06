@@ -34,7 +34,7 @@ class BantuanPpks extends Model
         'status_kondisi_rumah' => StatusKondisiRumahEnum::class,
         'penghasilan_rata_rata' => MoneyCast::class,
         'bukti_foto' => 'array',
-        'sub_jenis_disabilitas' => 'array',
+        'kriteria_ppks' => 'array',
         'status_aktif' => StatusAktif::class,
         'bantuan_yang_pernah_diterima' => 'array',
         'jenis_anggaran' => JenisAnggaranEnum::class,
@@ -42,12 +42,12 @@ class BantuanPpks extends Model
         'tahun_anggaran' => 'integer'
     ];
 
-    public function jenis_disabilitas(): BelongsTo
+    public function tipe_ppks(): BelongsTo
     {
         return $this->belongsTo(JenisDisabilitas::class);
     }
 
-    public function subjenisdisabilitas(): BelongsTo
+    public function kriteria(): BelongsTo
     {
         return $this->belongsTo(SubJenisDisabilitas::class);
     }

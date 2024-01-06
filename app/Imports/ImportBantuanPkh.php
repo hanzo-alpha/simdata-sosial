@@ -9,6 +9,7 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -23,7 +24,7 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
 class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithValidation,
-    SkipsEmptyRows, WithUpserts
+    SkipsEmptyRows, WithUpserts, ShouldQueue
 {
     use Importable, SkipsFailures, SkipsErrors;
 
@@ -72,12 +73,12 @@ class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, W
 
     public function batchSize(): int
     {
-        return 700;
+        return 1000;
     }
 
     public function chunkSize(): int
     {
-        return 700;
+        return 1000;
     }
 
     public function rules(): array

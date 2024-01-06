@@ -23,8 +23,8 @@ return new class extends Migration {
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
 
-            $table->string('alamat_lengkap')->virtualAs("CONCAT(alamat, ', ',
-             'RT. ' ,no_rt, ', ', 'RW. ', no_rw, ', ', dusun, ' ', kodepos)");
+            $table->string('alamat_lengkap')->virtualAs("CONCAT(alamat, ', ', dusun, ', ',
+             'RT. ' ,no_rt, ', ', 'RW. ', no_rw, ', ', kodepos)");
 
             $table->timestamps();
         });

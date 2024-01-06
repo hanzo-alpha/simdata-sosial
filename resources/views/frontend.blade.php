@@ -10,7 +10,7 @@
     <meta content="coderthemes" name="author"/>
 
     <!-- Theme favicon -->
-    <link rel="shortcut icon" href="{{ asset('images/logos/reno-dinsos-favicon-white.png') }}">
+    <link rel="shortcut icon" href="{{ asset('logo-white.png') }}">
     {{--    <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">--}}
 
     <!--Swiper slider css-->

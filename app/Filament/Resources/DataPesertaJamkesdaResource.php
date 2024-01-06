@@ -21,6 +21,7 @@ class DataPesertaJamkesdaResource extends Resource
     protected static ?string $label = 'Peserta Jamkesda';
     protected static ?string $pluralLabel = 'Peserta Jamkesda';
     protected static ?string $navigationLabel = 'Peserta Jamkesda';
+//    protected static ?string $navigationParentItem = 'Bantuan';
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 8;
 

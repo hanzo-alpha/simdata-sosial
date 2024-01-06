@@ -3,7 +3,8 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\StatusBpjsEnum;
-use App\Models\UsulanPengaktifanTmt;
+use App\Models\BantuanBpjs;
+use App\Models\DataPesertaJamkesda;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -22,7 +23,7 @@ class BantuanBpjsOverview extends BaseWidget
         $kecamatan = $this->filters['kecamatan'] ?? null;
         $kelurahan = $this->filters['kelurahan'] ?? null;
 
-        $all = UsulanPengaktifanTmt::query()
+        $all = BantuanBpjs::query()
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
@@ -38,7 +39,7 @@ class BantuanBpjsOverview extends BaseWidget
             })
             ->count();
 
-        $verified = UsulanPengaktifanTmt::query()
+        $verified = BantuanBpjs::query()
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
@@ -55,7 +56,7 @@ class BantuanBpjsOverview extends BaseWidget
             ->where('status_bpjs', StatusBpjsEnum::BARU)
             ->count();
 
-        $unverified = UsulanPengaktifanTmt::query()
+        $unverified = BantuanBpjs::query()
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
@@ -72,7 +73,7 @@ class BantuanBpjsOverview extends BaseWidget
             ->where('status_bpjs', StatusBpjsEnum::PENGAKTIFAN)
             ->count();
 
-        $review = UsulanPengaktifanTmt::query()
+        $review = BantuanBpjs::query()
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
@@ -89,10 +90,12 @@ class BantuanBpjsOverview extends BaseWidget
             ->where('status_bpjs', StatusBpjsEnum::PENGALIHAN)
             ->count();
 
+        $jamkesda = DataPesertaJamkesda::count();
+
         return [
             Stat::make(
                 label: 'KPM BPJS',
-                value: \Number::abbreviate($all, 2))
+                value: \Number::abbreviate($all + $jamkesda, 2))
                 ->description('Total Seluruh KPM BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),

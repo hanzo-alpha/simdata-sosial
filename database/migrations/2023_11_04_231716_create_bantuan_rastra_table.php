@@ -17,23 +17,23 @@ return new class extends Migration {
             $table->string('nokk', 20);
             $table->string('nik', 20);
             $table->string('nama_lengkap');
-            $table->string('tempat_lahir', 50);
-            $table->dateTime('tgl_lahir');
-            $table->string('notelp', 18);
-            $table->string('nama_ibu_kandung');
+            $table->string('tempat_lahir', 50)->nullable();
+            $table->dateTime('tgl_lahir')->nullable();
+            $table->string('notelp', 18)->nullable();
+            $table->string('nama_ibu_kandung')->nullable();
             $table->foreignIdFor(JenisBantuan::class)
                 ->nullable()
                 ->constrained('jenis_bantuan')
                 ->cascadeOnUpdate();
             $table->foreignIdFor(PendidikanTerakhir::class)
                 ->nullable()
-                ->constrained('pendidikan_terakhir')->cascadeOnUpdate();
+                ->constrained('pendidikan_terakhir');
             $table->foreignIdFor(HubunganKeluarga::class)
                 ->nullable()
-                ->constrained('hubungan_keluarga')->cascadeOnUpdate();
+                ->constrained('hubungan_keluarga');
             $table->foreignIdFor(JenisPekerjaan::class)
                 ->nullable()
-                ->constrained('jenis_pekerjaan')->cascadeOnUpdate();
+                ->constrained('jenis_pekerjaan');
             $table->tinyInteger('status_kawin')
                 ->nullable()
                 ->default(1);
@@ -47,10 +47,11 @@ return new class extends Migration {
                 ->nullable()
                 ->default(0);
             $table->json('bukti_foto')->nullable();
+            $table->json('foto_pegang_ktp')->nullable();
             $table->tinyInteger('status_rastra')->nullable();
             $table->json('pengganti_rastra')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 };
