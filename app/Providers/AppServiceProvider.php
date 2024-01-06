@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,13 +28,9 @@ class AppServiceProvider extends ServiceProvider
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
 
-//        Livewire::setScriptRoute(static function ($handle) {
-//            return Route::get('/custom/livewire/livewire.js', $handle);
-//        });
-
         Model::unguard();
-//        if (app()->environment('production')) {
-//            URL::forceScheme('https');
-//        }
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }

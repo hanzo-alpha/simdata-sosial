@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', static function () {
     return view('frontend');
 })->name('frontend');
+
+Route::get('/download', [PdfController::class, 'download'])->name('pdf.download');
+Route::get('/download/{record}', [PdfController::class, 'downloadRastra'])->name('rastra.pdf.download');

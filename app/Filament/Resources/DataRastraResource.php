@@ -46,7 +46,7 @@ class DataRastraResource extends Resource
     protected static ?string $pluralLabel = 'Data Rastra';
     protected static ?string $navigationGroup = 'Bantuan';
     protected static ?int $navigationSort = 5;
-    protected static bool $shouldRegisterNavigation = false;
+    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
     {
