@@ -8,7 +8,6 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use App\Models\Pulau;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasWilayah
