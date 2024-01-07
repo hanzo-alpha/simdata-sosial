@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Keluarga;
 use App\Models\User;
+use App\Models\Keluarga;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class KeluargaPolicy

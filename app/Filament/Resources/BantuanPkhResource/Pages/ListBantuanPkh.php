@@ -20,9 +20,9 @@ class ListBantuanPkh extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-//            Actions\CreateAction::make(),
+            Actions\CreateAction::make(),
             Actions\Action::make('unggahData')
-                ->model(BantuanPkh::class)
+//                ->model(BantuanPkh::class)
                 ->label('Unggah Data')
                 ->modalHeading('Unggah Data Bantuan PKH')
                 ->modalDescription('Unggah data PKH ke database dari file excel')
@@ -70,6 +70,7 @@ class ListBantuanPkh extends ListRecords
 
                 })
                 ->icon('heroicon-o-arrow-down-tray')
+                ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.bantuan-pkh.index'))

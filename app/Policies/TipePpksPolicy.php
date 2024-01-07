@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\DataPesertaJamkesda;
+use App\Models\TipePpks;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DataPesertaJamkesdaPolicy
+class TipePpksPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class DataPesertaJamkesdaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_data::peserta::jamkesda');
+        return $user->can('view_any_tipe::ppks');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DataPesertaJamkesda  $dataPesertaJamkesda
+     * @param  \App\Models\TipePpks  $tipePpks
      * @return bool
      */
-    public function view(User $user, DataPesertaJamkesda $dataPesertaJamkesda): bool
+    public function view(User $user, TipePpks $tipePpks): bool
     {
-        return $user->can('view_data::peserta::jamkesda');
+        return $user->can('view_tipe::ppks');
     }
 
     /**
@@ -41,31 +41,31 @@ class DataPesertaJamkesdaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_data::peserta::jamkesda');
+        return $user->can('create_tipe::ppks');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DataPesertaJamkesda  $dataPesertaJamkesda
+     * @param  \App\Models\TipePpks  $tipePpks
      * @return bool
      */
-    public function update(User $user, DataPesertaJamkesda $dataPesertaJamkesda): bool
+    public function update(User $user, TipePpks $tipePpks): bool
     {
-        return $user->can('update_data::peserta::jamkesda');
+        return $user->can('update_tipe::ppks');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DataPesertaJamkesda  $dataPesertaJamkesda
+     * @param  \App\Models\TipePpks  $tipePpks
      * @return bool
      */
-    public function delete(User $user, DataPesertaJamkesda $dataPesertaJamkesda): bool
+    public function delete(User $user, TipePpks $tipePpks): bool
     {
-        return $user->can('delete_data::peserta::jamkesda');
+        return $user->can('delete_tipe::ppks');
     }
 
     /**
@@ -83,12 +83,12 @@ class DataPesertaJamkesdaPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DataPesertaJamkesda  $dataPesertaJamkesda
+     * @param  \App\Models\TipePpks  $tipePpks
      * @return bool
      */
-    public function forceDelete(User $user, DataPesertaJamkesda $dataPesertaJamkesda): bool
+    public function forceDelete(User $user, TipePpks $tipePpks): bool
     {
-        return $user->can('force_delete_data::peserta::jamkesda');
+        return $user->can('force_delete_tipe::ppks');
     }
 
     /**
@@ -106,10 +106,10 @@ class DataPesertaJamkesdaPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DataPesertaJamkesda  $dataPesertaJamkesda
+     * @param  \App\Models\TipePpks  $tipePpks
      * @return bool
      */
-    public function restore(User $user, DataPesertaJamkesda $dataPesertaJamkesda): bool
+    public function restore(User $user, TipePpks $tipePpks): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -129,10 +129,10 @@ class DataPesertaJamkesdaPolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\DataPesertaJamkesda  $dataPesertaJamkesda
+     * @param  \App\Models\TipePpks  $tipePpks
      * @return bool
      */
-    public function replicate(User $user, DataPesertaJamkesda $dataPesertaJamkesda): bool
+    public function replicate(User $user, TipePpks $tipePpks): bool
     {
         return $user->can('{{ Replicate }}');
     }

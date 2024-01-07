@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\JenisDisabilitas;
 use App\Models\User;
+use App\Models\JenisDisabilitas;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class JenisDisabilitasPolicy

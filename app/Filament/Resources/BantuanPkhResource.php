@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusPkhBpntEnum;
 use App\Filament\Resources\BantuanPkhResource\Pages;
 use App\Filament\Resources\BantuanPkhResource\RelationManagers;
 use App\Models\BantuanPkh;
@@ -9,7 +10,6 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use AymanAlhattami\FilamentDateScopesFilter\DateScopeFilter;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -149,31 +149,28 @@ class BantuanPkhResource extends Resource
 //            ->striped()
             ->deferLoading()
             ->recordClasses(fn(Model $record) => match ($record->status_pkh) {
-                'draft' => 'opacity-30',
-                'reviewing' => 'border-s-2 border-orange-600 dark:border-orange-300',
-                'PKH' => 'border-s-2 border-green-600 dark:border-green-300',
-                default => null,
+                StatusPkhBpntEnum::BPNT => 'border-s-2 border-blue-600 dark:border-blue-300',
+                StatusPkhBpntEnum::PKH => 'border-s-2 border-green-600 dark:border-green-300',
             })
-            ->groups([
-                Tables\Grouping\Group::make('kec.name')
-                    ->label('Kecamatan')
-                    ->collapsible()
-                    ->titlePrefixedWithLabel(false),
-                Tables\Grouping\Group::make('kel.name')
-                    ->label('Kelurahan')
-                    ->collapsible()
-                    ->titlePrefixedWithLabel(false)
-            ])
-            ->defaultGroup('kec.name')
-            ->groupRecordsTriggerAction(
-                fn(Action $action) => $action
-                    ->button()
-                    ->label('Kelompokkan Data'),
-            )
-            ->groupingSettingsInDropdownOnDesktop()
+//            ->groups([
+//                Tables\Grouping\Group::make('kec.name')
+//                    ->label('Kecamatan')
+//                    ->collapsible()
+//                    ->titlePrefixedWithLabel(false),
+//                Tables\Grouping\Group::make('kel.name')
+//                    ->label('Kelurahan')
+//                    ->collapsible()
+//                    ->titlePrefixedWithLabel(false)
+//            ])
+//            ->defaultGroup('kec.name')
+//            ->groupRecordsTriggerAction(
+//                fn(Action $action) => $action
+//                    ->button()
+//                    ->label('Kelompokkan Data'),
+//            )
+//            ->groupingSettingsInDropdownOnDesktop()
 //            ->groupingSettingsHidden()
 //            ->paginated([10, 25, 50, 100, 'all'])
-            ->defaultPaginationPageOption(10)
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')
@@ -224,30 +221,20 @@ class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()
                     ->toggleable()
-                    ->description(fn($record) => 'Kec. ' . $record->kec->name . ' | Kel. ' . $record->kel->name)
-//                    ->toggledHiddenByDefault()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('prov.name')
-                    ->sortable()
-                    ->toggleable()
-                    ->toggledHiddenByDefault()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kab.name')
-                    ->sortable()
-                    ->toggleable()
-                    ->toggledHiddenByDefault()
+//                    ->description(fn($record) => 'Kec. ' . $record->kec()->get()->first()->name . ' | Kel. ' .
+//                        $record->kel()->get()->first()->name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
                     ->sortable()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
+//                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->sortable()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
+//                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('no_rt')
                     ->label('No. RT')
@@ -267,16 +254,12 @@ class BantuanPkhResource extends Resource
                     ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dir')
+                    ->label('Dir/Gel')
                     ->sortable()
                     ->alignCenter()
                     ->toggleable()
-//                    ->toggledHiddenByDefault()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('gelombang')
-                    ->sortable()
-                    ->alignCenter()
-                    ->toggleable()
-//                    ->toggledHiddenByDefault()
+                    ->toggledHiddenByDefault()
+                    ->description(fn($record): string => $record->gelombang)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_pkh')
                     ->label('Status')

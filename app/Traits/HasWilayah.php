@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasWilayah
 {
-
-
     public function prov(): BelongsTo
     {
         return $this->belongsTo(Provinsi::class, 'provinsi', 'code');
@@ -33,10 +31,5 @@ trait HasWilayah
     public function kel(): BelongsTo
     {
         return $this->belongsTo(Kelurahan::class, 'kelurahan', 'code');
-    }
-
-    public function pul(): BelongsTo
-    {
-        return $this->belongsTo(Pulau::class, 'kelurahan', 'code');
     }
 }

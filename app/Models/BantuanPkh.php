@@ -16,14 +16,13 @@ class BantuanPkh extends Model
     protected $table = 'bantuan_pkh';
     protected $guarded = [];
 
+    protected $with = [
+        'prov','kab','kec','kel','jenis_bantuan'
+    ];
+
     protected $casts = [
         'dtks_id' => 'string',
         'nominal' => MoneyCast::class,
         'status_pkh' => StatusPkhBpntEnum::class,
     ];
-
-    public function jenis_bantuan(): BelongsTo
-    {
-        return $this->belongsTo(JenisBantuan::class);
-    }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Bantuan;
 use App\Models\User;
+use App\Models\Bantuan;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BantuanPolicy

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PendidikanTerakhir;
 use App\Models\User;
+use App\Models\PendidikanTerakhir;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PendidikanTerakhirPolicy

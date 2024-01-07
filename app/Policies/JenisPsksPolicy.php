@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\JenisPsks;
 use App\Models\User;
+use App\Models\JenisPsks;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class JenisPsksPolicy
