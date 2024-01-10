@@ -32,11 +32,11 @@ class BantuanBpjsResource extends Resource
     protected static ?string $model = BantuanBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-beaker';
-    protected static ?string $slug = 'bantuan-bpjs';
-    protected static ?string $label = 'Bantuan BPJS';
-    protected static ?string $pluralLabel = 'Bantuan BPJS';
-    protected static ?string $navigationLabel = 'Bantuan BPJS';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $slug = 'program-bpjs';
+    protected static ?string $label = 'Program BPJS';
+    protected static ?string $pluralLabel = 'Program BPJS';
+    protected static ?string $navigationLabel = 'Program BPJS';
+    protected static ?string $navigationGroup = 'Program';
 
     public static function form(Form $form): Form
     {

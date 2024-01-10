@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class UserResource extends Resource
 {
@@ -37,7 +38,7 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('roles')
+                Forms\Components\Select::make('roles_id')
                     ->relationship('roles', 'name')
                     ->preload()
                     ->searchable(),

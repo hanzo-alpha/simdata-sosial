@@ -23,11 +23,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::shouldBeStrict($this->app->isLocal());
-//        Model::preventSilentlyDiscardingAttributes($this->app->isLocal());
-//        Model::preventLazyLoading($this->app->isLocal());
 
+        setlocale(LC_ALL, 'IND');
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
+        Carbon::now()->formatLocalized('%A, %d %B %Y');
 
         Model::unguard();
         if (app()->environment('production')) {

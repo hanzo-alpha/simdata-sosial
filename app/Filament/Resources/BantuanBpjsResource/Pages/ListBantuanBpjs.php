@@ -79,7 +79,7 @@ class ListBantuanBpjs extends ListRecords
                 ->icon('heroicon-o-arrow-up-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->successRedirectUrl(route('filament.admin.resources.bantuan-bpjs.index'))
+                ->successRedirectUrl(route('filament.admin.resources.program-bpjs.index'))
                 ->modalWidth('md'),
 
             Actions\CreateAction::make()

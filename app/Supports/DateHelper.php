@@ -108,7 +108,7 @@ final class DateHelper
     public static function namaHari($tanggal = ''): string
     {
         if ($tanggal === '') {
-            $tanggal = date(config('custom.format_tanggal_waktu'));
+            $tanggal = date(config('custom.date.date_db'));
             $ind = date('w', strtotime($tanggal));
         } elseif (strlen($tanggal) < 2) {
             $ind = $tanggal - 1;
@@ -182,7 +182,7 @@ final class DateHelper
     public static function namaBulan($tanggal = '', $short = false): string
     {
         if ($tanggal === '' || $tanggal === 'now') {
-            $tanggal = date(config('custom.format_tanggal_waktu'));
+            $tanggal = date(config('custom.date.date_db'));
             $ind = date('m', strtotime($tanggal));
         } elseif (strlen($tanggal) < 3) {
             $ind = $tanggal;
@@ -216,7 +216,7 @@ final class DateHelper
             return $emptyVal;
         }
         if ($tanggal === 'now') {
-            $tanggal = date(config('custom.format_tanggal_waktu'));
+            $tanggal = date(config('custom.date.date_db'));
         }
         $tgl = date('j', strtotime($tanggal));
         $thn = date('Y', strtotime($tanggal));
@@ -228,7 +228,7 @@ final class DateHelper
     public static function tanggalJam($tanggal = '', $sep = ' - '): string
     {
         if ($tanggal === '') {
-            $tanggal = date(config('custom.format_tanggal_waktu'));
+            $tanggal = date(config('custom.date.date_db'));
         }
 
         return self::tanggal($tanggal) . $sep . date('H:i', strtotime($tanggal));
@@ -248,15 +248,15 @@ final class DateHelper
     {
         Date::setLocale(config('app.locale'));
 
-        return Date::createFromFormat(config('custom.format_tanggal_waktu'),
-            $date->format(config('custom.format_tanggal_waktu')))->format($format);
+        return Date::createFromFormat(config('custom.date.only_date'),
+            $date->format(config('custom.date.only_date')))->format($format);
     }
 
     public static function hariTanggal($tanggal = ''): string
     {
         Carbon::setLocale('id');
         if ($tanggal === '') {
-            $tanggal = Carbon::now()->timezone(config('app.timezone'))->format(config('custom.format_tanggal_waktu'));
+            $tanggal = Carbon::now()->timezone(config('app.timezone'))->format(config('custom.date.date_db'));
         }
         $tgl = date('d', strtotime($tanggal));
         $thn = date('Y', strtotime($tanggal));
@@ -270,7 +270,7 @@ final class DateHelper
     public static function hariTanggalJam($tanggal = '', $sep = ' pukul '): string
     {
         if ($tanggal === '') {
-            $tanggal = date(config('custom.format_tanggal_waktu'));
+            $tanggal = date(config('custom.date.date_db'));
         }
 
         return self::hariTanggal($tanggal) . $sep . date('H:i', strtotime($tanggal));
@@ -296,7 +296,7 @@ final class DateHelper
             return '';
         }
         if ($tanggal === 'now') {
-            $tanggal = date(config('custom.format_tanggal_waktu'));
+            $tanggal = date(config('custom.date.date_db'));
         }
         $tanggal = strtotime($tanggal);
         $yFormat = $fullyear ? 'Y' : 'y';
@@ -320,7 +320,7 @@ final class DateHelper
     public static function ymdhis($tanggal = '', $sep = '/', $incTime = true): string
     {
         if ($tanggal === '') {
-            return date(config('custom.format_tanggal_waktu'));
+            return date(config('custom.date.date_db'));
         }
 
         [$date, $time] = array_pad(explode(' ', $tanggal), 2, date('H:i'));
@@ -371,5 +371,4 @@ final class DateHelper
 
         return $day;
     }
-
 }

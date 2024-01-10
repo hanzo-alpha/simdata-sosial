@@ -22,7 +22,7 @@ class DataPesertaJamkesdaResource extends Resource
     protected static ?string $pluralLabel = 'Peserta Jamkesda';
     protected static ?string $navigationLabel = 'Peserta Jamkesda';
 //    protected static ?string $navigationParentItem = 'Bantuan';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $navigationGroup = 'Program';
     protected static ?int $navigationSort = 8;
 
 //    protected static bool $shouldRegisterNavigation = false;

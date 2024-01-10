@@ -27,11 +27,11 @@ class BantuanBpntResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static ?string $slug = 'bantuan-bpnt';
-    protected static ?string $label = 'Bantuan BPNT';
-    protected static ?string $pluralLabel = 'Bantuan BPNT';
-    protected static ?string $navigationLabel = 'Bantuan BPNT';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $slug = 'program-bpnt';
+    protected static ?string $label = 'Program BPNT';
+    protected static ?string $pluralLabel = 'Program BPNT';
+    protected static ?string $navigationLabel = 'Program BPNT';
+    protected static ?string $navigationGroup = 'Program';
 
     protected static ?int $navigationSort = 2;
 

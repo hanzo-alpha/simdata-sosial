@@ -44,7 +44,7 @@ class DataRastraResource extends Resource
     protected static ?string $slug = 'data-rastra';
     protected static ?string $label = 'Data Rastra';
     protected static ?string $pluralLabel = 'Data Rastra';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $navigationGroup = 'Program';
     protected static ?int $navigationSort = 5;
     protected static bool $shouldRegisterNavigation = true;
 

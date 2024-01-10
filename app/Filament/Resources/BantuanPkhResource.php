@@ -28,11 +28,11 @@ class BantuanPkhResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static ?string $slug = 'bantuan-pkh';
-    protected static ?string $label = 'Bantuan PKH';
-    protected static ?string $pluralLabel = 'Bantuan PKH';
-    protected static ?string $navigationLabel = 'Bantuan PKH';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $slug = 'program-pkh';
+    protected static ?string $label = 'Program PKH';
+    protected static ?string $pluralLabel = 'Program PKH';
+    protected static ?string $navigationLabel = 'Program PKH';
+    protected static ?string $navigationGroup = 'Program';
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form

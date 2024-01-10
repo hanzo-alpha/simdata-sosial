@@ -4143,17 +4143,22 @@
 
             lt.setDefaultProps({render: tr}), e.animateFill = sr, e.createSingleton = ir, e.default = lt, e.delegate = Ht, e.followCursor = Mn, e.hideAll = rr, e.inlinePositioning = Rn, e.roundArrow = n, e.sticky = $r
         }), mo = Oi(Si()), Va = Oi(Si()), Ua = e => {
-            let t = {plugins: []}, n = r => e[e.indexOf(r) + 1];
+            let t = {plugins: []}, n = i => e[e.indexOf(i) + 1];
             if (e.includes("animation") && (t.animation = n("animation")), e.includes("duration") && (t.duration = parseInt(n("duration"))), e.includes("delay")) {
-                let r = n("delay");
-                t.delay = r.includes("-") ? r.split("-").map(i => parseInt(i)) : parseInt(r)
+                let i = n("delay");
+                t.delay = i.includes("-") ? i.split("-").map(o => parseInt(o)) : parseInt(i)
             }
             if (e.includes("cursor")) {
                 t.plugins.push(Va.followCursor);
-                let r = n("cursor");
-                ["x", "initial"].includes(r) ? t.followCursor = r === "x" ? "horizontal" : "initial" : t.followCursor = !0
+                let i = n("cursor");
+                ["x", "initial"].includes(i) ? t.followCursor = i === "x" ? "horizontal" : "initial" : t.followCursor = !0
             }
-            return e.includes("on") && (t.trigger = n("on")), e.includes("arrowless") && (t.arrow = !1), e.includes("html") && (t.allowHTML = !0), e.includes("interactive") && (t.interactive = !0), e.includes("border") && t.interactive && (t.interactiveBorder = parseInt(n("border"))), e.includes("debounce") && t.interactive && (t.interactiveDebounce = parseInt(n("debounce"))), e.includes("max-width") && (t.maxWidth = parseInt(n("max-width"))), e.includes("theme") && (t.theme = n("theme")), e.includes("placement") && (t.placement = n("placement")), t
+            e.includes("on") && (t.trigger = n("on")), e.includes("arrowless") && (t.arrow = !1), e.includes("html") && (t.allowHTML = !0), e.includes("interactive") && (t.interactive = !0), e.includes("border") && t.interactive && (t.interactiveBorder = parseInt(n("border"))), e.includes("debounce") && t.interactive && (t.interactiveDebounce = parseInt(n("debounce"))), e.includes("max-width") && (t.maxWidth = parseInt(n("max-width"))), e.includes("theme") && (t.theme = n("theme")), e.includes("placement") && (t.placement = n("placement"));
+            let r = {};
+            return e.includes("no-flip") && (r.modifiers || (r.modifiers = []), r.modifiers.push({
+                name: "flip",
+                enabled: !1
+            })), t.popperOptions = r, t
         };
 
     function bo(e) {

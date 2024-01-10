@@ -44,11 +44,11 @@ class BantuanPpksResource extends Resource
     protected static ?string $model = BantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-window';
-    protected static ?string $slug = 'bantuan-ppks';
-    protected static ?string $label = 'Bantuan PPKS';
-    protected static ?string $pluralLabel = 'Bantuan PPKS';
-    protected static ?string $navigationLabel = 'Bantuan PPKS';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $slug = 'program-ppks';
+    protected static ?string $label = 'Program PPKS';
+    protected static ?string $pluralLabel = 'Program PPKS';
+    protected static ?string $navigationLabel = 'Program PPKS';
+    protected static ?string $navigationGroup = 'Program';
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form

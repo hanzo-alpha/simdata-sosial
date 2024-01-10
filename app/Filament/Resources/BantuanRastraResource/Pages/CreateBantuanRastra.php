@@ -14,7 +14,7 @@ class CreateBantuanRastra extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['dtks_id'] = $data['dtks_id'] ?? \Str::uuid()->toString();
+        $data['dtks_id'] = $data['dtks_id'] ?? \Str::orderedUuid()->toString();
         $data['jenis_bantuan_id'] = $data['jenis_bantuan_id'] ?? 5;
         $data['status_verifikasi'] = (auth()->user()?->hasRole(['operator']))
             ? StatusVerifikasiEnum::UNVERIFIED

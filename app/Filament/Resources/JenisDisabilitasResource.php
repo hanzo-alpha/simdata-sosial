@@ -24,6 +24,8 @@ class JenisDisabilitasResource extends Resource
     protected static ?string $pluralLabel = 'Jenis  Disabilitas';
     protected static ?string $navigationLabel = 'Jenis Disabilitas';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form

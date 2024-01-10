@@ -11,6 +11,9 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasKeluarga;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Models\Media;
+use Awcodes\Curator\PathGenerators\DatePathGenerator;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -67,6 +70,11 @@ class BantuanRastra extends Model
         return $this->morphOne(Alamat::class, 'alamatable');
     }
 
+    public function mediaFoto(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'media_id', 'id');
+    }
+
     public function pengganti_rastra(): BelongsTo
     {
         return $this->belongsTo(PenggantiRastra::class);
@@ -77,9 +85,9 @@ class BantuanRastra extends Model
         return [
             TextInput::make('dtks_id')
                 ->maxLength(36)
-                ->hidden()
+                ->disabled()
                 ->dehydrated()
-                ->default(\Str::uuid()->toString()),
+                ->default(\Str::orderedUuid()->toString()),
             TextInput::make('nokk')
                 ->label('No. Kartu Keluarga (KK)')
                 ->required()
@@ -305,7 +313,7 @@ class BantuanRastra extends Model
                 ->label('Tgl. Penyerahan')
                 ->disabled()
                 ->default(now())
-                ->displayFormat('d/M/Y H:i')
+                ->displayFormat('d/M/Y H:i:s')
                 ->dehydrated(),
             FileUpload::make('bukti_foto')
                 ->label('Unggah Foto Penyerahan')

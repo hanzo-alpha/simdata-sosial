@@ -5,12 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\KriteriaPpksResource\Pages;
 use App\Filament\Resources\KriteriaPpksResource\RelationManagers;
 use App\Models\KriteriaPpks;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class KriteriaPpksResource extends Resource
@@ -45,21 +48,12 @@ class KriteriaPpksResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tipe_ppks_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('nama_kriteria')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('alias')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                BadgeableColumn::make('nama_kriteria')
+                    ->label('Kriteria Tipe PPKS')
+                    ->suffixBadges([
+                        Badge::make('tipe_ppks.nama_tipe')
+                            ->label(fn(Model $record) => $record->tipe_ppks()->first()->nama_tipe)
+                    ]),
             ])
             ->filters([
                 //

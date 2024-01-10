@@ -23,7 +23,10 @@ return [
         'display_short_fulltime' => 'D, d M Y H:i:s',
         'display_long' => 'l, d F Y',
         'display_long_fulltime' => 'l, d F Y H:i:s',
-        'db_format' => 'Y-m-d H:i:s',
+        'datetime_db' => 'Y-m-d H:i:s',
+        'date_db' => 'Y-m-d',
+        'only_date' => 'd/M/Y',
+        'only_time' => 'H:i:s',
     ],
     'version' => [
         'app' => 'v1.0.0',

@@ -40,10 +40,10 @@ class BantuanRastraResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
-    protected static ?string $slug = 'bantuan-rastra';
-    protected static ?string $label = 'Bantuan Rastra';
-    protected static ?string $pluralLabel = 'Bantuan Rastra';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $slug = 'program-rastra';
+    protected static ?string $label = 'Program Rastra';
+    protected static ?string $pluralLabel = 'Program Rastra';
+    protected static ?string $navigationGroup = 'Program';
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
