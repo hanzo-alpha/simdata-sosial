@@ -5,8 +5,10 @@ namespace App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Filament\Resources\PenyaluranBantuanRastraResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 
-class ListPenyaluranBantuanRastras extends ListRecords
+class ListPenyaluranBantuanRastra extends ListRecords
 {
     protected static string $resource = PenyaluranBantuanRastraResource::class;
 
@@ -15,5 +17,10 @@ class ListPenyaluranBantuanRastras extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function paginateTableQuery(Builder $query): Paginator
+    {
+        return $query->with(['bantuan_rastra'])->fastPaginate($this->getTableRecordsPerPage());
     }
 }

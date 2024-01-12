@@ -20,78 +20,78 @@ class UsulanMutasiTmtResource extends Resource
     protected static ?string $model = UsulanMutasiTmt::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $slug = 'usulan-mutasi-tmt';
-    protected static ?string $label = 'Usulan Mutasi TMT';
-    protected static ?string $pluralLabel = 'Usulan Mutasi TMT';
-    protected static ?string $navigationLabel = 'Usulan Mutasi TMT';
-    protected static ?string $navigationGroup = 'Bantuan';
+    protected static ?string $slug = 'usulan-mutasi-bpjs';
+    protected static ?string $label = 'Usulan Mutasi BPJS';
+    protected static ?string $pluralLabel = 'Usulan Mutasi BPJS';
+    protected static ?string $navigationLabel = 'Usulan Mutasi BPJS';
+    protected static ?string $navigationGroup = 'Program';
     protected static ?int $navigationSort = 7;
 
-    protected static bool $shouldRegisterNavigation = false;
+//    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                FileUpload::make('attachment')
-                    ->label('Impor')
-                    ->hiddenLabel()
-                    ->columnSpanFull()
-                    ->preserveFilenames()
-                    ->previewable(false)
-                    ->directory('upload')
-                    ->maxSize(5120)
-                    ->reorderable()
-                    ->appendFiles()
-                    ->storeFiles(false)
-                    ->acceptedFileTypes([
-                        'application/vnd.ms-excel',
-                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        'text/csv'
-                    ])
-                    ->hiddenOn(['edit', 'view']),
+//                FileUpload::make('attachment')
+//                    ->label('Impor')
+//                    ->hiddenLabel()
+//                    ->columnSpanFull()
+//                    ->preserveFilenames()
+//                    ->previewable(false)
+//                    ->directory('upload')
+//                    ->maxSize(5120)
+//                    ->reorderable()
+//                    ->appendFiles()
+//                    ->storeFiles(false)
+//                    ->acceptedFileTypes([
+//                        'application/vnd.ms-excel',
+//                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+//                        'text/csv'
+//                    ])
+//                    ->hiddenOn(['edit', 'view']),
 
                 Forms\Components\TextInput::make('nokk_tmt')
                     ->required()
-                    ->visibleOn(['edit', 'view'])
+//                    ->visibleOn(['edit', 'view'])
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_tmt')
                     ->required()
-                    ->maxLength(255)
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('nama_lengkap')
                     ->required()
-                    ->maxLength(255)
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->maxLength(255),
                 Forms\Components\Select::make('jenis_kelamin')
                     ->options(JenisKelaminEnum::class)
                     ->preload()
-                    ->lazy()
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->lazy(),
                 Forms\Components\TextInput::make('nomor_kartu')
-                    ->maxLength(255)
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->maxLength(255),
                 Forms\Components\Select::make('alasan_mutasi')
                     ->options(AlasanEnum::class)
                     ->preload()
-                    ->lazy()
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->lazy(),
                 Forms\Components\Textarea::make('alamat')
                     ->maxLength(65535)
-                    ->columnSpanFull()
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('keterangan')
                     ->maxLength(65535)
-                    ->columnSpanFull()
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->columnSpanFull(),
                 ToggleButton::make('status_mutasi')
                     ->label('Status Aktif')
                     ->offColor('danger')
                     ->onColor('primary')
                     ->offLabel('Non Aktif')
                     ->onLabel('Aktif')
-                    ->default(true)
-                    ->visibleOn(['edit', 'view']),
+//                    ->visibleOn(['edit', 'view'])
+                    ->default(true),
             ]);
     }
 

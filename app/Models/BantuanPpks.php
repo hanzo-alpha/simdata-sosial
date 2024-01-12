@@ -39,6 +39,8 @@ class BantuanPpks extends Model
         'bantuan_yang_pernah_diterima' => 'array',
         'jenis_anggaran' => JenisAnggaranEnum::class,
         'jumlah_bantuan' => 'integer',
+        'nama_bantuan' => 'string',
+        'keterangan' => 'string',
         'tahun_anggaran' => 'integer'
     ];
 

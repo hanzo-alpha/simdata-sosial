@@ -68,7 +68,7 @@ class ListBantuanPpks extends ListRecords
                 ->color('info')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->successRedirectUrl(route('filament.admin.resources.bantuan-pkh.index'))
+                ->successRedirectUrl(route('filament.admin.resources.program-ppks.index'))
                 ->modalWidth('lg'),
 
             Actions\CreateAction::make()

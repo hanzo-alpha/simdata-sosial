@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PdfController;
+use App\Livewire\Frontend\Index;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', static function () {
-    return view('frontend');
-})->name('frontend');
+//Route::get('/', static function () {
+//    return view('frontend');
+//})->name('frontend');
 
-Route::get('/download', [PdfController::class, 'download'])->name('pdf.download');
-Route::get('/download/{record}', [PdfController::class, 'downloadRastra'])->name('rastra.pdf.download');
+Route::get('/', Index::class)->middleware('guest')->name('frontend');
+
+Route::middleware(['auth'])->group(function () {
+    Route::controller(PdfController::class)->group(function () {
+        Route::get('/download', 'download')->name('pdf.download');
+        Route::get('/download/{record}', 'downloadRastra')->name('pdf.rastra');
+    });
+});

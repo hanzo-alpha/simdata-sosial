@@ -53,9 +53,11 @@ return new class extends Migration {
             $table->unsignedInteger('tahun_anggaran')->nullable();
             $table->string('jenis_anggaran', 10)->nullable();
             $table->unsignedInteger('jumlah_bantuan')->nullable();
+            $table->string('nama_bantuan')->nullable();
             $table->unsignedtinyInteger('status_rumah_tinggal')->nullable();
             $table->string('status_kondisi_rumah')->nullable();
             $table->tinyInteger('status_bantuan')->nullable();
+            $table->text('keterangan')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

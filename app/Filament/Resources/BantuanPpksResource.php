@@ -130,6 +130,9 @@ class BantuanPpksResource extends Resource
                                 ->default(0)
                                 ->numeric(),
 
+                            TextInput::make('nama_bantuan')
+                                ->columnSpanFull()
+
                         ])->columns(2),
 
                     Section::make('Data Alamat')
@@ -213,6 +216,9 @@ class BantuanPpksResource extends Resource
                                         ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
+                            Forms\Components\Textarea::make('keterangan')
+                                ->autosize(),
+
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
                                 ->offColor('danger')
@@ -220,6 +226,7 @@ class BantuanPpksResource extends Resource
                                 ->offLabel('Non Aktif')
                                 ->onLabel('Aktif')
                                 ->default(true),
+
                         ]),
 //                    Forms\Components\Section::make('Verifikasi')
 //                        ->schema([

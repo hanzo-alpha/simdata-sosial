@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusPenyaluran;
 use App\Models\BantuanRastra;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,8 +19,10 @@ return new class extends Migration {
             $table->dateTime('tgl_penyerahan')->nullable();
             $table->json('foto_penyerahan');
             $table->json('foto_ktp_kk');
+            $table->longText('lokasi');
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
+            $table->string('status_penyaluran')->nullable()->default(StatusPenyaluran::BELUM_TERSALURKAN);
             $table->softDeletes();
             $table->timestamps();
         });

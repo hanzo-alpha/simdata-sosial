@@ -42,13 +42,6 @@ class UserResource extends Resource
                     ->relationship('roles', 'name')
                     ->preload()
                     ->searchable(),
-//                ToggleButton::make('is_admin')
-//                    ->label('Is Admin')
-//                    ->offColor('info')
-//                    ->onColor('success')
-//                    ->offLabel('Operator')
-//                    ->onLabel('Admin')
-//                    ->default(false),
             ]);
     }
 
