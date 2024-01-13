@@ -10,6 +10,7 @@ class JenisPekerjaan extends Model
     use HasFactory;
 
     public $timestamps = false;
+
     protected $table = 'jenis_pekerjaan';
 
     protected $fillable = [

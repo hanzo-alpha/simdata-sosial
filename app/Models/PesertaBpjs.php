@@ -15,6 +15,6 @@ class PesertaBpjs extends Model
 
     protected $casts = [
         'bulan' => 'integer',
-        'tahun' => 'integer'
+        'tahun' => 'integer',
     ];
 }

@@ -22,7 +22,6 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
-use Shipu\WebInstaller\Middleware\RedirectIfNotInstalled;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -64,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
                     ->gridColumns([
                         'default' => 1,
                         'sm' => 2,
-                        'lg' => 3
+                        'lg' => 3,
                     ])
                     ->sectionColumnSpan(1)
                     ->checkboxListColumns([
@@ -82,7 +81,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationIcon('heroicon-o-photo')
                     ->navigationGroup('Dashboard Bantuan')
                     ->navigationSort(3)
-                    ->navigationCountBadge()
+                    ->navigationCountBadge(),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -96,7 +95,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->font(config('custom.app.font', 'Inter'))
             ->pages([
-//                Pages\Dashboard::class,
+                //                Pages\Dashboard::class,
             ])
             ->navigationGroups([
                 NavigationGroup::make('program sosial')
@@ -114,7 +113,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-//                PenerimaManfaatChart::class,
+                //                PenerimaManfaatChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -130,10 +129,10 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
-            ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
+            ->renderHook('panels::head.end', fn (): View => view('livewire-head'))
+            ->renderHook('panels::body.end', fn (): View => view('livewire-body'))
             ->resources([
-                config('filament-logger.activity_resource')
+                config('filament-logger.activity_resource'),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css');
     }

@@ -12,13 +12,9 @@ use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanPpks;
 use App\Filament\Resources\BantuanPpksResource\Pages;
-use App\Filament\Resources\BantuanPpksResource\RelationManagers;
 use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
-use App\Models\JenisDisabilitas;
-use App\Models\JenisPpks;
 use App\Models\KriteriaPpks;
-use App\Models\SubJenisDisabilitas;
 use App\Models\TipePpks;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -44,11 +40,17 @@ class BantuanPpksResource extends Resource
     protected static ?string $model = BantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-window';
+
     protected static ?string $slug = 'program-ppks';
+
     protected static ?string $label = 'Program PPKS';
+
     protected static ?string $pluralLabel = 'Program PPKS';
+
     protected static ?string $navigationLabel = 'Program PPKS';
+
     protected static ?string $navigationGroup = 'Program Sosial';
+
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -131,13 +133,13 @@ class BantuanPpksResource extends Resource
                                 ->numeric(),
 
                             TextInput::make('nama_bantuan')
-                                ->columnSpanFull()
+                                ->columnSpanFull(),
 
                         ])->columns(2),
 
                     Section::make('Data Alamat')
                         ->schema([
-                            AlamatForm::make('alamat')
+                            AlamatForm::make('alamat'),
                         ]),
                 ])->columnSpan(['lg' => 2]),
 
@@ -151,7 +153,7 @@ class BantuanPpksResource extends Resource
                                 ->relationship(
                                     name: 'jenis_bantuan',
                                     titleAttribute: 'alias',
-                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                                    modifyQueryUsing: fn (Builder $query) => $query->whereNotIn('id', [1, 2])
                                 )
                                 ->default(4)
                                 ->dehydrated(),
@@ -170,7 +172,7 @@ class BantuanPpksResource extends Resource
                                 ->options(TipePpks::pluck('nama_tipe', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteria_ppks', null)),
+                                ->afterStateUpdated(fn (Forms\Set $set) => $set('kriteria_ppks', null)),
 
                             Select::make('kriteria_ppks')
                                 ->label('Kriteria PPKS')
@@ -212,8 +214,8 @@ class BantuanPpksResource extends Resource
                                 ->options(StatusVerifikasiEnum::class)
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
-                                ->visible(fn() => auth()->user()
-                                        ?->hasRole(['super_admin', 'admin'])
+                                ->visible(fn () => auth()->user()
+                                    ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -228,31 +230,31 @@ class BantuanPpksResource extends Resource
                                 ->default(true),
 
                         ]),
-//                    Forms\Components\Section::make('Verifikasi')
-//                        ->schema([
-//                            Forms\Components\FileUpload::make('bukti_foto')
-//                                ->label('Unggah Foto Rumah')
-//                                ->getUploadedFileNameForStorageUsing(
-//                                    fn(TemporaryUploadedFile $file
-//                                    ): string => (string) str($file->getClientOriginalName())
-//                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-//                                )
-//                                ->preserveFilenames()
-//                                ->multiple()
-//                                ->reorderable()
-//                                ->appendFiles()
-//                                ->openable()
-//                                ->required()
-//                                ->helperText('maks. 2MB')
-//                                ->maxFiles(3)
-//                                ->maxSize(2048)
-//                                ->columnSpanFull()
-//                                ->imagePreviewHeight('250')
-//                                ->previewable(false)
-//                                ->image(),
-//
-//
-//                        ])
+                    //                    Forms\Components\Section::make('Verifikasi')
+                    //                        ->schema([
+                    //                            Forms\Components\FileUpload::make('bukti_foto')
+                    //                                ->label('Unggah Foto Rumah')
+                    //                                ->getUploadedFileNameForStorageUsing(
+                    //                                    fn(TemporaryUploadedFile $file
+                    //                                    ): string => (string) str($file->getClientOriginalName())
+                    //                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                    //                                )
+                    //                                ->preserveFilenames()
+                    //                                ->multiple()
+                    //                                ->reorderable()
+                    //                                ->appendFiles()
+                    //                                ->openable()
+                    //                                ->required()
+                    //                                ->helperText('maks. 2MB')
+                    //                                ->maxFiles(3)
+                    //                                ->maxSize(2048)
+                    //                                ->columnSpanFull()
+                    //                                ->imagePreviewHeight('250')
+                    //                                ->previewable(false)
+                    //                                ->image(),
+                    //
+                    //
+                    //                        ])
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -278,7 +280,7 @@ class BantuanPpksResource extends Resource
                     ->label('Jenis Bantuan')
                     ->badge()
                     ->alignCenter()
-                    ->color(fn($record): string => $record->jenis_bantuan->warna)
+                    ->color(fn ($record): string => $record->jenis_bantuan->warna)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -329,8 +331,8 @@ class BantuanPpksResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make()
-                ])
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -338,7 +340,7 @@ class BantuanPpksResource extends Resource
                     ExportBulkAction::make()
                         ->label('Ekspor Ke Excel')
                         ->exports([
-                            ExportBantuanPpks::make()
+                            ExportBantuanPpks::make(),
                         ]),
                 ]),
             ]);
@@ -428,23 +430,23 @@ class BantuanPpksResource extends Resource
                 ])->columnSpan(2),
 
                 Group::make([
-//                    \Filament\Infolists\Components\Section::make('Foto Rumah')
-//                        ->schema([
-//                            ImageEntry::make('bukti_foto')
-//                                ->hiddenLabel()
-//                                ->visibility('private')
-//                                ->extraImgAttributes([
-//                                    'alt' => 'foto rumah',
-//                                    'loading' => 'lazy'
-//                                ])
-//                        ])->columns(3),
+                    //                    \Filament\Infolists\Components\Section::make('Foto Rumah')
+                    //                        ->schema([
+                    //                            ImageEntry::make('bukti_foto')
+                    //                                ->hiddenLabel()
+                    //                                ->visibility('private')
+                    //                                ->extraImgAttributes([
+                    //                                    'alt' => 'foto rumah',
+                    //                                    'loading' => 'lazy'
+                    //                                ])
+                    //                        ])->columns(3),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->schema([
-//                            TextEntry::make('jenis_bantuan.alias')
-//                                ->label('Jenis Bantuan')
-//                                ->weight(FontWeight::SemiBold)
-//                                ->color('primary'),
+                            //                            TextEntry::make('jenis_bantuan.alias')
+                            //                                ->label('Jenis Bantuan')
+                            //                                ->weight(FontWeight::SemiBold)
+                            //                                ->color('primary'),
                             TextEntry::make('bantuan_yang_pernah_diterima')
                                 ->label('Jenis Bantuan')
                                 ->weight(FontWeight::SemiBold)
@@ -491,14 +493,13 @@ class BantuanPpksResource extends Resource
                         ->columns(2),
                 ])->columns(1),
 
-
             ])->columns(3);
     }
 
-//    public static function getNavigationBadge(): ?string
-//    {
-//        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
-//    }
+    //    public static function getNavigationBadge(): ?string
+    //    {
+    //        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
+    //    }
 
     public static function getGlobalSearchEloquentQuery(): Builder
     {

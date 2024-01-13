@@ -21,12 +21,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $this->command->warn(PHP_EOL . 'Seeding Wilayah Data...');
+        $this->command->warn(PHP_EOL.'Seeding Wilayah Data...');
         $this->call([
             ProvinsiTableSeeder::class,
             KabupatenTableSeeder::class,
             KecamatanTableSeeder::class,
-            KelurahanTableSeeder::class
+            KelurahanTableSeeder::class,
 
         ]);
         $this->command->info('Wilayah created.');

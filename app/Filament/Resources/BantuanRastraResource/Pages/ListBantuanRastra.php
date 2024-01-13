@@ -28,7 +28,7 @@ class ListBantuanRastra extends ListRecords
             ExportAction::make()->label('Ekspor XLS')
                 ->color('success')
                 ->exports([
-                    ExportBantuanRastra::make()
+                    ExportBantuanRastra::make(),
                 ]),
 
             Actions\CreateAction::make()

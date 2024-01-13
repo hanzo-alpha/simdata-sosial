@@ -8,7 +8,6 @@ use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
-use App\Models\JenisBantuan;
 use Livewire\Component;
 
 class Index extends Component
@@ -34,7 +33,7 @@ class Index extends Component
                 $bantuan['rastra'],
                 $bantuan['pkh'],
                 $bantuan['bpnt'],
-                $bantuan['ppks']
+                $bantuan['ppks'],
             ]);
 
         return view('livewire.frontend.index', compact('chart', 'bantuan'));

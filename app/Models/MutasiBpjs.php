@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MutasiBpjs extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'mutasi_bpjs';
 
@@ -19,7 +19,7 @@ class MutasiBpjs extends Model
 
     protected $casts = [
         'alasan_mutasi' => AlasanEnum::class,
-        'status_mutasi' => StatusAktif::class
+        'status_mutasi' => StatusAktif::class,
     ];
 
     public function peserta(): BelongsTo

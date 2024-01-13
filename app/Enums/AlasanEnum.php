@@ -6,9 +6,8 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum AlasanEnum: string implements HasLabel, HasColor, HasIcon
+enum AlasanEnum: string implements HasColor, HasIcon, HasLabel
 {
-
     case PINDAH = 'PINDAH';
     case MENINGGAL = 'MENINGGAL';
     case GANDA = 'GANDA';

@@ -5,9 +5,8 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum WarnaEnum: string implements HasLabel, HasColor
+enum WarnaEnum: string implements HasColor, HasLabel
 {
-
     case DANGER = 'danger';
     case GRAY = 'gray';
     case INFO = 'info';
@@ -37,14 +36,14 @@ enum WarnaEnum: string implements HasLabel, HasColor
             self::SUCCESS => 'success',
             self::WARNING => 'warning',
         };
-//
-//        return match ($this) {
-//            self::DANGER => \Filament\Support\Colors\Color::Rose,
-//            self::GRAY => \Filament\Support\Colors\Color::Gray,
-//            self::INFO => \Filament\Support\Colors\Color::Blue,
-//            self::PRIMARY => \Filament\Support\Colors\Color::Indigo,
-//            self::SUCCESS => \Filament\Support\Colors\Color::Emerald,
-//            self::WARNING => \Filament\Support\Colors\Color::Orange,
-//        };
+        //
+        //        return match ($this) {
+        //            self::DANGER => \Filament\Support\Colors\Color::Rose,
+        //            self::GRAY => \Filament\Support\Colors\Color::Gray,
+        //            self::INFO => \Filament\Support\Colors\Color::Blue,
+        //            self::PRIMARY => \Filament\Support\Colors\Color::Indigo,
+        //            self::SUCCESS => \Filament\Support\Colors\Color::Emerald,
+        //            self::WARNING => \Filament\Support\Colors\Color::Orange,
+        //        };
     }
 }

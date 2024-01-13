@@ -28,8 +28,7 @@ use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
-class ImportBantuanBpjs implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, ShouldQueue,
-    SkipsEmptyRows, WithValidation, WithUpserts, SkipsOnFailure, SkipsOnError
+class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, SkipsOnFailure, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
 {
     use Importable;
 
@@ -47,8 +46,6 @@ class ImportBantuanBpjs implements ToModel, WithBatchInserts, WithChunkReading, 
     }
 
     /**
-     * @param  array  $row
-     * @return \Illuminate\Database\Eloquent\Model|\App\Models\BantuanBpjs|null
      * @throws \Random\RandomException
      */
     public function model(array $row): Model|DataBantuanBpjs|null
@@ -91,7 +88,7 @@ class ImportBantuanBpjs implements ToModel, WithBatchInserts, WithChunkReading, 
             'status_usulan' => StatusUsulanEnum::ONPROGRESS,
             'keterangan' => $row['keterangan'] ?? $row['status_tl'],
             'bulan' => $bulan ?? 0,
-            'tahun' => $row['tahun'] ?? now()->year
+            'tahun' => $row['tahun'] ?? now()->year,
         ]);
     }
 
@@ -115,7 +112,8 @@ class ImportBantuanBpjs implements ToModel, WithBatchInserts, WithChunkReading, 
         ];
     }
 
-    #[NoReturn] public function onError(Throwable $e): void
+    #[NoReturn]
+    public function onError(Throwable $e): void
     {
         Log::error($e);
     }
@@ -124,17 +122,17 @@ class ImportBantuanBpjs implements ToModel, WithBatchInserts, WithChunkReading, 
     {
         foreach ($failures as $failure) {
             Log::error($failure->errors()[0]);
-//            $baris = $failure->row();
-//            $errmsg = $failure->errors()[0];
-//            $values = $failure->values();
-//
-//            Notification::make('Failure Import')
-//                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-//                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' .
-//                $values['nama_lengkap'] ?? '-')
-//                ->danger()
-//                ->sendToDatabase(auth()->user())
-//                ->broadcast(User::where('is_admin', 1)->get());
+            //            $baris = $failure->row();
+            //            $errmsg = $failure->errors()[0];
+            //            $values = $failure->values();
+            //
+            //            Notification::make('Failure Import')
+            //                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+            //                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' .
+            //                $values['nama_lengkap'] ?? '-')
+            //                ->danger()
+            //                ->sendToDatabase(auth()->user())
+            //                ->broadcast(User::where('is_admin', 1)->get());
         }
     }
 

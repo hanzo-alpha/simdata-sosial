@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DataPesertaJamkesdaResource\Pages;
-use App\Filament\Resources\DataPesertaJamkesdaResource\RelationManagers;
 use App\Filament\Resources\PesertaBpjsResource\Pages\ManagePesertaBpjs;
 use App\Models\PesertaBpjs;
 use Filament\Forms;
@@ -18,11 +16,17 @@ class PesertaBpjsResource extends Resource
     protected static ?string $model = PesertaBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $slug = 'peserta-bpjs';
+
     protected static ?string $label = 'Peserta BPJS';
+
     protected static ?string $pluralLabel = 'Peserta BPJS';
+
     protected static ?string $navigationLabel = 'Peserta BPJS';
+
     protected static ?string $navigationGroup = 'Program Sosial';
+
     protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
@@ -43,7 +47,7 @@ class PesertaBpjsResource extends Resource
                     ->acceptedFileTypes([
                         'application/vnd.ms-excel',
                         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        'text/csv'
+                        'text/csv',
                     ])
                     ->hiddenOn(['edit', 'view']),
 

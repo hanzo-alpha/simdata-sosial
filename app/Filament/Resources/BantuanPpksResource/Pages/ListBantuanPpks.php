@@ -26,7 +26,7 @@ class ListBantuanPpks extends ListRecords
             ExportAction::make()->label('Ekspor XLS')
                 ->color('success')
                 ->exports([
-                    ExportBantuanPpks::make()
+                    ExportBantuanPpks::make(),
                 ]),
 
             Actions\Action::make('import')
@@ -51,7 +51,7 @@ class ListBantuanPpks extends ListRecords
                         ->acceptedFileTypes([
                             'application/vnd.ms-excel',
                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                            'text/csv'
+                            'text/csv',
                         ])
                         ->hiddenOn(['edit', 'view']),
                 ])

@@ -6,11 +6,10 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum JenisAnggaranEnum: string implements HasLabel, HasColor, HasIcon
+enum JenisAnggaranEnum: string implements HasColor, HasIcon, HasLabel
 {
     case APBD = 'APBD';
     case APBN = 'APBN';
-
 
     public function getLabel(): ?string
     {

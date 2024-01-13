@@ -18,13 +18,17 @@ class BantuanChartWidget extends ChartWidget
     use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Bantuan Statistik Per Kecamatan';
+
     protected static ?string $maxHeight = '400px';
+
     protected static ?string $pollingInterval = null;
-//    protected int|string|array $columnSpan = 'full';
+
+    //    protected int|string|array $columnSpan = 'full';
     protected int|string|array $columnSpan = [
         'md' => 2,
         'xl' => 3,
     ];
+
     protected static ?int $sort = 2;
 
     protected function getOptions(): array
@@ -54,23 +58,23 @@ class BantuanChartWidget extends ChartWidget
             ->pluck('name', 'code');
 
         foreach ($kec as $key => $item) {
-//            $kel = Kelurahan::where('kecamatan_code', $key)->pluck('name','code');
-//            foreach ($kel as $k => $v) {
-//                $bpjsresults[$item] = UsulanPengaktifanTmt::where('kecamatan', 'like', $key)
-////                ->when($dateRange, function (Builder $query) use ($dateRange) {
-////                    $dates = explode('-', $dateRange);
-////                    return $query
-////                        ->whereDate('created_at', '<=', $dates[0])
-////                        ->whereDate('created_at', '>=', $dates[1]);
-////                })
-//                    ->when($kecamatan, function (Builder $query) use ($kecamatan) {
-//                        return $query->where('kecamatan', $kecamatan);
-//                    })
-//                    ->when($kelurahan, function (Builder $query) use ($kelurahan) {
-//                        return $query->where('kelurahan', $kelurahan);
-//                    })
-//                    ->get()->count();
-//            }
+            //            $kel = Kelurahan::where('kecamatan_code', $key)->pluck('name','code');
+            //            foreach ($kel as $k => $v) {
+            //                $bpjsresults[$item] = UsulanPengaktifanTmt::where('kecamatan', 'like', $key)
+            ////                ->when($dateRange, function (Builder $query) use ($dateRange) {
+            ////                    $dates = explode('-', $dateRange);
+            ////                    return $query
+            ////                        ->whereDate('created_at', '<=', $dates[0])
+            ////                        ->whereDate('created_at', '>=', $dates[1]);
+            ////                })
+            //                    ->when($kecamatan, function (Builder $query) use ($kecamatan) {
+            //                        return $query->where('kecamatan', $kecamatan);
+            //                    })
+            //                    ->when($kelurahan, function (Builder $query) use ($kelurahan) {
+            //                        return $query->where('kelurahan', $kelurahan);
+            //                    })
+            //                    ->get()->count();
+            //            }
             $bpjsresults[$item] = BantuanBpjs::where('kecamatan', 'like', $key)
 //                ->when($dateRange, function (Builder $query) use ($dateRange) {
 //                    $dates = explode('-', $dateRange);
@@ -123,7 +127,7 @@ class BantuanChartWidget extends ChartWidget
 
         foreach ($kec as $key => $item) {
             $ppksresults[$item] = BantuanPpks::with(['alamat'])->whereHas('alamat',
-                fn(Builder $query) => $query->where('kecamatan', $item))
+                fn (Builder $query) => $query->where('kecamatan', $item))
 //                ->when($dateRange, function (Builder $query) use ($dateRange) {
 //                    $dates = explode('-', $dateRange);
 //                    return $query
@@ -180,35 +184,35 @@ class BantuanChartWidget extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Bantuan BPJS',
-//                    'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
+                    //                    'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
                     'data' => array_values($bpjsresults),
-//                    'backgroundColor' => '#9BD0F5',
-//                    'borderColor' => '#36A2EB'
+                    //                    'backgroundColor' => '#9BD0F5',
+                    //                    'borderColor' => '#36A2EB'
                 ],
                 [
                     'label' => 'Bantuan PKH',
                     'data' => array_values($pkhresults),
-//                    'backgroundColor' => '#FF6384',
-                    'borderColor' => '#FFB1C1'
+                    //                    'backgroundColor' => '#FF6384',
+                    'borderColor' => '#FFB1C1',
                 ],
                 [
                     'label' => 'Bantuan BPNT',
                     'data' => array_values($bpntresults),
-//                    'backgroundColor' => '#9BD0F5',
-                    'borderColor' => '#36A2EB'
+                    //                    'backgroundColor' => '#9BD0F5',
+                    'borderColor' => '#36A2EB',
                 ],
                 [
                     'label' => 'Bantuan PPKS',
                     'data' => array_values($ppksresults),
-                    'borderColor' => '#e8c838'
+                    'borderColor' => '#e8c838',
                 ],
                 [
                     'label' => 'Bantuan RASTRA',
                     'data' => array_values($rastraresults),
-                    'borderColor' => '#20d669'
+                    'borderColor' => '#20d669',
                 ],
             ],
-//            'labels' => $data->map(fn(TrendValue $value) => $value->date),
+            //            'labels' => $data->map(fn(TrendValue $value) => $value->date),
             'labels' => array_keys($bpjsresults),
         ];
     }

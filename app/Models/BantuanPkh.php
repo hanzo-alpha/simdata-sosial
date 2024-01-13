@@ -7,17 +7,17 @@ use App\Enums\StatusPkhBpntEnum;
 use App\Traits\HasJenisBantuan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BantuanPkh extends Model
 {
     use HasJenisBantuan, HasWilayah;
 
     protected $table = 'bantuan_pkh';
+
     protected $guarded = [];
 
     protected $with = [
-        'prov','kab','kec','kel','jenis_bantuan'
+        'prov', 'kab', 'kec', 'kel', 'jenis_bantuan',
     ];
 
     protected $casts = [

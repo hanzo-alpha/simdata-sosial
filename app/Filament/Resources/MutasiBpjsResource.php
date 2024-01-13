@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
 use App\Filament\Resources\MutasiBpjsResource\Pages\ManageMutasiBpjs;
-use App\Filament\Resources\MutasiBpjsResource\RelationManagers;
 use App\Models\MutasiBpjs;
 use App\Models\PesertaBpjs;
 use Filament\Forms;
@@ -20,11 +19,17 @@ class MutasiBpjsResource extends Resource
     protected static ?string $model = MutasiBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $slug = 'mutasi-bpjs';
+
     protected static ?string $label = 'Mutasi BPJS';
+
     protected static ?string $pluralLabel = 'Mutasi BPJS';
+
     protected static ?string $navigationLabel = 'Mutasi BPJS';
+
     protected static ?string $navigationGroup = 'Program Sosial';
+
     protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
@@ -43,7 +48,7 @@ class MutasiBpjsResource extends Resource
                     ->searchPrompt('Cari peserta berdasarkan nomor kartu, nik, atau nama')
                     ->native(false)
                     ->getOptionLabelFromRecordUsing(function (Model $record) {
-                        return "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik);
+                        return "<strong>{$record->nama_lengkap}</strong> | NIK: ".(string) ($record->nik);
                     })->allowHtml()
                     ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
                         $peserta = PesertaBpjs::find($state);

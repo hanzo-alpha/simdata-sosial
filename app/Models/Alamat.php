@@ -37,8 +37,7 @@ class Alamat extends Model
      *
      * Requires the 'location' attribute be included in this model's $fillable array.
      *
-     * @param ?array  $location
-     * @return void
+     * @param  ?array  $location
      */
     public function setLocationAttribute(?array $location): void
     {
@@ -68,8 +67,6 @@ class Alamat extends Model
      * Get the name of the computed location attribute
      *
      * Used by the Filament Google Maps package.
-     *
-     * @return string
      */
     public static function getComputedLocation(): string
     {

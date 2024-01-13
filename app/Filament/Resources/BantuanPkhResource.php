@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\StatusPkhBpntEnum;
 use App\Filament\Resources\BantuanPkhResource\Pages;
-use App\Filament\Resources\BantuanPkhResource\RelationManagers;
 use App\Models\BantuanPkh;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -29,10 +28,15 @@ class BantuanPkhResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
     protected static ?string $slug = 'program-pkh';
+
     protected static ?string $label = 'Program PKH';
+
     protected static ?string $pluralLabel = 'Program PKH';
+
     protected static ?string $navigationLabel = 'Program PKH';
+
     protected static ?string $navigationGroup = 'Program Sosial';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -65,13 +69,13 @@ class BantuanPkhResource extends Resource
                             ->searchable()
                             ->reactive()
                             ->options(Provinsi::pluck('name', 'code'))
-                            ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
+                            ->afterStateUpdated(fn (callable $set) => $set('kabupaten', null)),
 
                         Select::make('kabupaten')
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if (!$kab) {
+                                if (! $kab) {
                                     return Kabupaten::where('code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -81,7 +85,7 @@ class BantuanPkhResource extends Resource
                             ->reactive()
                             ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                            ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
+                            ->afterStateUpdated(fn (callable $set) => $set('kecamatan', null)),
                     ])
 //                        ->visibleOn(['edit', 'view'])
                         ->columns(2),
@@ -92,20 +96,20 @@ class BantuanPkhResource extends Resource
                             ->reactive()
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if (!$kab) {
+                                if (! $kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
 
                                 return $kab->pluck('name', 'code');
                             })
-                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                            ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if (!$kel) {
+                                if (! $kel) {
                                     return Kelurahan::where('kecamatan_code', '731211')
                                         ->pluck('name', 'code');
                                 }
@@ -148,7 +152,7 @@ class BantuanPkhResource extends Resource
         return $table
 //            ->striped()
             ->deferLoading()
-            ->recordClasses(fn(Model $record) => match ($record->status_pkh) {
+            ->recordClasses(fn (Model $record) => match ($record->status_pkh) {
                 StatusPkhBpntEnum::BPNT => 'border-s-2 border-blue-600 dark:border-blue-300',
                 StatusPkhBpntEnum::PKH => 'border-s-2 border-green-600 dark:border-green-300',
             })
@@ -175,7 +179,7 @@ class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')
                     ->sortable()
-                    ->description(fn($record) => $record->dtks_id)
+                    ->description(fn ($record) => $record->dtks_id)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
@@ -259,7 +263,7 @@ class BantuanPkhResource extends Resource
                     ->alignCenter()
                     ->toggleable()
                     ->toggledHiddenByDefault()
-                    ->description(fn($record): string => $record->gelombang)
+                    ->description(fn ($record): string => $record->gelombang)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_pkh')
                     ->label('Status')
@@ -278,7 +282,7 @@ class BantuanPkhResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

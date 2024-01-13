@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\HubunganKeluargaResource\Pages;
-use App\Filament\Resources\HubunganKeluargaResource\RelationManagers;
 use App\Models\HubunganKeluarga;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -16,9 +15,13 @@ class HubunganKeluargaResource extends Resource
     protected static ?string $model = HubunganKeluarga::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
+
     protected static ?string $slug = 'hubungan-keluarga';
+
     protected static ?string $label = 'Hubungan Keluarga';
+
     protected static ?string $pluralLabel = 'Hubungan Keluarga';
+
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
@@ -27,7 +30,7 @@ class HubunganKeluargaResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nama_hubungan')
                     ->required()
-                    ->autofocus()
+                    ->autofocus(),
             ])->columns(1)
             ->inlineLabel();
     }
@@ -36,7 +39,7 @@ class HubunganKeluargaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_hubungan')
+                Tables\Columns\TextColumn::make('nama_hubungan'),
             ])
             ->filters([
                 //

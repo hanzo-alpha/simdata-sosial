@@ -37,8 +37,8 @@ class Kabupaten extends Model
         return $this->hasManyThrough(Kelurahan::class, Kecamatan::class, 'kabupaten_code', 'kecamatan_code');
     }
 
-//    public function kep(): HasMany
-//    {
-//        return $this->hasMany(Pulau::class, 'kabupaten_code', 'code');
-//    }
+    //    public function kep(): HasMany
+    //    {
+    //        return $this->hasMany(Pulau::class, 'kabupaten_code', 'code');
+    //    }
 }

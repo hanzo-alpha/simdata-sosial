@@ -43,15 +43,14 @@ class ListBantuanPkh extends ListRecords
                         ->acceptedFileTypes([
                             'application/vnd.ms-excel',
                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                            'text/csv'
+                            'text/csv',
                         ])
                         ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
                     $import = new ImportBantuanPkh();
                     $import->import($data['attachment'], 'public');
-//                    $import = Excel::import(new ImportBantuanPkh, $data['attachment'], 'public');
-
+                    //                    $import = Excel::import(new ImportBantuanPkh, $data['attachment'], 'public');
 
                     if ($import) {
                         Notification::make()
@@ -65,8 +64,7 @@ class ListBantuanPkh extends ListRecords
                             ->sendToDatabase(auth()->user());
                     }
 
-//                   Log::error($import->errors());
-
+                    //                   Log::error($import->errors());
 
                 })
                 ->icon('heroicon-o-arrow-down-tray')
@@ -82,5 +80,4 @@ class ListBantuanPkh extends ListRecords
     {
         return $query->fastPaginate($this->getTableRecordsPerPage());
     }
-
 }

@@ -17,19 +17,19 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;
-    use HasRoles, HasPanelShield;
+    use HasPanelShield, HasRoles;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-//    protected $fillable = [
-//        'name',
-//        'email',
-//        'password',
-//        'is_admin'
-//    ];
+    //    protected $fillable = [
+    //        'name',
+    //        'email',
+    //        'password',
+    //        'is_admin'
+    //    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -49,7 +49,7 @@ class User extends Authenticatable implements FilamentUser
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_admin' => StatusAdminEnum::class
+        'is_admin' => StatusAdminEnum::class,
     ];
 
     public function canAccessPanel(Panel $panel): bool

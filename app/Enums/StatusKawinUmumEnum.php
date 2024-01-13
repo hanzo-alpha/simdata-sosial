@@ -5,14 +5,13 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusKawinUmumEnum: int implements HasLabel, HasColor
+enum StatusKawinUmumEnum: int implements HasColor, HasLabel
 {
     case KAWIN_TERCATAT = 1;
     case KAWIN_BELUM_TERCATAT = 2;
     case BELUM_KAWIN = 3;
     case CERAI_HIDUP = 4;
     case CERAI_MATI = 5;
-
 
     public function getLabel(): ?string
     {
@@ -36,14 +35,14 @@ enum StatusKawinUmumEnum: int implements HasLabel, HasColor
         };
     }
 
-//    public function getIcon(): ?string
-//    {
-//        return match ($this) {
-//            self::KAWIN_TERCATAT => 'heroicon-o-arrow-path-rounded-square',
-//            self::KAWIN_BELUM_TERCATAT => 'heroicon-o-document-duplicate',
-//            self::BELUM_KAWIN => 'heroicon-o-bolt-slash',
-//            self::CERAI_HIDUP => 'heroicon-o-link',
-//            self::CERAI_MATI => 'heroicon-o-arrow-down',
-//        };
-//    }
+    //    public function getIcon(): ?string
+    //    {
+    //        return match ($this) {
+    //            self::KAWIN_TERCATAT => 'heroicon-o-arrow-path-rounded-square',
+    //            self::KAWIN_BELUM_TERCATAT => 'heroicon-o-document-duplicate',
+    //            self::BELUM_KAWIN => 'heroicon-o-bolt-slash',
+    //            self::CERAI_HIDUP => 'heroicon-o-link',
+    //            self::CERAI_MATI => 'heroicon-o-arrow-down',
+    //        };
+    //    }
 }

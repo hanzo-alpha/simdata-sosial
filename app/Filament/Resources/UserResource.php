@@ -3,14 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class UserResource extends Resource
 {
@@ -19,8 +17,11 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $slug = 'pengguna';
+
     protected static ?string $label = 'Pengguna';
+
     protected static ?string $pluralLabel = 'Pengguna';
+
     protected static ?string $navigationGroup = 'Pengaturan';
 
     public static function form(Form $form): Form
@@ -55,9 +56,9 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')
                     ->badge(),
-//                Tables\Columns\TextColumn::make('is_admin')
-//                    ->label('Is Superadmin')
-//                    ->badge()
+                //                Tables\Columns\TextColumn::make('is_admin')
+                //                    ->label('Is Superadmin')
+                //                    ->badge()
             ])
             ->filters([
                 //

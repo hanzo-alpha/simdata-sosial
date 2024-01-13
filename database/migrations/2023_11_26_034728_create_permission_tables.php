@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -67,7 +68,7 @@ return new class extends Migration {
 
                     $table->primary([
                         $columnNames['team_foreign_key'], $pivotPermission, $columnNames['model_morph_key'],
-                        'model_type'
+                        'model_type',
                     ],
                         'model_has_permissions_permission_model_type_primary');
                 } else {
@@ -95,7 +96,7 @@ return new class extends Migration {
                     $table->index($columnNames['team_foreign_key'], 'model_has_roles_team_foreign_key_index');
 
                     $table->primary([
-                        $columnNames['team_foreign_key'], $pivotRole, $columnNames['model_morph_key'], 'model_type'
+                        $columnNames['team_foreign_key'], $pivotRole, $columnNames['model_morph_key'], 'model_type',
                     ],
                         'model_has_roles_role_model_type_primary');
                 } else {

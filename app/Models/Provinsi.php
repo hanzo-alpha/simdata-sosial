@@ -39,7 +39,7 @@ class Provinsi extends Model
             Kelurahan::class,
             [Kabupaten::class, Kecamatan::class],
             ['provinsi_code', 'kabupaten_code', 'kecamatan_code'],
-        //            ['city_code', 'district_code', 'province_code']
+            //            ['city_code', 'district_code', 'province_code']
         );
     }
 }

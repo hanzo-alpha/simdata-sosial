@@ -9,7 +9,6 @@ use App\Enums\StatusAktif;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
-use App\Traits\HasKeluarga;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
@@ -41,7 +40,7 @@ class BantuanPpks extends Model
         'jumlah_bantuan' => 'integer',
         'nama_bantuan' => 'string',
         'keterangan' => 'string',
-        'tahun_anggaran' => 'integer'
+        'tahun_anggaran' => 'integer',
     ];
 
     public function tipe_ppks(): BelongsTo
@@ -58,6 +57,4 @@ class BantuanPpks extends Model
     {
         return $this->morphOne(Alamat::class, 'alamatable');
     }
-
-
 }

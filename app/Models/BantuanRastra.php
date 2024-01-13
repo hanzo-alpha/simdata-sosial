@@ -3,19 +3,13 @@
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
-use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
-use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
-use App\Traits\HasKeluarga;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
-use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Models\Media;
-use Awcodes\Curator\PathGenerators\DatePathGenerator;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -36,15 +30,16 @@ class BantuanRastra extends Model
     use SoftDeletes;
 
     protected $table = 'bantuan_rastra';
+
     protected $guarded = [];
 
     protected $casts = [
         'dtks_id' => 'string',
-//        'media_id' => 'array',
+        //        'media_id' => 'array',
         'foto_ktp_kk' => 'array',
         'pengganti_rastra' => 'array',
         'status_rastra' => StatusRastra::class,
-        'status_aktif' => StatusAktif::class
+        'status_aktif' => StatusAktif::class,
     ];
 
     public static function getLatLngAttributes(): array
@@ -94,46 +89,46 @@ class BantuanRastra extends Model
     public static function getAlamatForm(): array
     {
         return [
-//            Grid::make()
-//                ->schema([
-//                    Geocomplete::make('alamat')
-//                        ->countries(['id'])
-//                        ->updateLatLng()
-//                        ->geocodeOnLoad()
-//                        ->columnSpanFull()
-//                        ->reverseGeocode([
-//                            'country' => '%C',
-//                            'city' => '%L',
-//                            'city_district' => '%D',
-//                            'zip' => '%z',
-//                            'state' => '%A1',
-//                            'street' => '%S %n',
-//                        ]),
-//                    Grid::make(2)->schema([
-//                        TextInput::make('latitude')
-//                            ->disabled()
-//                            ->dehydrated()
-//                            ->reactive()
-//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-//                                $set('location', [
-//                                    'lat' => floatVal($state),
-//                                    'lng' => floatVal($get('longitude')),
-//                                ]);
-//                            })
-//                            ->lazy(), // important to use lazy, to avoid updates as you type
-//                        TextInput::make('longitude')
-//                            ->disabled()
-//                            ->dehydrated()
-//                            ->reactive()
-//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-//                                $set('location', [
-//                                    'lat' => (float) $get('latitude'),
-//                                    'lng' => floatVal($state),
-//                                ]);
-//                            })
-//                            ->lazy(),
-//                    ]),
-//                ]),
+            //            Grid::make()
+            //                ->schema([
+            //                    Geocomplete::make('alamat')
+            //                        ->countries(['id'])
+            //                        ->updateLatLng()
+            //                        ->geocodeOnLoad()
+            //                        ->columnSpanFull()
+            //                        ->reverseGeocode([
+            //                            'country' => '%C',
+            //                            'city' => '%L',
+            //                            'city_district' => '%D',
+            //                            'zip' => '%z',
+            //                            'state' => '%A1',
+            //                            'street' => '%S %n',
+            //                        ]),
+            //                    Grid::make(2)->schema([
+            //                        TextInput::make('latitude')
+            //                            ->disabled()
+            //                            ->dehydrated()
+            //                            ->reactive()
+            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+            //                                $set('location', [
+            //                                    'lat' => floatVal($state),
+            //                                    'lng' => floatVal($get('longitude')),
+            //                                ]);
+            //                            })
+            //                            ->lazy(), // important to use lazy, to avoid updates as you type
+            //                        TextInput::make('longitude')
+            //                            ->disabled()
+            //                            ->dehydrated()
+            //                            ->reactive()
+            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+            //                                $set('location', [
+            //                                    'lat' => (float) $get('latitude'),
+            //                                    'lng' => floatVal($state),
+            //                                ]);
+            //                            })
+            //                            ->lazy(),
+            //                    ]),
+            //                ]),
             Grid::make(2)
                 ->schema([
                     TextInput::make('alamat')
@@ -145,14 +140,14 @@ class BantuanRastra extends Model
                         ->reactive()
                         ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
-                            if (!$kab) {
+                            if (! $kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
 
                             return $kab->pluck('name', 'code');
                         })
-                        ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                        ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
                         ->required()
@@ -190,7 +185,7 @@ class BantuanRastra extends Model
                 ->relationship(
                     name: 'jenis_bantuan',
                     titleAttribute: 'alias',
-                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                    modifyQueryUsing: fn (Builder $query) => $query->whereNotIn('id', [1, 2])
                 )
                 ->default(5)
                 ->dehydrated(),
@@ -200,7 +195,7 @@ class BantuanRastra extends Model
                 ->options(StatusVerifikasiEnum::class)
                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                 ->preload()
-                ->visible(fn() => auth()->user()?->hasRole(['super_admin', 'admin'])),
+                ->visible(fn () => auth()->user()?->hasRole(['super_admin', 'admin'])),
 
             Select::make('status_rastra')
                 ->label('Status Rastra')
@@ -222,7 +217,7 @@ class BantuanRastra extends Model
 //                })->allowHtml()
                 ->optionsLimit(15)
                 ->lazy()
-                ->visible(fn(Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
+                ->visible(fn (Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
                 ->preload(),
 
             Select::make('pengganti_rastra.alasan_dikeluarkan')
@@ -233,7 +228,7 @@ class BantuanRastra extends Model
                 ->preload()
                 ->lazy()
                 ->required()
-                ->visible(fn(Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
+                ->visible(fn (Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
                 ->default(AlasanEnum::PINDAH)
                 ->optionsLimit(15),
 
@@ -259,9 +254,9 @@ class BantuanRastra extends Model
             FileUpload::make('foto_ktp_kk')
                 ->label('Unggah Foto KTP / KK')
                 ->getUploadedFileNameForStorageUsing(
-                    fn(TemporaryUploadedFile $file
+                    fn (TemporaryUploadedFile $file
                     ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                        ->prepend(date('d-m-Y-H-i-s').'-'),
                 )
                 ->preserveFilenames()
                 ->multiple()

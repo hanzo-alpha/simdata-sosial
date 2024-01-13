@@ -5,11 +5,10 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusRastra: int implements HasLabel, HasColor
+enum StatusRastra: int implements HasColor, HasLabel
 {
     case BARU = 1;
     case PENGGANTI = 0;
-
 
     public function getLabel(): ?string
     {
@@ -27,11 +26,11 @@ enum StatusRastra: int implements HasLabel, HasColor
         };
     }
 
-//    public function getIcon(): ?string
-//    {
-//        return match ($this) {
-//            self::BARU => 'heroicon-o-check-circle',
-//            self::PENGGANTI => 'heroicon-o-minus-circle',
-//        };
-//    }
+    //    public function getIcon(): ?string
+    //    {
+    //        return match ($this) {
+    //            self::BARU => 'heroicon-o-check-circle',
+    //            self::PENGGANTI => 'heroicon-o-minus-circle',
+    //        };
+    //    }
 }

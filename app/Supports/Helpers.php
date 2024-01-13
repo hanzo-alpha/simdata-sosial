@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Supports;
@@ -7,11 +8,8 @@ use App\Models\ActiveAsset;
 use App\Models\Brand;
 use App\Models\Location;
 use App\Models\Store;
-use Carbon\Carbon;
-use Date;
 use Illuminate\Support\Str;
 use Spatie\Valuestore\Valuestore;
-use Symfony\Component\Uid\Ulid;
 
 final class Helpers
 {
@@ -25,13 +23,14 @@ final class Helpers
         $prefix = self::setting()->get('format_kode')['suffix'] ?? 'INV';
         $suffix = now()->year;
 
-        return $kodeAset . $separator . $prefix . $separator . $suffix;
+        return $kodeAset.$separator.$prefix.$separator.$suffix;
     }
 
     public static function hitungNilaiResidu($nilai, $tahun = 5): float|int
     {
         $persen = $tahun * config('custom.depresiasi');
         $nilaiResidual = 100 - $persen;
+
         return ($nilaiResidual * $nilai) / 100;
     }
 
@@ -47,7 +46,7 @@ final class Helpers
         $suffix = now()->year;
         $bulan = now()->month;
 
-        return $prefix . $separator . $suffix . $bulan . $max . $kodeToko;
+        return $prefix.$separator.$suffix.$bulan.$max.$kodeToko;
     }
 
     public static function generateKodeSistem(): string
@@ -65,26 +64,26 @@ final class Helpers
         $assetId = ActiveAsset::max('id') + 1;
         $lokasi = Location::max('id') + 1;
 
-        return 'SKU-' . $storeId . $merkId . $assetId . $lokasi . $kodeAset;
+        return 'SKU-'.$storeId.$merkId.$assetId.$lokasi.$kodeAset;
     }
 
     public static function toPersen($jumlah, $total): int|string
     {
-        if (!isset($jumlah, $total)) {
+        if (! isset($jumlah, $total)) {
             return 0;
         }
 
-        if (!is_float($jumlah) || !is_float($total)) {
-            $jumlah = (double) $jumlah;
-            $total = (double) $total;
+        if (! is_float($jumlah) || ! is_float($total)) {
+            $jumlah = (float) $jumlah;
+            $total = (float) $total;
         }
 
-        $round = round(((double) $jumlah / (double) $total) * 100, 2);
+        $round = round(((float) $jumlah / (float) $total) * 100, 2);
         if ($round > 100) {
             $round = 100;
         }
 
-        return $round . '%';
+        return $round.'%';
 
     }
 
@@ -107,9 +106,9 @@ final class Helpers
 
     public static function getModelInstance($model)
     {
-        $modelNamespace = "App\\Models\\";
+        $modelNamespace = 'App\\Models\\';
 
-        return app($modelNamespace . $model);
+        return app($modelNamespace.$model);
     }
 
     public static function switchBadge($id): string
@@ -124,14 +123,13 @@ final class Helpers
         };
     }
 
-
     public static function formatIndonesia($nilai, $koma = false): string
     {
         if ($koma) {
-            return 'Rp. ' . number_format($nilai, 2, ',', '.');
+            return 'Rp. '.number_format($nilai, 2, ',', '.');
         }
 
-        return 'Rp. ' . number_format($nilai, 0, ',', '.');
+        return 'Rp. '.number_format($nilai, 0, ',', '.');
     }
 
     public static function formatAngka($angka, $emptyVal = '0')
@@ -167,6 +165,4 @@ final class Helpers
 
         return $nilai * ($pajak / 100) ?? 0.00;
     }
-
-
 }
