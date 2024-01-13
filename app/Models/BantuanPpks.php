@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BantuanPpks extends Model
 {
-    use HasKeluarga, HasTambahan, HasWilayah;
+    use HasTambahan, HasWilayah;
     use SoftDeletes;
 
     protected $table = 'bantuan_ppks';
@@ -46,12 +46,12 @@ class BantuanPpks extends Model
 
     public function tipe_ppks(): BelongsTo
     {
-        return $this->belongsTo(JenisDisabilitas::class);
+        return $this->belongsTo(TipePpks::class);
     }
 
     public function kriteria(): BelongsTo
     {
-        return $this->belongsTo(SubJenisDisabilitas::class);
+        return $this->belongsTo(KriteriaPpks::class);
     }
 
     public function alamat(): MorphOne

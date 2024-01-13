@@ -31,7 +31,7 @@ class BantuanBpntResource extends Resource
     protected static ?string $label = 'Program BPNT';
     protected static ?string $pluralLabel = 'Program BPNT';
     protected static ?string $navigationLabel = 'Program BPNT';
-    protected static ?string $navigationGroup = 'Program';
+    protected static ?string $navigationGroup = 'Program Sosial';
 
     protected static ?int $navigationSort = 2;
 

@@ -24,7 +24,7 @@ class TipePpksResource extends Resource
     protected static ?string $label = 'Tipe PPKS';
     protected static ?string $pluralLabel = 'Tipe PPKS';
     protected static ?string $navigationLabel = 'Tipe PPKS';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
     {

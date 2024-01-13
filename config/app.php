@@ -159,7 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Ladumor\LaravelPwa\PWAServiceProvider::class,
+//        Ladumor\LaravelPwa\PWAServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -185,7 +185,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
+//        'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
     ])->toArray(),
 
 ];

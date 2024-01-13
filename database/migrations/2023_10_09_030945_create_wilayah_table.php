@@ -46,23 +46,5 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
         });
-
-        Schema::create('pulau', static function (Blueprint $table) {
-            $table->id();
-            $table->char('code', 5);
-            $table->char('provinsi_code', 2);
-            $table->char('kabupaten_code', 4);
-            $table->string('name', 255);
-            $table->foreign('provinsi_code')
-                ->references('code')
-                ->on('provinsi')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
-            $table->foreign('kabupaten_code')
-                ->references('code')
-                ->on('kabupaten')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
-        });
     }
 };

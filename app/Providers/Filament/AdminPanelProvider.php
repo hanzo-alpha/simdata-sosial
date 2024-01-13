@@ -80,7 +80,7 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Media')
                     ->pluralLabel('Media')
                     ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Master')
+                    ->navigationGroup('Dashboard Bantuan')
                     ->navigationSort(3)
                     ->navigationCountBadge()
             ])
@@ -99,12 +99,12 @@ class AdminPanelProvider extends PanelProvider
 //                Pages\Dashboard::class,
             ])
             ->navigationGroups([
-                NavigationGroup::make('bantuan')
-                    ->label('Bantuan')
+                NavigationGroup::make('program sosial')
+                    ->label('Program Sosial')
                     ->collapsible()
                     ->collapsed(),
-                NavigationGroup::make('master')
-                    ->label('Master')
+                NavigationGroup::make('dashboard bantuan')
+                    ->label('Dashboard Bantuan')
                     ->collapsible()
                     ->collapsed(),
                 NavigationGroup::make('pengaturan')
@@ -126,14 +126,11 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                RedirectIfNotInstalled::class
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->renderHook('panels::head.start', fn(): View => view('pwa-head'))
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
-            ->renderHook('panels::body.end', fn(): View => view('pwa-script'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([
                 config('filament-logger.activity_resource')

@@ -19,7 +19,7 @@ class HubunganKeluargaResource extends Resource
     protected static ?string $slug = 'hubungan-keluarga';
     protected static ?string $label = 'Hubungan Keluarga';
     protected static ?string $pluralLabel = 'Hubungan Keluarga';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
     {

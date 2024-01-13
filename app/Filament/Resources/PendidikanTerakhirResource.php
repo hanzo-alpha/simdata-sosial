@@ -19,7 +19,7 @@ class PendidikanTerakhirResource extends Resource
     protected static ?string $slug = 'pendidikan-terakhir';
     protected static ?string $label = 'Pendidikan Terakhir';
     protected static ?string $pluralLabel = 'Pendidikan Terakhir';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
     {

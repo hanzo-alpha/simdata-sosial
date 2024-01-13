@@ -18,10 +18,4 @@ class JenisBantuan extends Model
         'warna',
         'deskripsi',
     ];
-
-
-    public function keluarga(): BelongsToMany
-    {
-        return $this->belongsToMany(Keluarga::class, 'jenis_bantuan_keluarga');
-    }
 }

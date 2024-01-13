@@ -19,7 +19,7 @@ class JenisPekerjaanResource extends Resource
     protected static ?string $slug = 'jenis-pekerjaan';
     protected static ?string $label = 'Jenis Pekerjaan';
     protected static ?string $pluralLabel = 'Jenis Pekerjaan';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
     {

@@ -21,7 +21,6 @@ class WilayahSeeder extends Seeder
         $this->call(KabupatenTableSeeder::class);
         $this->call(KecamatanTableSeeder::class);
         $this->call(KelurahanTableSeeder::class);
-        $this->call(PulauTableSeeder::class);
 
         Schema::enableForeignKeyConstraints();
 

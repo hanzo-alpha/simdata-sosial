@@ -1,29 +1,23 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
+use App\Enums\JenisKelaminEnum;
+use App\Enums\StatusAktif;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MutasiBpjs extends Model
 {
-    protected $table = 'mutasi_bantuan_bpjs';
-    protected $guarded = [];
+    use SoftDeletes, HasFactory;
+
+    protected $table = 'mutasi_bpjs';
 
     protected $casts = [
-        'alasan_mutasi' => AlasanEnum::class
+        'jenis_kelamin' => JenisKelaminEnum::class,
+        'alasan_mutasi' => AlasanEnum::class,
+        'status_mutasi' => StatusAktif::class
     ];
-
-    public function keluarga(): BelongsTo
-    {
-        return $this->belongsTo(BantuanBpjs::class);
-    }
-
-    public function bantuanbpjs(): BelongsTo
-    {
-        return $this->belongsTo(BantuanBpjs::class);
-    }
-
 }

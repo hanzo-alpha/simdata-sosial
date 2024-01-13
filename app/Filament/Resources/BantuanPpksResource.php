@@ -48,7 +48,7 @@ class BantuanPpksResource extends Resource
     protected static ?string $label = 'Program PPKS';
     protected static ?string $pluralLabel = 'Program PPKS';
     protected static ?string $navigationLabel = 'Program PPKS';
-    protected static ?string $navigationGroup = 'Program';
+    protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form

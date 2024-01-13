@@ -20,7 +20,7 @@ class JenisBantuanResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $slug = 'jenis-bantuan';
     protected static ?string $label = 'Jenis Bantuan';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Dashboard Bantuan';
     protected static ?string $pluralLabel = 'Jenis Bantuan';
 
     public static function form(Form $form): Form

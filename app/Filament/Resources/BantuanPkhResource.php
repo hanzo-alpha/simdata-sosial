@@ -32,7 +32,7 @@ class BantuanPkhResource extends Resource
     protected static ?string $label = 'Program PKH';
     protected static ?string $pluralLabel = 'Program PKH';
     protected static ?string $navigationLabel = 'Program PKH';
-    protected static ?string $navigationGroup = 'Program';
+    protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form

@@ -66,7 +66,7 @@ class ListBantuanBpnt extends ListRecords
                 ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->successRedirectUrl(route('filament.admin.resources.bantuan-bpnt.index'))
+                ->successRedirectUrl(route('filament.admin.resources.program-bpnt.index'))
                 ->modalWidth('lg'),
         ];
     }

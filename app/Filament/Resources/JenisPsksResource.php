@@ -20,7 +20,7 @@ class JenisPsksResource extends Resource
     protected static ?string $label = 'Jenis PSKS';
     protected static ?string $pluralLabel = 'Jenis PSKS';
     protected static ?string $navigationLabel = 'Jenis PSKS';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
     {

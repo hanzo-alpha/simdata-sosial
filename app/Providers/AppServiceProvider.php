@@ -23,15 +23,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::shouldBeStrict($this->app->isLocal());
+        Model::unguard();
 
         setlocale(LC_ALL, 'IND');
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
-        Carbon::now()->formatLocalized('%A, %d %B %Y');
 
-        Model::unguard();
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-        }
     }
 }

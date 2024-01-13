@@ -4,6 +4,7 @@ use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
 use App\Models\PendidikanTerakhir;
+use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,41 +18,30 @@ return new class extends Migration {
             $table->string('nokk', 20);
             $table->string('nik', 20);
             $table->string('nama_lengkap');
-            $table->string('tempat_lahir', 50)->nullable();
-            $table->dateTime('tgl_lahir')->nullable();
-            $table->string('notelp', 18)->nullable();
-            $table->string('nama_ibu_kandung')->nullable();
-            $table->foreignIdFor(JenisBantuan::class)
-                ->nullable()
-                ->constrained('jenis_bantuan')
-                ->cascadeOnUpdate();
-            $table->foreignIdFor(PendidikanTerakhir::class)
-                ->nullable()
-                ->constrained('pendidikan_terakhir');
-            $table->foreignIdFor(HubunganKeluarga::class)
-                ->nullable()
-                ->constrained('hubungan_keluarga');
-            $table->foreignIdFor(JenisPekerjaan::class)
-                ->nullable()
-                ->constrained('jenis_pekerjaan');
-            $table->tinyInteger('status_kawin')
-                ->nullable()
-                ->default(1);
-            $table->tinyInteger('jenis_kelamin')
-                ->nullable()
-                ->default(1);
+            $table->text('alamat');
+            $table->string('kecamatan');
+            $table->string('kelurahan');
+            $table->string('dusun')->nullable();
+            $table->string('no_rt')->nullable();
+            $table->string('no_rw')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('lng')->nullable();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(5)->nullable();
             $table->string('status_verifikasi')
                 ->nullable()
                 ->default(0);
             $table->tinyInteger('status_aktif')
                 ->nullable()
                 ->default(0);
-            $table->json('bukti_foto')->nullable();
-            $table->json('foto_pegang_ktp')->nullable();
+            $table->foreignIdFor(Media::class)->nullable()->constrained('media')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->json('foto_ktp_kk')->nullable();
             $table->tinyInteger('status_rastra')->nullable();
             $table->json('pengganti_rastra')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->string('alamat_lengkap')->virtualAs("CONCAT(alamat, ', ', dusun, ', ',
+             'RT. ' ,no_rt, ', ', 'RW. ', no_rw)");
         });
     }
 };

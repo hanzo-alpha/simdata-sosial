@@ -24,7 +24,7 @@ class PenggantiRastraResource extends Resource
     protected static ?string $label = 'Pengganti RASTRA';
     protected static ?string $pluralLabel = 'Pengganti RASTRA';
     protected static ?string $navigationLabel = 'Pengganti RASTRA';
-    protected static ?string $navigationGroup = 'Program';
+    protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 6;
 
 //    protected static bool $shouldRegisterNavigation = false;

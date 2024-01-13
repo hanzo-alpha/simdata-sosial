@@ -43,7 +43,7 @@ class BantuanRastraResource extends Resource
     protected static ?string $slug = 'program-rastra';
     protected static ?string $label = 'Program Rastra';
     protected static ?string $pluralLabel = 'Program Rastra';
-    protected static ?string $navigationGroup = 'Program';
+    protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
@@ -55,7 +55,7 @@ class BantuanRastraResource extends Resource
                         ->schema(BantuanRastra::getKeluargaForm())->columns(2),
 //                    FamilyForm::make('family'),
                     Section::make('Data Alamat')
-                        ->schema([AlamatForm::make('alamat')]),
+                        ->schema(BantuanRastra::getAlamatForm())->columns(2),
                 ])->columnSpan(['lg' => 2]),
 
                 Forms\Components\Group::make()->schema([
@@ -64,6 +64,7 @@ class BantuanRastraResource extends Resource
 
                     Forms\Components\Section::make('Verifikasi')
                         ->schema(BantuanRastra::getUploadForm())
+//                        ->visible(auth()->user()?->hasRole(['admin','super_admin']))
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -195,29 +196,29 @@ class BantuanRastraResource extends Resource
                                 ->weight(FontWeight::SemiBold)
                                 ->icon('heroicon-o-user')
                                 ->color('primary'),
-                            TextEntry::make('notelp')
-                                ->label('No. Telp/WA')
-                                ->icon('heroicon-o-device-phone-mobile')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
-                            TextEntry::make('tempat_lahir')
-                                ->label('Tempat Lahir')
-                                ->weight(FontWeight::SemiBold)
-                                ->icon('heroicon-o-home')
-                                ->color('primary'),
-                            TextEntry::make('tgl_lahir')
-                                ->label('Tanggal Lahir')
-//                                ->date('d F Y')
-                                ->formatStateUsing(function ($record) {
-                                    $tglLahir = Carbon::parse($record->tgl_lahir);
-                                    $umur = hitung_umur($tglLahir);
-
-                                    $tgl = $tglLahir->format('d F Y');
-                                    return $tgl . ' (' . $umur . ' tahun)';
-                                })
-                                ->icon('heroicon-o-calendar')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
+//                            TextEntry::make('notelp')
+//                                ->label('No. Telp/WA')
+//                                ->icon('heroicon-o-device-phone-mobile')
+//                                ->weight(FontWeight::SemiBold)
+//                                ->color('primary'),
+//                            TextEntry::make('tempat_lahir')
+//                                ->label('Tempat Lahir')
+//                                ->weight(FontWeight::SemiBold)
+//                                ->icon('heroicon-o-home')
+//                                ->color('primary'),
+//                            TextEntry::make('tgl_lahir')
+//                                ->label('Tanggal Lahir')
+////                                ->date('d F Y')
+//                                ->formatStateUsing(function ($record) {
+//                                    $tglLahir = Carbon::parse($record->tgl_lahir);
+//                                    $umur = hitung_umur($tglLahir);
+//
+//                                    $tgl = $tglLahir->format('d F Y');
+//                                    return $tgl . ' (' . $umur . ' tahun)';
+//                                })
+//                                ->icon('heroicon-o-calendar')
+//                                ->weight(FontWeight::SemiBold)
+//                                ->color('primary'),
 
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
@@ -265,21 +266,21 @@ class BantuanRastraResource extends Resource
 //                                ->icon('heroicon-o-academic-cap')
 //                                ->weight(FontWeight::SemiBold)
 //                                ->color('primary'),
-                            TextEntry::make('hubungan_keluarga.nama_hubungan')
-                                ->label('Hubungan Keluarga')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
-                            TextEntry::make('nama_ibu_kandung')
-                                ->label('Nama Ibu Kandung')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
-                            TextEntry::make('jenis_kelamin')
-                                ->label('Jenis Kelamin')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
-                            TextEntry::make('status_kawin')
-                                ->label('Status Kawin')
-                                ->badge(),
+//                            TextEntry::make('hubungan_keluarga.nama_hubungan')
+//                                ->label('Hubungan Keluarga')
+//                                ->weight(FontWeight::SemiBold)
+//                                ->color('primary'),
+//                            TextEntry::make('nama_ibu_kandung')
+//                                ->label('Nama Ibu Kandung')
+//                                ->weight(FontWeight::SemiBold)
+//                                ->color('primary'),
+//                            TextEntry::make('jenis_kelamin')
+//                                ->label('Jenis Kelamin')
+//                                ->weight(FontWeight::SemiBold)
+//                                ->color('primary'),
+//                            TextEntry::make('status_kawin')
+//                                ->label('Status Kawin')
+//                                ->badge(),
                             TextEntry::make('status_verifikasi')
                                 ->label('Verifikasi Berkas/Foto')
                                 ->badge(),
@@ -290,7 +291,7 @@ class BantuanRastraResource extends Resource
                         ->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
                         ->schema([
-                            ImageEntry::make('bukti_foto')
+                            ImageEntry::make('media_id')
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->alignCenter()
@@ -298,12 +299,12 @@ class BantuanRastraResource extends Resource
                                     'alt' => 'foto rumah',
                                     'loading' => 'lazy'
                                 ]),
-                            ImageEntry::make('foto_pegang_ktp')
+                            ImageEntry::make('foto_ktp_kk')
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->alignCenter()
                                 ->extraImgAttributes([
-                                    'alt' => 'foto rumah',
+                                    'alt' => 'foto ktp kk',
                                     'loading' => 'lazy'
                                 ])
                         ])->columns(1),

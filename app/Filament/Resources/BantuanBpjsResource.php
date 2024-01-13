@@ -36,7 +36,7 @@ class BantuanBpjsResource extends Resource
     protected static ?string $label = 'Program BPJS';
     protected static ?string $pluralLabel = 'Program BPJS';
     protected static ?string $navigationLabel = 'Program BPJS';
-    protected static ?string $navigationGroup = 'Program';
+    protected static ?string $navigationGroup = 'Program Sosial';
 
     public static function form(Form $form): Form
     {
@@ -103,10 +103,13 @@ class BantuanBpjsResource extends Resource
                                         ->searchable(),
                                 ]),
 
-                            Grid::make(4)
+                            Grid::make(3)
                                 ->schema([
                                     TextInput::make('dusun')
                                         ->label('Dusun')
+                                        ->hidden()
+                                        ->default('Dusun 1')
+                                        ->dehydrated()
                                         ->nullable(),
                                     TextInput::make('nort')
                                         ->label('RT')
@@ -124,6 +127,10 @@ class BantuanBpjsResource extends Resource
                 Forms\Components\Group::make([
                     Forms\Components\Section::make('Status')
                         ->schema([
+//                            Forms\Components\DatePicker::make('batas_tgl_input')
+//                                ->date()
+//                                ->default(today()->addDays(10))
+//                                ->displayFormat('d/M/Y'),
                             Select::make('status_nikah')
                                 ->options(StatusKawinBpjsEnum::class)
                                 ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
@@ -145,6 +152,14 @@ class BantuanBpjsResource extends Resource
                                 ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->preload(),
 
+                            Forms\Components\Textarea::make('keterangan')
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->autosize(),
+
+                            Forms\Components\FileUpload::make('foto_ktp')
+                                ->image()
+                                ->preserveFilenames(),
+
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
                                 ->offColor(StatusAktif::NONAKTIF->getColor())
@@ -153,10 +168,6 @@ class BantuanBpjsResource extends Resource
                                 ->onLabel(StatusAktif::AKTIF->getLabel())
                                 ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->default(0),
-
-                            Forms\Components\Textarea::make('keterangan')
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
-                                ->autosize()
                         ]),
                 ])->columns(1),
             ])->columns(3);

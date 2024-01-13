@@ -14,42 +14,36 @@ return new class extends Migration {
         Schema::create('bantuan_bpjs', static function (Blueprint $table) {
             $table->id();
             $table->uuid('dtks_id')->nullable()->default(Str::uuid()->toString());
-            $table->string('nokk', 20);
-            $table->string('nik', 20);
+            $table->string('nomor_kartu', 20)->nullable();
+            $table->string('nokk_tmt', 20);
+            $table->string('nik_tmt', 20);
             $table->string('nama_lengkap');
             $table->string('tempat_lahir', 50);
             $table->dateTime('tgl_lahir');
-            $table->string('notelp', 18);
-            $table->string('nama_ibu_kandung');
-            $table->string('nomor_kartu', 20)->nullable();
-            $table->foreignIdFor(JenisBantuan::class)
-                ->nullable()
-                ->constrained('jenis_bantuan')
-                ->cascadeOnUpdate();
-            $table->foreignIdFor(PendidikanTerakhir::class)
-                ->nullable()
-                ->constrained('pendidikan_terakhir')->cascadeOnUpdate();
-            $table->foreignIdFor(HubunganKeluarga::class)
-                ->nullable()
-                ->constrained('hubungan_keluarga')->cascadeOnUpdate();
-            $table->foreignIdFor(JenisPekerjaan::class)
-                ->nullable()
-                ->constrained('jenis_pekerjaan')->cascadeOnUpdate();
-            $table->tinyInteger('status_kawin')
-                ->nullable()
-                ->default(1);
             $table->tinyInteger('jenis_kelamin')
                 ->nullable()
                 ->default(1);
-            $table->string('status_verifikasi')
+            $table->tinyInteger('status_nikah')
+                ->nullable()
+                ->default(1);
+            $table->json('alamat');
+            $table->string('kecamatan');
+            $table->string('kelurahan');
+            $table->string('dusun')->nullable();
+            $table->char('nort', 3)->nullable();
+            $table->char('norw', 3)->nullable();
+            $table->char('kodepos', 6)->nullable();
+            $table->unsignedBigInteger('jenis_bantuan_id')->nullable();
+            $table->unsignedTinyInteger('status_aktif')
                 ->nullable()
                 ->default(0);
-            $table->tinyInteger('status_aktif')
-                ->nullable()
-                ->default(0);
-            $table->json('bukti_foto')->nullable();
+            $table->string('status_usulan', 20)->nullable();
             $table->string('status_bpjs', 20)->nullable();
-            $table->json('mutasi')->nullable();
+            $table->string('bulan', 10)->nullable();
+            $table->unsignedInteger('tahun')->nullable();
+            $table->text('keterangan')->nullable();
+            $table->json('foto_ktp')->nullable();
+            $table->date('batas_tgl_input')->default(today())->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

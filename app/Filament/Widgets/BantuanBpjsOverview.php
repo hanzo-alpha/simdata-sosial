@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Enums\StatusBpjsEnum;
 use App\Models\BantuanBpjs;
-use App\Models\DataPesertaJamkesda;
+use App\Models\PesertaBpjs;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -90,7 +90,7 @@ class BantuanBpjsOverview extends BaseWidget
             ->where('status_bpjs', StatusBpjsEnum::PENGALIHAN)
             ->count();
 
-        $jamkesda = DataPesertaJamkesda::count();
+        $jamkesda = PesertaBpjs::count();
 
         return [
             Stat::make(

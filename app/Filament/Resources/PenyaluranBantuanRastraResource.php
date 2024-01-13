@@ -29,7 +29,7 @@ class PenyaluranBantuanRastraResource extends Resource
     protected static ?string $slug = 'penyaluran-bantuan-rastra';
     protected static ?string $label = 'Penyaluran Rastra';
     protected static ?string $pluralLabel = 'Penyaluran Rastra';
-    protected static ?string $navigationGroup = 'Program';
+    protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form

@@ -15,10 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', static function () {
-//    return view('frontend');
-//})->name('frontend');
-
 Route::get('/', Index::class)->middleware('guest')->name('frontend');
 
 Route::middleware(['auth'])->group(function () {

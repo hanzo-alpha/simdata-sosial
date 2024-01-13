@@ -32,7 +32,7 @@ use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanRastra extends Model
 {
-    use HasKeluarga, HasTambahan, HasWilayah;
+    use HasTambahan, HasWilayah;
     use SoftDeletes;
 
     protected $table = 'bantuan_rastra';
@@ -40,29 +40,19 @@ class BantuanRastra extends Model
 
     protected $casts = [
         'dtks_id' => 'string',
-        'bukti_foto' => 'array',
-        'foto_pegang_ktp' => 'array',
-        'attachments' => 'array',
+//        'media_id' => 'array',
+        'foto_ktp_kk' => 'array',
         'pengganti_rastra' => 'array',
-        'tgl_lahir' => 'date',
-        'status_kawin' => StatusKawinBpjsEnum::class,
-        'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rastra' => StatusRastra::class,
         'status_aktif' => StatusAktif::class
     ];
 
     public static function getLatLngAttributes(): array
     {
-        return Alamat::getLatLngAttributes();
-//        return [
-//            'lat' => 'latitude',
-//            'lng' => 'longitude',
-//        ];
-    }
-
-    public function family(): MorphOne
-    {
-        return $this->morphOne(Family::class, 'familyable');
+        return [
+            'lat' => 'latitude',
+            'lng' => 'longitude',
+        ];
     }
 
     public function alamat(): MorphOne
@@ -85,9 +75,7 @@ class BantuanRastra extends Model
         return [
             TextInput::make('dtks_id')
                 ->maxLength(36)
-                ->disabled()
-                ->dehydrated()
-                ->default(\Str::orderedUuid()->toString()),
+                ->default(\Str::upper(\Str::orderedUuid()->toString())),
             TextInput::make('nokk')
                 ->label('No. Kartu Keluarga (KK)')
                 ->required()
@@ -100,100 +88,57 @@ class BantuanRastra extends Model
                 ->label('Nama Lengkap')
                 ->required()
                 ->maxLength(255),
-            TextInput::make('nama_ibu_kandung')
-                ->label('Nama Ibu Kandung')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('tempat_lahir')
-                ->label('Tempat Lahir')
-                ->required()
-                ->maxLength(50),
-            DatePicker::make('tgl_lahir')
-                ->displayFormat('d/M/Y')
-                ->label('Tgl. Lahir')
-                ->required(),
-            TextInput::make('notelp')
-                ->label('No. Telp/WA')
-                ->required()
-                ->maxLength(18),
-
-            Select::make('jenis_kelamin')
-                ->options(JenisKelaminEnum::class)
-                ->default(JenisKelaminEnum::LAKI),
-
-//            Select::make('jenis_pekerjaan_id')
-//                ->relationship('jenis_pekerjaan', 'nama_pekerjaan')
-//                ->searchable()
-//                ->optionsLimit(15)
-//                ->default(6)
-//                ->preload(),
-//            Select::make('pendidikan_terakhir_id')
-//                ->relationship('pendidikan_terakhir', 'nama_pendidikan')
-//                ->searchable()
-//                ->default(5)
-//                ->optionsLimit(15)
-//                ->preload(),
-            Select::make('hubungan_keluarga_id')
-                ->relationship('hubungan_keluarga', 'nama_hubungan')
-                ->searchable()
-                ->default(7)
-                ->optionsLimit(15)
-                ->preload(),
-            Select::make('status_kawin')
-                ->options(StatusKawinBpjsEnum::class)
-                ->default(StatusKawinBpjsEnum::KAWIN)
-                ->preload(),
         ];
     }
 
     public static function getAlamatForm(): array
     {
         return [
-            Grid::make()
-                ->schema([
-                    Geocomplete::make('alamat')
-                        ->countries(['id'])
-                        ->updateLatLng()
-                        ->geocodeOnLoad()
-                        ->columnSpanFull()
-                        ->reverseGeocode([
-                            'country' => '%C',
-                            'city' => '%L',
-                            'city_district' => '%D',
-                            'zip' => '%z',
-                            'state' => '%A1',
-                            'street' => '%S %n',
-                        ]),
-                    Grid::make(2)->schema([
-                        TextInput::make('latitude')
-                            ->disabled()
-                            ->dehydrated()
-                            ->reactive()
-                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                $set('location', [
-                                    'lat' => floatVal($state),
-                                    'lng' => floatVal($get('longitude')),
-                                ]);
-                            })
-                            ->lazy(), // important to use lazy, to avoid updates as you type
-                        TextInput::make('longitude')
-                            ->disabled()
-                            ->dehydrated()
-                            ->reactive()
-                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                $set('location', [
-                                    'lat' => (float) $get('latitude'),
-                                    'lng' => floatVal($state),
-                                ]);
-                            })
-                            ->lazy(),
-                    ]),
-                ]),
+//            Grid::make()
+//                ->schema([
+//                    Geocomplete::make('alamat')
+//                        ->countries(['id'])
+//                        ->updateLatLng()
+//                        ->geocodeOnLoad()
+//                        ->columnSpanFull()
+//                        ->reverseGeocode([
+//                            'country' => '%C',
+//                            'city' => '%L',
+//                            'city_district' => '%D',
+//                            'zip' => '%z',
+//                            'state' => '%A1',
+//                            'street' => '%S %n',
+//                        ]),
+//                    Grid::make(2)->schema([
+//                        TextInput::make('latitude')
+//                            ->disabled()
+//                            ->dehydrated()
+//                            ->reactive()
+//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+//                                $set('location', [
+//                                    'lat' => floatVal($state),
+//                                    'lng' => floatVal($get('longitude')),
+//                                ]);
+//                            })
+//                            ->lazy(), // important to use lazy, to avoid updates as you type
+//                        TextInput::make('longitude')
+//                            ->disabled()
+//                            ->dehydrated()
+//                            ->reactive()
+//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+//                                $set('location', [
+//                                    'lat' => (float) $get('latitude'),
+//                                    'lng' => floatVal($state),
+//                                ]);
+//                            })
+//                            ->lazy(),
+//                    ]),
+//                ]),
             Grid::make(2)
                 ->schema([
-//                    TextInput::make('alamat')
-//                        ->required()
-//                        ->columnSpanFull(),
+                    TextInput::make('alamat')
+                        ->required()
+                        ->columnSpanFull(),
                     Select::make('kecamatan')
                         ->required()
                         ->searchable()
@@ -219,7 +164,7 @@ class BantuanRastra extends Model
                         ->searchable(),
                 ]),
 
-            Grid::make(4)
+            Grid::make(3)
                 ->schema([
                     TextInput::make('dusun')
                         ->label('Dusun')
@@ -230,10 +175,6 @@ class BantuanRastra extends Model
                     TextInput::make('no_rw')
                         ->label('RW')
                         ->nullable(),
-                    TextInput::make('kodepos')
-                        ->label('Kodepos')
-                        ->default('90861')
-                        ->required(),
                 ]),
         ];
     }
@@ -315,8 +256,8 @@ class BantuanRastra extends Model
                 ->default(now())
                 ->displayFormat('d/M/Y H:i:s')
                 ->dehydrated(),
-            FileUpload::make('bukti_foto')
-                ->label('Unggah Foto Penyerahan')
+            FileUpload::make('foto_ktp_kk')
+                ->label('Unggah Foto KTP / KK')
                 ->getUploadedFileNameForStorageUsing(
                     fn(TemporaryUploadedFile $file
                     ): string => (string) str($file->getClientOriginalName())
@@ -324,27 +265,6 @@ class BantuanRastra extends Model
                 )
                 ->preserveFilenames()
                 ->multiple()
-                ->reorderable()
-                ->appendFiles()
-                ->openable()
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->helperText('maks. 2MB')
-                ->maxFiles(3)
-                ->maxSize(2048)
-                ->columnSpanFull()
-                ->imagePreviewHeight('250')
-                ->previewable(false)
-                ->image(),
-
-            FileUpload::make('foto_pegang_ktp')
-                ->label('Unggah Foto Pegang KTP/KK')
-                ->getUploadedFileNameForStorageUsing(
-                    fn(TemporaryUploadedFile $file
-                    ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                )
-                ->preserveFilenames()
                 ->reorderable()
                 ->appendFiles()
                 ->openable()

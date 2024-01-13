@@ -31,16 +31,15 @@
         "laraveldaily/laravel-invoices": "^3.2",
         "leandrocfe/filament-apex-charts": "^3.0",
         "malzariey/filament-daterangepicker-filter": "^2.3",
+        "orangehill/iseed": "^3.0",
         "pxlrbt/filament-excel": "^2.1",
         "pxlrbt/filament-spotlight": "^1.0",
-        "shipu/web-installer": "^1.0",
         "staudenmeir/eloquent-has-many-deep": "^1.18",
         "z3d0x/filament-logger": "^0.6.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
         "fakerphp/faker": "^1.9.1",
-        "ladumor/laravel-pwa": "^v0.0.4",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",

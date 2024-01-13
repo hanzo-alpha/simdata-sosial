@@ -42,9 +42,4 @@ class Provinsi extends Model
         //            ['city_code', 'district_code', 'province_code']
         );
     }
-//
-//    public function kep(): HasMany
-//    {
-//        return $this->hasMany(Pulau::class, 'provinsi_code', 'provinsi_code');
-//    }
 }
