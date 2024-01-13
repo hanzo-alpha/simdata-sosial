@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
 use App\Models\BantuanRastra;
-use App\Models\User;
 use Illuminate\Http\Response;
 use LaravelDaily\Invoices\Classes\Buyer;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
@@ -44,6 +44,7 @@ class PdfController extends Controller
     {
         $rastra = BantuanRastra::all();
         $pdf = \PDF::loadView('pdf.rastra', compact('rastra'));
+
         return $pdf->stream('rastra.pdf');
     }
 }

@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PenggantiRastra extends Model
 {
     protected $table = 'pengganti_rastra';
+
     protected $guarded = [];
 
     protected $casts = [
-        'alasan_dikeluarkan' => AlasanEnum::class
+        'alasan_dikeluarkan' => AlasanEnum::class,
     ];
 
     public function keluarga(): BelongsTo

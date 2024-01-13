@@ -6,11 +6,10 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusAktif: int implements HasLabel, HasColor, HasIcon
+enum StatusAktif: int implements HasColor, HasIcon, HasLabel
 {
     case AKTIF = 1;
     case NONAKTIF = 0;
-
 
     public function getLabel(): ?string
     {

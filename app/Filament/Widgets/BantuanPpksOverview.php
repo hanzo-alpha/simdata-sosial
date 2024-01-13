@@ -14,6 +14,7 @@ class BantuanPpksOverview extends BaseWidget
     use InteractsWithPageFilters;
 
     protected static bool $isDiscovered = false;
+
     protected static ?int $sort = 1;
 
     protected function getStats(): array
@@ -25,6 +26,7 @@ class BantuanPpksOverview extends BaseWidget
         $unverified = BantuanPpks::query()
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
+
                 return $query
                     ->whereDate('created_at', '>=', $dates[0])
                     ->whereDate('created_at', '<=', $dates[1]);
@@ -49,6 +51,7 @@ class BantuanPpksOverview extends BaseWidget
         $verified = BantuanPpks::query()
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
+
                 return $query
                     ->whereDate('created_at', '<=', $dates[0])
                     ->whereDate('created_at', '>=', $dates[1]);
@@ -73,6 +76,7 @@ class BantuanPpksOverview extends BaseWidget
         $review = BantuanPpks::query()
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
+
                 return $query
                     ->whereDate('created_at', '<=', $dates[0])
                     ->whereDate('created_at', '>=', $dates[1]);

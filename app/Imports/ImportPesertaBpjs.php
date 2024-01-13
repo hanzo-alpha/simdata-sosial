@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Events\ImportFailed;
 
-class ImportPesertaBpjs implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, ShouldQueue, SkipsEmptyRows
+class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
     public function registerEvents(): array
     {
@@ -29,7 +29,6 @@ class ImportPesertaBpjs implements ToModel, WithBatchInserts, WithChunkReading, 
     }
 
     /**
-     * @param  array  $row
      * @return \Illuminate\Database\Eloquent\Model|\App\Models\MutasiBpjs|null
      */
     public function model(array $row): Model|PesertaJamkesda|null

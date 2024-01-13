@@ -6,9 +6,8 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusMiskinEnum: string implements HasLabel, HasColor, HasIcon
+enum StatusMiskinEnum: string implements HasColor, HasIcon, HasLabel
 {
-
     case MISKIN = 'MISKIN';
     case RENTAN_MISKIN = 'RENTAN MISKIN';
     case MAMPU = 'MAMPU';

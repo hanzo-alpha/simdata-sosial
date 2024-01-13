@@ -20,11 +20,11 @@ class Dashboard extends \Filament\Pages\Dashboard
             ->schema([
                 Section::make()
                     ->schema([
-//                        DateRangePicker::make('daterange')
-//                            ->label('Rentang Waktu')
-//                            ->timezone('Asia/Makassar')
-//                            ->displayFormat('d/M/Y')
-//                            ->format('Y-m-d H:i:s'),
+                        //                        DateRangePicker::make('daterange')
+                        //                            ->label('Rentang Waktu')
+                        //                            ->timezone('Asia/Makassar')
+                        //                            ->displayFormat('d/M/Y')
+                        //                            ->format('Y-m-d H:i:s'),
                         Select::make('kecamatan')
                             ->required()
                             ->searchable()
@@ -32,14 +32,14 @@ class Dashboard extends \Filament\Pages\Dashboard
                             ->options(function () {
                                 $kab = Kecamatan::query()
                                     ->where('kabupaten_code', config('custom.default.kodekab'));
-                                if (!$kab) {
+                                if (! $kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
 
                                 return $kab->pluck('name', 'code');
                             })
-                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                            ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->required()
@@ -54,16 +54,16 @@ class Dashboard extends \Filament\Pages\Dashboard
             ]);
     }
 
-//    protected function getHeaderActions(): array
-//    {
-//        return [
-//            FilterAction::make()
-//                ->form([
-//                    DatePicker::make('startDate')
-//                        ->displayFormat('d/M/Y'),
-//                    DatePicker::make('endDate')
-//                        ->displayFormat('d/M/Y'),
-//                ]),
-//        ];
-//    }
+    //    protected function getHeaderActions(): array
+    //    {
+    //        return [
+    //            FilterAction::make()
+    //                ->form([
+    //                    DatePicker::make('startDate')
+    //                        ->displayFormat('d/M/Y'),
+    //                    DatePicker::make('endDate')
+    //                        ->displayFormat('d/M/Y'),
+    //                ]),
+    //        ];
+    //    }
 }

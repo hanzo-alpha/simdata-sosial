@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Enums\AlasanEnum;
 use App\Filament\Resources\PenggantiRastraResource\Pages;
 use App\Models\BantuanRastra;
-use App\Models\Keluarga;
 use App\Models\PenggantiRastra;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -21,13 +20,18 @@ class PenggantiRastraResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-arrow-up-tray';
 
     protected static ?string $slug = 'pengganti-rastra';
+
     protected static ?string $label = 'Pengganti RASTRA';
+
     protected static ?string $pluralLabel = 'Pengganti RASTRA';
+
     protected static ?string $navigationLabel = 'Pengganti RASTRA';
+
     protected static ?string $navigationGroup = 'Program Sosial';
+
     protected static ?int $navigationSort = 6;
 
-//    protected static bool $shouldRegisterNavigation = false;
+    //    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -39,13 +43,13 @@ class PenggantiRastraResource extends Resource
                     ->searchable()
                     ->native(false)
                     ->preload()
-                    ->getSearchResultsUsing(fn(string $search): array => BantuanRastra::where('nama_lengkap', 'like',
+                    ->getSearchResultsUsing(fn (string $search): array => BantuanRastra::where('nama_lengkap', 'like',
                         "%{$search}%")
                         ->orWhere('nik', 'like', "%{$search}%")
                         ->orWhere('nokk', 'like', "%{$search}%")
                         ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(function ($record) {
-                        return '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap;
+                        return '<strong>'.$record->nik.'</strong><br>'.$record->nama_lengkap;
                     })->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
@@ -72,7 +76,7 @@ class PenggantiRastraResource extends Resource
                     ->lazy()
                     ->required()
                     ->default(AlasanEnum::PINDAH)
-                    ->optionsLimit(15)
+                    ->optionsLimit(15),
 
             ])->columns(1)->inlineLabel();
     }
@@ -84,26 +88,26 @@ class PenggantiRastraResource extends Resource
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->nokk_pengganti)
+                    ->description(fn ($record) => $record->nokk_pengganti)
                     ->label('NIK & NO. KK Baru'),
                 Tables\Columns\TextColumn::make('nama_pengganti')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->alamat_pengganti)
+                    ->description(fn ($record) => $record->alamat_pengganti)
                     ->label('NAMA & ALAMAT BARU'),
                 Tables\Columns\TextColumn::make('nik_lama')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->nokk_lama)
+                    ->description(fn ($record) => $record->nokk_lama)
                     ->label('NIK & NO.KK Lama'),
                 Tables\Columns\TextColumn::make('nama_lama')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->alamat_lama)
+                    ->description(fn ($record) => $record->alamat_lama)
                     ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')
-                    ->badge()
+                    ->badge(),
             ])
             ->filters([
                 //
@@ -113,7 +117,7 @@ class PenggantiRastraResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -24,6 +24,7 @@ class BantuanRastraOverview extends BaseWidget
                 value: BantuanRastra::query()
                     ->when($dateRange, function (Builder $query) use ($dateRange) {
                         $dates = explode('-', $dateRange);
+
                         return $query
                             ->whereDate('created_at', '>=', $dates[0])
                             ->whereDate('created_at', '<=', $dates[1]);
@@ -52,6 +53,7 @@ class BantuanRastraOverview extends BaseWidget
                 value: BantuanRastra::query()
                     ->when($dateRange, function (Builder $query) use ($dateRange) {
                         $dates = explode('-', $dateRange);
+
                         return $query
                             ->whereDate('created_at', '>=', $dates[0])
                             ->whereDate('created_at', '<=', $dates[1]);
@@ -79,6 +81,7 @@ class BantuanRastraOverview extends BaseWidget
                 value: BantuanRastra::query()
                     ->when($dateRange, function (Builder $query) use ($dateRange) {
                         $dates = explode('-', $dateRange);
+
                         return $query
                             ->whereDate('created_at', '>=', $dates[0])
                             ->whereDate('created_at', '<=', $dates[1]);

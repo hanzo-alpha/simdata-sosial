@@ -23,16 +23,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithValidation,
-    SkipsEmptyRows, WithUpserts, ShouldQueue
+class ImportBantuanPkh implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
 {
-    use Importable, SkipsFailures, SkipsErrors;
+    use Importable, SkipsErrors, SkipsFailures;
 
-//    use Importable, SkipsFailures, SkipsErrors;
-    /**
-     * @param  array  $row
-     * @return \Illuminate\Database\Eloquent\Model|\App\Models\BantuanPkh|null
-     */
+    //    use Importable, SkipsFailures, SkipsErrors;
+
     public function model(array $row): Model|DataPkh|null
     {
         $namaProp = isset($row['nama_prop']) ? \Str::ucfirst($row['nama_prop']) : null;
@@ -46,6 +42,7 @@ class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, W
         $kelurahan = Kelurahan::query()->where('name', $namaKel)->first()?->code;
 
         $jenisBantuan = JenisBantuan::where('alias', \Str::upper($row['bansos']))->first()?->id;
+
         return new DataPkh([
             'dtks_id' => $row['iddtks'] ?? 'NON DTKS',
             'nokk' => $row['nokk'],
@@ -92,34 +89,34 @@ class ImportBantuanPkh implements ToModel, WithBatchInserts, WithChunkReading, W
             '*.iddtks' => Rule::unique('bantuan_pkh', 'dtks_id'),
 
             // Can also use callback validation rules
-//            '0' => function ($attribute, $value, $onFailure) {
-//                if ($value !== 'Patrick Brouwers') {
-//                    $onFailure('Name is not Patrick Brouwers');
-//                }
-//            }
+            //            '0' => function ($attribute, $value, $onFailure) {
+            //                if ($value !== 'Patrick Brouwers') {
+            //                    $onFailure('Name is not Patrick Brouwers');
+            //                }
+            //            }
         ];
     }
 
-//    public function onError(Throwable $e)
-//    {
-//        dd($e);
-//    }
+    //    public function onError(Throwable $e)
+    //    {
+    //        dd($e);
+    //    }
 
-//    public function onFailure(Failure ...$failures)
-//    {
-//        foreach ($failures as $failure) {
-//            $baris = $failure->row();
-//            $errmsg = $failure->errors()[0];
-//            $values = $failure->values();
-//
-//            Notification::make('Failure Import')
-//                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-//                ->body('NIK : ' . $values['nik'] . ' | No.KK : ' . $values['no_kk'] . ' | Nama : ' . $values['nama_lengkap'])
-//                ->danger()
-//                ->sendToDatabase(auth()->user())
-//                ->broadcast(User::where('is_admin', 1)->get());
-//        }
-//    }
+    //    public function onFailure(Failure ...$failures)
+    //    {
+    //        foreach ($failures as $failure) {
+    //            $baris = $failure->row();
+    //            $errmsg = $failure->errors()[0];
+    //            $values = $failure->values();
+    //
+    //            Notification::make('Failure Import')
+    //                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+    //                ->body('NIK : ' . $values['nik'] . ' | No.KK : ' . $values['no_kk'] . ' | Nama : ' . $values['nama_lengkap'])
+    //                ->danger()
+    //                ->sendToDatabase(auth()->user())
+    //                ->broadcast(User::where('is_admin', 1)->get());
+    //        }
+    //    }
 
     public function uniqueBy(): array
     {

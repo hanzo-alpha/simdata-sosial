@@ -63,7 +63,7 @@ return [
             'AccountWidget',
             'FilamentInfoWidget',
             'PenerimaManfaatMap',
-            'PenerimaManfaatChart'
+            'PenerimaManfaatChart',
         ],
 
         'resources' => [],

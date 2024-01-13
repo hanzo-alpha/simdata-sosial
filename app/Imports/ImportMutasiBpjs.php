@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Events\ImportFailed;
 
-class ImportMutasiBpjs implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, ShouldQueue, SkipsEmptyRows
+class ImportMutasiBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
     public function registerEvents(): array
     {
@@ -28,10 +28,6 @@ class ImportMutasiBpjs implements ToModel, WithBatchInserts, WithChunkReading, W
         ];
     }
 
-    /**
-     * @param  array  $row
-     * @return \Illuminate\Database\Eloquent\Model|\App\Models\MutasiBpjs|null
-     */
     public function model(array $row): Model|UsulanMutasiBpjs|null
     {
         return new UsulanMutasiBpjs([

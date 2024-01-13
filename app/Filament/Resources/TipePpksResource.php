@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TipePpksResource\Pages;
-use App\Filament\Resources\TipePpksResource\RelationManagers;
 use App\Models\TipePpks;
 use Awcodes\FilamentBadgeableColumn\Components\Badge;
 use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
@@ -12,18 +11,21 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TipePpksResource extends Resource
 {
     protected static ?string $model = TipePpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
     protected static ?string $slug = 'tipe-ppks';
+
     protected static ?string $label = 'Tipe PPKS';
+
     protected static ?string $pluralLabel = 'Tipe PPKS';
+
     protected static ?string $navigationLabel = 'Tipe PPKS';
+
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
@@ -60,8 +62,8 @@ class TipePpksResource extends Resource
                     ->label('Kategori PPKS')
                     ->suffixBadges([
                         Badge::make('alias')
-                            ->label(fn($record) => $record->alias)
-                            ->color('success')
+                            ->label(fn ($record) => $record->alias)
+                            ->color('success'),
                     ])
                     ->sortable()
                     ->searchable(),

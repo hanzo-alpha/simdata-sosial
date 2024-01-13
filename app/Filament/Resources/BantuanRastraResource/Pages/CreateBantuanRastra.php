@@ -21,6 +21,7 @@ class CreateBantuanRastra extends CreateRecord
             : $data['status_verifikasi'];
         $data['pendidikan_terakhir_id'] = $data['pendidikan_terakhir_id'] ?? 5;
         $data['jenis_pekerjaan_id'] = $data['jenis_pekerjaan_id'] ?? 6;
+
         return $data;
     }
 
@@ -33,7 +34,7 @@ class CreateBantuanRastra extends CreateRecord
                 'nik_pengganti' => $data['nik'],
                 'nokk_pengganti' => $data['nokk'],
                 'nama_pengganti' => $data['nama_lengkap'],
-//                'alamat_pengganti' => $data['alamat'],
+                //                'alamat_pengganti' => $data['alamat'],
                 'alasan_dikeluarkan' => $data['pengganti_rastra']['alasan_dikeluarkan'],
             ]);
         }

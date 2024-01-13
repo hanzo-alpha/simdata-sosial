@@ -43,24 +43,24 @@ enum JenisBansosDiterimaEnum: string implements HasLabel
         };
     }
 
-//    public function getColor(): string|array|null
-//    {
-//        return match ($this) {
-//            self::APBD => 'success',
-//            self::APBN => 'primary',
-//            self::BLT => 'warning',
-//            self::BPNTPKH => 'danger',
-//            self::RHTL => 'info',
-//            self::BSP => 'success',
-//            self::BSPS => 'primary',
-//            self::BST => 'warning',
-//            self::KURSI_RODA => 'danger',
-//            self::ASPD_ATENSI => 'info',
-//            self::PPKM => 'success',
-//            self::BANSOS_KUSTA => 'primary',
-//            self::BELUM_PERNAH => 'warning',
-//            self::NON_BANSOS => 'info',
-//            self::RASTRA => 'danger',
-//        };
-//    }
+    //    public function getColor(): string|array|null
+    //    {
+    //        return match ($this) {
+    //            self::APBD => 'success',
+    //            self::APBN => 'primary',
+    //            self::BLT => 'warning',
+    //            self::BPNTPKH => 'danger',
+    //            self::RHTL => 'info',
+    //            self::BSP => 'success',
+    //            self::BSPS => 'primary',
+    //            self::BST => 'warning',
+    //            self::KURSI_RODA => 'danger',
+    //            self::ASPD_ATENSI => 'info',
+    //            self::PPKM => 'success',
+    //            self::BANSOS_KUSTA => 'primary',
+    //            self::BELUM_PERNAH => 'warning',
+    //            self::NON_BANSOS => 'info',
+    //            self::RASTRA => 'danger',
+    //        };
+    //    }
 }

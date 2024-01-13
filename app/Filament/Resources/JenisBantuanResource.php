@@ -18,9 +18,13 @@ class JenisBantuanResource extends Resource
     protected static ?string $model = JenisBantuan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     protected static ?string $slug = 'jenis-bantuan';
+
     protected static ?string $label = 'Jenis Bantuan';
+
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+
     protected static ?string $pluralLabel = 'Jenis Bantuan';
 
     public static function form(Form $form): Form
@@ -47,7 +51,7 @@ class JenisBantuanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama_bantuan')
                     ->label('Nama Bantuan')
-                    ->description(fn($record) => Str::words($record->deskripsi, 13))
+                    ->description(fn ($record) => Str::words($record->deskripsi, 13))
                     ->searchable()
                     ->weight(FontWeight::SemiBold)
                     ->copyable()
@@ -57,7 +61,7 @@ class JenisBantuanResource extends Resource
                     ->badge()
                     ->sortable()
                     ->searchable()
-                    ->color(fn($record) => $record->warna),
+                    ->color(fn ($record) => $record->warna),
             ])
             ->filters([
                 //

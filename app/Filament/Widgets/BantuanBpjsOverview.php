@@ -15,6 +15,7 @@ class BantuanBpjsOverview extends BaseWidget
     use InteractsWithPageFilters;
 
     protected static bool $isDiscovered = false;
+
     protected static ?int $sort = 1;
 
     protected function getStats(): array
@@ -27,6 +28,7 @@ class BantuanBpjsOverview extends BaseWidget
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
+
                 return $query
                     ->whereDate('created_at', '<=', $dates[0])
                     ->whereDate('created_at', '>=', $dates[1]);
@@ -43,6 +45,7 @@ class BantuanBpjsOverview extends BaseWidget
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
+
                 return $query
                     ->whereDate('created_at', '<=', $dates[0])
                     ->whereDate('created_at', '>=', $dates[1]);
@@ -60,6 +63,7 @@ class BantuanBpjsOverview extends BaseWidget
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
+
                 return $query
                     ->whereDate('created_at', '<=', $dates[0])
                     ->whereDate('created_at', '>=', $dates[1]);
@@ -77,6 +81,7 @@ class BantuanBpjsOverview extends BaseWidget
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
             ->when($dateRange, function (Builder $query) use ($dateRange) {
                 $dates = explode('-', $dateRange);
+
                 return $query
                     ->whereDate('created_at', '<=', $dates[0])
                     ->whereDate('created_at', '>=', $dates[1]);

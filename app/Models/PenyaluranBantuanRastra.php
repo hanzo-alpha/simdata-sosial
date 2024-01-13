@@ -17,11 +17,11 @@ class PenyaluranBantuanRastra extends Model
         'tgl_penyerahan' => 'datetime',
         'foto_penyerahan' => 'array',
         'foto_ktp_kk' => 'array',
-        'status_penyaluran' => StatusPenyaluran::class
+        'status_penyaluran' => StatusPenyaluran::class,
     ];
 
     protected $appends = [
-        'location'
+        'location',
     ];
 
     public function bantuan_rastra(): BelongsTo
@@ -58,6 +58,4 @@ class PenyaluranBantuanRastra extends Model
     {
         return 'location';
     }
-
-
 }

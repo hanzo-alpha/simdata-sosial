@@ -20,7 +20,7 @@ class ListBantuanBpnt extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-//            Actions\CreateAction::make(),
+            //            Actions\CreateAction::make(),
             Actions\Action::make('unggahData')
                 ->model(BantuanPkh::class)
                 ->label('Unggah Data')
@@ -43,14 +43,14 @@ class ListBantuanBpnt extends ListRecords
                         ->acceptedFileTypes([
                             'application/vnd.ms-excel',
                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                            'text/csv'
+                            'text/csv',
                         ])
                         ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
                     $import = new ImportBantuanBpnt();
                     $import->import($data['attachment'], 'public');
-//                    $import = Excel::import(new ImportBantuanBpnt, $data['attachment'], 'public');
+                    //                    $import = Excel::import(new ImportBantuanBpnt, $data['attachment'], 'public');
                     if ($import) {
                         Notification::make()
                             ->title('Data Bantuan BPNT Berhasil di impor')

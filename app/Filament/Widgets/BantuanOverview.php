@@ -16,11 +16,10 @@ class BantuanOverview extends MultiWidget
         BantuanBpntOverview::class,
         BantuanPpksOverview::class,
     ];
-//
-//    public function shouldPersistMultiWidgetTabsInSession(): bool
-//    {
-//        return true;
-//    }
-
+    //
+    //    public function shouldPersistMultiWidgetTabsInSession(): bool
+    //    {
+    //        return true;
+    //    }
 
 }

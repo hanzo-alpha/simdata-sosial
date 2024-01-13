@@ -16,6 +16,4 @@ class ManageUsers extends ManageRecords
             Actions\CreateAction::make(),
         ];
     }
-
-
 }

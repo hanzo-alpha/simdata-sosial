@@ -12,10 +12,10 @@ class ExportBantuanPpks extends ExcelExport
     public function setUp()
     {
         $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
+        $this->withFilename(fn ($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
         $this->askForWriterType();
         $this->withColumns([
-//            Column::make('dtks_id')->heading('DTKS ID'),
+            //            Column::make('dtks_id')->heading('DTKS ID'),
             Column::make('nama_lengkap')->heading('Nama Lengkap'),
             Column::make('nik')->heading('N I K'),
             Column::make('nokk')->heading('No. KK'),
@@ -23,7 +23,7 @@ class ExportBantuanPpks extends ExcelExport
             Column::make('hubungan_keluarga.nama_hubungan')->heading('Hubungan Keluarga'),
             Column::make('jenis_kelamin')->heading('Jenis Kelamin'),
             Column::make('tempat_lahir')->heading('Tempat Lahir')
-                ->formatStateUsing(fn($record) => $record->tempat_lahir . ', ' . $record->tgl_lahir),
+                ->formatStateUsing(fn ($record) => $record->tempat_lahir.', '.$record->tgl_lahir),
             Column::make('notelp')->heading('No. Telp/WA'),
             Column::make('alamat.alamat_lengkap')->heading('Alamat Lengkap'),
             Column::make('alamat.kel.name')->heading('Kelurahan'),

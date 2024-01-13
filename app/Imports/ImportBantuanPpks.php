@@ -17,7 +17,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class ImportBantuanPpks implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
     /**
-     * @param  array  $row
      * @return \Illuminate\Database\Eloquent\Model|\App\Models\BantuanPkh|null
      */
     public function model(array $row): Model|DataPpks|null
@@ -36,6 +35,7 @@ class ImportBantuanPpks implements ToModel, WithBatchInserts, WithChunkReading, 
         if (isset($ttl[1])) {
             $tgl = $ttl[1];
         }
+
         return new DataPpks([
             'nama_lengkap' => $row['nama_lengkap'],
             'nik' => $row['nik'],

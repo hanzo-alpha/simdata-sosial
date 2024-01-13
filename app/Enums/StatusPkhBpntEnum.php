@@ -6,11 +6,10 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusPkhBpntEnum: string implements HasLabel, HasColor, HasIcon
+enum StatusPkhBpntEnum: string implements HasColor, HasIcon, HasLabel
 {
     case PKH = 'PKH';
     case BPNT = 'BPNT';
-
 
     public function getLabel(): ?string
     {

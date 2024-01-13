@@ -6,12 +6,11 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusUsulanEnum: string implements HasLabel, HasColor, HasIcon
+enum StatusUsulanEnum: string implements HasColor, HasIcon, HasLabel
 {
     case BERHASIL = 'BERHASIL';
     case GAGAL = 'GAGAL';
     case ONPROGRESS = 'SEDANG PROSES';
-
 
     public function getLabel(): ?string
     {

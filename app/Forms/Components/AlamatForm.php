@@ -51,46 +51,46 @@ class AlamatForm extends Field
     public function getChildComponents(): array
     {
         return [
-//            Grid::make()
-//                ->schema([
-//                    Geocomplete::make('alamat')
-//                        ->countries(['id'])
-//                        ->updateLatLng()
-//                        ->geocodeOnLoad()
-//                        ->columnSpanFull()
-//                        ->reverseGeocode([
-//                            'country' => '%C',
-//                            'city' => '%L',
-//                            'city_district' => '%D',
-//                            'zip' => '%z',
-//                            'state' => '%A1',
-//                            'street' => '%S %n',
-//                        ]),
-//                    Grid::make(2)->schema([
-//                        TextInput::make('latitude')
-//                            ->disabled()
-//                            ->dehydrated()
-//                            ->reactive()
-//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-//                                $set('location', [
-//                                    'lat' => floatVal($state),
-//                                    'lng' => floatVal($get('longitude')),
-//                                ]);
-//                            })
-//                            ->lazy(),
-//                        TextInput::make('longitude')
-//                            ->disabled()
-//                            ->dehydrated()
-//                            ->reactive()
-//                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-//                                $set('location', [
-//                                    'lat' => (float) $get('latitude'),
-//                                    'lng' => floatVal($state),
-//                                ]);
-//                            })
-//                            ->lazy(),
-//                    ]),
-//                ]),
+            //            Grid::make()
+            //                ->schema([
+            //                    Geocomplete::make('alamat')
+            //                        ->countries(['id'])
+            //                        ->updateLatLng()
+            //                        ->geocodeOnLoad()
+            //                        ->columnSpanFull()
+            //                        ->reverseGeocode([
+            //                            'country' => '%C',
+            //                            'city' => '%L',
+            //                            'city_district' => '%D',
+            //                            'zip' => '%z',
+            //                            'state' => '%A1',
+            //                            'street' => '%S %n',
+            //                        ]),
+            //                    Grid::make(2)->schema([
+            //                        TextInput::make('latitude')
+            //                            ->disabled()
+            //                            ->dehydrated()
+            //                            ->reactive()
+            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+            //                                $set('location', [
+            //                                    'lat' => floatVal($state),
+            //                                    'lng' => floatVal($get('longitude')),
+            //                                ]);
+            //                            })
+            //                            ->lazy(),
+            //                        TextInput::make('longitude')
+            //                            ->disabled()
+            //                            ->dehydrated()
+            //                            ->reactive()
+            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+            //                                $set('location', [
+            //                                    'lat' => (float) $get('latitude'),
+            //                                    'lng' => floatVal($state),
+            //                                ]);
+            //                            })
+            //                            ->lazy(),
+            //                    ]),
+            //                ]),
             Grid::make(2)
                 ->schema([
                     TextInput::make('alamat')
@@ -102,14 +102,14 @@ class AlamatForm extends Field
                         ->reactive()
                         ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
-                            if (!$kab) {
+                            if (! $kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
 
                             return $kab->pluck('name', 'code');
                         })
-                        ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                        ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
                         ->required()
@@ -156,8 +156,8 @@ class AlamatForm extends Field
                 'no_rt' => null,
                 'no_rw' => null,
                 'dusun' => null,
-//                'latitude' => null,
-//                'longitude' => null,
+                //                'latitude' => null,
+                //                'longitude' => null,
                 'kodepos' => null,
             ]);
         });

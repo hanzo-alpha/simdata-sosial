@@ -29,11 +29,11 @@ class ListBantuanBpjs extends ListRecords
                     ExportBantuanBpjs::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
                 ]),
-//            Actions\ImportAction::make('import')
-//                ->importer(BantuanBpjsImporter::class)
-//                ->options([
-//                    'updateExisting' => true,
-//                ]),
+            //            Actions\ImportAction::make('import')
+            //                ->importer(BantuanBpjsImporter::class)
+            //                ->options([
+            //                    'updateExisting' => true,
+            //                ]),
 
             Actions\Action::make('import')
                 ->model(BantuanBpjs::class)
@@ -57,9 +57,9 @@ class ListBantuanBpjs extends ListRecords
                         ->storeFiles(false)
                         ->acceptedFileTypes([
                             'application/vnd.ms-excel',
-                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                        ])
-//                        ->hiddenOn(['edit', 'view']),
+                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        ]),
+                    //                        ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
                     $import = new ImportBantuanBpjs();

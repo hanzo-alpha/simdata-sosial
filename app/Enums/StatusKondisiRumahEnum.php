@@ -6,9 +6,8 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusKondisiRumahEnum: int implements HasLabel, HasColor, HasIcon
+enum StatusKondisiRumahEnum: int implements HasColor, HasIcon, HasLabel
 {
-
     case BAIK = 1;
     case SEDANG = 2;
     case RUSAK = 3;

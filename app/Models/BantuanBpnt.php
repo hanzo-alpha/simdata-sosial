@@ -14,6 +14,7 @@ class BantuanBpnt extends Model
     use HasJenisBantuan, HasWilayah;
 
     protected $table = 'bantuan_bpnt';
+
     protected $guarded = [];
 
     protected $casts = [

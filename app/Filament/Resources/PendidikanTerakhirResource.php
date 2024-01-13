@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PendidikanTerakhirResource\Pages;
-use App\Filament\Resources\PendidikanTerakhirResource\RelationManagers;
 use App\Models\PendidikanTerakhir;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,11 +13,15 @@ use Filament\Tables\Table;
 class PendidikanTerakhirResource extends Resource
 {
     protected static ?string $model = PendidikanTerakhir::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     protected static ?string $slug = 'pendidikan-terakhir';
+
     protected static ?string $label = 'Pendidikan Terakhir';
+
     protected static ?string $pluralLabel = 'Pendidikan Terakhir';
+
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
@@ -27,7 +30,7 @@ class PendidikanTerakhirResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nama_pendidikan')
                     ->required()
-                    ->autofocus()
+                    ->autofocus(),
             ])->columns(1)
             ->inlineLabel();
     }
@@ -36,7 +39,7 @@ class PendidikanTerakhirResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_pendidikan')
+                Tables\Columns\TextColumn::make('nama_pendidikan'),
             ])
             ->filters([
                 //

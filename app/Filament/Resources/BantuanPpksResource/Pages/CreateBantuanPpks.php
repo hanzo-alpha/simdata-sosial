@@ -13,6 +13,7 @@ class CreateBantuanPpks extends CreateRecord
     {
         $data['dtks_id'] = $data['dtks_id'] ?? \Str::uuid()->toString();
         $data['jenis_bantuan_id'] = $data['jenis_bantuan_id'] ?? 4;
+
         return $data;
     }
 }

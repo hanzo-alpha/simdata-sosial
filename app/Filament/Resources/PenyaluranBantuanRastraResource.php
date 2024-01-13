@@ -4,20 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Enums\StatusPenyaluran;
 use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
-use App\Filament\Resources\PenyaluranBantuanRastraResource\RelationManagers;
 use App\Models\BantuanRastra;
 use App\Models\PenyaluranBantuanRastra;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PenyaluranBantuanRastraResource extends Resource
@@ -27,9 +23,13 @@ class PenyaluranBantuanRastraResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
     protected static ?string $slug = 'penyaluran-bantuan-rastra';
+
     protected static ?string $label = 'Penyaluran Rastra';
+
     protected static ?string $pluralLabel = 'Penyaluran Rastra';
+
     protected static ?string $navigationGroup = 'Program Sosial';
+
     protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
@@ -88,8 +88,8 @@ class PenyaluranBantuanRastraResource extends Resource
                                 callable $set
                             ) {
                                 $set('location', [
-                                    'lat' => floatVal($state),
-                                    'lng' => floatVal($get('lng')),
+                                    'lat' => floatval($state),
+                                    'lng' => floatval($get('lng')),
                                 ]);
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
@@ -103,7 +103,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ) {
                                 $set('location', [
                                     'lat' => (float) $get('lat'),
-                                    'lng' => floatVal($state),
+                                    'lng' => floatval($state),
                                 ]);
                             })
                             ->lazy(),
@@ -126,9 +126,9 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->directory('penyaluran')
                             ->required()
                             ->getUploadedFileNameForStorageUsing(
-                                fn(TemporaryUploadedFile $file
+                                fn (TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
+                                    ->prepend(date('YmdHis').'-'),
                             )
                             ->preserveFilenames()
 //                                ->multiple()
@@ -148,9 +148,9 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->directory('penyaluran')
                             ->required()
                             ->getUploadedFileNameForStorageUsing(
-                                fn(TemporaryUploadedFile $file
+                                fn (TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
+                                    ->prepend(date('YmdHis').'-'),
                             )
                             ->preserveFilenames()
 //                                ->multiple()
@@ -164,8 +164,8 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->columnSpanFull()
                             ->imagePreviewHeight('250')
                             ->previewable(true)
-                            ->image()
-                    ])
+                            ->image(),
+                    ]),
                 ])->columnSpan(1),
 
             ])->columns(3);
@@ -175,8 +175,8 @@ class PenyaluranBantuanRastraResource extends Resource
     {
         return $table
             ->columns([
-//                Tables\Columns\ImageColumn::make('foto_penyerahan'),
-//                Tables\Columns\ImageColumn::make('foto_ktp_kk'),
+                //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
+                //                Tables\Columns\ImageColumn::make('foto_ktp_kk'),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->label('Nama KPM')
                     ->searchable()
@@ -193,7 +193,7 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tgl_penyerahan')
                     ->dateTime()
-                    ->formatStateUsing(fn($record) => $record->tgl_penyerahan->format('d F Y H:i:s'))
+                    ->formatStateUsing(fn ($record) => $record->tgl_penyerahan->format('d F Y H:i:s'))
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lokasi')
@@ -202,7 +202,7 @@ class PenyaluranBantuanRastraResource extends Resource
                 Tables\Columns\TextColumn::make('status_penyaluran')
                     ->label('Status')
                     ->alignCenter()
-                    ->badge()
+                    ->badge(),
             ])
             ->filters([
                 //

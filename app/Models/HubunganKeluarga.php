@@ -10,6 +10,7 @@ class HubunganKeluarga extends Model
     use HasFactory;
 
     public $timestamps = false;
+
     protected $table = 'hubungan_keluarga';
 
     protected $fillable = [

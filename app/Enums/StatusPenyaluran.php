@@ -3,12 +3,10 @@
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusPenyaluran: string implements HasLabel, HasColor
+enum StatusPenyaluran: string implements HasColor, HasLabel
 {
-
     case TERSALUR = 'TERSALURKAN';
     case BELUM_TERSALURKAN = 'BELUM TERSALURKAN';
 
@@ -28,11 +26,11 @@ enum StatusPenyaluran: string implements HasLabel, HasColor
         };
     }
 
-//    public function getIcon(): ?string
-//    {
-//        return match ($this) {
-//            self::BELUM_TERSALURKAN => 'heroicon-o-minus-circle',
-//            self::TERSALUR => 'heroicon-o-check-circle',
-//        };
-//    }
+    //    public function getIcon(): ?string
+    //    {
+    //        return match ($this) {
+    //            self::BELUM_TERSALURKAN => 'heroicon-o-minus-circle',
+    //            self::TERSALUR => 'heroicon-o-check-circle',
+    //        };
+    //    }
 }

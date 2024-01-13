@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\JenisPsksResource\Pages;
-use App\Filament\Resources\JenisPsksResource\RelationManagers;
 use App\Models\JenisPsks;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -16,10 +15,15 @@ class JenisPsksResource extends Resource
     protected static ?string $model = JenisPsks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $slug = 'jenis-psks';
+
     protected static ?string $label = 'Jenis PSKS';
+
     protected static ?string $pluralLabel = 'Jenis PSKS';
+
     protected static ?string $navigationLabel = 'Jenis PSKS';
+
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
@@ -47,7 +51,7 @@ class JenisPsksResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->words(5)
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -57,7 +61,7 @@ class JenisPsksResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

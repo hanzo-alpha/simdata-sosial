@@ -4,7 +4,6 @@ namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Filament\Resources\BantuanBpjsResource;
 use App\Models\MutasiBpjs;
-use App\Models\PenggantiRastra;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +14,7 @@ class CreateBantuanBpjs extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['dtks_id'] = $data['dtks_id'] ?? \Str::uuid()->toString();
+
         return $data;
     }
 
@@ -40,5 +40,4 @@ class CreateBantuanBpjs extends CreateRecord
     {
         return 'Data Bantuan BPJS berhasil disimpan';
     }
-
 }

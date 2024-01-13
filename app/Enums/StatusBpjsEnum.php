@@ -6,13 +6,12 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusBpjsEnum: string implements HasLabel, HasColor, HasIcon
+enum StatusBpjsEnum: string implements HasColor, HasIcon, HasLabel
 {
     case BARU = 'BARU';
     case PENGAKTIFAN = 'PENGAKTIFAN';
     case PENGALIHAN = 'PENGALIHAN';
     case NONAKTIF = 'TIDAK AKTIF';
-
 
     public function getLabel(): ?string
     {
