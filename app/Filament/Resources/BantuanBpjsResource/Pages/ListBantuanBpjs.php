@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Exports\ExportBantuanBpjs;
-use App\Filament\Imports\BantuanBpjsImporter;
 use App\Filament\Resources\BantuanBpjsResource;
 use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
@@ -29,11 +28,6 @@ class ListBantuanBpjs extends ListRecords
                     ExportBantuanBpjs::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
                 ]),
-            //            Actions\ImportAction::make('import')
-            //                ->importer(BantuanBpjsImporter::class)
-            //                ->options([
-            //                    'updateExisting' => true,
-            //                ]),
 
             Actions\Action::make('import')
                 ->model(BantuanBpjs::class)

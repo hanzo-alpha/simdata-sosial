@@ -12,6 +12,7 @@ use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -22,6 +23,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -72,40 +74,37 @@ class BantuanBpjsResource extends Resource
                                 ->options(JenisKelaminEnum::class)
                                 ->default(JenisKelaminEnum::LAKI),
                         ])->columns(2),
-                    Forms\Components\Section::make('Alamat')
+                    Forms\Components\Section::make('Data Alamat')
                         ->schema([
-                            Grid::make(2)
-                                ->schema([
-                                    TextInput::make('alamat')
-                                        ->required()
-                                        ->columnSpanFull(),
-                                    Select::make('kecamatan')
-                                        ->required()
-                                        ->searchable()
-                                        ->reactive()
-                                        ->options(function () {
-                                            $kab = Kecamatan::query()->where('kabupaten_code',
-                                                config('custom.default.kodekab'));
-                                            if (! $kab) {
-                                                return Kecamatan::where('kabupaten_code',
-                                                    config('custom.default.kodekab'))
-                                                    ->pluck('name', 'code');
-                                            }
+                            TextInput::make('alamat')
+                                ->required()
+                                ->columnSpanFull(),
+                            Select::make('kecamatan')
+                                ->required()
+                                ->searchable()
+                                ->reactive()
+                                ->options(function () {
+                                    $kab = Kecamatan::query()->where('kabupaten_code',
+                                        config('custom.default.kodekab'));
+                                    if (!$kab) {
+                                        return Kecamatan::where('kabupaten_code',
+                                            config('custom.default.kodekab'))
+                                            ->pluck('name', 'code');
+                                    }
 
-                                            return $kab->pluck('name', 'code');
-                                        })
-                                        ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
+                                    return $kab->pluck('name', 'code');
+                                })
+                                ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
-                                    Select::make('kelurahan')
-                                        ->required()
-                                        ->options(function (callable $get) {
-                                            return Kelurahan::query()->where('kecamatan_code',
-                                                $get('kecamatan'))?->pluck('name',
-                                                    'code');
-                                        })
-                                        ->reactive()
-                                        ->searchable(),
-                                ]),
+                            Select::make('kelurahan')
+                                ->required()
+                                ->options(function (callable $get) {
+                                    return Kelurahan::query()->where('kecamatan_code',
+                                        $get('kecamatan'))?->pluck('name',
+                                        'code');
+                                })
+                                ->reactive()
+                                ->searchable(),
 
                             Grid::make(3)
                                 ->schema([
@@ -126,15 +125,12 @@ class BantuanBpjsResource extends Resource
                                         ->default('90861')
                                         ->required(),
                                 ]),
-                        ]),
+                        ])->columns(2),
                 ])->columnSpan(2),
+
                 Forms\Components\Group::make([
                     Forms\Components\Section::make('Status')
                         ->schema([
-                            //                            Forms\Components\DatePicker::make('batas_tgl_input')
-                            //                                ->date()
-                            //                                ->default(today()->addDays(10))
-                            //                                ->displayFormat('d/M/Y'),
                             Select::make('status_nikah')
                                 ->options(StatusKawinBpjsEnum::class)
                                 ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
@@ -148,7 +144,7 @@ class BantuanBpjsResource extends Resource
                                 ->preload(),
 
                             Forms\Components\Select::make('status_usulan')
-                                ->label('Status TL')
+                                ->label('Status Pengembalian Usulan Dari BPJS')
                                 ->enum(StatusUsulanEnum::class)
                                 ->options(StatusUsulanEnum::class)
                                 ->default(StatusUsulanEnum::ONPROGRESS)
@@ -160,9 +156,27 @@ class BantuanBpjsResource extends Resource
                                 ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->autosize(),
 
-                            Forms\Components\FileUpload::make('foto_ktp')
-                                ->image()
-                                ->preserveFilenames(),
+                            FileUpload::make('foto_ktp')
+                                ->label('Unggah Foto KTP / KK')
+                                ->getUploadedFileNameForStorageUsing(
+                                    fn(TemporaryUploadedFile $file
+                                    ): string => (string) str($file->getClientOriginalName())
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                )
+                                ->preserveFilenames()
+                                ->multiple()
+                                ->reorderable()
+                                ->appendFiles()
+                                ->openable()
+                                ->required()
+                                ->unique(ignoreRecord: true)
+                                ->helperText('maks. 2MB')
+                                ->maxFiles(3)
+                                ->maxSize(2048)
+                                ->columnSpanFull()
+                                ->imagePreviewHeight('250')
+                                ->previewable(false)
+                                ->image(),
 
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
@@ -213,17 +227,17 @@ class BantuanBpjsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->badge(),
                 Tables\Columns\TextColumn::make('alamat')
-                    ->label('Alamat')
+                    ->label('Alamat Lengkap')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->description(function ($record) {
+                        $alamat = $record['alamat'];
                         $rt = $record['nort'];
                         $rw = $record['norw'];
-                        $dusun = $record['dusun'];
                         $kodepos = $record['kodepos'];
                         $kec = $record->kec?->name;
                         $kel = $record->kel?->name;
 
-                        return $dusun.' '.'RT.'.$rt.'/'.'RW.'.$rw.' '.$kec.', '.$kel.', '.$kodepos;
+                        return $alamat . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kec.kecamatan')
@@ -239,11 +253,6 @@ class BantuanBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('bulan')
                     ->label('Periode')
                     ->formatStateUsing(fn ($record) => bulan_to_string($record->bulan).' '.$record->tahun),
-                Tables\Columns\TextColumn::make('dusun')
-                    ->label('Dusun')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('status_aktif')
                     ->label('Status Aktif')
                     ->sortable()
@@ -439,18 +448,17 @@ class BantuanBpjsResource extends Resource
     //        ]);
     //    }
 
-    public static function getGlobalSearchEloquentQuery(): Builder
-    {
-        return parent::getGlobalSearchEloquentQuery()
-            ->with(['nama_lengkap', 'dtks_id', 'nik', 'nokk']);
-    }
+//    public static function getGlobalSearchEloquentQuery(): Builder
+//    {
+//        return parent::getGlobalSearchEloquentQuery();
+//    }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+//    public static function getRelations(): array
+//    {
+//        return [
+//            //
+//        ];
+//    }
 
     public static function getPages(): array
     {

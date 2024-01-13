@@ -19,8 +19,6 @@ class CreateBantuanRastra extends CreateRecord
         $data['status_verifikasi'] = (auth()->user()?->hasRole(['operator']))
             ? StatusVerifikasiEnum::UNVERIFIED
             : $data['status_verifikasi'];
-        $data['pendidikan_terakhir_id'] = $data['pendidikan_terakhir_id'] ?? 5;
-        $data['jenis_pekerjaan_id'] = $data['jenis_pekerjaan_id'] ?? 6;
 
         return $data;
     }

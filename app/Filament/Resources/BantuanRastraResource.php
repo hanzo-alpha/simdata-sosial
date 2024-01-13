@@ -54,7 +54,6 @@ class BantuanRastraResource extends Resource
                 Group::make()->schema([
                     Section::make('Data Keluarga')
                         ->schema(BantuanRastra::getKeluargaForm())->columns(2),
-                    //                    FamilyForm::make('family'),
                     Section::make('Data Alamat')
                         ->schema(BantuanRastra::getAlamatForm())->columns(2),
                 ])->columnSpan(['lg' => 2]),
@@ -88,16 +87,11 @@ class BantuanRastraResource extends Resource
                     ->label('Nama Lengkap')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('alamat.alamat_lengkap')
+                Tables\Columns\TextColumn::make('alamat_lengkap')
                     ->label('Alamat')
                     ->words(5)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('notelp')
-                    ->label('No.Telp/WA')
-                    ->alignCenter()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_bantuan.alias')
                     ->label('Jenis Bantuan')
                     ->badge()
@@ -113,9 +107,10 @@ class BantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                SelectFilter::make('alamat')
+                SelectFilter::make('kecamatan')
                     ->label('Kecamatan')
-                    ->relationship('alamat.kec', 'name', fn (Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab')))
+                    ->relationship('kec', 'name',
+                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab')))
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
@@ -223,66 +218,36 @@ class BantuanRastraResource extends Resource
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
                         ->schema([
-                            TextEntry::make('alamat.alamat')
+                            TextEntry::make('alamat')
                                 ->label('Alamat')
                                 ->icon('heroicon-o-map-pin')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary')
                                 ->columnSpanFull(),
-                            TextEntry::make('alamat.kec.name')
+                            TextEntry::make('kec.name')
                                 ->label('Kecamatan'),
-                            TextEntry::make('alamat.kel.name')
+                            TextEntry::make('kel.name')
                                 ->label('Kelurahan'),
-                            TextEntry::make('alamat.dusun')
+                            TextEntry::make('dusun')
                                 ->label('Dusun'),
-                            TextEntry::make('alamat.no_rt')
+                            TextEntry::make('no_rt')
                                 ->label('RT/RW')
                                 ->formatStateUsing(fn ($record
-                                ) => $record->alamat->no_rt.'/'.$record->alamat->no_rw),
-                            //                            TextEntry::make('alamat.no_rw')
-                            //                                ->label('RW'),
-                            //                            TextEntry::make('alamat.latitude')
-                            //                                ->label('Latitude')
-                            //                                ->state('-'),
-                            //                            TextEntry::make('alamat.longitude')
-                            //                                ->label('Longitude')
-                            //                                ->state('-'),
+                                ) => $record->no_rt . '/' . $record->no_rw),
+//                            TextEntry::make('lat')
+//                                ->label('Latitude')
+//                                ->state('-'),
+//                            TextEntry::make('lng')
+//                                ->label('Longitude')
+//                                ->state('-'),
                         ])->columns(2),
                 ])->columnSpan(2),
 
                 \Filament\Infolists\Components\Group::make([
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->schema([
-                            //                            TextEntry::make('jenis_bantuan.alias')
-                            //                                ->label('Jenis Bantuan')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('jenis_pekerjaan.nama_pekerjaan')
-                            //                                ->label('Jenis Pekerjaan')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('pendidikan_terakhir.nama_pendidikan')
-                            //                                ->label('Pendidikan Terakhir')
-                            //                                ->icon('heroicon-o-academic-cap')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('hubungan_keluarga.nama_hubungan')
-                            //                                ->label('Hubungan Keluarga')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('nama_ibu_kandung')
-                            //                                ->label('Nama Ibu Kandung')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('jenis_kelamin')
-                            //                                ->label('Jenis Kelamin')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('status_kawin')
-                            //                                ->label('Status Kawin')
-                            //                                ->badge(),
                             TextEntry::make('status_verifikasi')
-                                ->label('Verifikasi Berkas/Foto')
+                                ->label('Status Verifikasi')
                                 ->badge(),
                             TextEntry::make('status_rastra')
                                 ->label('Status Rastra')
@@ -291,14 +256,14 @@ class BantuanRastraResource extends Resource
                         ->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
                         ->schema([
-                            ImageEntry::make('media_id')
-                                ->hiddenLabel()
-                                ->columnSpanFull()
-                                ->alignCenter()
-                                ->extraImgAttributes([
-                                    'alt' => 'foto rumah',
-                                    'loading' => 'lazy',
-                                ]),
+//                            ImageEntry::make('media_id')
+//                                ->hiddenLabel()
+//                                ->columnSpanFull()
+//                                ->alignCenter()
+//                                ->extraImgAttributes([
+//                                    'alt' => 'foto rumah',
+//                                    'loading' => 'lazy',
+//                                ]),
                             ImageEntry::make('foto_ktp_kk')
                                 ->hiddenLabel()
                                 ->columnSpanFull()
@@ -328,7 +293,7 @@ class BantuanRastraResource extends Resource
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()
-            ->with(['alamat']);
+            ->with(['kec', 'kel', 'kab']);
     }
 
     public static function getRelations(): array
