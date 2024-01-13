@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
-use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
