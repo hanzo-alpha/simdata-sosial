@@ -3,16 +3,16 @@
 namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
-use App\Enums\JenisKelaminEnum;
 use App\Filament\Resources\MutasiBpjsResource\Pages\ManageMutasiBpjs;
-use App\Filament\Resources\UsulanMutasiTmtResource\RelationManagers;
+use App\Filament\Resources\MutasiBpjsResource\RelationManagers;
 use App\Models\MutasiBpjs;
+use App\Models\PesertaBpjs;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class MutasiBpjsResource extends Resource
@@ -27,70 +27,60 @@ class MutasiBpjsResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 
-//    protected static bool $shouldRegisterNavigation = false;
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-//                FileUpload::make('attachment')
-//                    ->label('Impor')
-//                    ->hiddenLabel()
-//                    ->columnSpanFull()
-//                    ->preserveFilenames()
-//                    ->previewable(false)
-//                    ->directory('upload')
-//                    ->maxSize(5120)
-//                    ->reorderable()
-//                    ->appendFiles()
-//                    ->storeFiles(false)
-//                    ->acceptedFileTypes([
-//                        'application/vnd.ms-excel',
-//                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-//                        'text/csv'
-//                    ])
-//                    ->hiddenOn(['edit', 'view']),
-
-                Forms\Components\TextInput::make('nokk_tmt')
+                Forms\Components\Select::make('peserta_bpjs_id')
+                    ->label('Nama Peserta BPJS')
+                    ->relationship('peserta', 'nama_lengkap')
+                    ->live(onBlur: true)
                     ->required()
-//                    ->visibleOn(['edit', 'view'])
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('nik_tmt')
-                    ->required()
-//                    ->visibleOn(['edit', 'view'])
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('nama_lengkap')
-                    ->required()
-//                    ->visibleOn(['edit', 'view'])
-                    ->maxLength(255),
-                Forms\Components\Select::make('jenis_kelamin')
-                    ->options(JenisKelaminEnum::class)
-                    ->preload()
-//                    ->visibleOn(['edit', 'view'])
-                    ->lazy(),
-                Forms\Components\TextInput::make('nomor_kartu')
-//                    ->visibleOn(['edit', 'view'])
-                    ->maxLength(255),
-                Forms\Components\Select::make('alasan_mutasi')
-                    ->options(AlasanEnum::class)
-                    ->preload()
-//                    ->visibleOn(['edit', 'view'])
-                    ->lazy(),
-                Forms\Components\Textarea::make('alamat')
-                    ->maxLength(65535)
-//                    ->visibleOn(['edit', 'view'])
+                    ->minItems(1)
+                    ->optionsLimit(20)
+                    ->searchable(['nomor_kartu', 'nik', 'nama_lengkap'])
+                    ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
+                    ->searchPrompt('Cari peserta berdasarkan nomor kartu, nik, atau nama')
+                    ->native(false)
+                    ->getOptionLabelFromRecordUsing(function (Model $record) {
+                        return "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik);
+                    })->allowHtml()
+                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
+                        $peserta = PesertaBpjs::find($state);
+                        $set('nomor_kartu', $peserta->nomor_kartu);
+                        $set('nik', $peserta->nik);
+                        $set('nama_lengkap', $peserta->nama_lengkap);
+                        $set('alamat_lengkap', $peserta->alamat);
+                    })
                     ->columnSpanFull(),
+                Forms\Components\TextInput::make('nomor_kartu')
+                    ->disabled()
+                    ->maxLength(13),
+                Forms\Components\TextInput::make('nik')
+                    ->disabled()
+                    ->maxLength(16),
+                Forms\Components\TextInput::make('nama_lengkap')
+                    ->disabled()
+                    ->maxLength(150),
+                Forms\Components\Textarea::make('alamat_lengkap')
+                    ->disabled()
+                    ->maxLength(65535)
+                    ->autosize(),
                 Forms\Components\Textarea::make('keterangan')
                     ->maxLength(65535)
-//                    ->visibleOn(['edit', 'view'])
+                    ->autosize()
                     ->columnSpanFull(),
+                Forms\Components\Select::make('alasan_mutasi')
+                    ->options(AlasanEnum::class)
+                    ->required()
+                    ->preload()
+                    ->lazy(),
                 ToggleButton::make('status_mutasi')
                     ->label('Status Aktif')
                     ->offColor('danger')
                     ->onColor('primary')
                     ->offLabel('Non Aktif')
                     ->onLabel('Aktif')
-//                    ->visibleOn(['edit', 'view'])
                     ->default(true),
             ]);
     }
@@ -99,22 +89,20 @@ class MutasiBpjsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nokk_tmt')
-                    ->label('No. KK')
+                Tables\Columns\TextColumn::make('peserta.nama_lengkap')
+                    ->label('Nama Peserta BPJS')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nik_tmt')
+                Tables\Columns\TextColumn::make('nomor_kartu')
+                    ->label('Nomor Kartu')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nik')
                     ->label('NIK')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('jenis_kelamin')
-                    ->badge(),
-                Tables\Columns\TextColumn::make('nomor_kartu')
-                    ->label('Nomor Kartu')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alasan_mutasi')

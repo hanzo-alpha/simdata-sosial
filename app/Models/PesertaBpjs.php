@@ -10,4 +10,11 @@ class PesertaBpjs extends Model
     use HasFactory;
 
     protected $table = 'peserta_bpjs';
+
+    protected $guarded = [];
+
+    protected $casts = [
+        'bulan' => 'integer',
+        'tahun' => 'integer'
+    ];
 }

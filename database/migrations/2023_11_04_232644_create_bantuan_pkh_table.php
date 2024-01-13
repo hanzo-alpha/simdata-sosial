@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->foreignIdFor(JenisBantuan::class)
                 ->constrained('jenis_bantuan')
                 ->cascadeOnUpdate();
-            $table->unsignedFloat('nominal')->nullable()->default(0);
+            $table->unsignedDouble('nominal', 20, 2)->nullable()->default(0);
             $table->string('bank');
             $table->char('provinsi', 2)->nullable();
             $table->char('kabupaten', 5)->nullable();

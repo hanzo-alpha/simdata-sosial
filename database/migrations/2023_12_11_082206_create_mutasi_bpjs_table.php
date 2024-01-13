@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\AlasanEnum;
+use App\Enums\StatusAktif;
+use App\Models\PesertaBpjs;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,15 +12,17 @@ return new class extends Migration {
     {
         Schema::create('mutasi_bpjs', function (Blueprint $table) {
             $table->id();
-            $table->string('no_kk');
-            $table->string('nik');
-            $table->string('nama_lengkap');
-            $table->unsignedTinyInteger('jenis_kelamin')->nullable();
-            $table->string('nomor_kartu')->nullable();
-            $table->string('alasan_mutasi')->nullable();
-            $table->text('alamat')->nullable();
+            $table->foreignIdFor(PesertaBpjs::class)
+                ->constrained('peserta_bpjs')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->string('nomor_kartu')->index()->nullable();
+            $table->string('nik')->index()->nullable();
+            $table->string('nama_lengkap')->index()->nullable();
+            $table->string('alasan_mutasi')->default(AlasanEnum::MAMPU)->nullable();
+            $table->text('alamat_lengkap')->nullable();
             $table->text('keterangan')->nullable();
-            $table->string('status_mutasi')->nullable();
+            $table->string('status_mutasi')->default(StatusAktif::NONAKTIF)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

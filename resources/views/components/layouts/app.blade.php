@@ -129,7 +129,7 @@
         <div class="text-center mt-10">
             <p class="text-gray-600 mb-7">
                 <script>document.write(new Date().getFullYear())</script>
-                © SIMDADU. All rights reserved. Dibuat Oleh
+                © RENO. All rights reserved. Dibuat Oleh
                 <a href="https://github.com/hanzo-alpha"
                    target="_blank"
                    class="text-gray-800 hover:text-primary transition-all">
@@ -139,7 +139,7 @@
 
             <ul class="flex flex-wrap items-center justify-center gap-10 mb-8">
                 <li>
-                    <a href="https://github.com/hanzo-alpha/simdata-sosial/compare/v0.1.8...v0.1.9">Changelog</a>
+                    <a href="https://github.com/hanzo-alpha/simdata-sosial/compare/v0.1.35...v0.1.36">Changelog</a>
                 </li>
                 <li>
                     <a href="#">FAQ</a>

@@ -11,6 +11,7 @@ use App\Models\Kelurahan;
 use App\Models\Provinsi;
 use App\Models\User;
 use Filament\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
@@ -22,12 +23,13 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
 class ImportBantuanBpnt implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithValidation,
-    SkipsEmptyRows, SkipsOnFailure, SkipsOnError
+    SkipsEmptyRows, WithUpserts, ShouldQueue
 {
     use Importable;
 
@@ -75,12 +77,12 @@ class ImportBantuanBpnt implements ToModel, WithBatchInserts, WithChunkReading, 
 
     public function batchSize(): int
     {
-        return 500;
+        return 1000;
     }
 
     public function chunkSize(): int
     {
-        return 500;
+        return 1000;
     }
 
     public function rules(): array
@@ -102,26 +104,31 @@ class ImportBantuanBpnt implements ToModel, WithBatchInserts, WithChunkReading, 
         ];
     }
 
-    public function onError(Throwable $e)
-    {
-        dd($e);
-    }
+//    public function onError(Throwable $e)
+//    {
+//        dd($e);
+//    }
+//
+//    public function onFailure(Failure ...$failures)
+//    {
+//        if (!blank($failures)) {
+//            foreach ($failures as $failure) {
+//                $baris = $failure->row();
+//                $errmsg = $failure->errors()[0];
+//                $values = $failure->values();
+//
+//                Notification::make('Failure Import')
+//                    ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+//                    ->body('NIK : ' . $values['nik'] . ' | No.KK : ' . $values['no_kk'] . ' | Nama : ' . $values['nama_lengkap'])
+//                    ->danger()
+//                    ->sendToDatabase(auth()->user())
+//                    ->broadcast(User::where('is_admin', 1)->get());
+//            }
+//        }
+//    }
 
-    public function onFailure(Failure ...$failures)
+    public function uniqueBy(): array
     {
-        if (!blank($failures)) {
-            foreach ($failures as $failure) {
-                $baris = $failure->row();
-                $errmsg = $failure->errors()[0];
-                $values = $failure->values();
-
-                Notification::make('Failure Import')
-                    ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-                    ->body('NIK : ' . $values['nik'] . ' | No.KK : ' . $values['no_kk'] . ' | Nama : ' . $values['nama_lengkap'])
-                    ->danger()
-                    ->sendToDatabase(auth()->user())
-                    ->broadcast(User::where('is_admin', 1)->get());
-            }
-        }
+        return ['nik', 'iddtks'];
     }
 }

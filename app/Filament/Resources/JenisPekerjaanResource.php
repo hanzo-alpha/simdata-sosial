@@ -54,7 +54,7 @@ class JenisPekerjaanResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageJenisPekerjaans::route('/'),
+            'index' => Pages\ManageJenisPekerjaan::route('/'),
         ];
     }
 }

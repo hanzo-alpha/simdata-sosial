@@ -6,7 +6,7 @@ use App\Filament\Resources\JenisPekerjaanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageJenisPekerjaans extends ManageRecords
+class ManageJenisPekerjaan extends ManageRecords
 {
     protected static string $resource = JenisPekerjaanResource::class;
 

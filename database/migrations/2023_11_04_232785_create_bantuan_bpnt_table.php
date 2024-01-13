@@ -21,7 +21,7 @@ return new class extends Migration {
                 ->constrained('jenis_bantuan')
                 ->cascadeOnUpdate();
             $table->string('bank');
-            $table->unsignedFloat('nominal')->nullable()->default(0);
+            $table->unsignedDouble('nominal', 20, 2)->nullable()->default(0);
             $table->char('provinsi', 2)->nullable();
             $table->char('kabupaten', 5)->nullable();
             $table->char('kecamatan', 7)->nullable();
