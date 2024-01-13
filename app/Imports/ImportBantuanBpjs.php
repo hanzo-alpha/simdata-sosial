@@ -66,7 +66,7 @@ class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, Sk
             default => null
         };
 
-        $bulan = bulan_to_integer($row['periode_bulan']);
+        $bulan = (isset($row['periode_bulan']) && $row['periode_bulan'] !== 0) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;
 
         return new DataBantuanBpjs([
             'nokk_tmt' => $row['no_kk'] ?? 'TIDAK ADA NOMOR KK',
@@ -87,7 +87,7 @@ class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, Sk
             'status_bpjs' => $row['status_aktif'] ?? StatusAktif::AKTIF,
             'status_usulan' => StatusUsulanEnum::ONPROGRESS,
             'keterangan' => $row['keterangan'] ?? $row['status_tl'],
-            'bulan' => $bulan ?? 0,
+            'bulan' => $bulan,
             'tahun' => $row['tahun'] ?? now()->year,
         ]);
     }
