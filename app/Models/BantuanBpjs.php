@@ -28,6 +28,6 @@ class BantuanBpjs extends Model
         'status_usulan' => StatusUsulanEnum::class,
         'status_bpjs' => StatusBpjsEnum::class,
         'foto_ktp' => 'array',
-        'alamat' => 'string'
+        'alamat' => 'string',
     ];
 }

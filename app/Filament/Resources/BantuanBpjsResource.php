@@ -86,7 +86,7 @@ class BantuanBpjsResource extends Resource
                                 ->options(function () {
                                     $kab = Kecamatan::query()->where('kabupaten_code',
                                         config('custom.default.kodekab'));
-                                    if (!$kab) {
+                                    if (! $kab) {
                                         return Kecamatan::where('kabupaten_code',
                                             config('custom.default.kodekab'))
                                             ->pluck('name', 'code');
@@ -94,14 +94,14 @@ class BantuanBpjsResource extends Resource
 
                                     return $kab->pluck('name', 'code');
                                 })
-                                ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                                ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                             Select::make('kelurahan')
                                 ->required()
                                 ->options(function (callable $get) {
                                     return Kelurahan::query()->where('kecamatan_code',
                                         $get('kecamatan'))?->pluck('name',
-                                        'code');
+                                            'code');
                                 })
                                 ->reactive()
                                 ->searchable(),
@@ -159,9 +159,9 @@ class BantuanBpjsResource extends Resource
                             FileUpload::make('foto_ktp')
                                 ->label('Unggah Foto KTP / KK')
                                 ->getUploadedFileNameForStorageUsing(
-                                    fn(TemporaryUploadedFile $file
+                                    fn (TemporaryUploadedFile $file
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                        ->prepend(date('d-m-Y-H-i-s').'-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
@@ -237,7 +237,7 @@ class BantuanBpjsResource extends Resource
                         $kec = $record->kec?->name;
                         $kel = $record->kel?->name;
 
-                        return $alamat . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
+                        return $alamat.' '.'RT.'.$rt.'/'.'RW.'.$rw.' '.$kec.', '.$kel.', '.$kodepos;
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kec.kecamatan')
@@ -448,17 +448,17 @@ class BantuanBpjsResource extends Resource
     //        ]);
     //    }
 
-//    public static function getGlobalSearchEloquentQuery(): Builder
-//    {
-//        return parent::getGlobalSearchEloquentQuery();
-//    }
+    //    public static function getGlobalSearchEloquentQuery(): Builder
+    //    {
+    //        return parent::getGlobalSearchEloquentQuery();
+    //    }
 
-//    public static function getRelations(): array
-//    {
-//        return [
-//            //
-//        ];
-//    }
+    //    public static function getRelations(): array
+    //    {
+    //        return [
+    //            //
+    //        ];
+    //    }
 
     public static function getPages(): array
     {

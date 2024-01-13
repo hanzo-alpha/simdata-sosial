@@ -8,7 +8,6 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Widgets\BantuanRastraOverview;
-use App\Models\Alamat;
 use App\Models\BantuanRastra;
 use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
@@ -110,7 +109,7 @@ class BantuanRastraResource extends Resource
                 SelectFilter::make('kecamatan')
                     ->label('Kecamatan')
                     ->relationship('kec', 'name',
-                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab')))
+                        fn (Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab')))
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
@@ -233,13 +232,13 @@ class BantuanRastraResource extends Resource
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
                                 ->formatStateUsing(fn ($record
-                                ) => $record->no_rt . '/' . $record->no_rw),
-//                            TextEntry::make('lat')
-//                                ->label('Latitude')
-//                                ->state('-'),
-//                            TextEntry::make('lng')
-//                                ->label('Longitude')
-//                                ->state('-'),
+                                ) => $record->no_rt.'/'.$record->no_rw),
+                            //                            TextEntry::make('lat')
+                            //                                ->label('Latitude')
+                            //                                ->state('-'),
+                            //                            TextEntry::make('lng')
+                            //                                ->label('Longitude')
+                            //                                ->state('-'),
                         ])->columns(2),
                 ])->columnSpan(2),
 
@@ -256,14 +255,14 @@ class BantuanRastraResource extends Resource
                         ->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
                         ->schema([
-//                            ImageEntry::make('media_id')
-//                                ->hiddenLabel()
-//                                ->columnSpanFull()
-//                                ->alignCenter()
-//                                ->extraImgAttributes([
-//                                    'alt' => 'foto rumah',
-//                                    'loading' => 'lazy',
-//                                ]),
+                            //                            ImageEntry::make('media_id')
+                            //                                ->hiddenLabel()
+                            //                                ->columnSpanFull()
+                            //                                ->alignCenter()
+                            //                                ->extraImgAttributes([
+                            //                                    'alt' => 'foto rumah',
+                            //                                    'loading' => 'lazy',
+                            //                                ]),
                             ImageEntry::make('foto_ktp_kk')
                                 ->hiddenLabel()
                                 ->columnSpanFull()

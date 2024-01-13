@@ -20,18 +20,18 @@ class CreateBantuanBpjs extends CreateRecord
         return $data;
     }
 
-//    protected function handleRecordCreation(array $data): Model
-//    {
-//        if (isset($data['mutasi']) && count($data['mutasi']) > 0) {
-//            MutasiBpjs::create([
-//                'keluarga_yang_dimutasi_id' => $data['mutasi']['keluarga_id'],
-//                'bantuan_bpjs_id' => $data['id'] ?? 1,
-//                'alasan_mutasi' => $data['mutasi']['alasan_dimutasi'],
-//            ]);
-//        }
-//
-//        return $this->getModel()::create($data);
-//    }
+    //    protected function handleRecordCreation(array $data): Model
+    //    {
+    //        if (isset($data['mutasi']) && count($data['mutasi']) > 0) {
+    //            MutasiBpjs::create([
+    //                'keluarga_yang_dimutasi_id' => $data['mutasi']['keluarga_id'],
+    //                'bantuan_bpjs_id' => $data['id'] ?? 1,
+    //                'alasan_mutasi' => $data['mutasi']['alasan_dimutasi'],
+    //            ]);
+    //        }
+    //
+    //        return $this->getModel()::create($data);
+    //    }
 
     protected function getRedirectUrl(): string
     {
