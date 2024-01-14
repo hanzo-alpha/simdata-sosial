@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
@@ -10,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class UserResource extends Resource
+final class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
@@ -61,7 +63,7 @@ class UserResource extends Resource
                 //                    ->badge()
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

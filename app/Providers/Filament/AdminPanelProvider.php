@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers\Filament;
 
 use Awcodes\Curator\CuratorPlugin;
@@ -23,7 +25,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
-class AdminPanelProvider extends PanelProvider
+final class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
@@ -41,8 +43,8 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
-                'info' => Color::Blue,
-                'primary' => Color::Amber,
+                'info' => Color::Sky,
+                'primary' => Color::Blue,
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
                 'secondary' => Color::Indigo,
@@ -50,14 +52,12 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(
-                        shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
+                        shouldRegisterUserMenu: true,
                         shouldRegisterNavigation: false,
-                        // Adds a main navigation item for the My Profile page (default = false)
-                        hasAvatars: false, // Enables the avatar upload form component (default = false)
-                        slug: 'profil-saya' // Sets the slug for the profile page (default = 'my-profile')
+                        hasAvatars: false,
+                        slug: 'profil'
                     )
-                    ->enableTwoFactorAuthentication()
-                    ->enableSanctumTokens(),
+                    ->enableTwoFactorAuthentication(),
                 SpotlightPlugin::make(),
                 FilamentShieldPlugin::make()
                     ->gridColumns([
@@ -113,7 +113,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                //                PenerimaManfaatChart::class,
+
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -129,8 +129,8 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->renderHook('panels::head.end', fn (): View => view('livewire-head'))
-            ->renderHook('panels::body.end', fn (): View => view('livewire-body'))
+            ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
+            ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([
                 config('filament-logger.activity_resource'),
             ])

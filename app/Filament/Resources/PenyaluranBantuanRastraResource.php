@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\StatusPenyaluran;
@@ -16,7 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class PenyaluranBantuanRastraResource extends Resource
+final class PenyaluranBantuanRastraResource extends Resource
 {
     protected static ?string $model = PenyaluranBantuanRastra::class;
 
@@ -44,12 +46,10 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
                             ->preload()
-                            ->getOptionLabelFromRecordUsing(function (Model $record) {
-                                return "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}";
-                            })
+                            ->getOptionLabelFromRecordUsing(fn(Model $record) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(function ($state, Forms\Set $set) {
+                            ->afterStateUpdated(function ($state, Forms\Set $set): void {
                                 $rastra = BantuanRastra::find($state);
 
                                 $set('nik', $rastra->nik);
@@ -86,10 +86,10 @@ class PenyaluranBantuanRastraResource extends Resource
                                 $state,
                                 callable $get,
                                 callable $set
-                            ) {
+                            ): void {
                                 $set('location', [
-                                    'lat' => floatval($state),
-                                    'lng' => floatval($get('lng')),
+                                    'lat' => (float) $state,
+                                    'lng' => (float) ($get('lng')),
                                 ]);
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
@@ -100,10 +100,10 @@ class PenyaluranBantuanRastraResource extends Resource
                                 $state,
                                 callable $get,
                                 callable $set
-                            ) {
+                            ): void {
                                 $set('location', [
                                     'lat' => (float) $get('lat'),
-                                    'lng' => floatval($state),
+                                    'lng' => (float) $state,
                                 ]);
                             })
                             ->lazy(),
@@ -126,9 +126,10 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->directory('penyaluran')
                             ->required()
                             ->getUploadedFileNameForStorageUsing(
-                                fn (TemporaryUploadedFile $file
+                                fn(
+                                    TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis').'-'),
+                                    ->prepend(date('YmdHis') . '-'),
                             )
                             ->preserveFilenames()
 //                                ->multiple()
@@ -148,9 +149,10 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->directory('penyaluran')
                             ->required()
                             ->getUploadedFileNameForStorageUsing(
-                                fn (TemporaryUploadedFile $file
+                                fn(
+                                    TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis').'-'),
+                                    ->prepend(date('YmdHis') . '-'),
                             )
                             ->preserveFilenames()
 //                                ->multiple()
@@ -193,7 +195,7 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tgl_penyerahan')
                     ->dateTime()
-                    ->formatStateUsing(fn ($record) => $record->tgl_penyerahan->format('d F Y H:i:s'))
+                    ->formatStateUsing(fn($record) => $record->tgl_penyerahan->format('d F Y H:i:s'))
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lokasi')
@@ -205,7 +207,7 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -221,7 +223,7 @@ class PenyaluranBantuanRastraResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

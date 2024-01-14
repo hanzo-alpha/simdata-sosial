@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\JenisKelaminEnum;
@@ -11,7 +13,7 @@ use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BantuanBpjs extends Model
+final class BantuanBpjs extends Model
 {
     use HasWilayah;
     use SoftDeletes;
@@ -28,6 +30,6 @@ class BantuanBpjs extends Model
         'status_usulan' => StatusUsulanEnum::class,
         'status_bpjs' => StatusBpjsEnum::class,
         'foto_ktp' => 'array',
-        'alamat' => 'string'
+        'alamat' => 'string',
     ];
 }

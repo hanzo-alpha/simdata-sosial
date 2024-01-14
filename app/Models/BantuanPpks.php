@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Casts\MoneyCast;
@@ -16,9 +18,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BantuanPpks extends Model
+final class BantuanPpks extends Model
 {
-    use HasTambahan, HasWilayah;
+    use HasTambahan;
+    use HasWilayah;
     use SoftDeletes;
 
     protected $table = 'bantuan_ppks';

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 
 use App\Filament\Resources\PenyaluranBantuanRastraResource;
@@ -8,7 +10,7 @@ use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 
-class ListPenyaluranBantuanRastra extends ListRecords
+final class ListPenyaluranBantuanRastra extends ListRecords
 {
     protected static string $resource = PenyaluranBantuanRastraResource::class;
 

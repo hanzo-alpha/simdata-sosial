@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\PesertaBpjsResource\Pages;
 
 use App\Filament\Resources\PesertaBpjsResource;
@@ -10,7 +12,7 @@ use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ManagePesertaBpjs extends ManageRecords
+final class ManagePesertaBpjs extends ManageRecords
 {
     protected static string $resource = PesertaBpjsResource::class;
 
@@ -25,7 +27,7 @@ class ManagePesertaBpjs extends ManageRecords
                 ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-down-tray')
                 ->action(function (array $data): void {
-                    $import = Excel::import(new ImportPesertaBpjs, $data['attachment'], 'public');
+                    $import = Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
                     if ($import) {
                         Notification::make()
                             ->title('Usulan Peserta BPJS Berhasil di impor')

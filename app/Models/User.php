@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\StatusAdminEnum;
-use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,38 +15,21 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+final class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;
-    use HasPanelShield, HasRoles;
+    use HasApiTokens;
+    use HasFactory;
+    use HasRoles;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    //    protected $fillable = [
-    //        'name',
-    //        'email',
-    //        'password',
-    //        'is_admin'
-    //    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+    protected $guarded = [];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',

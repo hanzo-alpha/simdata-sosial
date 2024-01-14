@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\JenisAnggaranEnum;
@@ -35,7 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-class BantuanPpksResource extends Resource
+final class BantuanPpksResource extends Resource
 {
     protected static ?string $model = BantuanPpks::class;
 
@@ -153,7 +155,7 @@ class BantuanPpksResource extends Resource
                                 ->relationship(
                                     name: 'jenis_bantuan',
                                     titleAttribute: 'alias',
-                                    modifyQueryUsing: fn (Builder $query) => $query->whereNotIn('id', [1, 2])
+                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
                                 )
                                 ->default(4)
                                 ->dehydrated(),
@@ -172,7 +174,7 @@ class BantuanPpksResource extends Resource
                                 ->options(TipePpks::pluck('nama_tipe', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn (Forms\Set $set) => $set('kriteria_ppks', null)),
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteria_ppks', null)),
 
                             Select::make('kriteria_ppks')
                                 ->label('Kriteria PPKS')
@@ -180,8 +182,10 @@ class BantuanPpksResource extends Resource
                                 ->multiple()
                                 ->searchable()
                                 ->options(function (callable $set, callable $get) {
-                                    return KriteriaPpks::where('tipe_ppks_id',
-                                        $get('tipe_ppks_id'))
+                                    return KriteriaPpks::where(
+                                        'tipe_ppks_id',
+                                        $get('tipe_ppks_id')
+                                    )
                                         ?->pluck('nama_kriteria', 'id');
                                 })
                                 ->preload(),
@@ -214,7 +218,7 @@ class BantuanPpksResource extends Resource
                                 ->options(StatusVerifikasiEnum::class)
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
-                                ->visible(fn () => auth()->user()
+                                ->visible(fn() => auth()->user()
                                     ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
@@ -280,7 +284,7 @@ class BantuanPpksResource extends Resource
                     ->label('Jenis Bantuan')
                     ->badge()
                     ->alignCenter()
-                    ->color(fn ($record): string => $record->jenis_bantuan->warna)
+                    ->color(fn($record): string => $record->jenis_bantuan->warna)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -510,7 +514,7 @@ class BantuanPpksResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

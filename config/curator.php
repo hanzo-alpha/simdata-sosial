@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'accepted_file_types' => [
         'image/jpeg',
@@ -21,12 +23,12 @@ return [
         'avif',
     ],
     'curation_presets' => [
-        \Awcodes\Curator\Curations\ThumbnailPreset::class,
+        Awcodes\Curator\Curations\ThumbnailPreset::class,
     ],
     'directory' => 'media',
     'disk' => env('FILAMENT_FILESYSTEM_DISK', 'public'),
     'glide' => [
-        'server' => \Awcodes\Curator\Glide\DefaultServerFactory::class,
+        'server' => Awcodes\Curator\Glide\DefaultServerFactory::class,
         'fallbacks' => [],
     ],
     'image_crop_aspect_ratio' => null,
@@ -35,7 +37,7 @@ return [
     'image_resize_target_width' => null,
     'is_limited_to_directory' => false,
     'max_size' => 5000,
-    'model' => \Awcodes\Curator\Models\Media::class,
+    'model' => Awcodes\Curator\Models\Media::class,
     'min_size' => 0,
     'path_generator' => null,
     'resources' => [
@@ -45,7 +47,7 @@ return [
         'navigation_icon' => 'heroicon-o-photo',
         'navigation_sort' => null,
         'navigation_count_badge' => false,
-        'resource' => \Awcodes\Curator\Resources\MediaResource::class,
+        'resource' => Awcodes\Curator\Resources\MediaResource::class,
     ],
     'should_preserve_filenames' => true,
     'should_register_navigation' => true,

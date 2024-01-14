@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Imports;
 
 use App\Enums\StatusPkhBpntEnum;
@@ -22,26 +24,29 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Str;
 
-class ImportBantuanPkh implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
+final class ImportBantuanPkh implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
 {
-    use Importable, SkipsErrors, SkipsFailures;
+    use Importable;
+    use SkipsErrors;
+    use SkipsFailures;
 
     //    use Importable, SkipsFailures, SkipsErrors;
 
     public function model(array $row): Model|DataPkh|null
     {
-        $namaProp = isset($row['nama_prop']) ? \Str::ucfirst($row['nama_prop']) : null;
-        $namaKab = isset($row['nama_kab']) ? \Str::ucfirst($row['nama_kab']) : null;
-        $namaKec = isset($row['nama_kec']) ? \Str::ucfirst($row['nama_kec']) : null;
-        $namaKel = isset($row['nama_kel']) ? \Str::ucfirst($row['nama_kel']) : null;
+        $namaProp = isset($row['nama_prop']) ? Str::ucfirst($row['nama_prop']) : null;
+        $namaKab = isset($row['nama_kab']) ? Str::ucfirst($row['nama_kab']) : null;
+        $namaKec = isset($row['nama_kec']) ? Str::ucfirst($row['nama_kec']) : null;
+        $namaKel = isset($row['nama_kel']) ? Str::ucfirst($row['nama_kel']) : null;
 
         $provinsi = Provinsi::query()->where('name', $namaProp)->first()?->code;
         $kabupaten = Kabupaten::query()->where('name', $namaKab)->first()?->code;
         $kecamatan = Kecamatan::query()->where('name', $namaKec)->first()?->code;
         $kelurahan = Kelurahan::query()->where('name', $namaKel)->first()?->code;
 
-        $jenisBantuan = JenisBantuan::where('alias', \Str::upper($row['bansos']))->first()?->id;
+        $jenisBantuan = JenisBantuan::where('alias', Str::upper($row['bansos']))->first()?->id;
 
         return new DataPkh([
             'dtks_id' => $row['iddtks'] ?? 'NON DTKS',

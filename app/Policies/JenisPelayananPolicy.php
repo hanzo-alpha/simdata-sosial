@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\JenisPelayanan;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class JenisPelayananPolicy
+final class JenisPelayananPolicy
 {
     use HandlesAuthorization;
 

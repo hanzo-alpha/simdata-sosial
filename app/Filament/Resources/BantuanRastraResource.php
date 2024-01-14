@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\StatusAktif;
@@ -8,7 +10,6 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Widgets\BantuanRastraOverview;
-use App\Models\Alamat;
 use App\Models\BantuanRastra;
 use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
@@ -31,7 +32,7 @@ use Illuminate\Support\Facades\Blade;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
-class BantuanRastraResource extends Resource
+final class BantuanRastraResource extends Resource
 {
     protected static ?string $model = BantuanRastra::class;
 
@@ -97,7 +98,7 @@ class BantuanRastraResource extends Resource
                     ->badge()
                     ->alignCenter()
                     ->searchable()
-                    ->color(fn ($record): string => $record->jenis_bantuan->warna)
+                    ->color(fn($record): string => $record->jenis_bantuan->warna)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_rastra')
                     ->alignCenter()
@@ -109,8 +110,11 @@ class BantuanRastraResource extends Resource
             ->filters([
                 SelectFilter::make('kecamatan')
                     ->label('Kecamatan')
-                    ->relationship('kec', 'name',
-                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab')))
+                    ->relationship(
+                        'kec',
+                        'name',
+                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab'))
+                    )
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
@@ -135,7 +139,7 @@ class BantuanRastraResource extends Resource
                         ->label('PDF')
                         ->color('success')
                         ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn (Model $record) => route('pdf.download', $record))
+                        ->url(fn(Model $record) => route('pdf.download', $record))
 //                        ->action(function (Model $record) {
 //                            return response()->streamDownload(function () use ($record) {
 //                                echo \Barryvdh\DomPDF\Facade\Pdf::loadHtml(
@@ -232,14 +236,15 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn ($record
+                                ->formatStateUsing(fn(
+                                    $record
                                 ) => $record->no_rt . '/' . $record->no_rw),
-//                            TextEntry::make('lat')
-//                                ->label('Latitude')
-//                                ->state('-'),
-//                            TextEntry::make('lng')
-//                                ->label('Longitude')
-//                                ->state('-'),
+                            //                            TextEntry::make('lat')
+                            //                                ->label('Latitude')
+                            //                                ->state('-'),
+                            //                            TextEntry::make('lng')
+                            //                                ->label('Longitude')
+                            //                                ->state('-'),
                         ])->columns(2),
                 ])->columnSpan(2),
 
@@ -256,14 +261,14 @@ class BantuanRastraResource extends Resource
                         ->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
                         ->schema([
-//                            ImageEntry::make('media_id')
-//                                ->hiddenLabel()
-//                                ->columnSpanFull()
-//                                ->alignCenter()
-//                                ->extraImgAttributes([
-//                                    'alt' => 'foto rumah',
-//                                    'loading' => 'lazy',
-//                                ]),
+                            //                            ImageEntry::make('media_id')
+                            //                                ->hiddenLabel()
+                            //                                ->columnSpanFull()
+                            //                                ->alignCenter()
+                            //                                ->extraImgAttributes([
+                            //                                    'alt' => 'foto rumah',
+                            //                                    'loading' => 'lazy',
+                            //                                ]),
                             ImageEntry::make('foto_ktp_kk')
                                 ->hiddenLabel()
                                 ->columnSpanFull()
@@ -299,7 +304,7 @@ class BantuanRastraResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

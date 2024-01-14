@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TipePpksResource\Pages;
@@ -12,7 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class TipePpksResource extends Resource
+final class TipePpksResource extends Resource
 {
     protected static ?string $model = TipePpks::class;
 
@@ -62,7 +64,7 @@ class TipePpksResource extends Resource
                     ->label('Kategori PPKS')
                     ->suffixBadges([
                         Badge::make('alias')
-                            ->label(fn ($record) => $record->alias)
+                            ->label(fn($record) => $record->alias)
                             ->color('success'),
                     ])
                     ->sortable()
@@ -78,7 +80,7 @@ class TipePpksResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

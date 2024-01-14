@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BantuanPpksResource\Pages;
 
 use App\Filament\Resources\BantuanPpksResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditBantuanPpks extends EditRecord
+final class EditBantuanPpks extends EditRecord
 {
     protected static string $resource = BantuanPpksResource::class;
 

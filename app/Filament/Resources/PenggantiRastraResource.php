@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
@@ -13,7 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class PenggantiRastraResource extends Resource
+final class PenggantiRastraResource extends Resource
 {
     protected static ?string $model = PenggantiRastra::class;
 
@@ -43,14 +45,15 @@ class PenggantiRastraResource extends Resource
                     ->searchable()
                     ->native(false)
                     ->preload()
-                    ->getSearchResultsUsing(fn (string $search): array => BantuanRastra::where('nama_lengkap', 'like',
-                        "%{$search}%")
+                    ->getSearchResultsUsing(fn(string $search): array => BantuanRastra::where(
+                        'nama_lengkap',
+                        'like',
+                        "%{$search}%"
+                    )
                         ->orWhere('nik', 'like', "%{$search}%")
                         ->orWhere('nokk', 'like', "%{$search}%")
                         ->limit(50)->pluck('nik', 'id')->toArray())
-                    ->getOptionLabelFromRecordUsing(function ($record) {
-                        return '<strong>'.$record->nik.'</strong><br>'.$record->nama_lengkap;
-                    })->allowHtml()
+                    ->getOptionLabelFromRecordUsing(fn($record) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')
@@ -88,29 +91,29 @@ class PenggantiRastraResource extends Resource
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->nokk_pengganti)
+                    ->description(fn($record) => $record->nokk_pengganti)
                     ->label('NIK & NO. KK Baru'),
                 Tables\Columns\TextColumn::make('nama_pengganti')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->alamat_pengganti)
+                    ->description(fn($record) => $record->alamat_pengganti)
                     ->label('NAMA & ALAMAT BARU'),
                 Tables\Columns\TextColumn::make('nik_lama')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->nokk_lama)
+                    ->description(fn($record) => $record->nokk_lama)
                     ->label('NIK & NO.KK Lama'),
                 Tables\Columns\TextColumn::make('nama_lama')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->alamat_lama)
+                    ->description(fn($record) => $record->alamat_lama)
                     ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')
                     ->badge(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

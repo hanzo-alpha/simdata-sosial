@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\WarnaEnum;
@@ -13,7 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
-class JenisBantuanResource extends Resource
+final class JenisBantuanResource extends Resource
 {
     protected static ?string $model = JenisBantuan::class;
 
@@ -51,7 +53,7 @@ class JenisBantuanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama_bantuan')
                     ->label('Nama Bantuan')
-                    ->description(fn ($record) => Str::words($record->deskripsi, 13))
+                    ->description(fn($record) => Str::words($record->deskripsi, 13))
                     ->searchable()
                     ->weight(FontWeight::SemiBold)
                     ->copyable()
@@ -61,10 +63,10 @@ class JenisBantuanResource extends Resource
                     ->badge()
                     ->sortable()
                     ->searchable()
-                    ->color(fn ($record) => $record->warna),
+                    ->color(fn($record) => $record->warna),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

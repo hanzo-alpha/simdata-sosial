@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BantuanPpksResource\Pages;
 
 use App\Exports\ExportBantuanPpks;
@@ -16,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
-class ListBantuanPpks extends ListRecords
+final class ListBantuanPpks extends ListRecords
 {
     protected static string $resource = BantuanPpksResource::class;
 
@@ -56,7 +58,7 @@ class ListBantuanPpks extends ListRecords
                         ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
-                    $import = Excel::import(new ImportBantuanPpks, $data['attachment'], 'public');
+                    $import = Excel::import(new ImportBantuanPpks(), $data['attachment'], 'public');
                     if ($import) {
                         Notification::make()
                             ->title('Data PPKS Berhasil di impor')

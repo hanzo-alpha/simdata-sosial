@@ -76,6 +76,8 @@ return [
         'replicate' => 'Ulangi',
         'reorder' => 'Susun Ulang',
         'restore_any' => 'Susun Ulang Apa Saja',
-        'verify' => 'Verifikasi'
+        'verify' => 'Verifikasi',
+        'page_MyProfilePage' => 'Profil',
+        'widget_'
     ],
 ];

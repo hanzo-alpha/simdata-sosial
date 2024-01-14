@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
@@ -14,7 +16,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-class MutasiBpjsResource extends Resource
+final class MutasiBpjsResource extends Resource
 {
     protected static ?string $model = MutasiBpjs::class;
 
@@ -47,10 +49,8 @@ class MutasiBpjsResource extends Resource
                     ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
                     ->searchPrompt('Cari peserta berdasarkan nomor kartu, nik, atau nama')
                     ->native(false)
-                    ->getOptionLabelFromRecordUsing(function (Model $record) {
-                        return "<strong>{$record->nama_lengkap}</strong> | NIK: ".(string) ($record->nik);
-                    })->allowHtml()
-                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
+                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
+                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
                         $peserta = PesertaBpjs::find($state);
                         $set('nomor_kartu', $peserta->nomor_kartu);
                         $set('nik', $peserta->nik);
@@ -122,7 +122,7 @@ class MutasiBpjsResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

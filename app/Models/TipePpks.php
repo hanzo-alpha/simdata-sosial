@@ -7,7 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class TipePpks extends Model
+final class TipePpks extends Model
 {
     protected $guarded = [];
 

@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use DB;
 use Illuminate\Database\Seeder;
 
-class KecamatanTableSeeder extends Seeder
+final class KecamatanTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
 
-        \DB::table('kecamatan')->delete();
+        DB::table('kecamatan')->delete();
 
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '110101',
                 'kabupaten_code' => '1101',
@@ -2518,7 +2521,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Porsea',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '121208',
                 'kabupaten_code' => '1212',
@@ -5020,7 +5023,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Kuala Kampar',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '140511',
                 'kabupaten_code' => '1405',
@@ -7522,7 +7525,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Curup Timur',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '170218',
                 'kabupaten_code' => '1702',
@@ -10024,7 +10027,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Pesanggrahan',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '317501',
                 'kabupaten_code' => '3175',
@@ -12526,7 +12529,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Cilebar',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '321601',
                 'kabupaten_code' => '3216',
@@ -15028,7 +15031,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Undaan',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '331905',
                 'kabupaten_code' => '3319',
@@ -17530,7 +17533,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Glenmore',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '351011',
                 'kabupaten_code' => '3510',
@@ -20032,7 +20035,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Gunungkencana',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '360209',
                 'kabupaten_code' => '3602',
@@ -22534,7 +22537,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Katala Hamu Lingu',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '531120',
                 'kabupaten_code' => '5311',
@@ -25036,7 +25039,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Daha Selatan',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '630608',
                 'kabupaten_code' => '6306',
@@ -27538,7 +27541,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Ampibabo',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '720803',
                 'kabupaten_code' => '7208',
@@ -30040,7 +30043,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Tontonunu',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '740621',
                 'kabupaten_code' => '7406',
@@ -32542,7 +32545,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Kaureh',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '910312',
                 'kabupaten_code' => '9103',
@@ -35044,7 +35047,7 @@ class KecamatanTableSeeder extends Seeder
                 'name' => 'Amungkalpia',
             ],
         ]);
-        \DB::table('kecamatan')->insert([
+        DB::table('kecamatan')->insert([
             0 => [
                 'code' => '940524',
                 'kabupaten_code' => '9405',
