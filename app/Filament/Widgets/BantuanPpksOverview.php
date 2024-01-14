@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanPpks;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class BantuanPpksOverview extends BaseWidget
 {
-    use InteractsWithPageFilters;
+    use InteractsWithPageFilters, HasWidgetShield;
 
     protected static bool $isDiscovered = false;
 

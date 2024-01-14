@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Enums\StatusBpjsEnum;
 use App\Models\BantuanBpjs;
 use App\Models\PesertaBpjs;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class BantuanBpjsOverview extends BaseWidget
 {
-    use InteractsWithPageFilters;
+    use InteractsWithPageFilters, HasWidgetShield;
 
     protected static bool $isDiscovered = false;
 

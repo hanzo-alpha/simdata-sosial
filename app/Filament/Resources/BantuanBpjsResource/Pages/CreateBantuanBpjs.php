@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Filament\Resources\BantuanBpjsResource;
-use App\Models\MutasiBpjs;
 use Filament\Resources\Pages\CreateRecord;
-use Illuminate\Database\Eloquent\Model;
+use Str;
 
-class CreateBantuanBpjs extends CreateRecord
+final class CreateBantuanBpjs extends CreateRecord
 {
     protected static string $resource = BantuanBpjsResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['dtks_id'] = $data['dtks_id'] ?? \Str::uuid()->toString();
+        $data['dtks_id'] ??= Str::uuid()->toString();
         $data['bulan'] = now()->month;
         $data['tahun'] = now()->year;
 

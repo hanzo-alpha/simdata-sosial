@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\BantuanBpnt;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class BantuanBpntOverview extends BaseWidget
 {
-    use InteractsWithPageFilters;
+    use InteractsWithPageFilters, HasWidgetShield;
 
     protected static bool $isDiscovered = false;
 

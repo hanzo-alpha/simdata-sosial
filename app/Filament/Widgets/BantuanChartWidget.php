@@ -9,13 +9,14 @@ use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\UsulanPengaktifanTmt;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 
 class BantuanChartWidget extends ChartWidget
 {
-    use InteractsWithPageFilters;
+    use InteractsWithPageFilters, HasWidgetShield;
 
     protected static ?string $heading = 'Bantuan Statistik Per Kecamatan';
 
@@ -127,7 +128,7 @@ class BantuanChartWidget extends ChartWidget
 
         foreach ($kec as $key => $item) {
             $ppksresults[$item] = BantuanPpks::with(['alamat'])->whereHas('alamat',
-                fn (Builder $query) => $query->where('kecamatan', $item))
+                fn(Builder $query) => $query->where('kecamatan', $item))
 //                ->when($dateRange, function (Builder $query) use ($dateRange) {
 //                    $dates = explode('-', $dateRange);
 //                    return $query

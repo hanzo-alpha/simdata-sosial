@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
@@ -28,7 +30,7 @@ use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-class BantuanBpjsResource extends Resource
+final class BantuanBpjsResource extends Resource
 {
     protected static ?string $model = BantuanBpjs::class;
 
@@ -84,24 +86,32 @@ class BantuanBpjsResource extends Resource
                                 ->searchable()
                                 ->reactive()
                                 ->options(function () {
-                                    $kab = Kecamatan::query()->where('kabupaten_code',
-                                        config('custom.default.kodekab'));
-                                    if (! $kab) {
-                                        return Kecamatan::where('kabupaten_code',
-                                            config('custom.default.kodekab'))
+                                    $kab = Kecamatan::query()->where(
+                                        'kabupaten_code',
+                                        config('custom.default.kodekab')
+                                    );
+                                    if (!$kab) {
+                                        return Kecamatan::where(
+                                            'kabupaten_code',
+                                            config('custom.default.kodekab')
+                                        )
                                             ->pluck('name', 'code');
                                     }
 
                                     return $kab->pluck('name', 'code');
                                 })
-                                ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
+                                ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                             Select::make('kelurahan')
                                 ->required()
                                 ->options(function (callable $get) {
-                                    return Kelurahan::query()->where('kecamatan_code',
-                                        $get('kecamatan'))?->pluck('name',
-                                            'code');
+                                    return Kelurahan::query()->where(
+                                        'kecamatan_code',
+                                        $get('kecamatan')
+                                    )?->pluck(
+                                        'name',
+                                        'code'
+                                    );
                                 })
                                 ->reactive()
                                 ->searchable(),
@@ -159,9 +169,10 @@ class BantuanBpjsResource extends Resource
                             FileUpload::make('foto_ktp')
                                 ->label('Unggah Foto KTP / KK')
                                 ->getUploadedFileNameForStorageUsing(
-                                    fn (TemporaryUploadedFile $file
+                                    fn(
+                                        TemporaryUploadedFile $file
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s').'-'),
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
@@ -198,7 +209,7 @@ class BantuanBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
                     ->sortable()
-                    ->description(fn ($record) => 'Nik : '.$record->nik_tmt)
+                    ->description(fn($record) => 'Nik : ' . $record->nik_tmt)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk_tmt')
                     ->label('No. KK')
@@ -207,7 +218,7 @@ class BantuanBpjsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
                     ->label('Tempat Lahir')
-                    ->description(fn ($record) => $record->tgl_lahir->format('d/M/Y'))
+                    ->description(fn($record) => $record->tgl_lahir->format('d/M/Y'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tgl_lahir')
@@ -237,7 +248,7 @@ class BantuanBpjsResource extends Resource
                         $kec = $record->kec?->name;
                         $kel = $record->kel?->name;
 
-                        return $alamat.' '.'RT.'.$rt.'/'.'RW.'.$rw.' '.$kec.', '.$kel.', '.$kodepos;
+                        return $alamat . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kec.kecamatan')
@@ -252,7 +263,7 @@ class BantuanBpjsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bulan')
                     ->label('Periode')
-                    ->formatStateUsing(fn ($record) => bulan_to_string($record->bulan).' '.$record->tahun),
+                    ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun),
                 Tables\Columns\TextColumn::make('status_aktif')
                     ->label('Status Aktif')
                     ->sortable()

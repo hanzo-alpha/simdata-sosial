@@ -4,12 +4,15 @@ namespace App\Filament\Widgets;
 
 use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanRastra;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 
 class BantuanRastraOverview extends BaseWidget
 {
+    use HasWidgetShield;
+
     protected static bool $isDiscovered = false;
 
     protected function getStats(): array

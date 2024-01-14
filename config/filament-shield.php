@@ -45,7 +45,7 @@ return [
         'pages' => true,
         'widgets' => true,
         'resources' => true,
-        'custom_permissions' => false,
+        'custom_permissions' => true,
     ],
 
     'generator' => [
@@ -57,13 +57,14 @@ return [
 
         'pages' => [
             'Dashboard',
+            'MyProfilePage'
         ],
 
         'widgets' => [
             'AccountWidget',
             'FilamentInfoWidget',
-            'PenerimaManfaatMap',
-            'PenerimaManfaatChart',
+            'BantuanOverview',
+            'BantuanChartWidget',
         ],
 
         'resources' => [],

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BantuanBpntResource\Pages;
@@ -15,12 +17,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
-class BantuanBpntResource extends Resource
+final class BantuanBpntResource extends Resource
 {
     protected static ?string $model = BantuanBpnt::class;
 
@@ -70,13 +70,13 @@ class BantuanBpntResource extends Resource
                             ->searchable()
                             ->reactive()
                             ->options(Provinsi::pluck('name', 'code'))
-                            ->afterStateUpdated(fn (callable $set) => $set('kabupaten', null)),
+                            ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
 
                         Select::make('kabupaten')
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if (! $kab) {
+                                if (!$kab) {
                                     return Kabupaten::where('code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -85,8 +85,7 @@ class BantuanBpntResource extends Resource
                             })
                             ->reactive()
                             ->searchable()
-//                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                            ->afterStateUpdated(fn (callable $set) => $set('kecamatan', null)),
+                            ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
                     ])->columns(2),
 
                     Grid::make()->schema([
@@ -96,20 +95,20 @@ class BantuanBpntResource extends Resource
                             ->reactive()
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if (! $kab) {
+                                if (!$kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
 
                                 return $kab->pluck('name', 'code');
                             })
-                            ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
+                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if (! $kel) {
+                                if (!$kel) {
                                     return Kelurahan::where('kecamatan_code', '731211')
                                         ->pluck('name', 'code');
                                 }
@@ -119,7 +118,7 @@ class BantuanBpntResource extends Resource
                             ->reactive()
                             ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                            ->afterStateUpdated(function (callable $set, $state) {
+                            ->afterStateUpdated(function (callable $set, $state): void {
                                 $village = Kelurahan::where('code', $state)->first();
                                 if ($village) {
                                     $set('latitude', $village['latitude']);
@@ -149,37 +148,11 @@ class BantuanBpntResource extends Resource
     {
         return $table
             ->deferLoading()
-            ->recordClasses(fn (Model $record) => match ($record->status_bpnt) {
-                'draft' => 'opacity-30',
-                'reviewing' => 'border-s-2 border-orange-600 dark:border-orange-300',
-                'PKH' => 'border-s-2 border-green-600 dark:border-green-300',
-                default => null,
-            })
-            ->groups([
-                Tables\Grouping\Group::make('kec.name')
-                    ->label('Kecamatan')
-                    ->collapsible()
-                    ->titlePrefixedWithLabel(false),
-                Tables\Grouping\Group::make('kel.name')
-                    ->label('Kelurahan')
-                    ->collapsible()
-                    ->titlePrefixedWithLabel(false),
-            ])
-            ->defaultGroup('kec.name')
-            ->groupRecordsTriggerAction(
-                fn (Action $action) => $action
-                    ->button()
-                    ->label('Kelompokkan Data'),
-            )
-            ->groupingSettingsInDropdownOnDesktop()
-//            ->groupingSettingsHidden()
-//            ->paginated([10, 25, 50, 100, 'all'])
-            ->defaultPaginationPageOption(25)
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')
                     ->sortable()
-                    ->description(fn ($record) => $record->dtks_id)
+                    ->description(fn($record) => $record->dtks_id)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
@@ -225,7 +198,7 @@ class BantuanBpntResource extends Resource
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()
                     ->toggleable()
-                    ->description(fn ($record) => 'Kec. '.$record->kec->name.' | Kel. '.$record->kel->name)
+                    ->description(fn($record) => 'Kec. ' . $record->kec->name . ' | Kel. ' . $record->kel->name)
 //                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('prov.name')
@@ -306,7 +279,7 @@ class BantuanBpntResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

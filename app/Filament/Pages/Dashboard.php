@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -12,7 +13,7 @@ use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 
 class Dashboard extends \Filament\Pages\Dashboard
 {
-    use HasFiltersAction, HasFiltersForm;
+    use HasFiltersAction, HasFiltersForm, HasPageShield;
 
     public function filtersForm(Form $form): Form
     {
@@ -32,14 +33,14 @@ class Dashboard extends \Filament\Pages\Dashboard
                             ->options(function () {
                                 $kab = Kecamatan::query()
                                     ->where('kabupaten_code', config('custom.default.kodekab'));
-                                if (! $kab) {
+                                if (!$kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
 
                                 return $kab->pluck('name', 'code');
                             })
-                            ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
+                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->required()
