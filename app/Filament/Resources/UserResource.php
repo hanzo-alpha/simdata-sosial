@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+//declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
@@ -12,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-final class UserResource extends Resource
+class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
@@ -86,5 +86,6 @@ final class UserResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::$model::query()->count();
+//        return null;
     }
 }
