@@ -17,7 +17,7 @@ return [
         'logo_dark' => null,
         'favicon' => null,
         'font' => 'Poppins',
-        'dark_mode' => false,
+        'dark_mode' => true,
         'logo_height' => '2rem',
     ],
     'date' => [
