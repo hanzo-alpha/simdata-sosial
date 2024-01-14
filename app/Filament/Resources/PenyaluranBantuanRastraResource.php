@@ -40,7 +40,8 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari KPM berdasarkan no.kk , nik, atau nama')
-                            ->getOptionLabelFromRecordUsing(fn(Model $record
+                            ->getOptionLabelFromRecordUsing(fn(
+                                Model $record
                             ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)

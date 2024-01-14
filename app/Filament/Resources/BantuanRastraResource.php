@@ -32,15 +32,10 @@ class BantuanRastraResource extends Resource
     protected static ?string $model = BantuanRastra::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
-
     protected static ?string $slug = 'program-rastra';
-
     protected static ?string $label = 'Program Rastra';
-
     protected static ?string $pluralLabel = 'Program Rastra';
-
     protected static ?string $navigationGroup = 'Program Sosial';
-
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
