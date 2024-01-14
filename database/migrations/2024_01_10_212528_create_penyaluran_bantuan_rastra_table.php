@@ -18,6 +18,8 @@ return new class () extends Migration {
                 ->constrained('bantuan_rastra')
                 ->noActionOnDelete()
                 ->noActionOnUpdate();
+            $table->string('no_kk')->nullable();
+            $table->string('nik_kpm')->nullable();
             $table->dateTime('tgl_penyerahan')->nullable();
             $table->json('foto_penyerahan');
             $table->json('foto_ktp_kk');

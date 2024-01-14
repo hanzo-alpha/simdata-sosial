@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources;
 
 use App\Enums\StatusAktif;
@@ -11,8 +9,6 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
-use Barryvdh\DomPDF\PDF;
-use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -28,11 +24,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Blade;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
-final class BantuanRastraResource extends Resource
+class BantuanRastraResource extends Resource
 {
     protected static ?string $model = BantuanRastra::class;
 

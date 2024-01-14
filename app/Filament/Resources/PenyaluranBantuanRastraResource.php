@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources;
 
 use App\Enums\StatusPenyaluran;
@@ -18,20 +16,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-final class PenyaluranBantuanRastraResource extends Resource
+class PenyaluranBantuanRastraResource extends Resource
 {
     protected static ?string $model = PenyaluranBantuanRastra::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
-
     protected static ?string $slug = 'penyaluran-bantuan-rastra';
-
     protected static ?string $label = 'Penyaluran Rastra';
-
     protected static ?string $pluralLabel = 'Penyaluran Rastra';
-
     protected static ?string $navigationGroup = 'Program Sosial';
-
     protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
@@ -45,25 +38,34 @@ final class PenyaluranBantuanRastraResource extends Resource
                             ->relationship('bantuan_rastra', 'nama_lengkap')
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
-                            ->preload()
-                            ->getOptionLabelFromRecordUsing(fn(Model $record) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
+                            ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
+                            ->searchPrompt('Cari KPM berdasarkan no.kk , nik, atau nama')
+                            ->getOptionLabelFromRecordUsing(fn(Model $record
+                            ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)
                             ->afterStateUpdated(function ($state, Forms\Set $set): void {
                                 $rastra = BantuanRastra::find($state);
 
-                                $set('nik', $rastra->nik);
-                                $set('nokk', $rastra->nokk);
+                                if (isset($rastra) && $rastra->count() > 0) {
+                                    $set('nik_kpm', $rastra->nik);
+                                    $set('no_kk', $rastra->nokk);
+                                } else {
+                                    $set('nik_kpm', null);
+                                    $set('no_kk', null);
+                                }
                             })
                             ->columnSpanFull()
                             ->helperText(str('**Nama KPM** disini, termasuk dengan NIK.')->inlineMarkdown()->toHtmlString())
                             ->optionsLimit(20),
-                        Forms\Components\TextInput::make('nokk')
+                        Forms\Components\TextInput::make('no_kk')
                             ->label('NO KK')
-                            ->disabled(),
-                        Forms\Components\TextInput::make('nik')
+                            ->disabled()
+                            ->dehydrated(),
+                        Forms\Components\TextInput::make('nik_kpm')
                             ->label('NIK KPM')
-                            ->disabled(),
+                            ->disabled()
+                            ->dehydrated(),
                         Geocomplete::make('lokasi')
                             ->required()
                             ->countries(['id'])
@@ -80,8 +82,10 @@ final class PenyaluranBantuanRastraResource extends Resource
                                 'street' => '%S %n',
                             ]),
                         TextInput::make('lat')
+                            ->label('Latitude')
                             ->disabled()
                             ->reactive()
+                            ->dehydrated()
                             ->afterStateUpdated(function (
                                 $state,
                                 callable $get,
@@ -94,8 +98,10 @@ final class PenyaluranBantuanRastraResource extends Resource
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
                         TextInput::make('lng')
+                            ->label('Longitude')
                             ->disabled()
                             ->reactive()
+                            ->dehydrated()
                             ->afterStateUpdated(function (
                                 $state,
                                 callable $get,
@@ -118,10 +124,12 @@ final class PenyaluranBantuanRastraResource extends Resource
                             ->default(now())
                             ->dehydrated(),
                         Forms\Components\Select::make('status_penyaluran')
+                            ->label('Status Penyaluran Bantuan')
                             ->options(StatusPenyaluran::class)
                             ->lazy()
                             ->preload(),
                         Forms\Components\FileUpload::make('foto_penyerahan')
+                            ->label('Foto Penyerahan')
                             ->disk('public')
                             ->directory('penyaluran')
                             ->required()
@@ -145,6 +153,7 @@ final class PenyaluranBantuanRastraResource extends Resource
                             ->previewable(true)
                             ->image(),
                         Forms\Components\FileUpload::make('foto_ktp_kk')
+                            ->label('Foto KTP / KK')
                             ->disk('public')
                             ->directory('penyaluran')
                             ->required()
