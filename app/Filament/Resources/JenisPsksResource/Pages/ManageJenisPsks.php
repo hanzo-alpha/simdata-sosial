@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\JenisPsksResource\Pages;
 
 use App\Filament\Resources\JenisPsksResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageJenisPsks extends ManageRecords
+final class ManageJenisPsks extends ManageRecords
 {
     protected static string $resource = JenisPsksResource::class;
 

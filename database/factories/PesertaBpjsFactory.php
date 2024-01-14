@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\PesertaBpjs;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class PesertaBpjsFactory extends Factory
+final class PesertaBpjsFactory extends Factory
 {
     protected $model = PesertaBpjs::class;
 

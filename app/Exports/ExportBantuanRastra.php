@@ -8,14 +8,14 @@ use App\Enums\StatusVerifikasiEnum;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
-class ExportBantuanRastra extends ExcelExport
+final class ExportBantuanRastra extends ExcelExport
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn ($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
+        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
         $this->askForWriterType();
-        $this->modifyQueryUsing(fn ($query) => $query->with([
+        $this->modifyQueryUsing(fn($query) => $query->with([
             'alamat',
             'alamat.kec',
             'alamat.kel',
@@ -32,7 +32,7 @@ class ExportBantuanRastra extends ExcelExport
             Column::make('notelp')->heading('No. Telp/WA'),
             Column::make('tempat_lahir')->heading('Tempat Lahir'),
             Column::make('tgl_lahir')->heading('Tgl. Lahir')
-                ->formatStateUsing(fn ($record) => $record->tgl_lahir->format('d/M/Y')),
+                ->formatStateUsing(fn($record) => $record->tgl_lahir->format('d/M/Y')),
             Column::make('alamat.kec.name')->heading('Kecamatan'),
             Column::make('alamat.kel.name')->heading('Kelurahan'),
             Column::make('alamat.dusun')->heading('Dusun'),
@@ -44,7 +44,7 @@ class ExportBantuanRastra extends ExcelExport
             Column::make('hubungan_keluarga.nama_hubungan')->heading('Hubungan Keluarga'),
             Column::make('status_kawin')->heading('Status Kawin'),
             Column::make('status_verifikasi')->heading('Status Verifikasi')
-                ->formatStateUsing(fn ($state) => match ($state) {
+                ->formatStateUsing(fn($state) => match ($state) {
                     'UNVERIFIED' => StatusVerifikasiEnum::UNVERIFIED->getLabel(),
                     'VERIFIED' => StatusVerifikasiEnum::VERIFIED->getLabel(),
                     'REVIEW' => StatusVerifikasiEnum::REVIEW->getLabel(),

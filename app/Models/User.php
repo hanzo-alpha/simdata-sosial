@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -13,10 +15,13 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+final class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    use HasRoles, TwoFactorAuthenticatable;
+    use HasApiTokens;
+    use HasFactory;
+    use HasRoles;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
 
     protected $hidden = [
         'password',

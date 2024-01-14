@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
@@ -22,11 +24,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Str;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-class BantuanRastra extends Model
+final class BantuanRastra extends Model
 {
-    use HasTambahan, HasWilayah;
+    use HasTambahan;
+    use HasWilayah;
     use SoftDeletes;
 
     protected $table = 'bantuan_rastra';
@@ -50,27 +54,12 @@ class BantuanRastra extends Model
         ];
     }
 
-    public function alamat(): MorphOne
-    {
-        return $this->morphOne(Alamat::class, 'alamatable');
-    }
-
-    public function mediaFoto(): BelongsTo
-    {
-        return $this->belongsTo(Media::class, 'media_id', 'id');
-    }
-
-    public function pengganti_rastra(): BelongsTo
-    {
-        return $this->belongsTo(PenggantiRastra::class);
-    }
-
     public static function getKeluargaForm(): array
     {
         return [
             TextInput::make('dtks_id')
                 ->maxLength(36)
-                ->default(\Str::upper(\Str::orderedUuid()->toString())),
+                ->default(Str::upper(Str::orderedUuid()->toString())),
             TextInput::make('nokk')
                 ->label('No. Kartu Keluarga (KK)')
                 ->required()
@@ -140,20 +129,22 @@ class BantuanRastra extends Model
                         ->reactive()
                         ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
-                            if (! $kab) {
+                            if ( ! $kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
 
                             return $kab->pluck('name', 'code');
                         })
-                        ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
+                        ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
                         ->required()
                         ->options(function (callable $get) {
-                            return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck('name',
-                                'code');
+                            return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
+                                'name',
+                                'code'
+                            );
                         })
                         ->reactive()
                         ->searchable(),
@@ -185,7 +176,7 @@ class BantuanRastra extends Model
                 ->relationship(
                     name: 'jenis_bantuan',
                     titleAttribute: 'alias',
-                    modifyQueryUsing: fn (Builder $query) => $query->whereNotIn('id', [1, 2])
+                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
                 )
                 ->default(5)
                 ->dehydrated(),
@@ -195,7 +186,7 @@ class BantuanRastra extends Model
                 ->options(StatusVerifikasiEnum::class)
                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                 ->preload()
-                ->visible(fn () => auth()->user()?->hasRole(['super_admin', 'admin'])),
+                ->visible(fn() => auth()->user()?->hasRole(['super_admin', 'admin'])),
 
             Select::make('status_rastra')
                 ->label('Status Rastra')
@@ -217,7 +208,7 @@ class BantuanRastra extends Model
 //                })->allowHtml()
                 ->optionsLimit(15)
                 ->lazy()
-                ->visible(fn (Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
+                ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->preload(),
 
             Select::make('pengganti_rastra.alasan_dikeluarkan')
@@ -228,7 +219,7 @@ class BantuanRastra extends Model
                 ->preload()
                 ->lazy()
                 ->required()
-                ->visible(fn (Get $get) => $get('status_rastra') === StatusRastra::PENGGANTI)
+                ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->default(AlasanEnum::PINDAH)
                 ->optionsLimit(15),
 
@@ -254,9 +245,10 @@ class BantuanRastra extends Model
             FileUpload::make('foto_ktp_kk')
                 ->label('Unggah Foto KTP / KK')
                 ->getUploadedFileNameForStorageUsing(
-                    fn (TemporaryUploadedFile $file
+                    fn(
+                        TemporaryUploadedFile $file
                     ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s').'-'),
+                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                 )
                 ->preserveFilenames()
                 ->multiple()
@@ -273,5 +265,20 @@ class BantuanRastra extends Model
                 ->previewable(false)
                 ->image(),
         ];
+    }
+
+    public function alamat(): MorphOne
+    {
+        return $this->morphOne(Alamat::class, 'alamatable');
+    }
+
+    public function mediaFoto(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'media_id', 'id');
+    }
+
+    public function pengganti_rastra(): BelongsTo
+    {
+        return $this->belongsTo(PenggantiRastra::class);
     }
 }

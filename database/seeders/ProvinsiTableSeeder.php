@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use DB;
 use Illuminate\Database\Seeder;
 
-class ProvinsiTableSeeder extends Seeder
+final class ProvinsiTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
 
-        \DB::table('provinsi')->delete();
+        DB::table('provinsi')->delete();
 
-        \DB::table('provinsi')->insert([
+        DB::table('provinsi')->insert([
             0 => [
                 'code' => '11',
                 'name' => 'ACEH',

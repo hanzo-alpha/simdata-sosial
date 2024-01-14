@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\JenisPelayanan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class JenisPelayananFactory extends Factory
+final class JenisPelayananFactory extends Factory
 {
     protected $model = JenisPelayanan::class;
 

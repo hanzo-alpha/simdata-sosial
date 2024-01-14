@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\HubunganKeluargaResource\Pages;
 
 use App\Filament\Resources\HubunganKeluargaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageHubunganKeluargas extends ManageRecords
+final class ManageHubunganKeluargas extends ManageRecords
 {
     protected static string $resource = HubunganKeluargaResource::class;
 

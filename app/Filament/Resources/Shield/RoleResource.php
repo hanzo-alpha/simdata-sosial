@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Shield;
 
 use App\Filament\Resources\Shield\RoleResource\Pages;
@@ -19,7 +21,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
-class RoleResource extends Resource implements HasShieldPermissions
+final class RoleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -61,7 +63,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                     ->helperText(fn(
                                     ): HtmlString => new HtmlString(__('filament-shield::filament-shield.field.select_all.message')))
                                     ->live()
-                                    ->afterStateUpdated(function ($livewire, Forms\Set $set, $state) {
+                                    ->afterStateUpdated(function ($livewire, Forms\Set $set, $state): void {
                                         static::toggleEntitiesViaSelectAll($livewire, $set, $state);
                                     })
                                     ->dehydrated(fn($state): bool => $state),
@@ -98,7 +100,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         string $operation,
                                         ?Model $record,
                                         Forms\Set $set
-                                    ) {
+                                    ): void {
                                         static::setPermissionStateForRecordPermissions(
                                             component: $component,
                                             operation: $operation,
@@ -134,7 +136,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => !blank($state))
+                                    ->dehydrated(fn($state) => ! blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -156,7 +158,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         string $operation,
                                         ?Model $record,
                                         Forms\Set $set
-                                    ) {
+                                    ): void {
                                         static::setPermissionStateForRecordPermissions(
                                             component: $component,
                                             operation: $operation,
@@ -193,7 +195,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => !blank($state))
+                                    ->dehydrated(fn($state) => ! blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -215,7 +217,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         string $operation,
                                         ?Model $record,
                                         Forms\Set $set
-                                    ) {
+                                    ): void {
                                         static::setPermissionStateForRecordPermissions(
                                             component: $component,
                                             operation: $operation,
@@ -251,7 +253,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => !blank($state))
+                                    ->dehydrated(fn($state) => ! blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -270,7 +272,7 @@ class RoleResource extends Resource implements HasShieldPermissions
         if ($state) {
             $entitiesComponents
                 ->each(
-                    function (Forms\Components\CheckboxList $component) use ($set) {
+                    function (Forms\Components\CheckboxList $component) use ($set): void {
                         $set($component->getName(), array_keys($component->getOptions()));
                     }
                 );
@@ -319,7 +321,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                             string $operation,
                             ?Model $record,
                             Forms\Set $set
-                        ) use ($entity) {
+                        ) use ($entity): void {
                             static::setPermissionStateForRecordPermissions(
                                 component: $component,
                                 operation: $operation,
@@ -356,7 +358,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                             set: $set,
                             resetState: true
                         ))
-                        ->dehydrated(fn($state) => !blank($state))
+                        ->dehydrated(fn($state) => ! blank($state))
                         ->bulkToggleable()
                         ->gridDirection('row')
                         ->columns(FilamentShieldPlugin::get()->getResourceCheckboxListColumns()),
@@ -420,7 +422,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     ): void {
         $action
             ->livewireClickHandlerEnabled(true)
-            ->action(function () use ($component, $livewire, $set, $resetState) {
+            ->action(function () use ($component, $livewire, $set, $resetState): void {
                 /** @phpstan-ignore-next-line */
                 $component->state($resetState ? [] : array_keys($component->getOptions()));
                 static::toggleSelectAllViaEntities($livewire, $set);
@@ -439,7 +441,7 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function getPageOptions(): array
     {
-//        dd(FilamentShield::getPages());
+        //        dd(FilamentShield::getPages());
         return collect(FilamentShield::getPages())
             ->flatMap(fn($pagePermission) => [
                 $pagePermission => FilamentShield::getLocalizedPageLabel($pagePermission),
@@ -459,26 +461,6 @@ class RoleResource extends Resource implements HasShieldPermissions
                 $widgetPermission => FilamentShield::getLocalizedWidgetLabel($widgetPermission),
             ])
             ->toArray();
-    }
-
-    protected static function getCustomEntities(): ?Collection
-    {
-        $resourcePermissions = collect();
-        collect(FilamentShield::getResources())->each(function ($entity) use ($resourcePermissions) {
-            collect(Utils::getResourcePermissionPrefixes($entity['fqcn']))->map(function ($permission) use (
-                $resourcePermissions,
-                $entity
-            ) {
-                $resourcePermissions->push((string) Str::of($permission . '_' . $entity['resource']));
-            });
-        });
-
-        $entitiesPermissions = $resourcePermissions
-            ->merge(FilamentShield::getPages())
-            ->merge(FilamentShield::getWidgets())
-            ->values();
-
-        return static::$permissionsCollection->whereNotIn('name', $entitiesPermissions)->pluck('name');
     }
 
     public static function getCustomPermissionOptions(): array
@@ -513,7 +495,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->dateTime(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -527,7 +509,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 
@@ -583,5 +565,25 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function canGloballySearch(): bool
     {
         return Utils::isResourceGloballySearchable() && count(static::getGloballySearchableAttributes()) && static::canViewAny();
+    }
+
+    protected static function getCustomEntities(): ?Collection
+    {
+        $resourcePermissions = collect();
+        collect(FilamentShield::getResources())->each(function ($entity) use ($resourcePermissions): void {
+            collect(Utils::getResourcePermissionPrefixes($entity['fqcn']))->map(function ($permission) use (
+                $resourcePermissions,
+                $entity
+            ): void {
+                $resourcePermissions->push((string) Str::of($permission . '_' . $entity['resource']));
+            });
+        });
+
+        $entitiesPermissions = $resourcePermissions
+            ->merge(FilamentShield::getPages())
+            ->merge(FilamentShield::getWidgets())
+            ->values();
+
+        return static::$permissionsCollection->whereNotIn('name', $entitiesPermissions)->pluck('name');
     }
 }

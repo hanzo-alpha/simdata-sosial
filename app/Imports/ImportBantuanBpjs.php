@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Imports;
 
 use App\Enums\StatusAktif;
@@ -26,16 +28,17 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Validators\Failure;
+use Str;
 use Throwable;
 
-class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, SkipsOnFailure, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
+final class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, SkipsOnFailure, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
 {
     use Importable;
 
     public function registerEvents(): array
     {
         return [
-            ImportFailed::class => function (ImportFailed $event) {
+            ImportFailed::class => function (ImportFailed $event): void {
                 Notification::make('Import Failed')
                     ->title('Gagal Impor Usulan Pengaktifan TMT')
                     ->danger()
@@ -52,12 +55,12 @@ class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, Sk
     {
         $kecamatan = Kecamatan::query()
             ->where('kabupaten_code', config('custom.default.kodekab'))
-            ->where('name', \Str::ucfirst($row['kecamatan']))
+            ->where('name', Str::ucfirst($row['kecamatan']))
             ->first()?->code;
 
         $kelurahan = Kelurahan::query()
             ->where('kecamatan_code', $kecamatan)
-            ->where('name', \Str::ucfirst($row['kelurahan']))
+            ->where('name', Str::ucfirst($row['kelurahan']))
             ->first()?->code;
 
         $jenkel = match ($row['jenis_kelamin']) {
@@ -66,7 +69,7 @@ class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, Sk
             default => null
         };
 
-        $bulan = (isset($row['periode_bulan']) && $row['periode_bulan'] !== 0) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;
+        $bulan = (isset($row['periode_bulan']) && 0 !== $row['periode_bulan']) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;
 
         return new DataBantuanBpjs([
             'nokk_tmt' => $row['no_kk'] ?? 'TIDAK ADA NOMOR KK',

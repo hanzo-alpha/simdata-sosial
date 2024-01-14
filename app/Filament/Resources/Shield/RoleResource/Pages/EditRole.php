@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Shield\RoleResource\Pages;
 
 use App\Filament\Resources\Shield\RoleResource;
@@ -9,11 +11,10 @@ use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
-class EditRole extends EditRecord
+final class EditRole extends EditRecord
 {
-    protected static string $resource = RoleResource::class;
-
     public Collection $permissions;
+    protected static string $resource = RoleResource::class;
 
     protected function getActions(): array
     {
@@ -25,9 +26,7 @@ class EditRole extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $this->permissions = collect($data)
-            ->filter(function ($permission, $key) {
-                return ! in_array($key, ['name', 'guard_name', 'select_all']);
-            })
+            ->filter(fn($permission, $key) => ! in_array($key, ['name', 'guard_name', 'select_all']))
             ->values()
             ->flatten();
 
@@ -37,7 +36,7 @@ class EditRole extends EditRecord
     protected function afterSave(): void
     {
         $permissionModels = collect();
-        $this->permissions->each(function ($permission) use ($permissionModels) {
+        $this->permissions->each(function ($permission) use ($permissionModels): void {
             $permissionModels->push(Utils::getPermissionModel()::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => $this->data['guard_name'],

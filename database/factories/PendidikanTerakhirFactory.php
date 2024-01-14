@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\PendidikanTerakhir;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PendidikanTerakhirFactory extends Factory
+final class PendidikanTerakhirFactory extends Factory
 {
     protected $model = PendidikanTerakhir::class;
 

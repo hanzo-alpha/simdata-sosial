@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\JenisPsksResource\Pages;
@@ -10,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class JenisPsksResource extends Resource
+final class JenisPsksResource extends Resource
 {
     protected static ?string $model = JenisPsks::class;
 
@@ -54,7 +56,7 @@ class JenisPsksResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

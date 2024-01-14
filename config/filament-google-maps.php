@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
      | Your Google Maps API key, usually set in .env (but see 'keys' section below).

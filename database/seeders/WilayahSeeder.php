@@ -7,7 +7,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
-class WilayahSeeder extends Seeder
+final class WilayahSeeder extends Seeder
 {
     public function run(): void
     {

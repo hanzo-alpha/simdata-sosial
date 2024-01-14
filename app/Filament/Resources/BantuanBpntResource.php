@@ -76,7 +76,7 @@ final class BantuanBpntResource extends Resource
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if (!$kab) {
+                                if ( ! $kab) {
                                     return Kabupaten::where('code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -95,7 +95,7 @@ final class BantuanBpntResource extends Resource
                             ->reactive()
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if (!$kab) {
+                                if ( ! $kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -108,7 +108,7 @@ final class BantuanBpntResource extends Resource
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if (!$kel) {
+                                if ( ! $kel) {
                                     return Kelurahan::where('kecamatan_code', '731211')
                                         ->pluck('name', 'code');
                                 }

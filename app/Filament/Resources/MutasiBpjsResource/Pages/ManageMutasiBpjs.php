@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\MutasiBpjsResource\Pages;
 
 use App\Filament\Resources\MutasiBpjsResource;
@@ -9,7 +11,7 @@ use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 
-class ManageMutasiBpjs extends ManageRecords
+final class ManageMutasiBpjs extends ManageRecords
 {
     protected static string $resource = MutasiBpjsResource::class;
 

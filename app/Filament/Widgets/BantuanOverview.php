@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Widgets;
 
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Kenepa\MultiWidget\MultiWidget;
 
-class BantuanOverview extends MultiWidget
+final class BantuanOverview extends MultiWidget
 {
     use HasWidgetShield;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BantuanBpntResource\Pages;
 
 use App\Filament\Resources\BantuanBpntResource;
@@ -13,7 +15,7 @@ use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 
-class ListBantuanBpnt extends ListRecords
+final class ListBantuanBpnt extends ListRecords
 {
     protected static string $resource = BantuanBpntResource::class;
 

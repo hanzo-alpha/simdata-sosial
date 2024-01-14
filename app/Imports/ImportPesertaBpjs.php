@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Imports;
 
 use App\Models\PesertaBpjs as PesertaJamkesda;
@@ -13,12 +15,12 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Events\ImportFailed;
 
-class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
+final class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
     public function registerEvents(): array
     {
         return [
-            ImportFailed::class => function (ImportFailed $event) {
+            ImportFailed::class => function (ImportFailed $event): void {
                 Notification::make('Import Failed')
                     ->title('Gagal Impor Peserta JAMKESDA')
                     ->danger()

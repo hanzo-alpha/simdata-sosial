@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\MutasiBpjs;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class MutasiBpjsFactory extends Factory
+final class MutasiBpjsFactory extends Factory
 {
     protected $model = MutasiBpjs::class;
 

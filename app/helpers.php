@@ -1,30 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 use Carbon\Carbon;
 
-if (! function_exists('date_format')) {
+if ( ! function_exists('date_format')) {
     function date_format($date, $format): string
     {
-        return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format($format);
+        return Carbon::createFromFormat('Y-m-d', $date)->format($format);
     }
 }
 
-if (! function_exists('hitung_umur')) {
+if ( ! function_exists('hitung_umur')) {
     function hitung_umur($date, $format = false): string
     {
         $date = $date instanceof Carbon ? $date->format('Y-m-d') : Carbon::parse($date)->format('Y-m-d');
 
-        $age = \Carbon\Carbon::parse($date)->age;
+        $age = Carbon::parse($date)->age;
 
         if ($format) {
-            $age = \Carbon\Carbon::parse($date)->diff(\Carbon\Carbon::now())->format('%y tahun, %m bulan and %d hari');
+            $age = Carbon::parse($date)->diff(Carbon::now())->format('%y tahun, %m bulan and %d hari');
         }
 
         return $age;
     }
 }
 
-if (! function_exists('bulan_to_integer')) {
+if ( ! function_exists('bulan_to_integer')) {
     function bulan_to_integer($bulan, $short = false): string
     {
         $bulan = Str::upper($bulan);
@@ -65,7 +67,7 @@ if (! function_exists('bulan_to_integer')) {
     }
 }
 
-if (! function_exists('bulan_to_string')) {
+if ( ! function_exists('bulan_to_string')) {
     function bulan_to_string(int|string $bulan, $short = false): string
     {
         $bulan = is_int($bulan) ? $bulan : (int) $bulan;

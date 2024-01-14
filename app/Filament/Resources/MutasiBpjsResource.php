@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
@@ -14,7 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-class MutasiBpjsResource extends Resource
+final class MutasiBpjsResource extends Resource
 {
     protected static ?string $model = MutasiBpjs::class;
 
@@ -124,7 +126,7 @@ class MutasiBpjsResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

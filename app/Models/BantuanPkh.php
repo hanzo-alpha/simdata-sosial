@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Casts\MoneyCast;
@@ -8,9 +10,10 @@ use App\Traits\HasJenisBantuan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 
-class BantuanPkh extends Model
+final class BantuanPkh extends Model
 {
-    use HasJenisBantuan, HasWilayah;
+    use HasJenisBantuan;
+    use HasWilayah;
 
     protected $table = 'bantuan_pkh';
 

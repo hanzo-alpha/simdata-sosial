@@ -7,7 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class JenisPsks extends Model
+final class JenisPsks extends Model
 {
     public $timestamps = false;
 

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PendidikanTerakhir extends Model
+final class PendidikanTerakhir extends Model
 {
     use HasFactory;
 

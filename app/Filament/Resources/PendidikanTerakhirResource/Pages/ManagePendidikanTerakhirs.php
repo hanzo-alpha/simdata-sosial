@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\PendidikanTerakhirResource\Pages;
 
 use App\Filament\Resources\PendidikanTerakhirResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManagePendidikanTerakhirs extends ManageRecords
+final class ManagePendidikanTerakhirs extends ManageRecords
 {
     protected static string $resource = PendidikanTerakhirResource::class;
 
