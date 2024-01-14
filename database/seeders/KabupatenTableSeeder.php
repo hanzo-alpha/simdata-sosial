@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use DB;
 use Illuminate\Database\Seeder;
 
-class KabupatenTableSeeder extends Seeder
+final class KabupatenTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
 
-        \DB::table('kabupaten')->delete();
+        DB::table('kabupaten')->delete();
 
-        \DB::table('kabupaten')->insert([
+        DB::table('kabupaten')->insert([
             0 => [
                 'code' => '1101',
                 'provinsi_code' => '11',
@@ -2518,7 +2521,7 @@ class KabupatenTableSeeder extends Seeder
                 'name' => 'KAB. PUNCAK JAYA',
             ],
         ]);
-        \DB::table('kabupaten')->insert([
+        DB::table('kabupaten')->insert([
             0 => [
                 'code' => '9403',
                 'provinsi_code' => '94',

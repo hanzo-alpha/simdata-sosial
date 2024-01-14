@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\JenisPekerjaanResource\Pages;
@@ -10,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class JenisPekerjaanResource extends Resource
+final class JenisPekerjaanResource extends Resource
 {
     protected static ?string $model = JenisPekerjaan::class;
 
@@ -41,7 +43,7 @@ class JenisPekerjaanResource extends Resource
                 Tables\Columns\TextColumn::make('nama_pekerjaan'),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

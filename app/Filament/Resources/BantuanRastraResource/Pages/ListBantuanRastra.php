@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BantuanRastraResource\Pages;
 
 use App\Exports\ExportBantuanRastra;
@@ -11,7 +13,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
-class ListBantuanRastra extends ListRecords
+final class ListBantuanRastra extends ListRecords
 {
     protected static string $resource = BantuanRastraResource::class;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\StatusAktif;
@@ -30,7 +32,7 @@ use Illuminate\Support\Facades\Blade;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
-class BantuanRastraResource extends Resource
+final class BantuanRastraResource extends Resource
 {
     protected static ?string $model = BantuanRastra::class;
 
@@ -96,7 +98,7 @@ class BantuanRastraResource extends Resource
                     ->badge()
                     ->alignCenter()
                     ->searchable()
-                    ->color(fn ($record): string => $record->jenis_bantuan->warna)
+                    ->color(fn($record): string => $record->jenis_bantuan->warna)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_rastra')
                     ->alignCenter()
@@ -108,8 +110,11 @@ class BantuanRastraResource extends Resource
             ->filters([
                 SelectFilter::make('kecamatan')
                     ->label('Kecamatan')
-                    ->relationship('kec', 'name',
-                        fn (Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab')))
+                    ->relationship(
+                        'kec',
+                        'name',
+                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab'))
+                    )
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
@@ -134,7 +139,7 @@ class BantuanRastraResource extends Resource
                         ->label('PDF')
                         ->color('success')
                         ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn (Model $record) => route('pdf.download', $record))
+                        ->url(fn(Model $record) => route('pdf.download', $record))
 //                        ->action(function (Model $record) {
 //                            return response()->streamDownload(function () use ($record) {
 //                                echo \Barryvdh\DomPDF\Facade\Pdf::loadHtml(
@@ -231,8 +236,9 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn ($record
-                                ) => $record->no_rt.'/'.$record->no_rw),
+                                ->formatStateUsing(fn(
+                                    $record
+                                ) => $record->no_rt . '/' . $record->no_rw),
                             //                            TextEntry::make('lat')
                             //                                ->label('Latitude')
                             //                                ->state('-'),
@@ -298,7 +304,7 @@ class BantuanRastraResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

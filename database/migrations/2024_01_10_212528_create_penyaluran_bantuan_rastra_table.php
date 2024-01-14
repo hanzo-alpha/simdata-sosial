@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\StatusPenyaluran;
 use App\Models\BantuanRastra;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
-        Schema::create('penyaluran_bantuan_rastra', function (Blueprint $table) {
+        Schema::create('penyaluran_bantuan_rastra', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(BantuanRastra::class)
                 ->nullable()

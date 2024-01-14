@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Imports;
 
 use App\Models\BantuanPpks as DataPpks;
@@ -13,20 +15,21 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Str;
 
-class ImportBantuanPpks implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
+final class ImportBantuanPpks implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
     /**
      * @return \Illuminate\Database\Eloquent\Model|\App\Models\BantuanPkh|null
      */
     public function model(array $row): Model|DataPpks|null
     {
-        $provinsi = Provinsi::query()->where('name', \Str::ucfirst($row['nama_prop']))->first()->code;
-        $kabupaten = Kabupaten::query()->where('name', \Str::ucfirst($row['nama_kab']))->first()->code;
-        $kecamatan = Kecamatan::query()->where('name', \Str::ucfirst($row['nama_kec']))->first()->code;
-        $kelurahan = Kelurahan::query()->where('name', \Str::ucfirst($row['nama_kel']))->first()->code;
+        $provinsi = Provinsi::query()->where('name', Str::ucfirst($row['nama_prop']))->first()->code;
+        $kabupaten = Kabupaten::query()->where('name', Str::ucfirst($row['nama_kab']))->first()->code;
+        $kecamatan = Kecamatan::query()->where('name', Str::ucfirst($row['nama_kec']))->first()->code;
+        $kelurahan = Kelurahan::query()->where('name', Str::ucfirst($row['nama_kel']))->first()->code;
 
-        $jenisBantuan = JenisBantuan::where('alias', \Str::upper($row['bansos']))->first()->id;
+        $jenisBantuan = JenisBantuan::where('alias', Str::upper($row['bansos']))->first()->id;
         $ttl = explode(',', $row['tempat_tanggal_lahir']);
         if (isset($ttl[0])) {
             $tempat = $ttl[0];

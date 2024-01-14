@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\MutasiBpjsResource\Pages;
 
 use App\Filament\Resources\MutasiBpjsResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageMutasiBpjs extends ManageRecords
+final class ManageMutasiBpjs extends ManageRecords
 {
     protected static string $resource = MutasiBpjsResource::class;
 

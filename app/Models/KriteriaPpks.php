@@ -7,7 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class KriteriaPpks extends Model
+final class KriteriaPpks extends Model
 {
     protected $table = 'kriteria_ppks';
 

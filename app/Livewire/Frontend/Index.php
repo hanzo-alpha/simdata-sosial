@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Frontend;
 
 use Akaunting\Apexcharts\Chart;
@@ -10,7 +12,7 @@ use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use Livewire\Component;
 
-class Index extends Component
+final class Index extends Component
 {
     public function render()
     {
@@ -22,7 +24,7 @@ class Index extends Component
             'ppks' => BantuanPpks::count(),
         ];
 
-        $chart = (new Chart)->setType('donut')
+        $chart = (new Chart())->setType('donut')
             ->setWidth('100%')
             ->setHeight(500)
 //            ->setLegendFontFamily('Poppins')

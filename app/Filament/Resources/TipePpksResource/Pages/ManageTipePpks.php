@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\TipePpksResource\Pages;
 
 use App\Filament\Resources\TipePpksResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageTipePpks extends ManageRecords
+final class ManageTipePpks extends ManageRecords
 {
     protected static string $resource = TipePpksResource::class;
 

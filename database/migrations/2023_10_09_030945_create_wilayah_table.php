@@ -6,16 +6,15 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
-        Schema::create('provinsi', static function (Blueprint $table) {
+        Schema::create('provinsi', static function (Blueprint $table): void {
             $table->char('code', 2)->primary();
             $table->string('name', 255);
         });
 
-        Schema::create('kabupaten', static function (Blueprint $table) {
+        Schema::create('kabupaten', static function (Blueprint $table): void {
             $table->char('code', 4)->primary();
             $table->char('provinsi_code', 2);
             $table->string('name', 255);
@@ -26,7 +25,7 @@ return new class extends Migration
                 ->restrictOnDelete();
         });
 
-        Schema::create('kecamatan', static function (Blueprint $table) {
+        Schema::create('kecamatan', static function (Blueprint $table): void {
             $table->char('code', 7)->primary();
             $table->char('kabupaten_code', 4);
             $table->string('name', 255);
@@ -37,7 +36,7 @@ return new class extends Migration
                 ->restrictOnDelete();
         });
 
-        Schema::create('kelurahan', static function (Blueprint $table) {
+        Schema::create('kelurahan', static function (Blueprint $table): void {
             $table->char('code', 10)->primary();
             $table->char('kecamatan_code', 7);
             $table->string('name', 255);

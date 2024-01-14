@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KriteriaPpksResource\Pages;
@@ -13,7 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
-class KriteriaPpksResource extends Resource
+final class KriteriaPpksResource extends Resource
 {
     protected static ?string $model = KriteriaPpks::class;
 
@@ -54,11 +56,11 @@ class KriteriaPpksResource extends Resource
                     ->label('Kriteria Tipe PPKS')
                     ->suffixBadges([
                         Badge::make('tipe_ppks.nama_tipe')
-                            ->label(fn (Model $record) => $record->tipe_ppks()->first()->nama_tipe),
+                            ->label(fn(Model $record) => $record->tipe_ppks()->first()->nama_tipe),
                     ]),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -7,12 +7,12 @@ namespace App\Exports;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
-class ExportBantuanBpjs extends ExcelExport
+final class ExportBantuanBpjs extends ExcelExport
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn ($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
+        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
         $this->askForWriterType();
         $this->withColumns([
             Column::make('dtks_id')->heading('DTKS ID'),

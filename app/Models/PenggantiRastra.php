@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PenggantiRastra extends Model
+final class PenggantiRastra extends Model
 {
     protected $table = 'pengganti_rastra';
 

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Alamat extends Model
+final class Alamat extends Model
 {
     use HasWilayah;
 
@@ -15,6 +17,31 @@ class Alamat extends Model
     protected $appends = [
         'location',
     ];
+
+    /**
+     * Get the lat and lng attribute/field names used on this table
+     *
+     * Used by the Filament Google Maps package.
+     *
+     * @return string[]
+     */
+    public static function getLatLngAttributes(): array
+    {
+        return [
+            'lat' => 'latitude',
+            'lng' => 'longitude',
+        ];
+    }
+
+    /**
+     * Get the name of the computed location attribute
+     *
+     * Used by the Filament Google Maps package.
+     */
+    public static function getComputedLocation(): string
+    {
+        return 'location';
+    }
 
     public function alamatable(): MorphTo
     {
@@ -46,30 +73,5 @@ class Alamat extends Model
             $this->attributes['longitude'] = $location['lng'];
             unset($this->attributes['location']);
         }
-    }
-
-    /**
-     * Get the lat and lng attribute/field names used on this table
-     *
-     * Used by the Filament Google Maps package.
-     *
-     * @return string[]
-     */
-    public static function getLatLngAttributes(): array
-    {
-        return [
-            'lat' => 'latitude',
-            'lng' => 'longitude',
-        ];
-    }
-
-    /**
-     * Get the name of the computed location attribute
-     *
-     * Used by the Filament Google Maps package.
-     */
-    public static function getComputedLocation(): string
-    {
-        return 'location';
     }
 }

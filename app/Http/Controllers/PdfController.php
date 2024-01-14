@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\BantuanRastra;
+use Exception;
 use Illuminate\Http\Response;
 use LaravelDaily\Invoices\Classes\Buyer;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
 use LaravelDaily\Invoices\Invoice;
+use PDF;
 
-class PdfController extends Controller
+final class PdfController extends Controller
 {
     /**
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \Exception
+     * @throws Exception
      */
     public function download(BantuanRastra $record): Response
     {
@@ -43,7 +45,7 @@ class PdfController extends Controller
     public function downloadRastra()
     {
         $rastra = BantuanRastra::all();
-        $pdf = \PDF::loadView('pdf.rastra', compact('rastra'));
+        $pdf = PDF::loadView('pdf.rastra', compact('rastra'));
 
         return $pdf->stream('rastra.pdf');
     }
