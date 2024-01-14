@@ -6,7 +6,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
-use App\Filament\Resources\MutasiBpjsResource\RelationManagers;
 use App\Models\MutasiBpjs;
 use App\Models\PesertaBpjs;
 use Filament\Forms;
@@ -42,10 +41,8 @@ final class MutasiBpjsResource extends Resource
                     ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
                     ->searchPrompt('Cari peserta berdasarkan nomor kartu, nik, atau nama')
                     ->native(false)
-                    ->getOptionLabelFromRecordUsing(function ($record) {
-                        return "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik);
-                    })->allowHtml()
-                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
+                    ->getOptionLabelFromRecordUsing(fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
+                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
                         $peserta = PesertaBpjs::find($state);
                         if (isset($peserta) && $peserta->count() > 0) {
                             $set('nomor_kartu', $peserta->nomor_kartu);
