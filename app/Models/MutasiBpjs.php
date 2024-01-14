@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
-use App\Enums\StatusAktif;
+use App\Enums\StatusMutasi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,11 +22,11 @@ final class MutasiBpjs extends Model
 
     protected $casts = [
         'alasan_mutasi' => AlasanEnum::class,
-        'status_mutasi' => StatusAktif::class,
+        'status_mutasi' => StatusMutasi::class,
     ];
 
     public function peserta(): BelongsTo
     {
-        return $this->belongsTo(PesertaBpjs::class);
+        return $this->belongsTo(PesertaBpjs::class, 'peserta_bpjs_id', 'id');
     }
 }

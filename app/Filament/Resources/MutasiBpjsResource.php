@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
-use App\Filament\Resources\MutasiBpjsResource\Pages\ManageMutasiBpjs;
+use App\Filament\Resources\MutasiBpjsResource\Pages;
+use App\Filament\Resources\MutasiBpjsResource\RelationManagers;
 use App\Models\MutasiBpjs;
 use App\Models\PesertaBpjs;
 use Filament\Forms;
@@ -13,7 +14,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 final class MutasiBpjsResource extends Resource
@@ -21,17 +21,11 @@ final class MutasiBpjsResource extends Resource
     protected static ?string $model = MutasiBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $slug = 'mutasi-bpjs';
-
     protected static ?string $label = 'Mutasi BPJS';
-
     protected static ?string $pluralLabel = 'Mutasi BPJS';
-
     protected static ?string $navigationLabel = 'Mutasi BPJS';
-
     protected static ?string $navigationGroup = 'Program Sosial';
-
     protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
@@ -43,37 +37,51 @@ final class MutasiBpjsResource extends Resource
                     ->relationship('peserta', 'nama_lengkap')
                     ->live(onBlur: true)
                     ->required()
-                    ->minItems(1)
                     ->optionsLimit(20)
                     ->searchable(['nomor_kartu', 'nik', 'nama_lengkap'])
                     ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
                     ->searchPrompt('Cari peserta berdasarkan nomor kartu, nik, atau nama')
                     ->native(false)
-                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
-                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        return "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik);
+                    })->allowHtml()
+                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
                         $peserta = PesertaBpjs::find($state);
-                        $set('nomor_kartu', $peserta->nomor_kartu);
-                        $set('nik', $peserta->nik);
-                        $set('nama_lengkap', $peserta->nama_lengkap);
-                        $set('alamat_lengkap', $peserta->alamat);
+                        if (isset($peserta) && $peserta->count() > 0) {
+                            $set('nomor_kartu', $peserta->nomor_kartu);
+                            $set('nik', $peserta->nik);
+                            $set('nama_lengkap', $peserta->nama_lengkap);
+                            $set('alamat_lengkap', $peserta->alamat);
+                        } else {
+                            $set('nomor_kartu', null);
+                            $set('nik', null);
+                            $set('nama_lengkap', null);
+                            $set('alamat_lengkap', null);
+                        }
                     })
                     ->columnSpanFull(),
+
                 Forms\Components\TextInput::make('nomor_kartu')
                     ->disabled()
+                    ->dehydrated()
                     ->maxLength(13),
                 Forms\Components\TextInput::make('nik')
                     ->disabled()
+                    ->dehydrated()
                     ->maxLength(16),
                 Forms\Components\TextInput::make('nama_lengkap')
                     ->disabled()
+                    ->dehydrated()
                     ->maxLength(150),
                 Forms\Components\Textarea::make('alamat_lengkap')
                     ->disabled()
+                    ->dehydrated()
                     ->maxLength(65535)
                     ->autosize(),
                 Forms\Components\Textarea::make('keterangan')
                     ->maxLength(65535)
                     ->autosize()
+                    ->dehydrated()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('alasan_mutasi')
                     ->options(AlasanEnum::class)
@@ -81,11 +89,11 @@ final class MutasiBpjsResource extends Resource
                     ->preload()
                     ->lazy(),
                 ToggleButton::make('status_mutasi')
-                    ->label('Status Aktif')
+                    ->label('Status Peserta')
                     ->offColor('danger')
                     ->onColor('primary')
-                    ->offLabel('Non Aktif')
-                    ->onLabel('Aktif')
+                    ->offLabel('BATAL MUTASI')
+                    ->onLabel('DI MUTASI')
                     ->default(true),
             ]);
     }
@@ -106,17 +114,13 @@ final class MutasiBpjsResource extends Resource
                     ->label('NIK')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nama_lengkap')
-                    ->label('Nama Lengkap')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('alasan_mutasi')
                     ->label('Alasan Mutasi')
                     ->badge()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_mutasi')
-                    ->label('Status Aktif')
+                    ->label('Status Peserta')
                     ->badge()
                     ->sortable()
                     ->searchable(),
@@ -125,7 +129,6 @@ final class MutasiBpjsResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -139,7 +142,7 @@ final class MutasiBpjsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ManageMutasiBpjs::route('/'),
+            'index' => Pages\ManageMutasiBpjs::route('/'),
         ];
     }
 }
