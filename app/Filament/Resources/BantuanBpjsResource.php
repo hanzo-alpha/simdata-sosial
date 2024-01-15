@@ -83,7 +83,7 @@ class BantuanBpjsResource extends Resource
                                         'kabupaten_code',
                                         config('custom.default.kodekab')
                                     );
-                                    if (!$kab) {
+                                    if ( ! $kab) {
                                         return Kecamatan::where(
                                             'kabupaten_code',
                                             config('custom.default.kodekab')
