@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Imports;
 
 use App\Enums\StatusAktif;
@@ -9,7 +7,6 @@ use App\Enums\StatusUsulanEnum;
 use App\Models\BantuanBpjs as DataBantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +28,17 @@ use Maatwebsite\Excel\Validators\Failure;
 use Str;
 use Throwable;
 
-final class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnError, SkipsOnFailure, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
+class ImportBantuanBpjs implements
+    ShouldQueue,
+    SkipsEmptyRows,
+    SkipsOnError,
+    SkipsOnFailure,
+    ToModel,
+    WithBatchInserts,
+    WithChunkReading,
+    WithHeadingRow,
+    WithUpserts,
+    WithValidation
 {
     use Importable;
 
@@ -72,6 +79,8 @@ final class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnErr
         $bulan = (isset($row['periode_bulan']) && 0 !== $row['periode_bulan']) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;
 
         return new DataBantuanBpjs([
+            'nomor_kartu' => null,
+            'dtks_id' => Str::upper(Str::orderedUuid()->toString()),
             'nokk_tmt' => $row['no_kk'] ?? 'TIDAK ADA NOMOR KK',
             'nik_tmt' => $row['nik'] ?? 'TIDAK ADA NIK',
             'nama_lengkap' => $row['nama_lengkap'] ?? 'TIDAK ADA NAMA',
@@ -118,24 +127,30 @@ final class ImportBantuanBpjs implements ShouldQueue, SkipsEmptyRows, SkipsOnErr
     #[NoReturn]
     public function onError(Throwable $e): void
     {
+        //        Notification::make('Error Import')
+        //            ->title('Error Import Data BPJS')
+        //            ->body($e->getMessage())
+        //            ->danger()
+        //            ->sendToDatabase(auth()->user());
+
         Log::error($e);
     }
 
     public function onFailure(Failure ...$failures): void
     {
         foreach ($failures as $failure) {
-            Log::error($failure->errors()[0]);
-            //            $baris = $failure->row();
-            //            $errmsg = $failure->errors()[0];
-            //            $values = $failure->values();
-            //
+            $baris = $failure->row();
+            $errmsg = $failure->errors()[0];
+            $values = $failure->values();
+
             //            Notification::make('Failure Import')
             //                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-            //                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' .
-            //                $values['nama_lengkap'] ?? '-')
+            //                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' . $values['nama_lengkap'] ?? '-')
             //                ->danger()
             //                ->sendToDatabase(auth()->user())
             //                ->broadcast(User::where('is_admin', 1)->get());
+
+            Log::error($errmsg);
         }
     }
 

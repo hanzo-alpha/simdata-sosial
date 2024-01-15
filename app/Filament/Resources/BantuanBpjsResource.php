@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources;
 
 use App\Enums\JenisKelaminEnum;
@@ -30,20 +28,15 @@ use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-final class BantuanBpjsResource extends Resource
+class BantuanBpjsResource extends Resource
 {
     protected static ?string $model = BantuanBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-beaker';
-
     protected static ?string $slug = 'program-bpjs';
-
     protected static ?string $label = 'Program BPJS';
-
     protected static ?string $pluralLabel = 'Program BPJS';
-
     protected static ?string $navigationLabel = 'Program BPJS';
-
     protected static ?string $navigationGroup = 'Program Sosial';
 
     public static function form(Form $form): Form
@@ -90,7 +83,7 @@ final class BantuanBpjsResource extends Resource
                                         'kabupaten_code',
                                         config('custom.default.kodekab')
                                     );
-                                    if ( ! $kab) {
+                                    if (!$kab) {
                                         return Kecamatan::where(
                                             'kabupaten_code',
                                             config('custom.default.kodekab')
