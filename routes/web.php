@@ -22,6 +22,6 @@ Route::get('/', Index::class)->middleware('guest')->name('frontend');
 Route::middleware(['auth'])->group(function (): void {
     Route::controller(PdfController::class)->group(function (): void {
         Route::get('/download', 'download')->name('pdf.download');
-        Route::get('/download/{record}', 'downloadRastra')->name('pdf.rastra');
+        Route::get('/download', 'downloadRastra')->name('pdf.rastra');
     });
 });

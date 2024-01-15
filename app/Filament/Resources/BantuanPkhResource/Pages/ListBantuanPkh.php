@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\BantuanPkhResource\Pages;
 
+use App\Exports\ExportBantuanPkh;
 use App\Filament\Resources\BantuanPkhResource;
 use App\Imports\ImportBantuanPkh;
-use App\Models\BantuanPkh;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -14,6 +14,7 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
+use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 final class ListBantuanPkh extends ListRecords
 {
@@ -22,10 +23,18 @@ final class ListBantuanPkh extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Buat Baru')
+                ->icon('heroicon-o-plus'),
+            ExportAction::make()->label('Ekspor XLS')
+                ->color('info')
+                ->exports([
+                    ExportBantuanPkh::make()
+                        ->except(['created_at', 'updated_at', 'deleted_at']),
+                ]),
             Actions\Action::make('unggahData')
 //                ->model(BantuanPkh::class)
-                ->label('Unggah Data')
+                ->label('Impor XLS')
                 ->modalHeading('Unggah Data Bantuan PKH')
                 ->modalDescription('Unggah data PKH ke database dari file excel')
                 ->modalSubmitActionLabel('Unggah')

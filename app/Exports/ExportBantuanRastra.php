@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Exports;
 
 use App\Enums\StatusVerifikasiEnum;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
-final class ExportBantuanRastra extends ExcelExport
+class ExportBantuanRastra extends ExcelExport
 {
     public function setUp(): void
     {
