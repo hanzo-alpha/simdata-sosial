@@ -39,9 +39,11 @@ final class MutasiBpjsResource extends Resource
                     ->optionsLimit(20)
                     ->searchable(['nomor_kartu', 'nik', 'nama_lengkap'])
                     ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
-                    ->searchPrompt('Cari peserta berdasarkan nomor kartu, nik, atau nama')
+                    ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
                     ->native(false)
-                    ->getOptionLabelFromRecordUsing(fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
+                    ->getOptionLabelFromRecordUsing(fn(
+                        $record
+                    ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
                     ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
                         $peserta = PesertaBpjs::find($state);
                         if (isset($peserta) && $peserta->count() > 0) {

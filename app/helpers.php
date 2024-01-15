@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Carbon\Carbon;
 
 if ( ! function_exists('date_format')) {
@@ -27,7 +25,7 @@ if ( ! function_exists('hitung_umur')) {
 }
 
 if ( ! function_exists('bulan_to_integer')) {
-    function bulan_to_integer($bulan, $short = false): string
+    function bulan_to_integer($bulan, $short = false): ?string
     {
         $bulan = Str::upper($bulan);
 

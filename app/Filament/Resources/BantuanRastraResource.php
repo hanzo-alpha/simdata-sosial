@@ -22,7 +22,6 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -125,19 +124,6 @@ class BantuanRastraResource extends Resource
             ->deselectAllRecordsWhenFiltered()
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('pdf')
-                        ->label('PDF')
-                        ->color('success')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn(Model $record) => route('pdf.download', $record))
-//                        ->action(function (Model $record) {
-//                            return response()->streamDownload(function () use ($record) {
-//                                echo \Barryvdh\DomPDF\Facade\Pdf::loadHtml(
-//                                    Blade::render('pdf', ['record' => $record])
-//                                )->stream();
-//                            }, $record->id . '.pdf');
-//                        }),
-                        ->openUrlInNewTab(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
@@ -185,29 +171,6 @@ class BantuanRastraResource extends Resource
                                 ->weight(FontWeight::SemiBold)
                                 ->icon('heroicon-o-user')
                                 ->color('primary'),
-                            //                            TextEntry::make('notelp')
-                            //                                ->label('No. Telp/WA')
-                            //                                ->icon('heroicon-o-device-phone-mobile')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('tempat_lahir')
-                            //                                ->label('Tempat Lahir')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->icon('heroicon-o-home')
-                            //                                ->color('primary'),
-                            //                            TextEntry::make('tgl_lahir')
-                            //                                ->label('Tanggal Lahir')
-                            ////                                ->date('d F Y')
-                            //                                ->formatStateUsing(function ($record) {
-                            //                                    $tglLahir = Carbon::parse($record->tgl_lahir);
-                            //                                    $umur = hitung_umur($tglLahir);
-                            //
-                            //                                    $tgl = $tglLahir->format('d F Y');
-                            //                                    return $tgl . ' (' . $umur . ' tahun)';
-                            //                                })
-                            //                                ->icon('heroicon-o-calendar')
-                            //                                ->weight(FontWeight::SemiBold)
-                            //                                ->color('primary'),
 
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
@@ -226,15 +189,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn(
-                                    $record
-                                ) => $record->no_rt . '/' . $record->no_rw),
-                            //                            TextEntry::make('lat')
-                            //                                ->label('Latitude')
-                            //                                ->state('-'),
-                            //                            TextEntry::make('lng')
-                            //                                ->label('Longitude')
-                            //                                ->state('-'),
+                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 
@@ -251,14 +206,6 @@ class BantuanRastraResource extends Resource
                         ->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
                         ->schema([
-                            //                            ImageEntry::make('media_id')
-                            //                                ->hiddenLabel()
-                            //                                ->columnSpanFull()
-                            //                                ->alignCenter()
-                            //                                ->extraImgAttributes([
-                            //                                    'alt' => 'foto rumah',
-                            //                                    'loading' => 'lazy',
-                            //                                ]),
                             ImageEntry::make('foto_ktp_kk')
                                 ->hiddenLabel()
                                 ->columnSpanFull()
@@ -272,11 +219,6 @@ class BantuanRastraResource extends Resource
 
             ])->columns(3);
     }
-
-    //    public static function getNavigationBadge(): ?string
-    //    {
-    //        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
-    //    }
 
     public static function getWidgets(): array
     {

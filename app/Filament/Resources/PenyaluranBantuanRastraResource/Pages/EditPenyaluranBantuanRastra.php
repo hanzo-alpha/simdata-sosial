@@ -7,6 +7,7 @@ namespace App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Filament\Resources\PenyaluranBantuanRastraResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 final class EditPenyaluranBantuanRastra extends EditRecord
 {
@@ -15,6 +16,12 @@ final class EditPenyaluranBantuanRastra extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('pdf')
+                ->label('Print Dokumentasi')
+                ->color('success')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => $this->getModel()]))
+                ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
         ];
     }

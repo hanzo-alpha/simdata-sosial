@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources\JenisBantuanResource\Pages;
 
 use App\Filament\Resources\JenisBantuanResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
 final class ManageJenisBantuan extends ManageRecords
@@ -15,7 +14,6 @@ final class ManageJenisBantuan extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
         ];
     }
 }

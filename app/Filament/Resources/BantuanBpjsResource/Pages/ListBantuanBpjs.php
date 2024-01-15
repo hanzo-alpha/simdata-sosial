@@ -10,7 +10,6 @@ use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
-use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -60,17 +59,17 @@ final class ListBantuanBpjs extends ListRecords
                 ->action(function (array $data): void {
                     $import = new ImportBantuanBpjs();
                     $import->import($data['attachment'], 'public');
-                    if ($import) {
-                        Notification::make()
-                            ->title('Bantuan BPJS Berhasil di impor')
-                            ->success()
-                            ->sendToDatabase(auth()->user());
-                    } else {
-                        Notification::make()
-                            ->title('Bantuan BPJS Gagal di impor')
-                            ->danger()
-                            ->sendToDatabase(auth()->user());
-                    }
+                    //                    if ($import) {
+                    //                        Notification::make()
+                    //                            ->title('Bantuan BPJS Berhasil di impor')
+                    //                            ->success()
+                    //                            ->sendToDatabase(auth()->user());
+                    //                    } else {
+                    //                        Notification::make()
+                    //                            ->title('Bantuan BPJS Gagal di impor')
+                    //                            ->danger()
+                    //                            ->sendToDatabase(auth()->user());
+                    //                    }
                 })
                 ->icon('heroicon-o-arrow-up-tray')
                 ->modalAlignment(Alignment::Center)

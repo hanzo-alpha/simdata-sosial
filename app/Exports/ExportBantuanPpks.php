@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Exports;
 
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
-final class ExportBantuanPpks extends ExcelExport
+class ExportBantuanPpks extends ExcelExport
 {
     public function setUp(): void
     {

@@ -24,13 +24,13 @@ return new class () extends Migration {
             $table->tinyInteger('status_nikah')
                 ->nullable()
                 ->default(1);
-            $table->json('alamat');
+            $table->text('alamat');
             $table->string('kecamatan');
             $table->string('kelurahan');
             $table->string('dusun')->nullable();
-            $table->char('nort', 3)->nullable();
-            $table->char('norw', 3)->nullable();
-            $table->char('kodepos', 6)->nullable();
+            $table->char('nort', 5)->nullable();
+            $table->char('norw', 5)->nullable();
+            $table->char('kodepos', 10)->nullable();
             $table->unsignedBigInteger('jenis_bantuan_id')->nullable();
             $table->unsignedTinyInteger('status_aktif')
                 ->nullable()
