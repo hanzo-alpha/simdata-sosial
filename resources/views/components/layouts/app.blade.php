@@ -2,16 +2,15 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8"/>
-    <title>{{ $title ?? 'Home' }} | {{ config('custom.app.name') }}</title>
+    <title>{{ $title ?? 'Utama' }} | {{ config('custom.app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta
-        content="A fully responsive Tailwind CSS Multipurpose agency, application, business, clean, creative, cryptocurrency, it solutions, startup, career, blog, modern, creative, multipurpose, portfolio, saas, software, tailwind css, etc."
+        content="Sistem Aplikasi Rumah Terpadu Dinas Sosial Kabupaten Soppeng"
         name="description"/>
-    <meta content="coderthemes" name="author"/>
-
+    <meta content="reno" name="dinsos"/>
+    @livewireStyles
     <!-- Theme favicon -->
     <link rel="shortcut icon" href="{{ asset('logo-white.png') }}">
-    {{--    <link rel="shortcut icon" href="{{ asset('favicon-white.png') }}">--}}
 
     <!--Swiper slider css-->
     <link href="{{ asset('frontend/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css">
@@ -24,7 +23,7 @@
 
     <!-- Icons css -->
     <link href="{{ asset('frontend/css/icons.min.css') }}" rel="stylesheet" type="text/css">
-    @livewireStyles
+
 </head>
 <body class="text-gray-700">
 
@@ -96,10 +95,10 @@
         @if (Route::has('filament.admin.auth.login'))
             <div class="p-6 flex items-center justify-center">
                 @auth
-                    <a href="{{ url('/app') }}"
+                    <a href="{{ route('filament.admin.pages.dashboard') }}"
                        class="bg-primary w-full text-white p-3 rounded flex items-center
                         justify-center text-sm">
-                        App
+                        Dashboard
                     </a>
                 @else
                     <a href="{{ route('filament.admin.auth.login') }}"
@@ -129,7 +128,7 @@
         <div class="text-center mt-10">
             <p class="text-gray-600 mb-7">
                 <script>document.write(new Date().getFullYear())</script>
-                © RENO. All rights reserved. Dibuat Oleh
+                © RENO DINSOS. All rights reserved. Dibuat Oleh
                 <a href="https://github.com/hanzo-alpha"
                    target="_blank"
                    class="text-gray-800 hover:text-primary transition-all">
@@ -164,7 +163,7 @@
     <i class="fa-solid fa-arrow-up text-base"></i>
 </button>
 <!-- =========== Back To Top End =========== -->
-@livewireScripts
+@livewireScriptConfig
 <!-- Frost Plugin Js -->
 <script src="{{ asset('frontend/libs/@frostui/tailwindcss/frostui.js') }}" type="text/javascript"></script>
 

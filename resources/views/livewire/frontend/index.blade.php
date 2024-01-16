@@ -77,16 +77,18 @@
 
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                        <img src="{{ asset('frontend/images/hero/dashboard.png') }}" alt="saas1" class="rounded-md">
-                    </div>
-
-                    <div class="swiper-slide">
-                        <img src="{{ asset('frontend/images/hero/dashboard-dark1.png') }}" alt="saas2"
+                        <img src="{{ asset('frontend/images/hero/dashboard-dark1.png') }}" alt="dashboard-dark"
                              class="rounded-md">
                     </div>
 
                     <div class="swiper-slide">
-                        <img src="{{ asset('frontend/images/hero/dashboard1.png') }}" alt="saas3"
+                        <img src="{{ asset('frontend/images/hero/dashboard.png') }}" alt="dashboard"
+                             class="rounded-md">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <img src="{{ asset('frontend/images/hero/reno-penyaluran-rastra.png') }}"
+                             alt="penyaluran-rastra"
                              class="rounded-md">
                     </div>
                 </div>
@@ -142,7 +144,7 @@
                                 <div
                                     class="before:w-20 before:h-20 before:absolute before:-bottom-8 before:-start-8 before:bg-[url('../images/pattern/dot5.svg')]"></div>
                             </div>
-                            <div wire:poll="10s">
+                            <div wire:poll.keep-alive>
                                 {{ $chart->container() }}
                             </div>
                         </div>
@@ -163,7 +165,7 @@
                     {{--                <p class="text-slate-500">Saat ini program bantuan pada Dinas Sosial berjumlah 5 Program.</p>--}}
                 </div>
 
-                <div class="grid md:grid-cols-5 grid-cols-2 mt-14 gap-5 py-16" data-aos="fade-up" wire:poll="10s">
+                <div class="grid md:grid-cols-5 grid-cols-2 mt-14 gap-5 py-16" data-aos="fade-up" wire:poll.keep-alive>
                     <div class="text-center">
                         <h4 class="text-5xl mb-3 ">{{ Number::abbreviate($bantuan['bpjs'], 2) }}</h4>
                         <p class="text-slate-600">Program BPJS</p>

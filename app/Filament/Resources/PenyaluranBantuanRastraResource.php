@@ -24,6 +24,7 @@ class PenyaluranBantuanRastraResource extends Resource
     protected static ?string $slug = 'penyaluran-bantuan-rastra';
     protected static ?string $label = 'Penyaluran Rastra';
     protected static ?string $pluralLabel = 'Penyaluran Rastra';
+    protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 

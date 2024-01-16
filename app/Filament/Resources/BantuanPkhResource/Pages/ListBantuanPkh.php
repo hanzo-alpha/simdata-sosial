@@ -23,9 +23,9 @@ final class ListBantuanPkh extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->label('Buat Baru')
-                ->icon('heroicon-o-plus'),
+            //            Actions\CreateAction::make()
+            //                ->label('Buat Baru')
+            //                ->icon('heroicon-o-plus'),
             ExportAction::make()
                 ->label('Ekspor XLS')
                 ->color('info')

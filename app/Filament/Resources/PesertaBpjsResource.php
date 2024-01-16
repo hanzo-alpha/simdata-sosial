@@ -18,15 +18,11 @@ final class PesertaBpjsResource extends Resource
     protected static ?string $model = PesertaBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $slug = 'peserta-bpjs';
-
     protected static ?string $label = 'Peserta BPJS';
-
     protected static ?string $pluralLabel = 'Peserta BPJS';
-
     protected static ?string $navigationLabel = 'Peserta BPJS';
-
+    protected static ?string $navigationParentItem = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
 
     protected static ?int $navigationSort = 8;
@@ -81,15 +77,18 @@ final class PesertaBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
+                    ->wrap()
                     ->searchable(),
             ])
             ->filters([
 
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

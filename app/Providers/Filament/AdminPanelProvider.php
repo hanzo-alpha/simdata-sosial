@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Dashboard;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
@@ -36,7 +37,6 @@ class AdminPanelProvider extends PanelProvider
             ->path('dashboard')
             ->spa()
             ->login()
-            ->profile()
             ->passwordReset()
             ->maxContentWidth(MaxWidth::Full)
             ->colors([
@@ -95,7 +95,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->font(config('custom.app.font', 'Inter'))
             ->pages([
-                //                Pages\Dashboard::class,
+                Dashboard::class,
             ])
             ->navigationGroups([
                 NavigationGroup::make('program sosial')
@@ -125,10 +125,10 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
-            ])
+            ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([

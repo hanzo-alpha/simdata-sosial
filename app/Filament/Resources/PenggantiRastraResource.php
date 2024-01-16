@@ -20,15 +20,11 @@ final class PenggantiRastraResource extends Resource
     protected static ?string $model = PenggantiRastra::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-up-tray';
-
     protected static ?string $slug = 'pengganti-rastra';
-
     protected static ?string $label = 'Pengganti RASTRA';
-
     protected static ?string $pluralLabel = 'Pengganti RASTRA';
-
     protected static ?string $navigationLabel = 'Pengganti RASTRA';
-
+    protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
 
     protected static ?int $navigationSort = 6;
@@ -53,7 +49,9 @@ final class PenggantiRastraResource extends Resource
                         ->orWhere('nik', 'like', "%{$search}%")
                         ->orWhere('nokk', 'like', "%{$search}%")
                         ->limit(50)->pluck('nik', 'id')->toArray())
-                    ->getOptionLabelFromRecordUsing(fn($record) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
+                    ->getOptionLabelFromRecordUsing(fn(
+                        $record
+                    ) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')
