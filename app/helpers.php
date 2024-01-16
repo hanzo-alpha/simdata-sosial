@@ -2,14 +2,14 @@
 
 use Carbon\Carbon;
 
-if (!function_exists('date_format')) {
+if ( ! function_exists('date_format')) {
     function date_format($date, $format): string
     {
         return Carbon::createFromFormat('Y-m-d', $date)->format($format);
     }
 }
 
-if (!function_exists('hitung_umur')) {
+if ( ! function_exists('hitung_umur')) {
     function hitung_umur($date, $format = false): string
     {
         $date = $date instanceof Carbon ? $date->format('Y-m-d') : Carbon::parse($date)->format('Y-m-d');
@@ -24,7 +24,7 @@ if (!function_exists('hitung_umur')) {
     }
 }
 
-if (!function_exists('bulan_to_integer')) {
+if ( ! function_exists('bulan_to_integer')) {
     function bulan_to_integer($bulan, $short = false): ?string
     {
         $bulan = Str::upper($bulan);
@@ -65,7 +65,7 @@ if (!function_exists('bulan_to_integer')) {
     }
 }
 
-if (!function_exists('bulan_to_string')) {
+if ( ! function_exists('bulan_to_string')) {
     function bulan_to_string(int|string $bulan, $short = false): string
     {
         $bulan = is_int($bulan) ? $bulan : (int) $bulan;
@@ -103,7 +103,7 @@ if (!function_exists('bulan_to_string')) {
         };
     }
 
-    if (!function_exists('bulan_to_string')) {
+    if ( ! function_exists('bulan_to_string')) {
         function bulan_to_string(int|string $bulan, $short = false): string
         {
             $bulan = is_int($bulan) ? $bulan : (int) $bulan;
@@ -142,7 +142,7 @@ if (!function_exists('bulan_to_string')) {
         }
     }
 
-    if (!function_exists('convertToRoman')) {
+    if ( ! function_exists('convertToRoman')) {
         function convertToRoman($integer): string
         {
             // Convert the integer into an integer (just to make sure)
