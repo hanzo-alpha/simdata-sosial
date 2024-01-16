@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Supports;
 
 use App\Models\ActiveAsset;
+use App\Models\BantuanRastra;
 use App\Models\Brand;
 use App\Models\Location;
 use App\Models\Store;
@@ -13,17 +14,17 @@ use Spatie\Valuestore\Valuestore;
 
 final class Helpers
 {
-    public static function generateKodeAset(): string
+    public static function generateNoSuratBeritaAcara($sep = '/'): string
     {
-        $length = self::setting()->get('format_kode')['panjang_autonumber'] ?? config('custom.generator_length');
-        $pad = self::setting()->get('format_kode')['pad'] ?? config('custom.pad');
-        $separator = self::setting()->get('format_kode')['pemisah'] ?? config('custom.separator');
-        $max = ActiveAsset::max('id') + 1;
-        $kodeAset = Str::padLeft($max, $length, $pad);
-        $prefix = self::setting()->get('format_kode')['suffix'] ?? 'INV';
-        $suffix = now()->year;
+        $text = 'BAST-RASTRA/DINSOS';
+        $pad = '0';
+        $sep ??= '/';
+        $bulan = convertToRoman(now()->month);
+        $tahun = now()->year;
+        $max = BantuanRastra::max('id') + 1;
+        $kodeAset = Str::padLeft($max, 2, $pad);
 
-        return $kodeAset . $separator . $prefix . $separator . $suffix;
+        return $kodeAset . $sep . $text . $sep . $bulan . $sep . $tahun;
     }
 
     public static function hitungNilaiResidu($nilai, $tahun = 5): float|int

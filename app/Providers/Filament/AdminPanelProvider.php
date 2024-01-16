@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Providers\Filament;
 
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -25,13 +24,13 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
-final class AdminPanelProvider extends PanelProvider
+class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->topNavigation()
+//            ->topNavigation()
 //            ->sidebarCollapsibleOnDesktop()
             ->id('admin')
             ->path('dashboard')
@@ -82,6 +81,7 @@ final class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Dashboard Bantuan')
                     ->navigationSort(3)
                     ->navigationCountBadge(),
+                FilamentJobsMonitorPlugin::make()
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')

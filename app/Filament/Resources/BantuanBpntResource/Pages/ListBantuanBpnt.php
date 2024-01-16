@@ -52,16 +52,18 @@ final class ListBantuanBpnt extends ListRecords
                 ->action(function (array $data): void {
                     $import = new ImportBantuanBpnt();
                     $import->import($data['attachment'], 'public');
-                    //                    $import = Excel::import(new ImportBantuanBpnt, $data['attachment'], 'public');
+
                     if ($import) {
                         Notification::make()
                             ->title('Data Bantuan BPNT Berhasil di impor')
                             ->success()
+                            ->send()
                             ->sendToDatabase(auth()->user());
                     } else {
                         Notification::make()
                             ->title('Data Bantuan BPNT Gagal di impor')
                             ->danger()
+                            ->send()
                             ->sendToDatabase(auth()->user());
                     }
                 })

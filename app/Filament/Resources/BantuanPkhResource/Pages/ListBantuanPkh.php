@@ -26,7 +26,8 @@ final class ListBantuanPkh extends ListRecords
             Actions\CreateAction::make()
                 ->label('Buat Baru')
                 ->icon('heroicon-o-plus'),
-            ExportAction::make()->label('Ekspor XLS')
+            ExportAction::make()
+                ->label('Ekspor XLS')
                 ->color('info')
                 ->exports([
                     ExportBantuanPkh::make()
@@ -61,7 +62,6 @@ final class ListBantuanPkh extends ListRecords
                 ->action(function (array $data): void {
                     $import = new ImportBantuanPkh();
                     $import->import($data['attachment'], 'public');
-                    //                    $import = Excel::import(new ImportBantuanPkh, $data['attachment'], 'public');
 
                     if ($import) {
                         Notification::make()

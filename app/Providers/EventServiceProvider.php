@@ -7,7 +7,6 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 final class EventServiceProvider extends ServiceProvider
 {
@@ -25,7 +24,17 @@ final class EventServiceProvider extends ServiceProvider
     /**
      * Register any events for your application.
      */
-    public function boot(): void {}
+    public function boot(): void
+    {
+        //        Event::listen(function (QueueBusy $event) {
+        //            Notification::route('mail', 'dev@example.com')
+        //                ->notify(new QueueHasLongWaitTime(
+        //                    $event->connection,
+        //                    $event->queue,
+        //                    $event->size
+        //                ));
+        //        });
+    }
 
     /**
      * Determine if events and listeners should be automatically discovered.

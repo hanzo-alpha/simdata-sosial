@@ -22,6 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -123,6 +124,12 @@ class BantuanRastraResource extends Resource
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
+                Tables\Actions\Action::make('cetak')
+                    ->label('Cetak BA')
+                    ->color('success')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
+                    ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),

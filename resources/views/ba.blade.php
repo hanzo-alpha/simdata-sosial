@@ -1,0 +1,117 @@
+@php use App\Supports\Helpers; @endphp
+<x-layouts.print>
+    @section('content')
+        <div class="text-center">
+            <img src="{{ asset('images/logos/logo-soppeng2.png') }}" alt="logo" height="60">
+            <h2 style="margin-bottom: 5px;"><strong>PEMERINTAH KABUPATEN SOPPENG</strong></h2>
+            <h1 style="margin-top: 3px;margin-bottom: 5px;"><strong>DINAS SOSIAL</strong></h1>
+            {{--                <p style="margin-top: 0">--}}
+            {{--                    {{ __('invoices::invoice.address') }}: {{ $invoice->seller->address }}--}}
+            {{--                </p>--}}
+            <p class="pt-0">
+                <span
+                    style="font-style: italic">Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng</span><br>
+                <span style="font-style: italic" class="mt-1">Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com</span>
+            </p>
+            <hr>
+            <p style="font-size: 12px;">
+                <span style="text-decoration-line: underline ">
+                    <strong>{{ Str::upper('Berita Acara Serah Terima Barang') }}</strong>
+                </span><br>
+                <span>Nomor : {{ Helpers::generateNoSuratBeritaAcara() }}</span>
+            </p>
+        </div>
+        <p style="font-size: 12px;">Pada hari ini {{ now()->dayName }}
+            Tanggal {{ now()->day }} {{ now()->monthName }} {{ now()->year }}
+            Bertempat di Desa Citta Dilakukan serah terima barang Bantuan Sosial Pangan Beras Sejahtera
+        </p>
+        <p style="font-size: 12px;">
+            Yang bertanda tangan dibawah ini :
+        </p>
+        <table class="table">
+            <tbody>
+            <tr class="pb-0">
+                <th width="5%" style="text-align: left">1</th>
+                <th width="20%" style="text-align: left">NAMA</th>
+                <th width="10%" style="text-align: left">:</th>
+                <td width="87%" style="text-align: left">RUDI</td>
+            </tr>
+            <tr class="pb-0">
+                <th width="20%" style="text-align: right">NIK</th>
+                <th width="10%" style="text-align: right">:</th>
+                <td>7312033112710111</td>
+            </tr>
+            <tr class="pb-0">
+                <th width="20%" style="text-align: right">ALAMAT</th>
+                <th width="10%" style="text-align: right">:</th>
+                <td>LOMPULLE RT 01 RW 04</td>
+            </tr>
+            <tr class="pb-0">
+                <th width="20%" style="text-align: right">DESA/KEL</th>
+                <th width="10%" style="text-align: right">:</th>
+                <td>KEBO</td>
+            </tr>
+            <tr class="pb-0">
+                <th width="20%" style="text-align: right">KECAMATAN</th>
+                <th width="10%" style="text-align: right">:</th>
+                <td>LILIRILAU</td>
+            </tr>
+            <tr class="pb-0">
+                <th width="20%" style="text-align: right">DTKS ID</th>
+                <th width="10%" style="text-align: right">:</th>
+                <td>817BB1FF-E6A7-4C11-BBDA-80255EB88359</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-items">
+            <thead>
+            <tr>
+                <th scope="col" class="border-0 pl-0">No.</th>
+                <th scope="col" class="text-center border-0">Uraian Jenis Barang/Jasa Lainnya</th>
+                <th scope="col" class="text-center border-0">Kuantitas</th>
+                <th scope="col" class="text-center border-0">Satuan</th>
+                <th scope="col" class="text-center border-0">Harga Satuan (RP)</th>
+                <th scope="col" class="text-center border-0">Jumlah Harga (Rp)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    1
+                </td>
+                <td>
+                    Beras Premium
+                </td>
+                <td>
+                    600
+                </td>
+                <td>
+                    Kg
+                </td>
+                <td>
+                    12.000
+                </td>
+                <td>
+                    7.200.000
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="border-0"></td>
+                <td class="text-right pl-0">Total Harga
+                <td class="text-right pr-0">
+                    0
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" class="border-0 text-center">Terbilang</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>Demikian Berita Acara Penyerahan Hasil Pekerjaan ini dibuat dalam rangkap secukupnya untuk dipergunakan
+            sebagiamana mestinya.
+        </p>
+
+    @endsection
+</x-layouts.print>
