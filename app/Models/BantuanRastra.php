@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
@@ -26,7 +24,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Str;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-final class BantuanRastra extends Model
+class BantuanRastra extends Model
 {
     use HasTambahan;
     use HasWilayah;
@@ -43,6 +41,7 @@ final class BantuanRastra extends Model
         'pengganti_rastra' => 'array',
         'status_rastra' => StatusRastra::class,
         'status_aktif' => StatusAktif::class,
+        'status_verifikasi' => StatusVerifikasiEnum::class
     ];
 
     public static function getLatLngAttributes(): array
@@ -128,7 +127,7 @@ final class BantuanRastra extends Model
                         ->reactive()
                         ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
-                            if ( ! $kab) {
+                            if (!$kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }

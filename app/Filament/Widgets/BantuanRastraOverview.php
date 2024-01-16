@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Widgets;
 
 use App\Enums\StatusVerifikasiEnum;
@@ -11,7 +9,7 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 
-final class BantuanRastraOverview extends BaseWidget
+class BantuanRastraOverview extends BaseWidget
 {
     use HasWidgetShield;
 
@@ -25,7 +23,7 @@ final class BantuanRastraOverview extends BaseWidget
 
         return [
             Stat::make(
-                label: 'KPM RASTRA Tidak Terverifikasi',
+                label: 'KPM RASTRA',
                 value: BantuanRastra::query()
                     ->when($dateRange, function (Builder $query) use ($dateRange) {
                         $dates = explode('-', $dateRange);
@@ -34,16 +32,57 @@ final class BantuanRastraOverview extends BaseWidget
                             ->whereDate('created_at', '>=', $dates[0])
                             ->whereDate('created_at', '<=', $dates[1]);
                     })
-                    ->when($kecamatan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kec', fn(Builder $query) => $query->where('code', $kecamatan))))
-                    ->when($kelurahan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kel', fn(Builder $query) => $query->where('code', $kelurahan))))
+                    ->when($kecamatan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('code', $kecamatan)
+                        )
+                    ))
+                    ->when($kelurahan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kel',
+                            fn(Builder $query) => $query->where('code', $kelurahan)
+                        )
+                    ))
+                    ->count()
+            )
+                ->description('Total Jumlah Seluruh KPM RASTRA')
+                ->descriptionIcon('heroicon-o-users')
+                ->color('primary'),
+            Stat::make(
+                label: 'KPM RASTRA UNVERIFIED',
+                value: BantuanRastra::query()
+                    ->when($dateRange, function (Builder $query) use ($dateRange) {
+                        $dates = explode('-', $dateRange);
+
+                        return $query
+                            ->whereDate('created_at', '>=', $dates[0])
+                            ->whereDate('created_at', '<=', $dates[1]);
+                    })
+                    ->when($kecamatan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('code', $kecamatan)
+                        )
+                    ))
+                    ->when($kelurahan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kel',
+                            fn(Builder $query) => $query->where('code', $kelurahan)
+                        )
+                    ))
                     ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
                     ->count()
             )
-                ->description('Total KPM RASTRA yang belum terverifikasi')
+                ->description('Total KPM RASTRA Belum Diverifikasi')
                 ->descriptionIcon('heroicon-o-document-minus')
                 ->color('danger'),
             Stat::make(
-                label: 'KPM RASTRA Terverifikasi',
+                label: 'KPM RASTRA VERIFIED',
                 value: BantuanRastra::query()
                     ->when($dateRange, function (Builder $query) use ($dateRange) {
                         $dates = explode('-', $dateRange);
@@ -52,16 +91,28 @@ final class BantuanRastraOverview extends BaseWidget
                             ->whereDate('created_at', '>=', $dates[0])
                             ->whereDate('created_at', '<=', $dates[1]);
                     })
-                    ->when($kecamatan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kec', fn(Builder $query) => $query->where('code', $kecamatan))))
-                    ->when($kelurahan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kel', fn(Builder $query) => $query->where('code', $kelurahan))))
+                    ->when($kecamatan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('code', $kecamatan)
+                        )
+                    ))
+                    ->when($kelurahan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kel',
+                            fn(Builder $query) => $query->where('code', $kelurahan)
+                        )
+                    ))
                     ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
                     ->count()
             )
-                ->description('Total KPM RASTRA yang sudah terverifikasi')
+                ->description('Total KPM RASTRA Sudah Di Verifikasi')
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success'),
             Stat::make(
-                label: 'KPM RASTRA Ditinjau',
+                label: 'KPM RASTRA REVIEW',
                 value: BantuanRastra::query()
                     ->when($dateRange, function (Builder $query) use ($dateRange) {
                         $dates = explode('-', $dateRange);
@@ -70,14 +121,26 @@ final class BantuanRastraOverview extends BaseWidget
                             ->whereDate('created_at', '>=', $dates[0])
                             ->whereDate('created_at', '<=', $dates[1]);
                     })
-                    ->when($kecamatan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kec', fn(Builder $query) => $query->where('code', $kecamatan))))
-                    ->when($kelurahan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kel', fn(Builder $query) => $query->where('code', $kelurahan))))
+                    ->when($kecamatan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('code', $kecamatan)
+                        )
+                    ))
+                    ->when($kelurahan, fn(Builder $query) => $query->whereHas(
+                        'alamat',
+                        fn(Builder $query) => $query->whereHas(
+                            'kel',
+                            fn(Builder $query) => $query->where('code', $kelurahan)
+                        )
+                    ))
                     ->where('status_verifikasi', StatusVerifikasiEnum::REVIEW)
                     ->count()
             )
-                ->description('Total KPM RASTRA dalam proses peninjauan')
+                ->description('KPM RASTRA Sedang Di Tinjau')
                 ->descriptionIcon('heroicon-o-exclamation-circle')
-                ->color('info'),
+                ->color('warning'),
         ];
     }
 }

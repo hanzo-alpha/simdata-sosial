@@ -10,4 +10,10 @@ use Filament\Resources\Pages\CreateRecord;
 final class CreateBantuanPkh extends CreateRecord
 {
     protected static string $resource = BantuanPkhResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['kode_wilayah'] = $data['kelurahan'];
+        return $data;
+    }
 }

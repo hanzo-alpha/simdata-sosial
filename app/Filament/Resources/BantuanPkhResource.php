@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Exports\ExportBantuanPkh;
 use App\Filament\Resources\BantuanPkhResource\Pages;
 use App\Models\BantuanPkh;
 use App\Models\Kabupaten;
@@ -19,6 +20,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Str;
 
 final class BantuanPkhResource extends Resource
 {
@@ -37,37 +40,53 @@ final class BantuanPkhResource extends Resource
         return $form
             ->schema([
                 Section::make('Data Pribadi')->schema([
-                    TextInput::make('dtks_id'),
-                    TextInput::make('nokk'),
-                    TextInput::make('nik_ktp'),
-                    TextInput::make('nama_penerima'),
+                    TextInput::make('dtks_id')
+                        ->required()
+                        ->default(Str::upper(Str::orderedUuid()->toString()))
+                        ->maxLength(36),
+                    TextInput::make('nokk')
+                        ->required(),
+                    TextInput::make('nik_ktp')
+                        ->required(),
+                    TextInput::make('nama_penerima')
+                        ->required(),
                 ])
                     ->columns(2),
                 Section::make('Data Bantuan')->schema([
-                    TextInput::make('tahap'),
-                    TextInput::make('bansos'),
-                    TextInput::make('bank'),
-                    TextInput::make('nominal'),
-                    TextInput::make('dir'),
-                    TextInput::make('gelombang'),
+                    TextInput::make('tahap')
+                        ->default(1),
+                    TextInput::make('bansos')
+                        ->default('PKH'),
+                    TextInput::make('bank')
+                        ->default('MANDIRI'),
+                    TextInput::make('nominal')
+                        ->default(0)
+                        ->numeric(),
+                    TextInput::make('dir')
+                        ->default('DIR REHSOS'),
+                    TextInput::make('gelombang')
+                        ->default('GEL 1'),
                 ])
 //                    ->visibleOn(['edit', 'view'])
                     ->columns(2),
                 Section::make('Data Alamat')->schema([
-                    TextInput::make('alamat')->columnSpanFull(),
+                    TextInput::make('alamat')
+                        ->required()
+                        ->columnSpanFull(),
                     Grid::make()->schema([
                         Select::make('provinsi')
                             ->nullable()
                             ->searchable()
                             ->reactive()
                             ->options(Provinsi::pluck('name', 'code'))
+                            ->default(config('custom.default.kodeprov'))
                             ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
 
                         Select::make('kabupaten')
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if ( ! $kab) {
+                                if (!$kab) {
                                     return Kabupaten::where('code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -75,6 +94,7 @@ final class BantuanPkhResource extends Resource
                                 return $kab->pluck('name', 'code');
                             })
                             ->reactive()
+                            ->default(config('custom.default.kodekab'))
                             ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
                             ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
@@ -88,7 +108,7 @@ final class BantuanPkhResource extends Resource
                             ->reactive()
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if ( ! $kab) {
+                                if (!$kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -101,7 +121,7 @@ final class BantuanPkhResource extends Resource
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if ( ! $kel) {
+                                if (!$kel) {
                                     return Kelurahan::where('kecamatan_code', '731211')
                                         ->pluck('name', 'code');
                                 }
@@ -197,20 +217,20 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()
                     ->toggleable()
-//                    ->description(fn($record) => 'Kec. ' . $record->kec()->get()->first()->name . ' | Kel. ' .
-//                        $record->kel()->get()->first()->name)
+                    ->description(fn($record) => 'Kec. ' . $record->kec()->get()->first()->name . ' | Kel. ' .
+                        $record->kel()->get()->first()->name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
                     ->sortable()
                     ->toggleable()
-//                    ->toggledHiddenByDefault()
+                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->sortable()
                     ->toggleable()
-//                    ->toggledHiddenByDefault()
+                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('no_rt')
                     ->label('No. RT')
@@ -240,22 +260,22 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('status_pkh')
                     ->label('Status')
                     ->alignCenter()
+                    ->toggleable()
+                    ->toggledHiddenByDefault()
                     ->badge()
                     ->sortable()
                     ->searchable(),
             ])
             ->searchPlaceholder('Cari...')
             ->filters([
-                //                Tables\Filters\SelectFilter::make('kecamatan')
-                //                    ->relationship('kec', 'name')
-                //                    ->searchable()
-                //                    ->optionsLimit(10)
-                //                    ->preload(),
-                //                Tables\Filters\SelectFilter::make('kelurahan')
-                //                    ->relationship('kel', 'name')
-                //                    ->searchable()
-                //                    ->optionsLimit(10)
-                //                    ->preload(),
+                Tables\Filters\SelectFilter::make('kecamatan')
+                    ->relationship('kec', 'name')
+                    ->searchable()
+                    ->optionsLimit(10),
+                Tables\Filters\SelectFilter::make('kelurahan')
+                    ->relationship('kel', 'name')
+                    ->searchable()
+                    ->optionsLimit(10),
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal'),
             ])
@@ -268,6 +288,14 @@ final class BantuanPkhResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->label('Ekspor XLS yang dipilih')
+                        ->color('primary')
+                        ->icon('heroicon-o-arrow-up-tray')
+                        ->exports([
+                            ExportBantuanPkh::make()
+                                ->except(['created_at', 'updated_at', 'deleted_at']),
+                        ]),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

@@ -22,7 +22,6 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -64,37 +63,47 @@ class BantuanRastraResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->description(fn($record) => $record->nik)
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
                     ->label('N I K')
                     ->alignCenter()
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->alignCenter()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nama_lengkap')
-                    ->label('Nama Lengkap')
-                    ->sortable()
-                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('alamat_lengkap')
                     ->label('Alamat')
-                    ->words(5)
+//                    ->words(5)
                     ->sortable()
+                    ->wrap()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
-                    ->label('Jenis Bantuan')
-                    ->badge()
-                    ->alignCenter()
-                    ->searchable()
-                    ->color(fn($record): string => $record->jenis_bantuan->warna)
-                    ->sortable(),
+                //                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
+                //                    ->label('Jenis Bantuan')
+                //                    ->badge()
+                //                    ->alignCenter()
+                //                    ->searchable()
+                //                    ->color(fn($record): string => $record->jenis_bantuan->warna)
+                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('status_rastra')
                     ->alignCenter()
                     ->searchable()
                     ->sortable()
-                    ->label('Status RASTRA')
+                    ->label('Status Rastra')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_verifikasi')
+                    ->alignCenter()
+                    ->searchable()
+                    ->sortable()
+                    ->label('Status Verifikasi')
                     ->badge(),
             ])
             ->filters([
@@ -124,12 +133,12 @@ class BantuanRastraResource extends Resource
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
-                Tables\Actions\Action::make('cetak')
-                    ->label('Cetak BA')
-                    ->color('success')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
-                    ->openUrlInNewTab(),
+                //                Tables\Actions\Action::make('cetak')
+                //                    ->label('Cetak BA')
+                //                    ->color('success')
+                //                    ->icon('heroicon-o-arrow-down-tray')
+                //                    ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
+                //                    ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Livewire\Frontend;
 
 use Akaunting\Apexcharts\Chart;
@@ -10,24 +8,38 @@ use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Livewire\Component;
 
-final class Index extends Component
+class Index extends Component
 {
-    public function render()
+    public function render(): View|Application|Factory
     {
-        $bantuan = [
+        $bantuan = $this->renderBantuan();
+        $chart = $this->renderChart($bantuan);
+
+        return view('livewire.frontend.index', compact('chart', 'bantuan'));
+    }
+
+    protected function renderBantuan(): array
+    {
+        return [
             'rastra' => BantuanRastra::count(),
             'bpjs' => BantuanBpjs::count(),
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
         ];
+    }
 
-        $chart = (new Chart())->setType('donut')
+    protected function renderChart(array $bantuan): Chart
+    {
+        return (new Chart())->setType('donut')
             ->setWidth('100%')
             ->setHeight(500)
-//            ->setLegendFontFamily('Poppins')
+            ->setLegendFontFamily('Poppins')
             ->setLegendFontSize('18')
             ->setLabels(['Program BPJS', 'Program RASTRA', 'Program PKH', 'Program BPNT', 'Program PPKS'])
             ->setDataset('Jumlah KPM Per Program Bantuan', 'donut', [
@@ -37,7 +49,5 @@ final class Index extends Component
                 $bantuan['bpnt'],
                 $bantuan['ppks'],
             ]);
-
-        return view('livewire.frontend.index', compact('chart', 'bantuan'));
     }
 }

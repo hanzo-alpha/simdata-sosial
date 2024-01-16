@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KriteriaPpksResource\Pages;
@@ -15,20 +13,16 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
-final class KriteriaPpksResource extends Resource
+class KriteriaPpksResource extends Resource
 {
     protected static ?string $model = KriteriaPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
-
     protected static ?string $slug = 'kriteria-ppks';
-
     protected static ?string $label = 'Kriteria PPKS';
-
     protected static ?string $pluralLabel = 'Kriteria PPKS';
-
     protected static ?string $navigationLabel = 'Kriteria PPKS';
-
+    protected static ?string $navigationParentItem = 'Tipe PPKS';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form

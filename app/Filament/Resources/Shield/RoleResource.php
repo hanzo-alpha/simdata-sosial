@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
 class RoleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationParentItem = 'Pengguna';
 
     protected static $permissionsCollection;
 
@@ -135,7 +136,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => ! blank($state))
+                                    ->dehydrated(fn($state) => !blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -194,7 +195,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => ! blank($state))
+                                    ->dehydrated(fn($state) => !blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -252,7 +253,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                         set: $set,
                                         resetState: true
                                     ))
-                                    ->dehydrated(fn($state) => ! blank($state))
+                                    ->dehydrated(fn($state) => !blank($state))
                                     ->bulkToggleable()
                                     ->gridDirection('row')
                                     ->columns(FilamentShieldPlugin::get()->getCheckboxListColumns())
@@ -554,7 +555,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                 $livewire,
                 Forms\Set $set
             ) => static::bulkToggleableAction($action, $component, $livewire, $set, true))
-            ->dehydrated(fn($state) => ! blank($state))
+            ->dehydrated(fn($state) => !blank($state))
             ->bulkToggleable()
             ->gridDirection('row')
             ->columns(FilamentShieldPlugin::get()->getResourceCheckboxListColumns());

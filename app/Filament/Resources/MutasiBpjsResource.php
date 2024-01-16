@@ -24,6 +24,7 @@ final class MutasiBpjsResource extends Resource
     protected static ?string $label = 'Mutasi BPJS';
     protected static ?string $pluralLabel = 'Mutasi BPJS';
     protected static ?string $navigationLabel = 'Mutasi BPJS';
+    protected static ?string $navigationParentItem = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 

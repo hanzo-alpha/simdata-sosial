@@ -6,6 +6,7 @@ namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Exports\ExportBantuanBpjs;
 use App\Filament\Resources\BantuanBpjsResource;
+use App\Filament\Widgets\BantuanBpjsOverview;
 use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
 use Filament\Actions;
@@ -20,10 +21,18 @@ final class ListBantuanBpjs extends ListRecords
 {
     protected static string $resource = BantuanBpjsResource::class;
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BantuanBpjsOverview::class,
+        ];
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            ExportAction::make()->label('Ekspor Data')
+            ExportAction::make()
+                ->label('Ekspor Data')
                 ->color('success')
                 ->exports([
                     ExportBantuanBpjs::make()
@@ -71,7 +80,7 @@ final class ListBantuanBpjs extends ListRecords
                     //                            ->sendToDatabase(auth()->user());
                     //                    }
                 })
-                ->icon('heroicon-o-arrow-up-tray')
+                ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.program-bpjs.index'))
