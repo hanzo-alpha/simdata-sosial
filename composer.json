@@ -19,6 +19,7 @@
         "bezhansalleh/filament-shield": "^3.0",
         "cheesegrits/filament-google-maps": "^3.0",
         "coolsam/flatpickr": "^3.0",
+        "croustibat/filament-jobs-monitor": "^2.1",
         "filament/filament": "^3.0",
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",

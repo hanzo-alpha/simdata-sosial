@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Imports;
 
 use App\Enums\StatusPkhBpntEnum;
@@ -11,31 +9,38 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use App\Models\User;
-use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Validators\Failure;
 use Str;
-use Throwable;
 
-final class ImportBantuanBpnt implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithUpserts, WithValidation
+class ImportBantuanBpnt implements
+    ShouldQueue,
+    SkipsEmptyRows,
+    ToModel,
+    WithBatchInserts,
+    WithChunkReading,
+    WithHeadingRow,
+    WithUpserts,
+    WithValidation
 {
     use Importable;
+    use SkipsErrors;
+    use SkipsFailures;
 
-    //    use SkipsFailures, SkipsErrors;
     /**
-     * @param  Collection  $collection
+     * @param  array  $row
+     * @return \Illuminate\Database\Eloquent\Model|\App\Models\BantuanBpnt|null
      */
     public function model(array $row): Model|DataBpnt|null
     {
@@ -89,12 +94,12 @@ final class ImportBantuanBpnt implements ShouldQueue, SkipsEmptyRows, ToModel, W
     public function rules(): array
     {
         return [
-            'nik_ktp' => Rule::unique('bantuan_pkh', 'nik_ktp'),
-            'iddtks' => Rule::unique('bantuan_pkh', 'dtks_id'),
+            'nik_ktp' => Rule::unique('bantuan_bpnt', 'nik_ktp'),
+            'iddtks' => Rule::unique('bantuan_bpnt', 'dtks_id'),
 
             // Above is alias for as it always validates in batches
-            '*.nik_ktp' => Rule::unique('bantuan_pkh', 'nik_ktp'),
-            '*.iddtks' => Rule::unique('bantuan_pkh', 'dtks_id'),
+            '*.nik_ktp' => Rule::unique('bantuan_bpnt', 'nik_ktp'),
+            '*.iddtks' => Rule::unique('bantuan_bpnt', 'dtks_id'),
 
             // Can also use callback validation rules
             //            '0' => function ($attribute, $value, $onFailure) {
@@ -105,12 +110,12 @@ final class ImportBantuanBpnt implements ShouldQueue, SkipsEmptyRows, ToModel, W
         ];
     }
 
-    //    public function onError(Throwable $e)
+    //    #[NoReturn] public function onError(Throwable $e): void
     //    {
     //        dd($e);
     //    }
     //
-    //    public function onFailure(Failure ...$failures)
+    //    public function onFailure(Failure ...$failures): void
     //    {
     //        if (!blank($failures)) {
     //            foreach ($failures as $failure) {

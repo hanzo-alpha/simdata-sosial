@@ -43,6 +43,7 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('roles_id')
                     ->relationship('roles', 'name')
+                    ->required()
                     ->preload()
                     ->searchable(),
             ]);
