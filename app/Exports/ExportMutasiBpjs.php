@@ -10,30 +10,21 @@ class ExportMutasiBpjs extends ExcelExport
     public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
+        $this->withFilename(fn($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
         $this->askForWriterType();
         $this->withColumns([
-            Column::make('dtks_id')->heading('DTKS ID'),
-            Column::make('nokk_tmt')->heading('No. KK'),
-            Column::make('nik_tmt')->heading('N I K'),
+            Column::make('id')->heading('NO'),
+            Column::make('peserta_bpjs_id')
+                ->formatStateUsing(fn($record) => $record->peserta->nama_lengkap)
+                ->heading('PESERTA BPJS ID'),
+            Column::make('nomor_kartu')->heading('No. KARTU'),
+            Column::make('nik')
+                ->formatStateUsing(fn($state) => "'".$state)
+                ->heading('N I K'),
             Column::make('nama_lengkap')->heading('Nama Lengkap'),
-            Column::make('tempat_lahir')->heading('Tempat Lahir'),
-            Column::make('tgl_lahir')->heading('Tgl. Lahir'),
-            Column::make('jenis_kelamin')->heading('Jenis Kelamin'),
-            Column::make('status_nikah')->heading('Status Nikah'),
-            Column::make('bulan')->heading('Periode'),
-            Column::make('tahun')->heading('Tahun'),
-            Column::make('alamat')->heading('Alamat'),
-            Column::make('kecamatan')->heading('Kecamatan'),
-            Column::make('kelurahan')->heading('Kelurahan'),
-            Column::make('dusun')->heading('Dusun'),
-            Column::make('nort')->heading('No.RT'),
-            Column::make('norw')->heading('No.RW'),
-            Column::make('kodepos')->heading('Kode Pos'),
-            Column::make('status_aktif')->heading('Status Aktif'),
-            Column::make('status_usulan')->heading('Status Usulan'),
-            Column::make('status_bpjs')->heading('Status BPJS'),
-            Column::make('keterangan')->heading('Keterangan'),
+            Column::make('alasan_mutasi')->heading('ALASAN MUTASI'),
+            Column::make('alamat_lengkap')->heading('ALAMAT LENGKAP'),
+            Column::make('keterangan')->heading('KETERANGAN'),
         ]);
         $this->queue()->withChunkSize(500);
     }
