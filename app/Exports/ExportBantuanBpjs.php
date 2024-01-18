@@ -10,7 +10,7 @@ class ExportBantuanBpjs extends ExcelExport
     public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
+        $this->withFilename(fn($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
         $this->askForWriterType();
         $this->withColumns([
             Column::make('dtks_id')->heading('DTKS ID'),
@@ -35,6 +35,6 @@ class ExportBantuanBpjs extends ExcelExport
             Column::make('status_bpjs')->heading('Status BPJS'),
             Column::make('keterangan')->heading('Keterangan'),
         ]);
-        $this->queue()->withChunkSize(500);
+        $this->queue()->withChunkSize(1000);
     }
 }

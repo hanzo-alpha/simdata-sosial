@@ -10,7 +10,7 @@ class ExportBantuanBpnt extends ExcelExport
     public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
+        $this->withFilename(fn($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
         $this->askForWriterType();
         $this->withColumns([
             Column::make('dtks_id')->heading('ID DTKS'),
@@ -33,6 +33,6 @@ class ExportBantuanBpnt extends ExcelExport
             Column::make('dir')->heading('DIR'),
             Column::make('gelombang')->heading('GELOMBANG'),
         ]);
-        $this->queue()->withChunkSize(500);
+        $this->queue()->withChunkSize(1000);
     }
 }
