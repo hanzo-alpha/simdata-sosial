@@ -1,0 +1,5376 @@
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+
+      [2m+17 vendor frames [22m
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+   Error 
+
+  Class "Aws\Sqs\SqsClient" not found
+
+  at /home/hanzo/Code/simdata-sosial/vendor/laravel/framework/src/Illuminate/Queue/Connectors/SqsConnector.php:26
+     22▕             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+     23▕         }
+     24▕ 
+     25▕         return new SqsQueue(
+  ➜  26▕             new SqsClient(
+     27▕                 Arr::except($config, ['token'])
+     28▕             ),
+     29▕             $config['queue'],
+     30▕             $config['prefix'] ?? '',
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+      [2m+17 vendor frames [22m
+
+      [2m+17 vendor frames [22m
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  18  /home/hanzo/Code/simdata-sosial/artisan:35
+      Illuminate\Foundation\Console\Kernel::handle()
+

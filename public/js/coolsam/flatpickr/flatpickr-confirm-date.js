@@ -1,9 +1,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-        typeof define === 'function' && define.amd ? define(factory) :
-            (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.confirmDatePlugin = factory());
-}(this, (function () {
-    'use strict';
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.confirmDatePlugin = factory());
+}(this, (function () { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -20,7 +19,7 @@
     PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
 
-    var __assign = function () {
+    var __assign = function() {
         __assign = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
                 s = arguments[i];
@@ -38,7 +37,8 @@
                 return path[0];
             }
             return event.target;
-        } catch (error) {
+        }
+        catch (error) {
             return event.target;
         }
     }
@@ -56,8 +56,7 @@
         return function (fp) {
             if (fp.config.noCalendar || fp.isMobile)
                 return {};
-            return __assign({
-                onKeyDown: function (_, __, ___, e) {
+            return __assign({ onKeyDown: function (_, __, ___, e) {
                     var eventTarget = getEventTarget(e);
                     var isTargetLastFocusableElement = (!fp.config.time_24hr && eventTarget === fp.amPM) ||
                         (fp.config.time_24hr &&
@@ -68,7 +67,8 @@
                         isTargetLastFocusableElement) {
                         e.preventDefault();
                         confirmContainer.focus();
-                    } else if (e.key === "Enter" && eventTarget === confirmContainer)
+                    }
+                    else if (e.key === "Enter" && eventTarget === confirmContainer)
                         fp.close();
                 },
                 onReady: function () {
@@ -78,8 +78,7 @@
                     confirmContainer.addEventListener("click", fp.close);
                     fp.calendarContainer.appendChild(confirmContainer);
                     fp.loadedPlugins.push("confirmDate");
-                }
-            }, (!config.showAlways
+                } }, (!config.showAlways
                 ? {
                     onChange: function (_, dateStr) {
                         var showCondition = fp.config.enableTime ||

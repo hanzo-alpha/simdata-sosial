@@ -19,3 +19,7 @@ yarn-error.log
 /.vscode
 /.draft.yaml
 /.blueprint
+.bun.lockb
+.worker.log
+.bun.lockb
+.worker.log
