@@ -6,7 +6,6 @@ namespace App\Forms\Components;
 
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -129,7 +128,7 @@ final class AlamatForm extends Field
                         ->reactive()
                         ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
-                            if ( ! $kab) {
+                            if (!$kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
@@ -150,7 +149,7 @@ final class AlamatForm extends Field
                         ->searchable(),
                 ]),
 
-            Grid::make(4)
+            Grid::make(3)
                 ->schema([
                     TextInput::make('dusun')
                         ->label('Dusun')
@@ -161,10 +160,10 @@ final class AlamatForm extends Field
                     TextInput::make('no_rw')
                         ->label('RW')
                         ->nullable(),
-                    TextInput::make('kodepos')
-                        ->label('Kodepos')
-                        ->default('90861')
-                        ->required(),
+                    //                    TextInput::make('kodepos')
+                    //                        ->label('Kodepos')
+                    //                        ->default('90861')
+                    //                        ->required(),
                 ]),
         ];
     }

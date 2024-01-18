@@ -89,7 +89,7 @@ final class BantuanBpjsOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM BPJS',
-                value: Number::abbreviate($all + $jamkesda, 2)
+                value: Number::abbreviate($all, 2)
             )
                 ->description('Total Seluruh KPM BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')

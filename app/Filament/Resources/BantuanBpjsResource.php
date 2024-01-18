@@ -24,7 +24,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
@@ -53,6 +52,7 @@ class BantuanBpjsResource extends Resource
                             Forms\Components\TextInput::make('nik_tmt')
                                 ->label('N I K')
                                 ->required()
+                                ->unique('peserta_bpjs', 'nik')
                                 ->maxLength(20),
                             Forms\Components\TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
@@ -83,7 +83,7 @@ class BantuanBpjsResource extends Resource
                                         'kabupaten_code',
                                         config('custom.default.kodekab')
                                     );
-                                    if ( ! $kab) {
+                                    if (!$kab) {
                                         return Kecamatan::where(
                                             'kabupaten_code',
                                             config('custom.default.kodekab')
@@ -256,35 +256,37 @@ class BantuanBpjsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bulan')
                     ->label('Periode')
-                    ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun),
-                Tables\Columns\TextColumn::make('status_aktif')
-                    ->label('Status Aktif')
+                    ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('status_usulan')
+                    ->label('Status Usulan')
                     ->sortable()
-                    ->toggleable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_bpjs')
                     ->label('Status BPJS')
                     ->sortable()
                     ->toggleable()
                     ->badge(),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->searchable()
             ])
             ->filters([
-                SelectFilter::make('status_aktif')
-                    ->label('Status Aktif')
-                    ->options(StatusAktif::class)
+                SelectFilter::make('status_usulan')
+                    ->label('Status Usulan')
+                    ->options(StatusUsulanEnum::class)
                     ->preload(),
                 SelectFilter::make('status_bpjs')
                     ->label('Status BPJS')
                     ->options(StatusBpjsEnum::class),
-                SelectFilter::make('status_nikah')
-                    ->label('Status Nikah')
-                    ->options(StatusKawinBpjsEnum::class),
-                SelectFilter::make('jenis_kelamin')
-                    ->label('Jenis Kelamin')
-                    ->options(JenisKelaminEnum::class),
-                DateRangeFilter::make('created_at')
-                    ->label('Rentang Tanggal'),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+                //                SelectFilter::make('status_nikah')
+                //                    ->label('Status Nikah')
+                //                    ->options(StatusKawinBpjsEnum::class),
+                //                SelectFilter::make('jenis_kelamin')
+                //                    ->label('Jenis Kelamin')
+                //                    ->options(JenisKelaminEnum::class),
+                //                DateRangeFilter::make('created_at')
+                //                    ->label('Rentang Tanggal'),
+            ])
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([

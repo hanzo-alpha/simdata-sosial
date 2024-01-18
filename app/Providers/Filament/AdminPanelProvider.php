@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
 //            ->topNavigation()
-//            ->sidebarCollapsibleOnDesktop()
+            ->sidebarCollapsibleOnDesktop()
             ->id('admin')
             ->path('dashboard')
             ->spa()
