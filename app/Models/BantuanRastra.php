@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AlasanEnum;
 use App\Enums\StatusAktif;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
@@ -21,7 +22,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Str;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanRastra extends Model
@@ -36,9 +36,9 @@ class BantuanRastra extends Model
 
     protected $casts = [
         'dtks_id' => 'string',
-        //        'media_id' => 'array',
         'foto_ktp_kk' => 'array',
         'pengganti_rastra' => 'array',
+        'status_dtks' => StatusDtksEnum::class,
         'status_rastra' => StatusRastra::class,
         'status_aktif' => StatusAktif::class,
         'status_verifikasi' => StatusVerifikasiEnum::class
@@ -55,9 +55,12 @@ class BantuanRastra extends Model
     public static function getKeluargaForm(): array
     {
         return [
-            TextInput::make('dtks_id')
-                ->maxLength(36)
-                ->default(Str::upper(Str::orderedUuid()->toString())),
+            Select::make('status_dtks')
+                ->label('DTKS')
+                ->options(StatusDtksEnum::class)
+                ->preload()
+                ->default(StatusDtksEnum::DTKS)
+                ->lazy(),
             TextInput::make('nokk')
                 ->label('No. Kartu Keluarga (KK)')
                 ->required()
@@ -127,7 +130,7 @@ class BantuanRastra extends Model
                         ->reactive()
                         ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
-                            if ( ! $kab) {
+                            if (!$kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
@@ -246,7 +249,7 @@ class BantuanRastra extends Model
                     fn(
                         TemporaryUploadedFile $file
                     ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                        ->prepend(date('d-m-Y-H-i-s').'-'),
                 )
                 ->preserveFilenames()
                 ->multiple()
