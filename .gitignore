@@ -21,3 +21,5 @@ yarn-error.log
 /.blueprint
 .bun.lockb
 .worker.log
+.bun.lockb
+.worker.log
