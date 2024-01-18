@@ -15,6 +15,7 @@ use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -36,6 +37,8 @@ final class BantuanPpks extends Model
         'status_kondisi_rumah' => StatusKondisiRumahEnum::class,
         'penghasilan_rata_rata' => MoneyCast::class,
         'bukti_foto' => 'array',
+        'foto_ktp_kk' => 'array',
+        'foto_penyerahan' => 'array',
         'kriteria_ppks' => 'array',
         'status_aktif' => StatusAktif::class,
         'bantuan_yang_pernah_diterima' => 'array',
@@ -51,9 +54,9 @@ final class BantuanPpks extends Model
         return $this->belongsTo(TipePpks::class);
     }
 
-    public function kriteria(): BelongsTo
+    public function kriteria(): HasManyThrough
     {
-        return $this->belongsTo(KriteriaPpks::class);
+        return $this->hasManyThrough(KriteriaPpks::class, TipePpks::class, 'id', 'tipe_ppks_id');
     }
 
     public function alamat(): MorphOne

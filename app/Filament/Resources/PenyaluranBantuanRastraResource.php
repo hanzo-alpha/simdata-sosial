@@ -154,30 +154,30 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->imagePreviewHeight('250')
                             ->previewable(true)
                             ->image(),
-                        Forms\Components\FileUpload::make('foto_ktp_kk')
-                            ->label('Foto KTP / KK')
-                            ->disk('public')
-                            ->directory('penyaluran')
-                            ->required()
-                            ->getUploadedFileNameForStorageUsing(
-                                fn(
-                                    TemporaryUploadedFile $file
-                                ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
-                            )
-                            ->preserveFilenames()
-//                                ->multiple()
-                            ->reorderable()
-                            ->appendFiles()
-                            ->openable()
-                            ->unique(ignoreRecord: true)
-                            ->helperText('maks. 2MB')
-                            ->maxFiles(3)
-                            ->maxSize(2048)
-                            ->columnSpanFull()
-                            ->imagePreviewHeight('250')
-                            ->previewable(true)
-                            ->image(),
+                        //                        Forms\Components\FileUpload::make('foto_ktp_kk')
+                        //                            ->label('Foto KTP / KK')
+                        //                            ->disk('public')
+                        //                            ->directory('penyaluran')
+                        //                            ->required()
+                        //                            ->getUploadedFileNameForStorageUsing(
+                        //                                fn(
+                        //                                    TemporaryUploadedFile $file
+                        //                                ): string => (string) str($file->getClientOriginalName())
+                        //                                    ->prepend(date('YmdHis') . '-'),
+                        //                            )
+                        //                            ->preserveFilenames()
+                        ////                                ->multiple()
+                        //                            ->reorderable()
+                        //                            ->appendFiles()
+                        //                            ->openable()
+                        //                            ->unique(ignoreRecord: true)
+                        //                            ->helperText('maks. 2MB')
+                        //                            ->maxFiles(3)
+                        //                            ->maxSize(2048)
+                        //                            ->columnSpanFull()
+                        //                            ->imagePreviewHeight('250')
+                        //                            ->previewable(true)
+                        //                            ->image(),
                     ]),
                 ])->columnSpan(1),
 

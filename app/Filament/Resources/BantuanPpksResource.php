@@ -34,6 +34,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
@@ -196,6 +197,7 @@ final class BantuanPpksResource extends Resource
                                 ->preload(),
 
                             TextInput::make('tahun_anggaran')
+                                ->label('Tahun')
                                 ->default(now()->year)
                                 ->numeric(),
 
@@ -219,11 +221,33 @@ final class BantuanPpksResource extends Resource
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                    ?->hasRole(['super_admin', 'admin'])
+                                        ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
                                 ->autosize(),
+
+                            Forms\Components\FileUpload::make('bukti_foto')
+                                ->label('Dokumentasi')
+                                ->getUploadedFileNameForStorageUsing(
+                                    fn(
+                                        TemporaryUploadedFile $file
+                                    ): string => (string) str($file->getClientOriginalName())
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                )
+                                ->preserveFilenames()
+                                ->multiple()
+                                ->reorderable()
+                                ->appendFiles()
+                                ->openable()
+                                ->required()
+                                ->helperText('maks. 2MB')
+                                ->maxFiles(3)
+                                ->maxSize(2048)
+                                ->columnSpanFull()
+                                ->imagePreviewHeight('250')
+                                ->previewable(false)
+                                ->image(),
 
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
@@ -237,9 +261,10 @@ final class BantuanPpksResource extends Resource
                     //                    Forms\Components\Section::make('Verifikasi')
                     //                        ->schema([
                     //                            Forms\Components\FileUpload::make('bukti_foto')
-                    //                                ->label('Unggah Foto Rumah')
+                    //                                ->label('Dokumentasi')
                     //                                ->getUploadedFileNameForStorageUsing(
-                    //                                    fn(TemporaryUploadedFile $file
+                    //                                    fn(
+                    //                                        TemporaryUploadedFile $file
                     //                                    ): string => (string) str($file->getClientOriginalName())
                     //                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                     //                                )
@@ -256,8 +281,6 @@ final class BantuanPpksResource extends Resource
                     //                                ->imagePreviewHeight('250')
                     //                                ->previewable(false)
                     //                                ->image(),
-                    //
-                    //
                     //                        ])
                 ])->columnSpan(1),
             ])->columns(3);
@@ -291,14 +314,20 @@ final class BantuanPpksResource extends Resource
                     ->numeric()
                     ->alignCenter()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status_rumah_tinggal')
+                Tables\Columns\TextColumn::make('tipe_ppks.nama_tipe')
                     ->toggleable()
                     ->searchable()
                     ->sortable()
                     ->alignCenter()
                     ->badge(),
+                Tables\Columns\TextColumn::make('status_rumah_tinggal')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable()
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('status_kondisi_rumah')
-                    ->toggleable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->alignCenter()
