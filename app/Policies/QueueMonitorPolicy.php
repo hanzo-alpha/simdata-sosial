@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\PesertaBpjs;
+use Croustibat\FilamentJobsMonitor\Models\QueueMonitor;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PesertaBpjsPolicy
+class QueueMonitorPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class PesertaBpjsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_peserta::bpjs');
+        return $user->can('view_any_queue::monitor');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\PesertaBpjs  $pesertaBpjs
+     * @param  \Croustibat\FilamentJobsMonitor\Models\QueueMonitor  $queueMonitor
      * @return bool
      */
-    public function view(User $user, PesertaBpjs $pesertaBpjs): bool
+    public function view(User $user, QueueMonitor $queueMonitor): bool
     {
-        return $user->can('view_peserta::bpjs');
+        return $user->can('view_queue::monitor');
     }
 
     /**
@@ -41,31 +41,31 @@ class PesertaBpjsPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_peserta::bpjs');
+        return $user->can('create_queue::monitor');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\PesertaBpjs  $pesertaBpjs
+     * @param  \Croustibat\FilamentJobsMonitor\Models\QueueMonitor  $queueMonitor
      * @return bool
      */
-    public function update(User $user, PesertaBpjs $pesertaBpjs): bool
+    public function update(User $user, QueueMonitor $queueMonitor): bool
     {
-        return $user->can('update_peserta::bpjs');
+        return $user->can('update_queue::monitor');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\PesertaBpjs  $pesertaBpjs
+     * @param  \Croustibat\FilamentJobsMonitor\Models\QueueMonitor  $queueMonitor
      * @return bool
      */
-    public function delete(User $user, PesertaBpjs $pesertaBpjs): bool
+    public function delete(User $user, QueueMonitor $queueMonitor): bool
     {
-        return $user->can('delete_peserta::bpjs');
+        return $user->can('delete_queue::monitor');
     }
 
     /**
@@ -83,12 +83,12 @@ class PesertaBpjsPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\PesertaBpjs  $pesertaBpjs
+     * @param  \Croustibat\FilamentJobsMonitor\Models\QueueMonitor  $queueMonitor
      * @return bool
      */
-    public function forceDelete(User $user, PesertaBpjs $pesertaBpjs): bool
+    public function forceDelete(User $user, QueueMonitor $queueMonitor): bool
     {
-        return $user->can('force_delete_peserta::bpjs');
+        return $user->can('force_delete_queue::monitor');
     }
 
     /**
@@ -106,10 +106,10 @@ class PesertaBpjsPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\PesertaBpjs  $pesertaBpjs
+     * @param  \Croustibat\FilamentJobsMonitor\Models\QueueMonitor  $queueMonitor
      * @return bool
      */
-    public function restore(User $user, PesertaBpjs $pesertaBpjs): bool
+    public function restore(User $user, QueueMonitor $queueMonitor): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -129,10 +129,10 @@ class PesertaBpjsPolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\PesertaBpjs  $pesertaBpjs
+     * @param  \Croustibat\FilamentJobsMonitor\Models\QueueMonitor  $queueMonitor
      * @return bool
      */
-    public function replicate(User $user, PesertaBpjs $pesertaBpjs): bool
+    public function replicate(User $user, QueueMonitor $queueMonitor): bool
     {
         return $user->can('{{ Replicate }}');
     }

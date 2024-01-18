@@ -1,9 +1,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-        typeof define === 'function' && define.amd ? define(factory) :
-            (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.monthSelectPlugin = factory());
-}(this, (function () {
-    'use strict';
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.monthSelectPlugin = factory());
+}(this, (function () { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -20,7 +19,7 @@
     PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
 
-    var __assign = function () {
+    var __assign = function() {
         __assign = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
                 s = arguments[i];
@@ -31,9 +30,7 @@
         return __assign.apply(this, arguments);
     };
 
-    var monthToStr = function (monthNumber, shorthand, locale) {
-        return locale.months[shorthand ? "shorthand" : "longhand"][monthNumber];
-    };
+    var monthToStr = function (monthNumber, shorthand, locale) { return locale.months[shorthand ? "shorthand" : "longhand"][monthNumber]; };
 
     function clearNode(node) {
         while (node.firstChild)
@@ -46,7 +43,8 @@
                 return path[0];
             }
             return event.target;
-        } catch (error) {
+        }
+        catch (error) {
             return event.target;
         }
     }
@@ -62,7 +60,7 @@
         return function (fp) {
             fp.config.dateFormat = config.dateFormat;
             fp.config.altFormat = config.altFormat;
-            var self = {monthsContainer: null};
+            var self = { monthsContainer: null };
             function clearUnnecessaryDOMElements() {
                 if (!fp.rContainer)
                     return;
@@ -165,7 +163,8 @@
                         if ((fp.config.minDate && month.dateObj < fp.config.minDate) ||
                             (fp.config.maxDate && month.dateObj > fp.config.maxDate)) {
                             month.classList.add("flatpickr-disabled");
-                        } else {
+                        }
+                        else {
                             month.classList.remove("flatpickr-disabled");
                         }
                     });
@@ -203,11 +202,10 @@
                     case "range":
                         if (fp.selectedDates.length === 2) {
                             selectedDates = [selectedDate];
-                        } else {
+                        }
+                        else {
                             selectedDates = fp.selectedDates.concat([selectedDate]);
-                            selectedDates.sort(function (a, b) {
-                                return a.getTime() - b.getTime();
-                            });
+                            selectedDates.sort(function (a, b) { return a.getTime() - b.getTime(); });
                         }
                         break;
                 }
@@ -236,7 +234,8 @@
                 }
                 if (shouldMove) {
                     self.monthsContainer.children[(12 + index + shifts[e.keyCode]) % 12].focus();
-                } else if (e.keyCode === 13 &&
+                }
+                else if (e.keyCode === 13 &&
                     self.monthsContainer.contains(document.activeElement)) {
                     setMonth(document.activeElement.dateObj);
                 }
@@ -290,9 +289,7 @@
                     unstubCurrentMonth,
                     destroyPluginInstance,
                     function () {
-                        fp.config.onClose = fp.config.onClose.filter(function (hook) {
-                            return hook !== closeHook;
-                        });
+                        fp.config.onClose = fp.config.onClose.filter(function (hook) { return hook !== closeHook; });
                     },
                 ],
             };

@@ -1,21 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\BantuanBpjs;
 use App\Models\User;
+use App\Models\BantuanBpjs;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-final class BantuanBpjsPolicy
+class BantuanBpjsPolicy
 {
     use HandlesAuthorization;
 
     /**
      * Determine whether the user can view any models.
      *
-     * @param  User  $user
+     * @param  \App\Models\User  $user
      * @return bool
      */
     public function viewAny(User $user): bool
@@ -26,8 +24,8 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @param  BantuanBpjs  $bantuanBpjs
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\BantuanBpjs  $bantuanBpjs
      * @return bool
      */
     public function view(User $user, BantuanBpjs $bantuanBpjs): bool
@@ -38,7 +36,7 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  User  $user
+     * @param  \App\Models\User  $user
      * @return bool
      */
     public function create(User $user): bool
@@ -49,8 +47,8 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  User  $user
-     * @param  BantuanBpjs  $bantuanBpjs
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\BantuanBpjs  $bantuanBpjs
      * @return bool
      */
     public function update(User $user, BantuanBpjs $bantuanBpjs): bool
@@ -61,8 +59,8 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  User  $user
-     * @param  BantuanBpjs  $bantuanBpjs
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\BantuanBpjs  $bantuanBpjs
      * @return bool
      */
     public function delete(User $user, BantuanBpjs $bantuanBpjs): bool
@@ -73,7 +71,7 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can bulk delete.
      *
-     * @param  User  $user
+     * @param  \App\Models\User  $user
      * @return bool
      */
     public function deleteAny(User $user): bool
@@ -84,8 +82,8 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can permanently delete.
      *
-     * @param  User  $user
-     * @param  BantuanBpjs  $bantuanBpjs
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\BantuanBpjs  $bantuanBpjs
      * @return bool
      */
     public function forceDelete(User $user, BantuanBpjs $bantuanBpjs): bool
@@ -96,7 +94,7 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can permanently bulk delete.
      *
-     * @param  User  $user
+     * @param  \App\Models\User  $user
      * @return bool
      */
     public function forceDeleteAny(User $user): bool
@@ -107,8 +105,8 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can restore.
      *
-     * @param  User  $user
-     * @param  BantuanBpjs  $bantuanBpjs
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\BantuanBpjs  $bantuanBpjs
      * @return bool
      */
     public function restore(User $user, BantuanBpjs $bantuanBpjs): bool
@@ -119,7 +117,7 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can bulk restore.
      *
-     * @param  User  $user
+     * @param  \App\Models\User  $user
      * @return bool
      */
     public function restoreAny(User $user): bool
@@ -130,8 +128,8 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can replicate.
      *
-     * @param  User  $user
-     * @param  BantuanBpjs  $bantuanBpjs
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\BantuanBpjs  $bantuanBpjs
      * @return bool
      */
     public function replicate(User $user, BantuanBpjs $bantuanBpjs): bool
@@ -142,7 +140,7 @@ final class BantuanBpjsPolicy
     /**
      * Determine whether the user can reorder.
      *
-     * @param  User  $user
+     * @param  \App\Models\User  $user
      * @return bool
      */
     public function reorder(User $user): bool
