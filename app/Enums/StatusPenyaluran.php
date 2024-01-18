@@ -9,14 +9,14 @@ use Filament\Support\Contracts\HasLabel;
 
 enum StatusPenyaluran: string implements HasColor, HasLabel
 {
-    case TERSALUR = 'TERSALURKAN';
+    case TERSALURKAN = 'TERSALURKAN';
     case BELUM_TERSALURKAN = 'BELUM TERSALURKAN';
 
     public function getLabel(): ?string
     {
         return match ($this) {
             self::BELUM_TERSALURKAN => 'BELUM TERSALURKAN',
-            self::TERSALUR => 'TERSALURKAN',
+            self::TERSALURKAN => 'TERSALURKAN',
         };
     }
 
@@ -24,7 +24,7 @@ enum StatusPenyaluran: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::BELUM_TERSALURKAN => 'danger',
-            self::TERSALUR => 'success',
+            self::TERSALURKAN => 'success',
         };
     }
 
