@@ -10,7 +10,7 @@ class ExportMutasiBpjs extends ExcelExport
     public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
+        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
         $this->askForWriterType();
         $this->withColumns([
             Column::make('id')->heading('NO'),
@@ -19,7 +19,7 @@ class ExportMutasiBpjs extends ExcelExport
                 ->heading('PESERTA BPJS ID'),
             Column::make('nomor_kartu')->heading('No. KARTU'),
             Column::make('nik')
-                ->formatStateUsing(fn($state) => "'".$state)
+                ->formatStateUsing(fn($state) => "'" . $state)
                 ->heading('N I K'),
             Column::make('nama_lengkap')->heading('Nama Lengkap'),
             Column::make('alasan_mutasi')->heading('ALASAN MUTASI'),
