@@ -11,6 +11,7 @@ use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -63,22 +64,17 @@ final class ListBantuanBpjs extends ListRecords
                             'application/vnd.ms-excel',
                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         ]),
-                    //                        ->hiddenOn(['edit', 'view']),
                 ])
                 ->action(function (array $data): void {
                     $import = new ImportBantuanBpjs();
                     $import->import($data['attachment'], 'public');
-                    //                    if ($import) {
-                    //                        Notification::make()
-                    //                            ->title('Bantuan BPJS Berhasil di impor')
-                    //                            ->success()
-                    //                            ->sendToDatabase(auth()->user());
-                    //                    } else {
-                    //                        Notification::make()
-                    //                            ->title('Bantuan BPJS Gagal di impor')
-                    //                            ->danger()
-                    //                            ->sendToDatabase(auth()->user());
-                    //                    }
+                })
+                ->after(function (): void {
+                    Notification::make()
+                        ->title('Bantuan BPJS Berhasil di impor')
+                        ->success()
+                        ->send()
+                        ->sendToDatabase(auth()->user());
                 })
                 ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)

@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Enums\StatusAktif;
+use App\Enums\StatusBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Models\BantuanBpjs as DataBantuanBpjs;
 use App\Models\Kecamatan;
@@ -15,6 +16,8 @@ use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -41,13 +44,15 @@ class ImportBantuanBpjs implements
     WithValidation
 {
     use Importable;
+    use SkipsErrors;
+    use SkipsFailures;
 
     public function registerEvents(): array
     {
         return [
             ImportFailed::class => function (ImportFailed $event): void {
                 Notification::make('Import Failed')
-                    ->title('Gagal Impor Usulan Pengaktifan TMT')
+                    ->title('Gagal mengimpor usulan BPJS')
                     ->danger()
                     ->send()
                     ->sendToDatabase(auth()->user());
@@ -78,6 +83,21 @@ class ImportBantuanBpjs implements
 
         $bulan = (isset($row['periode_bulan']) && 0 !== $row['periode_bulan']) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;
 
+        $statusUsulan = Str::of($row['status_tl'])->matchAll('/[a-zA-Z]+/');
+
+        $usulan = match ($statusUsulan[0]) {
+            'BERHASIL' => StatusUsulanEnum::BERHASIL,
+            'GAGAL' => StatusUsulanEnum::GAGAL,
+            'DOMISILI' => StatusUsulanEnum::GAGAL,
+            'NIK' => StatusUsulanEnum::GAGAL,
+            default => StatusUsulanEnum::ONPROGRESS,
+        };
+
+        $aktif = match ($statusUsulan[0]) {
+            'BERHASIL' => StatusAktif::AKTIF,
+            default => StatusAktif::NONAKTIF,
+        };
+
         return new DataBantuanBpjs([
             'nomor_kartu' => null,
             'dtks_id' => Str::upper(Str::orderedUuid()->toString()),
@@ -95,9 +115,9 @@ class ImportBantuanBpjs implements
             'kodepos' => $row['kode_pos'],
             'kecamatan' => $kecamatan ?? $row['kecamatan'],
             'kelurahan' => $kelurahan ?? $row['kelurahan'],
-            'status_aktif' => StatusAktif::AKTIF,
-            'status_bpjs' => $row['status_aktif'] ?? StatusAktif::AKTIF,
-            'status_usulan' => StatusUsulanEnum::ONPROGRESS,
+            'status_aktif' => $aktif,
+            'status_bpjs' => $row['status_aktif'] ?? StatusBpjsEnum::NONAKTIF,
+            'status_usulan' => $usulan,
             'keterangan' => $row['keterangan'] ?? $row['status_tl'],
             'bulan' => $bulan,
             'tahun' => $row['tahun'] ?? now()->year,
@@ -127,12 +147,6 @@ class ImportBantuanBpjs implements
     #[NoReturn]
     public function onError(Throwable $e): void
     {
-        //        Notification::make('Error Import')
-        //            ->title('Error Import Data BPJS')
-        //            ->body($e->getMessage())
-        //            ->danger()
-        //            ->sendToDatabase(auth()->user());
-
         Log::error($e);
     }
 

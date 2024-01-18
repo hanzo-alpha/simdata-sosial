@@ -1,19 +1,21 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\PesertaBpjsResource\Pages;
 
 use App\Filament\Resources\PesertaBpjsResource;
+use App\Filament\Widgets\PesertaBpjsOverview;
 use App\Imports\ImportPesertaBpjs;
 use Filament\Actions;
 use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
 use Maatwebsite\Excel\Facades\Excel;
 
-final class ManagePesertaBpjs extends ManageRecords
+class ManagePesertaBpjs extends ManageRecords
 {
+    use ExposesTableToWidgets;
+
     protected static string $resource = PesertaBpjsResource::class;
 
     protected function getHeaderActions(): array
@@ -42,4 +44,12 @@ final class ManagePesertaBpjs extends ManageRecords
                 ->modalWidth('lg'),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            PesertaBpjsOverview::class
+        ];
+    }
+
 }

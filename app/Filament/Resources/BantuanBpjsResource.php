@@ -17,11 +17,13 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -37,6 +39,140 @@ class BantuanBpjsResource extends Resource
     protected static ?string $pluralLabel = 'Program BPJS';
     protected static ?string $navigationLabel = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->sortable()
+                    ->description(fn($record) => 'Nik : ' . $record->nik_tmt)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nokk_tmt')
+                    ->label('No. KK')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable()
+                    ->copyable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('tempat_lahir')
+                    ->label('Tempat Lahir')
+                    ->description(fn($record) => $record->tgl_lahir->format('d/M/Y'))
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('tgl_lahir')
+                    ->label('Tgl. Lahir')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable()
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_nikah')
+                    ->label('Status Nikah')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('Alamat Lengkap')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->description(function ($record) {
+                        $alamat = $record['alamat'];
+                        $rt = $record['nort'];
+                        $rw = $record['norw'];
+                        $kodepos = $record['kodepos'];
+                        $kec = $record->kec?->name;
+                        $kel = $record->kel?->name;
+
+                        return $alamat . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kec.kecamatan')
+                    ->label('Kecamatan')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kel.kelurahan')
+                    ->label('Kelurahan')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('bulan')
+                    ->label('Periode')
+                    ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('status_usulan')
+                    ->label('Status Usulan')
+                    ->sortable()
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_bpjs')
+                    ->label('Status BPJS')
+                    ->sortable()
+                    ->toggleable()
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_aktif')
+                    ->label('Status Aktif')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable()
+                    ->badge(),
+            ])
+            ->filters([
+                SelectFilter::make('status_usulan')
+                    ->label('Status Usulan')
+                    ->options(StatusUsulanEnum::class)
+                    ->preload(),
+                SelectFilter::make('status_bpjs')
+                    ->label('Status BPJS')
+                    ->options(StatusBpjsEnum::class),
+                //                SelectFilter::make('status_nikah')
+                //                    ->label('Status Nikah')
+                //                    ->options(StatusKawinBpjsEnum::class),
+                //                SelectFilter::make('jenis_kelamin')
+                //                    ->label('Jenis Kelamin')
+                //                    ->options(JenisKelaminEnum::class),
+                //                DateRangeFilter::make('created_at')
+                //                    ->label('Rentang Tanggal'),
+            ])
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
+            ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make(),
+                    Tables\Actions\BulkAction::make('ubah status usulan')
+                        ->label('Ubah Status Usulan')
+                        ->icon('heroicon-o-cursor-arrow-ripple')
+                        ->requiresConfirmation()
+                        ->form([
+                            Select::make('status_usulan')
+                                ->options(StatusUsulanEnum::class)
+                                ->preload()
+                                ->lazy()
+                        ])
+                        ->action(fn(Collection $record, $data) => $record->each->update($data))
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Berhasil merubah status usulan peserta')
+                                ->send();
+                        })
+                        ->closeModalByClickingAway()
+                        ->deselectRecordsAfterCompletion()
+                ]),
+            ]);
+    }
 
     public static function form(Form $form): Form
     {
@@ -193,115 +329,6 @@ class BantuanBpjsResource extends Resource
                         ]),
                 ])->columns(1),
             ])->columns(3);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('nama_lengkap')
-                    ->label('Nama Lengkap')
-                    ->sortable()
-                    ->description(fn($record) => 'Nik : ' . $record->nik_tmt)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nokk_tmt')
-                    ->label('No. KK')
-                    ->sortable()
-                    ->copyable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tempat_lahir')
-                    ->label('Tempat Lahir')
-                    ->description(fn($record) => $record->tgl_lahir->format('d/M/Y'))
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tgl_lahir')
-                    ->label('Tgl. Lahir')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable()
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('jenis_kelamin')
-                    ->label('Jenis Kelamin')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->badge(),
-                Tables\Columns\TextColumn::make('status_nikah')
-                    ->label('Status Nikah')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->badge(),
-                Tables\Columns\TextColumn::make('alamat')
-                    ->label('Alamat Lengkap')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->description(function ($record) {
-                        $alamat = $record['alamat'];
-                        $rt = $record['nort'];
-                        $rw = $record['norw'];
-                        $kodepos = $record['kodepos'];
-                        $kec = $record->kec?->name;
-                        $kel = $record->kel?->name;
-
-                        return $alamat . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
-                    })
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('kec.kecamatan')
-                    ->label('Kecamatan')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kel.kelurahan')
-                    ->label('Kelurahan')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('bulan')
-                    ->label('Periode')
-                    ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun)
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('status_usulan')
-                    ->label('Status Usulan')
-                    ->sortable()
-                    ->badge(),
-                Tables\Columns\TextColumn::make('status_bpjs')
-                    ->label('Status BPJS')
-                    ->sortable()
-                    ->toggleable()
-                    ->badge(),
-                Tables\Columns\TextColumn::make('keterangan')
-                    ->searchable()
-            ])
-            ->filters([
-                SelectFilter::make('status_usulan')
-                    ->label('Status Usulan')
-                    ->options(StatusUsulanEnum::class)
-                    ->preload(),
-                SelectFilter::make('status_bpjs')
-                    ->label('Status BPJS')
-                    ->options(StatusBpjsEnum::class),
-                //                SelectFilter::make('status_nikah')
-                //                    ->label('Status Nikah')
-                //                    ->options(StatusKawinBpjsEnum::class),
-                //                SelectFilter::make('jenis_kelamin')
-                //                    ->label('Jenis Kelamin')
-                //                    ->options(JenisKelaminEnum::class),
-                //                DateRangeFilter::make('created_at')
-                //                    ->label('Rentang Tanggal'),
-            ])
-            ->persistFiltersInSession()
-            ->deselectAllRecordsWhenFiltered()
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ]),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make(),
-                ]),
-            ]);
     }
 
     //    public static function infolist(Infolist $infolist): Infolist

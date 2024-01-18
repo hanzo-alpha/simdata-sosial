@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\StatusDtksEnum;
 use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,6 +14,7 @@ return new class () extends Migration {
         Schema::create('bantuan_rastra', static function (Blueprint $table): void {
             $table->id();
             $table->uuid('dtks_id')->nullable()->default(Str::uuid()->toString());
+            $table->string('status_dtks', 30)->nullable()->default(StatusDtksEnum::DTKS);
             $table->string('nokk', 20);
             $table->string('nik', 20);
             $table->string('nama_lengkap');
