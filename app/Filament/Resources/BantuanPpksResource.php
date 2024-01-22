@@ -237,7 +237,6 @@ final class BantuanPpksResource extends Resource
                                 ->reorderable()
                                 ->appendFiles()
                                 ->openable()
-                                ->required()
                                 ->helperText('maks. 2MB')
                                 ->maxFiles(3)
                                 ->maxSize(2048)
@@ -398,7 +397,7 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-calendar')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
-                            TextEntry::make('alamat.alamat')
+                            TextEntry::make('alamat.alamat_lengkap')
                                 ->label('Alamat')
                                 ->icon('heroicon-o-map-pin')
                                 ->weight(FontWeight::SemiBold)
@@ -422,7 +421,7 @@ final class BantuanPpksResource extends Resource
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
                         ->schema([
-                            TextEntry::make('alamat.alamat_lengkap')
+                            TextEntry::make('alamat.alamat')
                                 ->label('Alamat')
                                 ->columnSpanFull()
                                 ->icon('heroicon-o-map-pin')
@@ -460,7 +459,6 @@ final class BantuanPpksResource extends Resource
                             //                                ->color('primary'),
                             TextEntry::make('nama_bantuan')
                                 ->label('Nama Bantuan')
-                                ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
                                 ->columnSpanFull()
                                 ->color('primary'),
