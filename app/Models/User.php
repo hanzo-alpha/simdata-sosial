@@ -15,7 +15,7 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-final class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens;
     use HasFactory;

@@ -7,11 +7,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-final class TipePpks extends Model
+class TipePpks extends Model
 {
     protected $guarded = [];
 
     protected $table = 'tipe_ppks';
+
+    protected $with = ['kriteria_ppks'];
 
     public function kriteria_ppks(): HasMany
     {

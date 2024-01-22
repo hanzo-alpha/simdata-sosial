@@ -16,7 +16,6 @@ use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
 use App\Models\PendidikanTerakhir;
 use App\Models\PenggantiRastra;
-use App\Models\SubJenisDisabilitas;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
 use App\Policies\AlamatPolicy;
@@ -28,7 +27,6 @@ use App\Policies\BantuanRastraPolicy;
 use App\Policies\HubunganKeluargaPolicy;
 use App\Policies\JenisBantuanPolicy;
 use App\Policies\JenisPekerjaanPolicy;
-use App\Policies\KriteriaPelayananPolicy;
 use App\Policies\MediaPolicy;
 use App\Policies\PendidikanTerakhirPolicy;
 use App\Policies\PenggantiRastraPolicy;
@@ -38,7 +36,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Role;
 
-final class AuthServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     /**
      * The model to policy mappings for the application.
@@ -57,7 +55,6 @@ final class AuthServiceProvider extends ServiceProvider
         HubunganKeluarga::class => HubunganKeluargaPolicy::class,
         JenisBantuan::class => JenisBantuanPolicy::class,
         JenisPekerjaan::class => JenisPekerjaanPolicy::class,
-        SubJenisDisabilitas::class => KriteriaPelayananPolicy::class,
         MediaPolicy::class => MediaPolicy::class,
         PendidikanTerakhir::class => PendidikanTerakhirPolicy::class,
         PenggantiRastra::class => PenggantiRastraPolicy::class,
@@ -67,5 +64,7 @@ final class AuthServiceProvider extends ServiceProvider
     /**
      * Register any authentication / authorization services.
      */
-    public function boot(): void {}
+    public function boot(): void
+    {
+    }
 }

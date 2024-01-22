@@ -18,6 +18,8 @@ use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
 use App\Models\KriteriaPpks;
 use App\Models\TipePpks;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -25,6 +27,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Group;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -43,17 +46,11 @@ final class BantuanPpksResource extends Resource
     protected static ?string $model = BantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-window';
-
     protected static ?string $slug = 'program-ppks';
-
     protected static ?string $label = 'Program PPKS';
-
     protected static ?string $pluralLabel = 'Program PPKS';
-
     protected static ?string $navigationLabel = 'Program PPKS';
-
     protected static ?string $navigationGroup = 'Program Sosial';
-
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -221,7 +218,7 @@ final class BantuanPpksResource extends Resource
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                    ?->hasRole(['super_admin', 'admin'])
+                                        ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -233,7 +230,7 @@ final class BantuanPpksResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                        ->prepend(date('d-m-Y-H-i-s').'-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
@@ -258,30 +255,7 @@ final class BantuanPpksResource extends Resource
                                 ->default(true),
 
                         ]),
-                    //                    Forms\Components\Section::make('Verifikasi')
-                    //                        ->schema([
-                    //                            Forms\Components\FileUpload::make('bukti_foto')
-                    //                                ->label('Dokumentasi')
-                    //                                ->getUploadedFileNameForStorageUsing(
-                    //                                    fn(
-                    //                                        TemporaryUploadedFile $file
-                    //                                    ): string => (string) str($file->getClientOriginalName())
-                    //                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                    //                                )
-                    //                                ->preserveFilenames()
-                    //                                ->multiple()
-                    //                                ->reorderable()
-                    //                                ->appendFiles()
-                    //                                ->openable()
-                    //                                ->required()
-                    //                                ->helperText('maks. 2MB')
-                    //                                ->maxFiles(3)
-                    //                                ->maxSize(2048)
-                    //                                ->columnSpanFull()
-                    //                                ->imagePreviewHeight('250')
-                    //                                ->previewable(false)
-                    //                                ->image(),
-                    //                        ])
+
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -303,23 +277,23 @@ final class BantuanPpksResource extends Resource
                     ->label('No.Telp/WA')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
-                    ->label('Jenis Bantuan')
-                    ->badge()
-                    ->alignCenter()
-                    ->color(fn($record): string => $record->jenis_bantuan->warna)
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->alignCenter()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tipe_ppks.nama_tipe')
-                    ->toggleable()
+                BadgeableColumn::make('tipe_ppks.nama_tipe')
+                    ->label('Tipe Kriteria PPKS')
+                    ->suffixBadges(function ($record) {
+                        return $record->tipe_ppks
+                            ->kriteria_ppks
+                            ->whereIn('id', $record->kriteria_ppks)
+                            ->map(fn($topic) => Badge::make($topic->nama_kriteria));
+                    })
+                    ->inline()
+                    ->wrap()
                     ->searchable()
-                    ->sortable()
-                    ->alignCenter()
-                    ->badge(),
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('status_rumah_tinggal')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
@@ -463,16 +437,15 @@ final class BantuanPpksResource extends Resource
                 ])->columnSpan(2),
 
                 Group::make([
-                    //                    \Filament\Infolists\Components\Section::make('Foto Rumah')
-                    //                        ->schema([
-                    //                            ImageEntry::make('bukti_foto')
-                    //                                ->hiddenLabel()
-                    //                                ->visibility('private')
-                    //                                ->extraImgAttributes([
-                    //                                    'alt' => 'foto rumah',
-                    //                                    'loading' => 'lazy'
-                    //                                ])
-                    //                        ])->columns(3),
+                    \Filament\Infolists\Components\Section::make('Foto Rumah')
+                        ->schema([
+                            ImageEntry::make('bukti_foto')
+                                ->hiddenLabel()
+                                ->extraImgAttributes([
+                                    'alt' => 'foto rumah',
+                                    'loading' => 'lazy'
+                                ])
+                        ])->columns(3),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->schema([
@@ -505,6 +478,20 @@ final class BantuanPpksResource extends Resource
                                 ->label('Jenis Kelamin')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
+                            TextEntry::make('tipe_ppks.nama_tipe')
+                                ->label('Tipe PPKS'),
+                            TextEntry::make('tipe_ppks')
+                                ->formatStateUsing(function ($record) {
+                                    $kriteria = $record->tipe_ppks
+                                        ->kriteria_ppks
+                                        ->whereIn('id', $record->kriteria_ppks)
+                                        ->map(fn($item) => $item->nama_kriteria);
+                                    return $kriteria->toArray()[2];
+                                })
+                                ->listWithLineBreaks()
+                                ->columnSpanFull()
+                                ->badge()
+                                ->label('Kriteria PPKS'),
                             TextEntry::make('status_kawin')
                                 ->label('Status Kawin')
                                 ->badge(),
@@ -512,7 +499,7 @@ final class BantuanPpksResource extends Resource
                                 ->label('Jenis Anggaran')
                                 ->badge(),
                             TextEntry::make('tahun_anggaran')
-                                ->label('Tahun Anggaran'),
+                                ->label('Tahun'),
                             TextEntry::make('status_rumah_tinggal')
                                 ->label('Rumah Tinggal')
                                 ->badge(),
