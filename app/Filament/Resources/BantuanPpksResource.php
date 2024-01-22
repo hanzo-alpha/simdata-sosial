@@ -8,6 +8,7 @@ use App\Enums\JenisAnggaranEnum;
 use App\Enums\JenisBansosDiterimaEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
@@ -60,13 +61,12 @@ final class BantuanPpksResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Section::make('Data Keluarga')
                         ->schema([
-                            TextInput::make('dtks_id')
-                                ->label('DTKS ID')
-                                ->maxLength(36)
-                                ->hidden()
-                                ->required()
-                                ->dehydrated()
-                                ->unique(ignoreRecord: true),
+                            Select::make('status_dtks')
+                                ->label('DTKS')
+                                ->options(StatusDtksEnum::class)
+                                ->preload()
+                                ->default(StatusDtksEnum::DTKS)
+                                ->lazy(),
                             TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
