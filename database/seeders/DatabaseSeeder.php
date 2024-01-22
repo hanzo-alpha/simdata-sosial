@@ -17,21 +17,11 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        $this->command->warn(PHP_EOL . 'Seeding Wilayah Data...');
+//        $this->command->warn(PHP_EOL.'Seeding Wilayah Data...');
         $this->call([
-            ProvinsiTableSeeder::class,
-            KabupatenTableSeeder::class,
-            KecamatanTableSeeder::class,
-            KelurahanTableSeeder::class,
-
+            WilayahSeeder::class
         ]);
-        $this->command->info('Wilayah created.');
+//        $this->command->info('Wilayah created.');
     }
 
     protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
