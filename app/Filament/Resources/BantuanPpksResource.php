@@ -427,6 +427,10 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-map-pin')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
+                            TextEntry::make('alamat.prov.name')
+                                ->label('Kecamatan'),
+                            TextEntry::make('alamat.kab.name')
+                                ->label('Kelurahan'),
                             TextEntry::make('alamat.kec.name')
                                 ->label('Kecamatan'),
                             TextEntry::make('alamat.kel.name')
