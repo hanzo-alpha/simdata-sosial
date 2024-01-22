@@ -414,6 +414,16 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
+                            TextEntry::make('nama_bantuan')
+                                ->label('Nama Bantuan')
+                                ->icon('heroicon-o-bookmark')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                            TextEntry::make('keterangan')
+                                ->label('Keterangan')
+                                ->icon('heroicon-o-bookmark')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
                         ->schema([
