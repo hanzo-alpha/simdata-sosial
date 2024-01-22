@@ -255,7 +255,6 @@ final class BantuanPpksResource extends Resource
                                 ->default(true),
 
                         ]),
-
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -414,15 +413,11 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
-                            TextEntry::make('nama_bantuan')
-                                ->label('Nama Bantuan')
-                                ->icon('heroicon-o-bookmark')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
                             TextEntry::make('keterangan')
                                 ->label('Keterangan')
                                 ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
+                                ->columnSpanFull()
                                 ->color('primary'),
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
@@ -463,6 +458,12 @@ final class BantuanPpksResource extends Resource
                             //                                ->label('Jenis Bantuan')
                             //                                ->weight(FontWeight::SemiBold)
                             //                                ->color('primary'),
+                            TextEntry::make('nama_bantuan')
+                                ->label('Nama Bantuan')
+                                ->icon('heroicon-o-bookmark')
+                                ->weight(FontWeight::SemiBold)
+                                ->columnSpanFull()
+                                ->color('primary'),
                             TextEntry::make('bantuan_yang_pernah_diterima')
                                 ->label('Jenis Bantuan')
                                 ->weight(FontWeight::SemiBold)
