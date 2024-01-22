@@ -360,8 +360,8 @@ final class BantuanPpksResource extends Resource
                 Group::make([
                     \Filament\Infolists\Components\Section::make('Informasi Keluarga')
                         ->schema([
-                            TextEntry::make('dtks_id')
-                                ->label('DTKS ID')
+                            TextEntry::make('status_dtks')
+                                ->label('DTKS Status')
                                 ->weight(FontWeight::SemiBold)
                                 ->copyable()
                                 ->icon('heroicon-o-identification')

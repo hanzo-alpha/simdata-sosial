@@ -8,6 +8,7 @@ use App\Casts\MoneyCast;
 use App\Enums\JenisAnggaranEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
@@ -33,6 +34,7 @@ class BantuanPpks extends Model
 
     protected $casts = [
         'status_kawin' => StatusKawinBpjsEnum::class,
+        'status_dtks' => StatusDtksEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rumah_tinggal' => StatusRumahEnum::class,
         'status_bantuan' => StatusAktif::class,
