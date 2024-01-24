@@ -62,7 +62,7 @@ class BantuanChart extends ApexChartWidget
         $dateEnd = $this->filterFormData['date_end'];
 
         //showing a loading indicator immediately after the page load
-        if (!$this->readyToLoad) {
+        if ( ! $this->readyToLoad) {
             return [];
         }
 
@@ -101,43 +101,43 @@ class BantuanChart extends ApexChartWidget
         ];
     }
 
-//    protected function extraJsOptions(): ?\Filament\Support\RawJs
-//    {
-//        return RawJs::make(
-//            <<<'JS'
-//        {
-//            xaxis: {
-//                labels: {
-//                    formatter: function (val, timestamp, opts) {
-//                        return val + '/24'
-//                    }
-//                }
-//            },
-//            yaxis: {
-//                labels: {
-//                    formatter: function (val, index) {
-//                        return '$' + val
-//                    }
-//                }
-//            },
-//            tooltip: {
-//                x: {
-//                    formatter: function (val) {
-//                        return val + '/24'
-//                    }
-//                }
-//            },
-//            dataLabels: {
-//                enabled: true,
-//                formatter: function (val, opt) {
-//                    return opt.w.globals.labels[opt.dataPointIndex] + ': $' + val
-//                },
-//                dropShadow: {
-//                    enabled: true
-//                },
-//            }
-//        }
-//    JS
-//        );
-//    }
+    //    protected function extraJsOptions(): ?\Filament\Support\RawJs
+    //    {
+    //        return RawJs::make(
+    //            <<<'JS'
+    //        {
+    //            xaxis: {
+    //                labels: {
+    //                    formatter: function (val, timestamp, opts) {
+    //                        return val + '/24'
+    //                    }
+    //                }
+    //            },
+    //            yaxis: {
+    //                labels: {
+    //                    formatter: function (val, index) {
+    //                        return '$' + val
+    //                    }
+    //                }
+    //            },
+    //            tooltip: {
+    //                x: {
+    //                    formatter: function (val) {
+    //                        return val + '/24'
+    //                    }
+    //                }
+    //            },
+    //            dataLabels: {
+    //                enabled: true,
+    //                formatter: function (val, opt) {
+    //                    return opt.w.globals.labels[opt.dataPointIndex] + ': $' + val
+    //                },
+    //                dropShadow: {
+    //                    enabled: true
+    //                },
+    //            }
+    //        }
+    //    JS
+    //        );
+    //    }
 }

@@ -17,11 +17,11 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        $this->command->warn(PHP_EOL.'Seeding Wilayah Data...');
+        //        $this->command->warn(PHP_EOL.'Seeding Wilayah Data...');
         $this->call([
             WilayahSeeder::class
         ]);
-//        $this->command->info('Wilayah created.');
+        //        $this->command->info('Wilayah created.');
     }
 
     protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
