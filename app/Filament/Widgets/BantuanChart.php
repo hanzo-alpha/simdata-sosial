@@ -37,29 +37,29 @@ class BantuanChart extends ApexChartWidget
     protected static ?int $sort = 3;
     protected int|string|array $columnSpan = 'full';
 
-//    protected function getFormSchema(): array
-//    {
-//        return [
-//
-//            Select::make('jenis_bantuan')
-//                ->options(JenisBantuan::pluck('nama_bantuan', 'id'))
-//                ->preload()
-//                ->lazy(),
-//
-//            DatePicker::make('date_start')
-//                ->default('2023-01-01'),
-//
-//            DatePicker::make('date_end')
-//                ->default('2023-12-31')
-//
-//        ];
-//    }
+    //    protected function getFormSchema(): array
+    //    {
+    //        return [
+    //
+    //            Select::make('jenis_bantuan')
+    //                ->options(JenisBantuan::pluck('nama_bantuan', 'id'))
+    //                ->preload()
+    //                ->lazy(),
+    //
+    //            DatePicker::make('date_start')
+    //                ->default('2023-01-01'),
+    //
+    //            DatePicker::make('date_end')
+    //                ->default('2023-12-31')
+    //
+    //        ];
+    //    }
 
     protected function getOptions(): array
     {
-//        $jenis = $this->filterFormData['jenis_bantuan'];
-//        $dateStart = $this->filterFormData['date_start'];
-//        $dateEnd = $this->filterFormData['date_end'];
+        //        $jenis = $this->filterFormData['jenis_bantuan'];
+        //        $dateStart = $this->filterFormData['date_start'];
+        //        $dateEnd = $this->filterFormData['date_end'];
 
         //showing a loading indicator immediately after the page load
         if ( ! $this->readyToLoad) {
