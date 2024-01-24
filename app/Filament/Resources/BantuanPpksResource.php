@@ -213,7 +213,7 @@ final class BantuanPpksResource extends Resource
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                        ?->hasRole(['super_admin', 'admin'])
+                                    ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -225,7 +225,7 @@ final class BantuanPpksResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s').'-'),
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
