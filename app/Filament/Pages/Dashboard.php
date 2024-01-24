@@ -13,7 +13,7 @@ use Filament\Forms\Form;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 
-final class Dashboard extends \Filament\Pages\Dashboard
+class Dashboard extends \Filament\Pages\Dashboard
 {
     use HasFiltersAction;
     use HasFiltersForm;
@@ -37,7 +37,7 @@ final class Dashboard extends \Filament\Pages\Dashboard
                             ->options(function () {
                                 $kab = Kecamatan::query()
                                     ->where('kabupaten_code', config('custom.default.kodekab'));
-                                if ( ! $kab) {
+                                if (!$kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }

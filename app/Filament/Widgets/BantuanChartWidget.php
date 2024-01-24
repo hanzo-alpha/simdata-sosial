@@ -10,30 +10,28 @@ use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
-use App\Models\UsulanPengaktifanTmt;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 
-final class BantuanChartWidget extends ChartWidget
+class BantuanChartWidget extends ChartWidget
 {
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-    protected static ?string $heading = 'Bantuan Statistik Per Kecamatan';
+    protected static ?string $heading = 'Statistik Program Bantuan Per Kecamatan';
 
     protected static ?string $maxHeight = '400px';
 
     protected static ?string $pollingInterval = null;
 
     //    protected int|string|array $columnSpan = 'full';
+    protected static ?int $sort = 2;
     protected int|string|array $columnSpan = [
         'md' => 2,
         'xl' => 3,
     ];
-
-    protected static ?int $sort = 2;
 
     public function getColumns(): int|string|array
     {
@@ -133,8 +131,20 @@ final class BantuanChartWidget extends ChartWidget
 //                        ->whereDate('created_at', '<=', $dates[0])
 //                        ->whereDate('created_at', '>=', $dates[1]);
 //                })
-                ->when($kecamatan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kec', fn(Builder $query) => $query->where('code', $kecamatan))))
-                ->when($kelurahan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kel', fn(Builder $query) => $query->where('code', $kelurahan))))
+                ->when($kecamatan, fn(Builder $query) => $query->whereHas(
+                    'alamat',
+                    fn(Builder $query) => $query->whereHas(
+                        'kec',
+                        fn(Builder $query) => $query->where('code', $kecamatan)
+                    )
+                ))
+                ->when($kelurahan, fn(Builder $query) => $query->whereHas(
+                    'alamat',
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        fn(Builder $query) => $query->where('code', $kelurahan)
+                    )
+                ))
                 ->get()->count();
         }
 
@@ -147,8 +157,20 @@ final class BantuanChartWidget extends ChartWidget
 //                        ->whereDate('created_at', '<=', $dates[0])
 //                        ->whereDate('created_at', '>=', $dates[1]);
 //                })
-                ->when($kecamatan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kec', fn(Builder $query) => $query->where('code', $kecamatan))))
-                ->when($kelurahan, fn(Builder $query) => $query->whereHas('alamat', fn(Builder $query) => $query->whereHas('kel', fn(Builder $query) => $query->where('code', $kelurahan))))
+                ->when($kecamatan, fn(Builder $query) => $query->whereHas(
+                    'alamat',
+                    fn(Builder $query) => $query->whereHas(
+                        'kec',
+                        fn(Builder $query) => $query->where('code', $kecamatan)
+                    )
+                ))
+                ->when($kelurahan, fn(Builder $query) => $query->whereHas(
+                    'alamat',
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        fn(Builder $query) => $query->where('code', $kelurahan)
+                    )
+                ))
 //                ->whereHas('alamat',
 //                    fn(Builder $query) => $query->where('kecamatan', $item))
 //                ->get()

@@ -93,11 +93,6 @@ final class BantuanPpksResource extends Resource
                                 ->displayFormat('d/M/Y')
                                 ->label('Tgl. Lahir')
                                 ->required(),
-                            TextInput::make('notelp')
-                                ->label('No. Telp/WA')
-                                ->required()
-                                ->maxLength(18),
-
                             Select::make('jenis_kelamin')
                                 ->options(JenisKelaminEnum::class)
                                 ->default(JenisKelaminEnum::LAKI),
@@ -381,11 +376,6 @@ final class BantuanPpksResource extends Resource
                                 ->weight(FontWeight::SemiBold)
                                 ->icon('heroicon-o-user')
                                 ->color('primary'),
-                            TextEntry::make('notelp')
-                                ->label('No. Telp/WA')
-                                ->icon('heroicon-o-device-phone-mobile')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
                             TextEntry::make('tempat_lahir')
                                 ->label('Tempat Lahir')
                                 ->weight(FontWeight::SemiBold)
@@ -397,11 +387,11 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-calendar')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
-                            TextEntry::make('alamat.alamat_lengkap')
-                                ->label('Alamat')
-                                ->icon('heroicon-o-map-pin')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
+                            //                            TextEntry::make('alamat.alamat_lengkap')
+                            //                                ->label('Alamat')
+                            //                                ->icon('heroicon-o-map-pin')
+                            //                                ->weight(FontWeight::SemiBold)
+                            //                                ->color('primary'),
                             TextEntry::make('penghasilan_rata_rata')
                                 ->label('Penghasilan Rata-Rata')
                                 ->icon('heroicon-o-banknotes')
@@ -492,14 +482,29 @@ final class BantuanPpksResource extends Resource
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
                             TextEntry::make('tipe_ppks.nama_tipe')
+//                                ->listWithLineBreaks()
+//                                ->formatStateUsing(function ($record): array {
+//                                    $tipe = $record->tipe_ppks->nama_tipe;
+//                                    $all = [];
+//                                    $kriteria = KriteriaPpks::query()
+//                                        ->where('tipe_ppks_id', $record->tipe_ppks_id)
+//                                        ->whereIn('id', $record->kriteria_ppks)
+//                                        ->pluck('nama_kriteria', 'id');
+//
+//                                    foreach ($kriteria as $krit) {
+//                                        $all[] = $krit;
+//                                    }
+//                                    return $all;
+//                                })
                                 ->label('Tipe PPKS'),
                             TextEntry::make('tipe_ppks')
                                 ->formatStateUsing(function ($record) {
-                                    $kriteria = $record->tipe_ppks
+                                    return $record->tipe_ppks
                                         ->kriteria_ppks
+                                        ->where('tipe_ppks_id', $record->tipe_ppks_id)
                                         ->whereIn('id', $record->kriteria_ppks)
-                                        ->map(fn($item) => $item->nama_kriteria);
-                                    return $kriteria->toArray()[2];
+                                        ->pluck('nama_kriteria', 'id')
+                                        ->implode(', ');
                                 })
                                 ->listWithLineBreaks()
                                 ->columnSpanFull()

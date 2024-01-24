@@ -23,6 +23,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -81,7 +82,8 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Dashboard Bantuan')
                     ->navigationSort(3)
                     ->navigationCountBadge(),
-                FilamentJobsMonitorPlugin::make()
+                FilamentJobsMonitorPlugin::make(),
+                FilamentApexChartsPlugin::make(),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
