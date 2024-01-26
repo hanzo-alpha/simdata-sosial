@@ -6,7 +6,6 @@ namespace App\Filament\Resources\BantuanPpksResource\Pages;
 
 use App\Exports\ExportBantuanPpks;
 use App\Filament\Resources\BantuanPpksResource;
-use App\Filament\Widgets\BantuanPpksOverview;
 use App\Imports\ImportBantuanPpks;
 use App\Models\BantuanPpks;
 use App\Models\TipePpks;
@@ -180,10 +179,10 @@ final class ListBantuanPpks extends ListRecords
         return $query->fastPaginate($this->getTableRecordsPerPage());
     }
 
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            BantuanPpksOverview::class,
-        ];
-    }
+//    protected function getHeaderWidgets(): array
+//    {
+//        return [
+//            BantuanPpksOverview::class,
+//        ];
+//    }
 }
