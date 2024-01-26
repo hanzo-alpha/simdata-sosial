@@ -16,6 +16,7 @@ use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -31,6 +32,10 @@ class BantuanPpks extends Model
     protected $table = 'bantuan_ppks';
 
     protected $guarded = [];
+
+    protected $with = [
+        'tipe_ppks'
+    ];
 
     protected $casts = [
         'status_kawin' => StatusKawinBpjsEnum::class,
@@ -60,7 +65,12 @@ class BantuanPpks extends Model
 
     public function kriteria(): HasOneThrough
     {
-        return $this->hasOneThrough(KriteriaPpks::class, TipePpks::class, 'id', 'id');
+        return $this->hasOneThrough(KriteriaPpks::class, TipePpks::class, 'id', 'tipe_ppks_id', 'tipe_ppks_id');
+    }
+
+    public function kriterias(): HasManyThrough
+    {
+        return $this->hasManyThrough(KriteriaPpks::class, TipePpks::class, 'id', 'tipe_ppks_id', 'tipe_ppks_id');
     }
 
     public function alamat(): MorphOne
