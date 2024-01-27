@@ -212,7 +212,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw),
+                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 
