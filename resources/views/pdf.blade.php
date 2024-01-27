@@ -56,7 +56,7 @@
             <div class="text-center">
                 @if($model->count() > 0)
                     @forelse($model->foto_penyerahan as $foto)
-                        <div style="width: 350px; height: 250px;padding: 5px;margin-bottom: 5px" class="img-border">
+                        <div style="width: 350px; height: 280px;padding: 5px;margin-bottom: 5px" class="img-border">
                             <img style="width: 300px"
                                  src="{{ asset('storage/' . $foto) }}"
                                  alt="foto"/>
