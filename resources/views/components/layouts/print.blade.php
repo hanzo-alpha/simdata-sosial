@@ -4,6 +4,8 @@
     <title>Print Dokumentasi</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
+    {{--    @vite(['resources/css/app.css'])--}}
+
     <style type="text/css" media="screen">
         html {
             font-family: sans-serif;
@@ -51,7 +53,9 @@
         }
 
         img {
-            vertical-align: middle;
+            /*display: block;*/
+            margin: 0 auto;
+            /*vertical-align: middle;*/
             border-style: none;
         }
 
@@ -91,7 +95,7 @@
 
         .table th,
         .table td {
-            padding: 0.75rem;
+            padding: 0.3rem;
             vertical-align: top;
         }
 
@@ -157,14 +161,39 @@
         }
 
         .img-border {
-            margin: auto;
+            margin: 0 auto;
             align-content: center;
             align-items: center;
-            border: 5px solid #555;
+            border: 2px solid #555;
         }
 
         .page-break {
             page-break-after: always;
+        }
+
+        div.page {
+            margin: 10px auto;
+            border: solid 1px black;
+            display: block;
+            page-break-after: always;
+            width: 209mm;
+            height: 296mm;
+            overflow: hidden;
+            background: white;
+        }
+
+        div.landscape-parent {
+            width: 296mm;
+            height: 209mm;
+        }
+
+        div.landscape {
+            width: 296mm;
+            height: 209mm;
+        }
+
+        div.content {
+            padding: 10mm;
         }
     </style>
 </head>

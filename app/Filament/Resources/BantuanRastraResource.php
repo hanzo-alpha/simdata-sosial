@@ -22,6 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -133,13 +134,19 @@ class BantuanRastraResource extends Resource
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
-                //                Tables\Actions\Action::make('cetak')
-                //                    ->label('Cetak BA')
-                //                    ->color('success')
-                //                    ->icon('heroicon-o-arrow-down-tray')
-                //                    ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
-                //                    ->openUrlInNewTab(),
+                Tables\Actions\Action::make('cetak')
+                    ->label('Cetak BA')
+                    ->color('success')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
+                    ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
+                    //                    Tables\Actions\Action::make('cetak dokumentasi')
+                    //                        ->label('Cetak Dokumentasi')
+                    //                        ->color('success')
+                    //                        ->icon('heroicon-o-arrow-down-tray')
+                    //                        ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
+                    //                        ->openUrlInNewTab(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
@@ -205,7 +212,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
+                                ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 

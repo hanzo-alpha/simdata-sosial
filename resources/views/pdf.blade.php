@@ -23,64 +23,66 @@
                 <tr class="pb-0" style="margin-bottom: 0.1rem">
                     <th width="20%" style="text-align: right">NAMA</th>
                     <th width="10%" style="text-align: right">:</th>
-                    <td>RUDI</td>
+                    <td>{{ Str::upper($model->bantuan_rastra->nama_lengkap) }}</td>
                 </tr>
                 <tr class="pb-0">
                     <th width="20%" style="text-align: right">NIK</th>
                     <th width="10%" style="text-align: right">:</th>
-                    <td>7312033112710111</td>
+                    <td>{{ $model->bantuan_rastra->nik }}</td>
                 </tr>
                 <tr class="pb-0">
                     <th width="20%" style="text-align: right">ALAMAT</th>
                     <th width="10%" style="text-align: right">:</th>
-                    <td>LOMPULLE RT 01 RW 04</td>
+                    <td>{{ Str::upper($model->bantuan_rastra->alamat) }}</td>
                 </tr>
                 <tr class="pb-0">
                     <th width="20%" style="text-align: right">DESA/KEL</th>
                     <th width="10%" style="text-align: right">:</th>
-                    <td>KEBO</td>
+                    <td>{{ Str::upper($model->bantuan_rastra->kel->name) }}</td>
                 </tr>
                 <tr class="pb-0">
                     <th width="20%" style="text-align: right">KECAMATAN</th>
                     <th width="10%" style="text-align: right">:</th>
-                    <td>LILIRILAU</td>
+                    <td>{{ Str::upper($model->bantuan_rastra->kec->name) }}</td>
                 </tr>
                 <tr class="pb-0">
                     <th width="20%" style="text-align: right">DTKS ID</th>
                     <th width="10%" style="text-align: right">:</th>
-                    <td>817BB1FF-E6A7-4C11-BBDA-80255EB88359</td>
+                    <td>{{ Str::upper($model->bantuan_rastra->dtks_id) }}</td>
                 </tr>
                 </tbody>
             </table>
 
             <div class="text-center">
-                <div style="width: 350px; height: 350px;margin-bottom: 20px;" class="img-border">
-                    <img width="300px"
-                         src="{{ asset('storage/' . $model->foto_penyerahan) }}"
-                         alt="foto"/>
-                    <div class="m-0" style="font-size: 12px;">
-                        <p style="margin-top: 10px;">Penyaluran pada titik koordinat indonesia : {{ $model->lat }}</p>
-                        <p>{{ $model->lng . ', ' . $model->bantuan_rastra->kel->name . ' KEC. ' .
+                @isset($model->foto_penyerahan)
+                    @foreach($model->foto_penyerahan as $foto)
+                        <div style="width: 350px; height: 250px;padding: 5px;margin-bottom: 5px" class="img-border">
+                            <img style="width: 300px"
+                                 src="{{ asset('storage/' . $foto) }}"
+                                 alt="foto"/>
+                            <div class="m-0" style="font-size: 10px;">
+                                <p style="margin-top: 10px;">Penyaluran pada titik koordinat indonesia
+                                    : {{ $model->lat }}</p>
+                                <p>{{ $model->lng . ', ' . $model->bantuan_rastra->kel->name . ' KEC. ' .
                         $model->bantuan_rastra->kec->name . ' KAB. SOPPENG, '}} </p>
-                        <p>{{ 'SULAWESI SELATAN, ' . $model->created_at->format('d/m/Y') }}</p>
-                        <p style="margin-top: 40px;">{{ $model->created_at->format('d/m/Y H:i:s') . ' WITA'}}</p>
+                                <p>{{ 'SULAWESI SELATAN, ' . $model->created_at->format('d/m/Y') }}</p>
+                                <p style="margin-top: 10px;">{{ $model->created_at->format('d/m/Y H:i:s') . '
+                                WITA'}}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @endisset
+            </div>
+            <br>
+
+            <div class="">
+                @isset($model->bantuan_rastra->foto_ktp_kk)
+                    <div class="">
+                        <img style="width: 600px"
+                             src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
+                             alt="foto"/>
                     </div>
-                </div>
-
-                <div style="width: 350px; height: 350px;" class="img-border">
-                    <img width="300px"
-                         src="{{ asset('storage/' . $model->foto_ktp_kk) }}"
-                         alt="foto"/>
-                    <div class="m-0" style="font-size: 12px;">
-                        <p style="margin-top: 10px;">Penyaluran pada titik koordinat indonesia : {{ $model->lat }}</p>
-                        <p>{{ $model->lng . ', ' . $model->bantuan_rastra->kel->name . ' KEC. ' .
-                        $model->bantuan_rastra->kec->name . ' KAB. SOPPENG, '}} </p>
-                        <p>{{ 'SULAWESI SELATAN, ' . $model->created_at->format('d/m/Y') }}</p>
-                        <p style="margin-top: 40px;">{{ $model->created_at->format('d/m/Y H:i:s') . ' WITA'}}</p>
-                    </div>
-
-                </div>
-
+                @endif
             </div>
         </div>
     @endsection
