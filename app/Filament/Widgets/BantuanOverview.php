@@ -7,7 +7,7 @@ namespace App\Filament\Widgets;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Kenepa\MultiWidget\MultiWidget;
 
-final class BantuanOverview extends MultiWidget
+class BantuanOverview extends MultiWidget
 {
     use HasWidgetShield;
 
@@ -18,7 +18,7 @@ final class BantuanOverview extends MultiWidget
         BantuanBpntOverview::class,
         BantuanPpksOverview::class,
     ];
-    //
+
     //    public function shouldPersistMultiWidgetTabsInSession(): bool
     //    {
     //        return true;

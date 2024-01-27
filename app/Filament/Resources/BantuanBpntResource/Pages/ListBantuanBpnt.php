@@ -15,14 +15,13 @@ use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 
-final class ListBantuanBpnt extends ListRecords
+class ListBantuanBpnt extends ListRecords
 {
     protected static string $resource = BantuanBpntResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            //            Actions\CreateAction::make(),
             Actions\Action::make('unggahData')
                 ->model(BantuanPkh::class)
                 ->label('Unggah Data')

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\StatusDtksEnum;
 use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
@@ -16,7 +17,7 @@ return new class () extends Migration {
     {
         Schema::create('bantuan_ppks', static function (Blueprint $table): void {
             $table->id();
-            $table->uuid('dtks_id')->nullable()->default(Str::uuid()->toString());
+            $table->string('status_dtks')->nullable()->default(StatusDtksEnum::DTKS);
             $table->string('nokk', 20);
             $table->string('nik', 20);
             $table->string('nama_lengkap');

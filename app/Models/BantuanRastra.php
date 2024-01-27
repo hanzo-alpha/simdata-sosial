@@ -252,7 +252,6 @@ class BantuanRastra extends Model
                         ->prepend(date('d-m-Y-H-i-s').'-'),
                 )
                 ->preserveFilenames()
-                ->multiple()
                 ->reorderable()
                 ->appendFiles()
                 ->openable()

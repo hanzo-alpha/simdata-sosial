@@ -8,6 +8,7 @@ use App\Enums\JenisAnggaranEnum;
 use App\Enums\JenisBansosDiterimaEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
@@ -18,6 +19,8 @@ use App\Forms\Components\AlamatForm;
 use App\Models\BantuanPpks;
 use App\Models\KriteriaPpks;
 use App\Models\TipePpks;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -25,6 +28,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Group;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -43,17 +47,11 @@ final class BantuanPpksResource extends Resource
     protected static ?string $model = BantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-window';
-
     protected static ?string $slug = 'program-ppks';
-
     protected static ?string $label = 'Program PPKS';
-
     protected static ?string $pluralLabel = 'Program PPKS';
-
     protected static ?string $navigationLabel = 'Program PPKS';
-
     protected static ?string $navigationGroup = 'Program Sosial';
-
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -63,13 +61,12 @@ final class BantuanPpksResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Section::make('Data Keluarga')
                         ->schema([
-                            TextInput::make('dtks_id')
-                                ->label('DTKS ID')
-                                ->maxLength(36)
-                                ->hidden()
-                                ->required()
-                                ->dehydrated()
-                                ->unique(ignoreRecord: true),
+                            Select::make('status_dtks')
+                                ->label('DTKS')
+                                ->options(StatusDtksEnum::class)
+                                ->preload()
+                                ->default(StatusDtksEnum::DTKS)
+                                ->lazy(),
                             TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
@@ -96,11 +93,6 @@ final class BantuanPpksResource extends Resource
                                 ->displayFormat('d/M/Y')
                                 ->label('Tgl. Lahir')
                                 ->required(),
-                            TextInput::make('notelp')
-                                ->label('No. Telp/WA')
-                                ->required()
-                                ->maxLength(18),
-
                             Select::make('jenis_kelamin')
                                 ->options(JenisKelaminEnum::class)
                                 ->default(JenisKelaminEnum::LAKI),
@@ -240,7 +232,6 @@ final class BantuanPpksResource extends Resource
                                 ->reorderable()
                                 ->appendFiles()
                                 ->openable()
-                                ->required()
                                 ->helperText('maks. 2MB')
                                 ->maxFiles(3)
                                 ->maxSize(2048)
@@ -258,30 +249,6 @@ final class BantuanPpksResource extends Resource
                                 ->default(true),
 
                         ]),
-                    //                    Forms\Components\Section::make('Verifikasi')
-                    //                        ->schema([
-                    //                            Forms\Components\FileUpload::make('bukti_foto')
-                    //                                ->label('Dokumentasi')
-                    //                                ->getUploadedFileNameForStorageUsing(
-                    //                                    fn(
-                    //                                        TemporaryUploadedFile $file
-                    //                                    ): string => (string) str($file->getClientOriginalName())
-                    //                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                    //                                )
-                    //                                ->preserveFilenames()
-                    //                                ->multiple()
-                    //                                ->reorderable()
-                    //                                ->appendFiles()
-                    //                                ->openable()
-                    //                                ->required()
-                    //                                ->helperText('maks. 2MB')
-                    //                                ->maxFiles(3)
-                    //                                ->maxSize(2048)
-                    //                                ->columnSpanFull()
-                    //                                ->imagePreviewHeight('250')
-                    //                                ->previewable(false)
-                    //                                ->image(),
-                    //                        ])
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -303,23 +270,23 @@ final class BantuanPpksResource extends Resource
                     ->label('No.Telp/WA')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
-                    ->label('Jenis Bantuan')
-                    ->badge()
-                    ->alignCenter()
-                    ->color(fn($record): string => $record->jenis_bantuan->warna)
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->alignCenter()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tipe_ppks.nama_tipe')
-                    ->toggleable()
+                BadgeableColumn::make('tipe_ppks.nama_tipe')
+                    ->label('Tipe Kriteria PPKS')
+                    ->suffixBadges(function ($record) {
+                        return $record->tipe_ppks
+                            ->kriteria_ppks
+                            ->whereIn('id', $record->kriteria_ppks)
+                            ->map(fn($topic) => Badge::make($topic->nama_kriteria));
+                    })
+                    ->inline()
+                    ->wrap()
                     ->searchable()
-                    ->sortable()
-                    ->alignCenter()
-                    ->badge(),
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('status_rumah_tinggal')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
@@ -386,8 +353,8 @@ final class BantuanPpksResource extends Resource
                 Group::make([
                     \Filament\Infolists\Components\Section::make('Informasi Keluarga')
                         ->schema([
-                            TextEntry::make('dtks_id')
-                                ->label('DTKS ID')
+                            TextEntry::make('status_dtks')
+                                ->label('DTKS Status')
                                 ->weight(FontWeight::SemiBold)
                                 ->copyable()
                                 ->icon('heroicon-o-identification')
@@ -409,11 +376,6 @@ final class BantuanPpksResource extends Resource
                                 ->weight(FontWeight::SemiBold)
                                 ->icon('heroicon-o-user')
                                 ->color('primary'),
-                            TextEntry::make('notelp')
-                                ->label('No. Telp/WA')
-                                ->icon('heroicon-o-device-phone-mobile')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
                             TextEntry::make('tempat_lahir')
                                 ->label('Tempat Lahir')
                                 ->weight(FontWeight::SemiBold)
@@ -425,11 +387,11 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-calendar')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
-                            TextEntry::make('alamat.alamat')
-                                ->label('Alamat')
-                                ->icon('heroicon-o-map-pin')
-                                ->weight(FontWeight::SemiBold)
-                                ->color('primary'),
+                            //                            TextEntry::make('alamat.alamat_lengkap')
+                            //                                ->label('Alamat')
+                            //                                ->icon('heroicon-o-map-pin')
+                            //                                ->weight(FontWeight::SemiBold)
+                            //                                ->color('primary'),
                             TextEntry::make('penghasilan_rata_rata')
                                 ->label('Penghasilan Rata-Rata')
                                 ->icon('heroicon-o-banknotes')
@@ -440,15 +402,25 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
+                            TextEntry::make('keterangan')
+                                ->label('Keterangan')
+                                ->icon('heroicon-o-bookmark')
+                                ->weight(FontWeight::SemiBold)
+                                ->columnSpanFull()
+                                ->color('primary'),
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
                         ->schema([
-                            TextEntry::make('alamat.alamat_lengkap')
+                            TextEntry::make('alamat.alamat')
                                 ->label('Alamat')
                                 ->columnSpanFull()
                                 ->icon('heroicon-o-map-pin')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
+                            TextEntry::make('alamat.prov.name')
+                                ->label('Kecamatan'),
+                            TextEntry::make('alamat.kab.name')
+                                ->label('Kelurahan'),
                             TextEntry::make('alamat.kec.name')
                                 ->label('Kecamatan'),
                             TextEntry::make('alamat.kel.name')
@@ -463,16 +435,15 @@ final class BantuanPpksResource extends Resource
                 ])->columnSpan(2),
 
                 Group::make([
-                    //                    \Filament\Infolists\Components\Section::make('Foto Rumah')
-                    //                        ->schema([
-                    //                            ImageEntry::make('bukti_foto')
-                    //                                ->hiddenLabel()
-                    //                                ->visibility('private')
-                    //                                ->extraImgAttributes([
-                    //                                    'alt' => 'foto rumah',
-                    //                                    'loading' => 'lazy'
-                    //                                ])
-                    //                        ])->columns(3),
+                    \Filament\Infolists\Components\Section::make('Foto Rumah')
+                        ->schema([
+                            ImageEntry::make('bukti_foto')
+                                ->hiddenLabel()
+                                ->extraImgAttributes([
+                                    'alt' => 'foto rumah',
+                                    'loading' => 'lazy'
+                                ])
+                        ])->columns(3),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->schema([
@@ -480,6 +451,11 @@ final class BantuanPpksResource extends Resource
                             //                                ->label('Jenis Bantuan')
                             //                                ->weight(FontWeight::SemiBold)
                             //                                ->color('primary'),
+                            TextEntry::make('nama_bantuan')
+                                ->label('Nama Bantuan')
+                                ->weight(FontWeight::SemiBold)
+                                ->columnSpanFull()
+                                ->color('primary'),
                             TextEntry::make('bantuan_yang_pernah_diterima')
                                 ->label('Jenis Bantuan')
                                 ->weight(FontWeight::SemiBold)
@@ -505,6 +481,35 @@ final class BantuanPpksResource extends Resource
                                 ->label('Jenis Kelamin')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
+                            TextEntry::make('tipe_ppks.nama_tipe')
+//                                ->listWithLineBreaks()
+//                                ->formatStateUsing(function ($record): array {
+//                                    $tipe = $record->tipe_ppks->nama_tipe;
+//                                    $all = [];
+//                                    $kriteria = KriteriaPpks::query()
+//                                        ->where('tipe_ppks_id', $record->tipe_ppks_id)
+//                                        ->whereIn('id', $record->kriteria_ppks)
+//                                        ->pluck('nama_kriteria', 'id');
+//
+//                                    foreach ($kriteria as $krit) {
+//                                        $all[] = $krit;
+//                                    }
+//                                    return $all;
+//                                })
+                                ->label('Tipe PPKS'),
+                            TextEntry::make('tipe_ppks')
+                                ->formatStateUsing(function ($record) {
+                                    return $record->tipe_ppks
+                                        ->kriteria_ppks
+                                        ->where('tipe_ppks_id', $record->tipe_ppks_id)
+                                        ->whereIn('id', $record->kriteria_ppks)
+                                        ->pluck('nama_kriteria', 'id')
+                                        ->implode(', ');
+                                })
+                                ->listWithLineBreaks()
+                                ->columnSpanFull()
+                                ->badge()
+                                ->label('Kriteria PPKS'),
                             TextEntry::make('status_kawin')
                                 ->label('Status Kawin')
                                 ->badge(),
@@ -512,7 +517,7 @@ final class BantuanPpksResource extends Resource
                                 ->label('Jenis Anggaran')
                                 ->badge(),
                             TextEntry::make('tahun_anggaran')
-                                ->label('Tahun Anggaran'),
+                                ->label('Tahun'),
                             TextEntry::make('status_rumah_tinggal')
                                 ->label('Rumah Tinggal')
                                 ->badge(),

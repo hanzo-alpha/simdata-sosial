@@ -139,10 +139,10 @@ class PenyaluranBantuanRastraResource extends Resource
                                 fn(
                                     TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
+                                    ->prepend(date('YmdHis').'-'),
                             )
                             ->preserveFilenames()
-//                                ->multiple()
+                            ->multiple()
                             ->reorderable()
                             ->appendFiles()
                             ->openable()
@@ -205,8 +205,9 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tgl_penyerahan')
+                    ->label('Penyerahan')
                     ->dateTime()
-                    ->formatStateUsing(fn($record) => $record->tgl_penyerahan->format('d F Y H:i:s'))
+                    ->formatStateUsing(fn($record) => $record->tgl_penyerahan->diffForHumans())
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lokasi')
