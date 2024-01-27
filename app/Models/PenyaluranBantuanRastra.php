@@ -18,7 +18,6 @@ final class PenyaluranBantuanRastra extends Model
     protected $casts = [
         'tgl_penyerahan' => 'datetime',
         'foto_penyerahan' => 'array',
-        'foto_ktp_kk' => 'array',
         'status_penyaluran' => StatusPenyaluran::class,
     ];
 

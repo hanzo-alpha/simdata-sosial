@@ -70,6 +70,7 @@
                                 WITA'}}</p>
                             </div>
                         </div>
+                    @empty
                     @endforelse
                 @endif
             </div>
