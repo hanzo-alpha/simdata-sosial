@@ -8,6 +8,8 @@ use App\Enums\AlasanEnum;
 use App\Filament\Resources\PenggantiRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\PenggantiRastra;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\PathGenerators\DatePathGenerator;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -51,7 +53,7 @@ final class PenggantiRastraResource extends Resource
                         ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(fn(
                         $record
-                    ) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
+                    ) => '<strong>'.$record->nik.'</strong><br>'.$record->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')
@@ -78,6 +80,38 @@ final class PenggantiRastraResource extends Resource
                     ->required()
                     ->default(AlasanEnum::PINDAH)
                     ->optionsLimit(15),
+                CuratorPicker::make('media_id')
+                    ->relationship('beritaAcara', 'id')
+                    ->preserveFilenames()
+                    ->rules(['required'])
+                    ->pathGenerator(DatePathGenerator::class)
+                    //                    ->acceptedFileTypes(['Application/Pdf'])
+                    ->maxSize(2048),
+
+                //                FileUpload::make('attachment')
+                //                    ->label('Upload Berita Acara')
+                //                    ->disk('public')
+                //                    ->directory('penyaluran')
+                //                    ->required()
+                //                    ->getUploadedFileNameForStorageUsing(
+                //                        fn(
+                //                            TemporaryUploadedFile $file
+                //                        ): string => (string) str($file->getClientOriginalName())
+                //                            ->prepend(date('YmdHis').'-'),
+                //                    )
+                //                    ->preserveFilenames()
+                //                    ->multiple()
+                //                    ->reorderable()
+                //                    ->appendFiles()
+                //                    ->openable()
+                //                    ->unique(ignoreRecord: true)
+                //                    ->helperText('maks. 2MB')
+                //                    ->maxFiles(3)
+                //                    ->maxSize(2048)
+                //                    ->columnSpanFull()
+                //                    ->imagePreviewHeight('250')
+                //                    ->previewable(true)
+                //                    ->image(),
 
             ])->columns(1)->inlineLabel();
     }
