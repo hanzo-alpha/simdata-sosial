@@ -143,7 +143,7 @@ class PenyaluranBantuanRastraResource extends Resource
                                 fn(
                                     TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis').'-'),
+                                    ->prepend(date('YmdHis') . '-'),
                             )
                             ->preserveFilenames()
                             ->multiple()

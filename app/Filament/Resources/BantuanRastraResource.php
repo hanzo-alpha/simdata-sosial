@@ -9,7 +9,6 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
-use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -65,8 +64,8 @@ class BantuanRastraResource extends Resource
     {
         return $table
             ->columns([
-                CuratorColumn::make('beritaAcara')
-                    ->size(60),
+                //                CuratorColumn::make('beritaAcara')
+                //                    ->size(60),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
                     ->description(fn($record) => $record->nik)
