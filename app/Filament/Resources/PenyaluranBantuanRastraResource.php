@@ -6,6 +6,8 @@ use App\Enums\StatusPenyaluran;
 use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\PenyaluranBantuanRastra;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -36,6 +38,7 @@ class PenyaluranBantuanRastraResource extends Resource
                     Forms\Components\Section::make()->schema([
                         Forms\Components\Select::make('bantuan_rastra_id')
                             ->label('Nama KPM')
+                            ->required()
                             ->relationship('bantuan_rastra', 'nama_lengkap')
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
@@ -128,6 +131,7 @@ class PenyaluranBantuanRastraResource extends Resource
                         Forms\Components\Select::make('status_penyaluran')
                             ->label('Status Penyaluran Bantuan')
                             ->options(StatusPenyaluran::class)
+                            ->default(StatusPenyaluran::TERSALURKAN)
                             ->lazy()
                             ->preload(),
                         Forms\Components\FileUpload::make('foto_penyerahan')
@@ -139,7 +143,7 @@ class PenyaluranBantuanRastraResource extends Resource
                                 fn(
                                     TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
+                                    ->prepend(date('YmdHis').'-'),
                             )
                             ->preserveFilenames()
                             ->multiple()
@@ -154,6 +158,14 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->imagePreviewHeight('250')
                             ->previewable(true)
                             ->image(),
+
+                        CuratorPicker::make('media_id')
+                            ->label('Upload Berita Acara')
+                            ->buttonLabel('Tambah File')
+                            ->relationship('beritaAcara', 'id')
+                            ->nullable()
+                            ->preserveFilenames()
+                            ->columnSpanFull()
                     ]),
                 ])->columnSpan(1),
 
@@ -165,7 +177,8 @@ class PenyaluranBantuanRastraResource extends Resource
         return $table
             ->columns([
                 //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
-                //                Tables\Columns\ImageColumn::make('foto_ktp_kk'),
+                CuratorColumn::make('beritaAcara')
+                    ->size(60),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->label('Nama KPM')
                     ->searchable()
@@ -198,13 +211,19 @@ class PenyaluranBantuanRastraResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\Action::make('pdf')
-                    ->label('Print Dokumentasi')
-                    ->color('success')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
-                    ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('cetak')
+                        ->label('Cetak Berita Acara')
+                        ->color('info')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('pdf')
+                        ->label('Cetak Dokumentasi')
+                        ->color('success')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
+                        ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])
