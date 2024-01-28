@@ -2,10 +2,12 @@
 
 namespace App\Filament\Imports;
 
+use App\Enums\StatusDtksEnum;
 use App\Models\BnbaRastra;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Str;
 
 class BnbaRastraImporter extends Importer
 {
@@ -15,6 +17,7 @@ class BnbaRastraImporter extends Importer
     {
         return [
             ImportColumn::make('dtks_id')
+                ->castStateUsing(fn($state) => Str::isUuid($state) ? StatusDtksEnum::DTKS : StatusDtksEnum::NON_DTKS)
                 ->label('DTKS ID')
                 ->rules(['max:255']),
             ImportColumn::make('nama')
@@ -46,13 +49,13 @@ class BnbaRastraImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Data BNBA Rastra anda telah selesai dan ' . number_format($import->successful_rows)
-            . ' '
-            . str('row')
-                ->plural($import->successful_rows) . ' berhasil di impor.';
+        $body = 'Data BNBA Rastra anda telah selesai dan '.number_format($import->successful_rows)
+            .' '
+            .str('row')
+                ->plural($import->successful_rows).' berhasil di impor.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
+            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to import.';
         }
 
         return $body;
@@ -64,6 +67,11 @@ class BnbaRastraImporter extends Importer
         //     // Update existing records, matching them by `$this->data['column_name']`
         //     'email' => $this->data['email'],
         // ]);
+        if ($this->options['updateExisting'] ?? false) {
+            return BnbaRastra::firstOrNew([
+                'nik' => $this->data['nik'],
+            ]);
+        }
 
         return new BnbaRastra();
     }

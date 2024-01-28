@@ -38,8 +38,18 @@ class BnbaRastraResource extends Resource
     {
         return $table
             ->columns([
-
-
+                Tables\Columns\TextColumn::make('dtks_id')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('no_kk')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nik')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nama')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
 
