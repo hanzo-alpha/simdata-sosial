@@ -9,7 +9,7 @@ use App\Filament\Resources\PenggantiRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\PenggantiRastra;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Awcodes\Curator\PathGenerators\DatePathGenerator;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -37,7 +37,7 @@ final class PenggantiRastraResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('keluarga_id')
+                Select::make('bantuan_rastra_id')
                     ->relationship('bantuan_rastra', 'nama_lengkap')
                     ->label('Penerima Manfaat Rastra')
                     ->searchable()
@@ -81,38 +81,13 @@ final class PenggantiRastraResource extends Resource
                     ->default(AlasanEnum::PINDAH)
                     ->optionsLimit(15),
                 CuratorPicker::make('media_id')
+                    ->label('Upload Berita Acara Pengganti')
                     ->relationship('beritaAcara', 'id')
+                    ->buttonLabel('Tambah File')
+                    ->required()
                     ->preserveFilenames()
                     ->rules(['required'])
-                    ->pathGenerator(DatePathGenerator::class)
-                    //                    ->acceptedFileTypes(['Application/Pdf'])
                     ->maxSize(2048),
-
-                //                FileUpload::make('attachment')
-                //                    ->label('Upload Berita Acara')
-                //                    ->disk('public')
-                //                    ->directory('penyaluran')
-                //                    ->required()
-                //                    ->getUploadedFileNameForStorageUsing(
-                //                        fn(
-                //                            TemporaryUploadedFile $file
-                //                        ): string => (string) str($file->getClientOriginalName())
-                //                            ->prepend(date('YmdHis').'-'),
-                //                    )
-                //                    ->preserveFilenames()
-                //                    ->multiple()
-                //                    ->reorderable()
-                //                    ->appendFiles()
-                //                    ->openable()
-                //                    ->unique(ignoreRecord: true)
-                //                    ->helperText('maks. 2MB')
-                //                    ->maxFiles(3)
-                //                    ->maxSize(2048)
-                //                    ->columnSpanFull()
-                //                    ->imagePreviewHeight('250')
-                //                    ->previewable(true)
-                //                    ->image(),
-
             ])->columns(1)->inlineLabel();
     }
 
@@ -120,6 +95,9 @@ final class PenggantiRastraResource extends Resource
     {
         return $table
             ->columns([
+                CuratorColumn::make('beritaAcara')
+                    ->label('Berita Acara')
+                    ->size(60),
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
                     ->sortable()
@@ -130,18 +108,19 @@ final class PenggantiRastraResource extends Resource
                     ->sortable()
                     ->description(fn($record) => $record->alamat_pengganti)
                     ->label('NAMA & ALAMAT BARU'),
-                Tables\Columns\TextColumn::make('nik_lama')
+                Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->nokk_lama)
+                    ->description(fn($record) => $record->bantuan_rastra->nik)
                     ->label('NIK & NO.KK Lama'),
-                Tables\Columns\TextColumn::make('nama_lama')
+                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->alamat_lama)
+                    ->description(fn($record) => $record->bantuan_rastra->alamat)
                     ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')
+                    ->alignCenter()
                     ->badge(),
             ])
             ->filters([

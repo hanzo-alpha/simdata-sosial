@@ -22,7 +22,7 @@ return new class () extends Migration {
             $table->string('nik_kpm')->nullable();
             $table->dateTime('tgl_penyerahan')->nullable();
             $table->json('foto_penyerahan');
-            $table->json('foto_ktp_kk');
+            $table->unsignedBigInteger('media_id')->nullable();
             $table->longText('lokasi');
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();

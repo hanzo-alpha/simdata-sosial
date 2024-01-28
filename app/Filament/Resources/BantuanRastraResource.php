@@ -64,6 +64,8 @@ class BantuanRastraResource extends Resource
     {
         return $table
             ->columns([
+                //                CuratorColumn::make('beritaAcara')
+                //                    ->size(60),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
                     ->description(fn($record) => $record->nik)

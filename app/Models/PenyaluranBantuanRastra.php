@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\StatusPenyaluran;
+use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,6 +42,11 @@ class PenyaluranBantuanRastra extends Model
     public function bantuan_rastra(): BelongsTo
     {
         return $this->belongsTo(BantuanRastra::class);
+    }
+
+    public function beritaAcara(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
     public function getLocationAttribute(): array
