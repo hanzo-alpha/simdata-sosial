@@ -17,7 +17,7 @@
                 <span><strong>Dokumentasi Penyaluran Bantuan Sosial</strong></span><br>
                 <span><strong>Beras Sejahtera Tahun {{ now()->year }}</strong></span>
             </p>
-            <p style="text-align: right; font-size: 1.2rem"><span>10</span></p>
+            <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>
             <table class="table">
                 <tbody>
                 <tr class="pb-0" style="margin-bottom: 0.1rem">
@@ -54,9 +54,9 @@
             </table>
 
             <div class="text-center">
-                @isset($model->foto_penyerahan)
-                    @foreach($model->foto_penyerahan as $foto)
-                        <div style="width: 350px; height: 250px;padding: 5px;margin-bottom: 5px" class="img-border">
+                @if($model->count() > 0)
+                    @forelse($model->foto_penyerahan as $foto)
+                        <div style="width: 350px; height: 280px;padding: 5px;margin-bottom: 5px" class="img-border">
                             <img style="width: 300px"
                                  src="{{ asset('storage/' . $foto) }}"
                                  alt="foto"/>
@@ -70,8 +70,9 @@
                                 WITA'}}</p>
                             </div>
                         </div>
-                    @endforeach
-                @endisset
+                    @empty
+                    @endforelse
+                @endif
             </div>
             <br>
 

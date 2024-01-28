@@ -8,6 +8,8 @@ use App\Enums\AlasanEnum;
 use App\Filament\Resources\PenggantiRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\PenggantiRastra;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -35,7 +37,7 @@ final class PenggantiRastraResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('keluarga_id')
+                Select::make('bantuan_rastra_id')
                     ->relationship('bantuan_rastra', 'nama_lengkap')
                     ->label('Penerima Manfaat Rastra')
                     ->searchable()
@@ -51,7 +53,7 @@ final class PenggantiRastraResource extends Resource
                         ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(fn(
                         $record
-                    ) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
+                    ) => '<strong>'.$record->nik.'</strong><br>'.$record->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')
@@ -78,7 +80,14 @@ final class PenggantiRastraResource extends Resource
                     ->required()
                     ->default(AlasanEnum::PINDAH)
                     ->optionsLimit(15),
-
+                CuratorPicker::make('media_id')
+                    ->label('Upload Berita Acara Pengganti')
+                    ->relationship('beritaAcara', 'id')
+                    ->buttonLabel('Tambah File')
+                    ->required()
+                    ->preserveFilenames()
+                    ->rules(['required'])
+                    ->maxSize(2048),
             ])->columns(1)->inlineLabel();
     }
 
@@ -86,6 +95,9 @@ final class PenggantiRastraResource extends Resource
     {
         return $table
             ->columns([
+                CuratorColumn::make('beritaAcara')
+                    ->label('Berita Acara')
+                    ->size(60),
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
                     ->sortable()
@@ -96,18 +108,19 @@ final class PenggantiRastraResource extends Resource
                     ->sortable()
                     ->description(fn($record) => $record->alamat_pengganti)
                     ->label('NAMA & ALAMAT BARU'),
-                Tables\Columns\TextColumn::make('nik_lama')
+                Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->nokk_lama)
+                    ->description(fn($record) => $record->bantuan_rastra->nik)
                     ->label('NIK & NO.KK Lama'),
-                Tables\Columns\TextColumn::make('nama_lama')
+                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->alamat_lama)
+                    ->description(fn($record) => $record->bantuan_rastra->alamat)
                     ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')
+                    ->alignCenter()
                     ->badge(),
             ])
             ->filters([

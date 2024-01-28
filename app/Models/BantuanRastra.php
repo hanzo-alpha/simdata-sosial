@@ -9,6 +9,7 @@ use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Models\Media;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -264,7 +265,20 @@ class BantuanRastra extends Model
                 ->imagePreviewHeight('250')
                 ->previewable(false)
                 ->image(),
+
+            CuratorPicker::make('media_id')
+                ->label('Upload Berita Acara')
+                ->buttonLabel('Tambah File')
+                ->relationship('beritaAcara', 'id')
+                ->nullable()
+                ->preserveFilenames()
+                ->columnSpanFull()
         ];
+    }
+
+    public function beritaAcara(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
     public function alamat(): MorphOne

@@ -84,6 +84,13 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationCountBadge(),
                 FilamentJobsMonitorPlugin::make(),
                 FilamentApexChartsPlugin::make(),
+                //                TableLayoutTogglePlugin::make()
+                //                    ->persistLayoutInLocalStorage(true) // allow user to keep his layout preference in his local storage
+                //                    ->shareLayoutBetweenPages(false) // allow all tables to share the layout option (requires persistLayoutInLocalStorage to be true)
+                //                    ->displayToggleAction() // used to display the toogle button automatically, on the desired
+                //                    // filament hook (defaults to table bar)
+                //                    ->listLayoutButtonIcon('heroicon-o-list-bullet')
+                //                    ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')

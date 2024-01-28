@@ -2,10 +2,12 @@
 
 namespace App\Filament\Imports;
 
+use App\Enums\StatusDtksEnum;
 use App\Models\BnbaRastra;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Str;
 
 class BnbaRastraImporter extends Importer
 {
@@ -15,6 +17,7 @@ class BnbaRastraImporter extends Importer
     {
         return [
             ImportColumn::make('dtks_id')
+                ->castStateUsing(fn($state) => Str::isUuid($state) ? StatusDtksEnum::DTKS : StatusDtksEnum::NON_DTKS)
                 ->label('DTKS ID')
                 ->rules(['max:255']),
             ImportColumn::make('nama')
@@ -64,6 +67,11 @@ class BnbaRastraImporter extends Importer
         //     // Update existing records, matching them by `$this->data['column_name']`
         //     'email' => $this->data['email'],
         // ]);
+        if ($this->options['updateExisting'] ?? false) {
+            return BnbaRastra::firstOrNew([
+                'nik' => $this->data['nik'],
+            ]);
+        }
 
         return new BnbaRastra();
     }

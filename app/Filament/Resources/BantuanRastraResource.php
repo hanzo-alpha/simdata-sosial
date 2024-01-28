@@ -9,6 +9,7 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -54,8 +55,8 @@ class BantuanRastraResource extends Resource
                         ->schema(BantuanRastra::getStatusForm()),
 
                     Forms\Components\Section::make('Verifikasi')
-                        ->schema(BantuanRastra::getUploadForm()),
-                    //                        ->visible(auth()->user()?->hasRole(['admin','super_admin']))
+                        ->schema(BantuanRastra::getUploadForm())
+                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -64,6 +65,8 @@ class BantuanRastraResource extends Resource
     {
         return $table
             ->columns([
+                CuratorColumn::make('beritaAcara')
+                    ->size(60),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
                     ->description(fn($record) => $record->nik)
@@ -80,20 +83,11 @@ class BantuanRastraResource extends Resource
                     ->alignCenter()
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('alamat_lengkap')
                     ->label('Alamat')
-//                    ->words(5)
                     ->sortable()
                     ->wrap()
                     ->searchable(),
-                //                Tables\Columns\TextColumn::make('jenis_bantuan.alias')
-                //                    ->label('Jenis Bantuan')
-                //                    ->badge()
-                //                    ->alignCenter()
-                //                    ->searchable()
-                //                    ->color(fn($record): string => $record->jenis_bantuan->warna)
-                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('status_rastra')
                     ->alignCenter()
                     ->searchable()
@@ -133,24 +127,21 @@ class BantuanRastraResource extends Resource
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
+//            ->headerActions([
+//                TableLayoutToggle::getToggleViewTableAction(compact: true),
+//            ])
             ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
                 Tables\Actions\Action::make('cetak')
                     ->label('Cetak BA')
                     ->color('success')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
                     ->openUrlInNewTab(),
-                Tables\Actions\ActionGroup::make([
-                    //                    Tables\Actions\Action::make('cetak dokumentasi')
-                    //                        ->label('Cetak Dokumentasi')
-                    //                        ->color('success')
-                    //                        ->icon('heroicon-o-arrow-down-tray')
-                    //                        ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
-                    //                        ->openUrlInNewTab(),
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -162,6 +153,62 @@ class BantuanRastraResource extends Resource
                         ]),
                 ]),
             ]);
+    }
+
+    public static function getGridTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('nama_lengkap')
+                ->label('Nama Lengkap')
+                ->description(fn($record) => $record->nik)
+                ->sortable()
+                ->searchable(),
+            Tables\Columns\TextColumn::make('nik')
+                ->label('N I K')
+                ->alignCenter()
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->sortable(),
+        ];
+    }
+
+    public static function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('nama_lengkap')
+                ->label('Nama Lengkap')
+                ->description(fn($record) => $record->nik)
+                ->sortable()
+                ->searchable(),
+            Tables\Columns\TextColumn::make('nik')
+                ->label('N I K')
+                ->alignCenter()
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->sortable(),
+            Tables\Columns\TextColumn::make('nokk')
+                ->label('No. KK')
+                ->alignCenter()
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('alamat_lengkap')
+                ->label('Alamat')
+                ->sortable()
+                ->wrap()
+                ->searchable(),
+            Tables\Columns\TextColumn::make('status_rastra')
+                ->alignCenter()
+                ->searchable()
+                ->sortable()
+                ->label('Status Rastra')
+                ->badge(),
+            Tables\Columns\TextColumn::make('status_verifikasi')
+                ->alignCenter()
+                ->searchable()
+                ->sortable()
+                ->label('Status Verifikasi')
+                ->badge(),
+        ];
     }
 
     public static function infolist(Infolist $infolist): Infolist

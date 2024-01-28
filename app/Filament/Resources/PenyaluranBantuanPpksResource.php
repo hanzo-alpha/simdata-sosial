@@ -3,43 +3,45 @@
 namespace App\Filament\Resources;
 
 use App\Enums\StatusPenyaluran;
-use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
-use App\Models\BantuanRastra;
-use App\Models\PenyaluranBantuanRastra;
-use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Awcodes\Curator\Components\Tables\CuratorColumn;
+use App\Filament\Resources\PenyaluranBantuanPpksResource\Pages;
+use App\Models\BantuanPpks;
+use App\Models\PenyaluranBantuanPpks;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
-use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class PenyaluranBantuanRastraResource extends Resource
+class PenyaluranBantuanPpksResource extends Resource
 {
-    protected static ?string $model = PenyaluranBantuanRastra::class;
+    protected static ?string $model = PenyaluranBantuanPpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
-    protected static ?string $slug = 'penyaluran-bantuan-rastra';
-    protected static ?string $label = 'Penyaluran Rastra';
-    protected static ?string $pluralLabel = 'Penyaluran Rastra';
-    protected static ?string $navigationParentItem = 'Program Rastra';
+    protected static ?string $slug = 'penyaluran-bantuan-ppks';
+    protected static ?string $label = 'Penyaluran PPKS';
+    protected static ?string $pluralLabel = 'Penyaluran PPKS';
+    protected static ?string $navigationParentItem = 'Program PPKS';
     protected static ?string $navigationGroup = 'Program Sosial';
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make()->schema([
-                        Forms\Components\Select::make('bantuan_rastra_id')
+                Group::make()->schema([
+                    Section::make()->schema([
+                        Select::make('bantuan_ppks_id')
                             ->label('Nama KPM')
-                            ->required()
-                            ->relationship('bantuan_rastra', 'nama_lengkap')
+                            ->relationship('bantuan_ppks', 'nama_lengkap')
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
@@ -49,25 +51,25 @@ class PenyaluranBantuanRastraResource extends Resource
                             ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(function ($state, Forms\Set $set): void {
-                                $rastra = BantuanRastra::find($state);
+                            ->afterStateUpdated(function ($state, Set $set): void {
+                                $rastra = BantuanPpks::find($state);
 
                                 if (isset($rastra) && $rastra->count() > 0) {
-                                    $set('nik_kpm', $rastra->nik);
+                                    $set('nik', $rastra->nik);
                                     $set('no_kk', $rastra->nokk);
                                 } else {
-                                    $set('nik_kpm', null);
+                                    $set('nik', null);
                                     $set('no_kk', null);
                                 }
                             })
                             ->columnSpanFull()
                             ->helperText(str('**Nama KPM** disini, termasuk dengan NIK.')->inlineMarkdown()->toHtmlString())
                             ->optionsLimit(20),
-                        Forms\Components\TextInput::make('no_kk')
+                        TextInput::make('no_kk')
                             ->label('NO KK')
                             ->disabled()
                             ->dehydrated(),
-                        Forms\Components\TextInput::make('nik_kpm')
+                        TextInput::make('nik')
                             ->label('NIK KPM')
                             ->disabled()
                             ->dehydrated(),
@@ -121,20 +123,19 @@ class PenyaluranBantuanRastraResource extends Resource
 
                     ])->columns(2),
                 ])->columnSpan(2),
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make()->schema([
-                        Forms\Components\DateTimePicker::make('tgl_penyerahan')
+                Group::make()->schema([
+                    Section::make()->schema([
+                        DateTimePicker::make('tgl_penyerahan')
                             ->label('Tgl. Penyerahan')
                             ->disabled()
                             ->default(now())
                             ->dehydrated(),
-                        Forms\Components\Select::make('status_penyaluran')
+                        Select::make('status_penyaluran')
                             ->label('Status Penyaluran Bantuan')
                             ->options(StatusPenyaluran::class)
-                            ->default(StatusPenyaluran::TERSALURKAN)
                             ->lazy()
                             ->preload(),
-                        Forms\Components\FileUpload::make('foto_penyerahan')
+                        FileUpload::make('foto_penyerahan')
                             ->label('Foto Penyerahan')
                             ->disk('public')
                             ->directory('penyaluran')
@@ -143,7 +144,7 @@ class PenyaluranBantuanRastraResource extends Resource
                                 fn(
                                     TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis').'-'),
+                                    ->prepend(date('YmdHis') . '-'),
                             )
                             ->preserveFilenames()
                             ->multiple()
@@ -158,14 +159,6 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->imagePreviewHeight('250')
                             ->previewable(true)
                             ->image(),
-
-                        CuratorPicker::make('media_id')
-                            ->label('Upload Berita Acara')
-                            ->buttonLabel('Tambah File')
-                            ->relationship('beritaAcara', 'id')
-                            ->nullable()
-                            ->preserveFilenames()
-                            ->columnSpanFull()
                     ]),
                 ])->columnSpan(1),
 
@@ -176,19 +169,16 @@ class PenyaluranBantuanRastraResource extends Resource
     {
         return $table
             ->columns([
-                //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
-                CuratorColumn::make('beritaAcara')
-                    ->size(60),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
+                Tables\Columns\TextColumn::make('bantuan_ppks.nama_lengkap')
                     ->label('Nama KPM')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
+                Tables\Columns\TextColumn::make('bantuan_ppks.nokk')
                     ->label('No. KK KPM')
                     ->searchable()
                     ->alignCenter()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nik')
+                Tables\Columns\TextColumn::make('bantuan_ppks.nik')
                     ->label('NIK KPM')
                     ->searchable()
                     ->alignCenter()
@@ -211,19 +201,13 @@ class PenyaluranBantuanRastraResource extends Resource
 
             ])
             ->actions([
+                Tables\Actions\Action::make('pdf')
+                    ->label('Print Dokumentasi')
+                    ->color('success')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
+                    ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('cetak')
-                        ->label('Cetak Berita Acara')
-                        ->color('info')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
-                        ->openUrlInNewTab(),
-                    Tables\Actions\Action::make('pdf')
-                        ->label('Cetak Dokumentasi')
-                        ->color('success')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
-                        ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])
@@ -245,9 +229,9 @@ class PenyaluranBantuanRastraResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPenyaluranBantuanRastra::route('/'),
-            'create' => Pages\CreatePenyaluranBantuanRastra::route('/create'),
-            'edit' => Pages\EditPenyaluranBantuanRastra::route('/{record}/edit'),
+            'index' => Pages\ListPenyaluranBantuanPpks::route('/'),
+            'create' => Pages\CreatePenyaluranBantuanPpks::route('/create'),
+            'edit' => Pages\EditPenyaluranBantuanPpks::route('/{record}/edit'),
         ];
     }
 }

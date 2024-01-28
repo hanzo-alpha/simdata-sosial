@@ -9,6 +9,9 @@ return [
         'image/webp',
         'image/svg+xml',
         'application/pdf',
+        'application/vnd.ms-excel',
+        'application/x-msexcel',
+        'application/xls',
     ],
     'cloud_disks' => [
         's3',

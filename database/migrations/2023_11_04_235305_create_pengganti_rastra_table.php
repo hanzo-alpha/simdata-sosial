@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\AlasanEnum;
 use App\Models\BantuanRastra;
+use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,6 +24,12 @@ return new class () extends Migration {
             $table->string('nama_pengganti');
             $table->text('alamat_pengganti');
             $table->string('alasan_dikeluarkan')->nullable()->default(AlasanEnum::PINDAH);
+            $table->json('attachment')->nullable();
+            $table->foreignIdFor(Media::class)
+                ->nullable()
+                ->constrained('media')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
