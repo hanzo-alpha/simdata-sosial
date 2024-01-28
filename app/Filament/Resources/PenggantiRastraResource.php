@@ -53,7 +53,7 @@ final class PenggantiRastraResource extends Resource
                         ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(fn(
                         $record
-                    ) => '<strong>'.$record->nik.'</strong><br>'.$record->nama_lengkap)->allowHtml()
+                    ) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')

@@ -7,6 +7,7 @@ use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\PenyaluranBantuanRastra;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -142,7 +143,7 @@ class PenyaluranBantuanRastraResource extends Resource
                                 fn(
                                     TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis').'-'),
+                                    ->prepend(date('YmdHis') . '-'),
                             )
                             ->preserveFilenames()
                             ->multiple()
@@ -175,8 +176,9 @@ class PenyaluranBantuanRastraResource extends Resource
     {
         return $table
             ->columns([
-                //                CuratorColumn::make('beritaAcara')
-                //                    ->size(60),
+                //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
+                CuratorColumn::make('beritaAcara')
+                    ->size(60),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->label('Nama KPM')
                     ->searchable()
