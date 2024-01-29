@@ -18,6 +18,8 @@ class ListBnbaRastras extends ListRecords
                 ->label('Impor BNBA')
                 ->importer(BnbaRastraImporter::class)
                 ->options(['updateExisting' => true])
+                ->maxRows(10000)
+                ->chunkSize(200)
                 ->csvDelimiter(';')
                 ->color('success')
                 ->icon('heroicon-o-arrow-up-tray'),

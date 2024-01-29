@@ -16,5 +16,6 @@ class BnbaRastra extends Model
 
     protected $casts = [
         'dtks_id' => StatusDtksEnum::class,
+        'status_dtks' => StatusDtksEnum::class,
     ];
 }
