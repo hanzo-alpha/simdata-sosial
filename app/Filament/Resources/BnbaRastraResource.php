@@ -61,10 +61,18 @@ class BnbaRastraResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+//                    Tables\Actions\ExportBulkAction::make()
+//                        ->label('Ekspor CSV yang dipilih')
+//                        ->exporter(BnbaRastraExporter::class)
+//                        ->color('info')
+//                        ->maxRows(10000)
+//                        ->chunkSize(200)
+//                        ->icon('heroicon-o-arrow-down-tray'),
                 ]),
             ]);
     }
