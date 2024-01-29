@@ -16,7 +16,7 @@ enum StatusDtksEnum: string implements HasColor, HasIcon, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::DTKS => 'DTKS',
+            self::DTKS => 'TERDAFTAR DTKS',
             self::NON_DTKS => 'NON DTKS',
         };
     }

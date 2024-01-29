@@ -19,7 +19,7 @@ class BnbaRastraResource extends Resource
     protected static ?string $slug = 'bnba-rastra';
     protected static ?string $label = 'BNBA Rastra';
     protected static ?string $pluralLabel = 'BNBA Rastra';
-    protected static ?string $navigationParentItem = 'Program BPNT';
+    protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 4;
 
@@ -38,18 +38,23 @@ class BnbaRastraResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('dtks_id')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('no_kk')
+                    ->label('No. KK')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
+                    ->label('N I K')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama')
+                    ->label('NAMA KPM')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('status_dtks')
+                    ->label('Status DTKS')
+                    ->sortable()
+                    ->searchable()
+                    ->badge(),
             ])
             ->filters([
 
