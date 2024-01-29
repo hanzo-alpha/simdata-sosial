@@ -57,13 +57,13 @@ class BnbaRastraImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Data BNBA Rastra anda telah selesai dan '.number_format($import->successful_rows)
-            .' '
-            .str('baris')
-                ->plural($import->successful_rows).' berhasil di impor.';
+        $body = 'Data BNBA Rastra anda telah selesai dan ' . number_format($import->successful_rows)
+            . ' '
+            . str('baris')
+                ->plural($import->successful_rows) . ' berhasil di impor.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' gagal di impor.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' gagal di impor.';
         }
 
         return $body;
