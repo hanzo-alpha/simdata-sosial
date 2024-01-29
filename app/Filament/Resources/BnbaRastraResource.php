@@ -50,6 +50,14 @@ class BnbaRastraResource extends Resource
                     ->label('NAMA KPM')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('ALAMAT')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('desa_kel')
+                    ->label('DESA/KELURAHAN')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status_dtks')
                     ->label('Status DTKS')
                     ->sortable()
@@ -66,13 +74,13 @@ class BnbaRastraResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-//                    Tables\Actions\ExportBulkAction::make()
-//                        ->label('Ekspor CSV yang dipilih')
-//                        ->exporter(BnbaRastraExporter::class)
-//                        ->color('info')
-//                        ->maxRows(10000)
-//                        ->chunkSize(200)
-//                        ->icon('heroicon-o-arrow-down-tray'),
+                    //                    Tables\Actions\ExportBulkAction::make()
+                    //                        ->label('Ekspor CSV yang dipilih')
+                    //                        ->exporter(BnbaRastraExporter::class)
+                    //                        ->color('info')
+                    //                        ->maxRows(10000)
+                    //                        ->chunkSize(200)
+                    //                        ->icon('heroicon-o-arrow-down-tray'),
                 ]),
             ]);
     }
