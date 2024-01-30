@@ -10,7 +10,7 @@ class ExportBantuanRastra extends ExcelExport
     public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis').'-'.$filename.'-ekspor');
+        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
         $this->askForWriterType();
         $this->modifyQueryUsing(fn($query) => $query->with(['kec', 'kel']));
         $this->withColumns([

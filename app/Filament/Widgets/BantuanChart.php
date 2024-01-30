@@ -8,6 +8,7 @@ use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use Filament\Support\RawJs;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
@@ -35,34 +36,16 @@ class BantuanChart extends ApexChartWidget
 
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
-    protected int|string|array $columnSpan = 'full';
-
-    //    protected function getFormSchema(): array
-    //    {
-    //        return [
-    //
-    //            Select::make('jenis_bantuan')
-    //                ->options(JenisBantuan::pluck('nama_bantuan', 'id'))
-    //                ->preload()
-    //                ->lazy(),
-    //
-    //            DatePicker::make('date_start')
-    //                ->default('2023-01-01'),
-    //
-    //            DatePicker::make('date_end')
-    //                ->default('2023-12-31')
-    //
-    //        ];
-    //    }
+//    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = [
+        'md' => 2,
+        'xl' => 3,
+    ];
 
     protected function getOptions(): array
     {
-        //        $jenis = $this->filterFormData['jenis_bantuan'];
-        //        $dateStart = $this->filterFormData['date_start'];
-        //        $dateEnd = $this->filterFormData['date_end'];
-
         //showing a loading indicator immediately after the page load
-        if ( ! $this->readyToLoad) {
+        if (!$this->readyToLoad) {
             return [];
         }
 
@@ -72,7 +55,7 @@ class BantuanChart extends ApexChartWidget
         return [
             'chart' => [
                 'type' => 'pie',
-                'height' => 300,
+                'height' => 380,
             ],
             'series' => [
                 $this->renderBantuan()['rastra'],
@@ -80,64 +63,86 @@ class BantuanChart extends ApexChartWidget
                 $this->renderBantuan()['pkh'],
                 $this->renderBantuan()['bpnt'],
                 $this->renderBantuan()['ppks'],
+                $this->renderBantuan()['angka_kemiskinan'],
             ],
-            'labels' => ['RASTRA', 'BPJS', 'PKH', 'BPNT', 'PPKS'],
+            'labels' => ['RASTRA', 'BPJS', 'PKH', 'BPNT', 'PPKS', 'ANGKA KEMISKINAN'],
             'legend' => [
                 'labels' => [
                     'fontFamily' => 'inherit',
                 ],
+                'position' => 'bottom',
             ],
         ];
     }
 
     protected function renderBantuan($filter = null): array
     {
+        $pdd = 17.21 * 1000;
+        $angka = $pdd;
         return [
             'rastra' => BantuanRastra::count(),
             'bpjs' => BantuanBpjs::count(),
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
+            'angka_kemiskinan' => $angka,
         ];
     }
 
-    //    protected function extraJsOptions(): ?\Filament\Support\RawJs
-    //    {
-    //        return RawJs::make(
-    //            <<<'JS'
-    //        {
-    //            xaxis: {
-    //                labels: {
-    //                    formatter: function (val, timestamp, opts) {
-    //                        return val + '/24'
-    //                    }
-    //                }
-    //            },
-    //            yaxis: {
-    //                labels: {
-    //                    formatter: function (val, index) {
-    //                        return '$' + val
-    //                    }
-    //                }
-    //            },
-    //            tooltip: {
-    //                x: {
-    //                    formatter: function (val) {
-    //                        return val + '/24'
-    //                    }
-    //                }
-    //            },
-    //            dataLabels: {
-    //                enabled: true,
-    //                formatter: function (val, opt) {
-    //                    return opt.w.globals.labels[opt.dataPointIndex] + ': $' + val
-    //                },
-    //                dropShadow: {
-    //                    enabled: true
-    //                },
-    //            }
-    //        }
-    //    JS
-    //        );
-    //    }
+    protected function extraJsOptions(): ?RawJs
+    {
+        return RawJs::make(
+            <<<'JS'
+            {
+                xaxis: {
+                    labels: {
+                        formatter: function (val, timestamp, opts) {
+                            return val + ' KPM'
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function (val, index) {
+                            return val + ' KPM'
+                        }
+                    }
+                },
+                tooltip: {
+                    x: {
+                        formatter: function (val) {
+                            return val + ' KPM'
+                        }
+                    }
+                },
+                plotOptions: {
+                  pie: {
+                    // customScale: 1,
+                    offsetX: 0,
+                    offsetY: 0,
+                    dataLabels: {
+                       offset: -25,
+                       minAngleToShowLabel: -25
+                    },
+                    // donut: {
+                    //   labels: {
+                    //     show: true,
+                    //   }
+                    // }
+                  }
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val, opt) {
+                        const name = opt.w.globals.labels[opt.seriesIndex]
+                        return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
+                    },
+                    dropShadow: {
+                        enabled: true
+                    },
+                }
+            }
+        JS
+        );
+    }
 }

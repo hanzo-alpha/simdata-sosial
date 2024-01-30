@@ -111,7 +111,7 @@ class QueueMonitorPolicy
      */
     public function restore(User $user, QueueMonitor $queueMonitor): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_queue::monitor');
     }
 
     /**

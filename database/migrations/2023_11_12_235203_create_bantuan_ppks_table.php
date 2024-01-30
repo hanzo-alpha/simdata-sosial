@@ -17,7 +17,6 @@ return new class () extends Migration {
     {
         Schema::create('bantuan_ppks', static function (Blueprint $table): void {
             $table->id();
-            $table->string('status_dtks')->nullable()->default(StatusDtksEnum::DTKS);
             $table->string('nokk', 20);
             $table->string('nik', 20);
             $table->string('nama_lengkap');
@@ -39,28 +38,28 @@ return new class () extends Migration {
             $table->tinyInteger('jenis_kelamin')
                 ->nullable()
                 ->default(1);
+            $table->json('bukti_foto')->nullable();
+            $table->foreignIdFor(TipePpks::class)->constrained('tipe_ppks')
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->json('kriteria_ppks')->nullable();
+            $table->integer('penghasilan_rata_rata')->default(0)->nullable();
+            $table->json('bantuan_yang_pernah_diterima')->nullable();
+            $table->unsignedInteger('tahun_anggaran')->default(now()->year)->nullable();
+            $table->string('jenis_anggaran', 10)->default('APBD')->nullable();
+            $table->unsignedInteger('jumlah_bantuan')->default(4)->nullable();
+            $table->string('nama_bantuan')->nullable();
+            $table->unsignedtinyInteger('status_rumah_tinggal')->nullable();
+            $table->string('status_kondisi_rumah')->nullable();
+            $table->string('status_dtks')->nullable()->default(StatusDtksEnum::DTKS);
             $table->string('status_verifikasi')
                 ->nullable()
                 ->default(0);
             $table->tinyInteger('status_aktif')
                 ->nullable()
                 ->default(0);
-            $table->json('bukti_foto')->nullable();
-            $table->foreignIdFor(TipePpks::class)->constrained('tipe_ppks')
-                ->cascadeOnUpdate()->cascadeOnDelete();
-            $table->json('kriteria_ppks')->nullable();
-            $table->integer('penghasilan_rata_rata')->nullable();
-            $table->json('bantuan_yang_pernah_diterima')->nullable();
-            $table->unsignedInteger('tahun_anggaran')->nullable();
-            $table->string('jenis_anggaran', 10)->nullable();
-            $table->unsignedInteger('jumlah_bantuan')->nullable();
-            $table->string('nama_bantuan')->nullable();
-            $table->unsignedtinyInteger('status_rumah_tinggal')->nullable();
-            $table->string('status_kondisi_rumah')->nullable();
-            $table->tinyInteger('status_bantuan')->nullable();
             $table->text('keterangan')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 };

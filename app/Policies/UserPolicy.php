@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -106,7 +105,7 @@ class UserPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_user');
     }
 
     /**

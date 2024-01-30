@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Enums\StatusBpjsEnum;
+use App\Enums\StatusUsulanEnum;
 use App\Models\BantuanBpjs;
 use App\Models\PesertaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
@@ -28,6 +28,16 @@ final class BantuanBpjsOverview extends BaseWidget
         $dateRange = $this->filters['daterange'] ?? null;
         $kecamatan = $this->filters['kecamatan'] ?? null;
         $kelurahan = $this->filters['kelurahan'] ?? null;
+
+        $query = static::getQuery($this->getFilter());
+
+        $all = $query->count();
+        $berhasil = $query->where('status_usulan', StatusUsulanEnum::BERHASIL)->count();
+        $gagal = $query->where('status_usulan', StatusUsulanEnum::GAGAL)->count();
+        $review = $query->where('status_usulan', StatusUsulanEnum::ONPROGRESS)->count();
+
+//        dd($all, $berhasil, $gagal, $review);
+
 
         $all = BantuanBpjs::query()
             ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
@@ -53,7 +63,7 @@ final class BantuanBpjsOverview extends BaseWidget
             })
             ->when($kecamatan, fn(Builder $query) => $query->where('kecamatan', $kecamatan))
             ->when($kelurahan, fn(Builder $query) => $query->where('kelurahan', $kelurahan))
-            ->where('status_bpjs', StatusBpjsEnum::BARU)
+            ->where('status_usulan', StatusUsulanEnum::BERHASIL)
             ->count();
 
         $unverified = BantuanBpjs::query()
@@ -67,7 +77,7 @@ final class BantuanBpjsOverview extends BaseWidget
             })
             ->when($kecamatan, fn(Builder $query) => $query->where('kecamatan', $kecamatan))
             ->when($kelurahan, fn(Builder $query) => $query->where('kelurahan', $kelurahan))
-            ->where('status_bpjs', StatusBpjsEnum::PENGAKTIFAN)
+            ->where('status_usulan', StatusUsulanEnum::GAGAL)
             ->count();
 
         $review = BantuanBpjs::query()
@@ -81,7 +91,7 @@ final class BantuanBpjsOverview extends BaseWidget
             })
             ->when($kecamatan, fn(Builder $query) => $query->where('kecamatan', $kecamatan))
             ->when($kelurahan, fn(Builder $query) => $query->where('kelurahan', $kelurahan))
-            ->where('status_bpjs', StatusBpjsEnum::PENGALIHAN)
+            ->where('status_usulan', StatusUsulanEnum::ONPROGRESS)
             ->count();
 
         $jamkesda = PesertaBpjs::count();
@@ -91,30 +101,54 @@ final class BantuanBpjsOverview extends BaseWidget
                 label: 'KPM BPJS',
                 value: Number::abbreviate($all, 2)
             )
-                ->description('Total Seluruh KPM BPJS')
+                ->description('Total Seluruh Usulan BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),
             Stat::make(
-                label: 'KPM BPJS Baru',
+                label: 'Usulan BPJS Berhasil',
                 value: Number::abbreviate($verified, 2)
             )
-                ->description('Total KPM BPJS Baru')
+                ->description('Jumlah Usulan BPJS Berhasil')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),
             Stat::make(
-                label: 'Pengaktifan KPM BPJS',
+                label: 'Usulan BPJS Gagal',
                 value: Number::abbreviate($unverified, 2)
             )
-                ->description('Total Pengaktifan KPM BPJS')
+                ->description('Jumlah Usulan BPJS Gagal')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
             Stat::make(
-                label: 'Pengalihan KPM BPJS',
+                label: 'Usulan BPJS Sedang Proses',
                 value: Number::abbreviate($review, 2)
             )
-                ->description('Total Pengalihan KPM BPJS')
+                ->description('Jumlah Usulan BPJS Sedang Proses')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('warning'),
+        ];
+    }
+
+    protected static function getQuery(array $filter): Builder
+    {
+        return BantuanBpjs::query()
+            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
+            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
+                $dates = explode('-', $filter['dateRange']);
+
+                return $query
+                    ->whereDate('created_at', '<=', $dates[0])
+                    ->whereDate('created_at', '>=', $dates[1]);
+            })
+            ->when($filter['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filter['kecamatan']))
+            ->when($filter['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filter['kelurahan']));
+    }
+
+    protected function getFilter(): array
+    {
+        return [
+            'dateRange' => $this->filters['daterange'] ?? null,
+            'kecamatan' => $this->filters['kecamatan'] ?? null,
+            'kelurahan' => $this->filters['kelurahan'] ?? null,
         ];
     }
 }

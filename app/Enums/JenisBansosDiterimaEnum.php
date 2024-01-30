@@ -8,40 +8,36 @@ use Filament\Support\Contracts\HasLabel;
 
 enum JenisBansosDiterimaEnum: string implements HasLabel
 {
-    case APBD = 'APBD';
-    case APBN = 'APBN';
-    case BPNTPKH = 'BPNT/PKH';
+    case PKH = 'PKH';
+    case BPNT = 'BPNT';
     case RASTRA = 'RASTRA';
     case BLT = 'BLT';
     case RHTL = 'RHTL';
     case BSP = 'BSP';
     case BSPS = 'BSPS';
     case BST = 'BST';
-    case KURSI_RODA = 'KURSI_RODA';
     case ASPD_ATENSI = 'ASPD ATENSI';
     case PPKM = 'PPKM';
-    case BANSOS_KUSTA = 'BANSOS PENYANDANG KUSTA';
-    case BELUM_PERNAH = 'BELUM PERNAH';
+    case BANSOS = 'BANSOS';
     case NON_BANSOS = 'NON BANSOS';
+    case BELUM_PERNAH = 'BELUM PERNAH';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::APBN => 'APBN',
-            self::APBD => 'APBD',
+            self::PKH => 'PKH',
+            self::BPNT => 'BPNT',
+            self::RASTRA => 'RASTRA',
             self::BLT => 'BLT',
-            self::BPNTPKH => 'BPNT/PKH',
             self::RHTL => 'RHTL',
             self::BSP => 'BSP',
             self::BSPS => 'BSPS',
             self::BST => 'BST',
-            self::KURSI_RODA => 'KURSI RODA',
             self::ASPD_ATENSI => 'ASPD ATENSI',
             self::PPKM => 'PPKM',
-            self::BANSOS_KUSTA => 'BANSOS KUSTA',
-            self::BELUM_PERNAH => 'BELUM PERNAH',
+            self::BANSOS => 'BANSOS',
             self::NON_BANSOS => 'NON BANSOS',
-            self::RASTRA => 'RASTRA',
+            self::BELUM_PERNAH => 'BELUM PERNAH',
         };
     }
 

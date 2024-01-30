@@ -14,6 +14,7 @@ use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class BantuanChartWidget extends ChartWidget
 {
@@ -32,6 +33,21 @@ class BantuanChartWidget extends ChartWidget
         'md' => 2,
         'xl' => 3,
     ];
+
+    protected static function getQuery(Model $model, array $filter): Builder
+    {
+        return $model::query()
+            ->when($filter['kecamatan'], fn(Builder $query) => $query->whereHas(
+                'kec',
+                fn(Builder $query) => $query->where('code', $filter['kecamatan'])
+                    ->orWhere('name', 'like', '%'.$filter['kecamatan'].'%')
+            ))
+            ->when($filter['kelurahan'], fn(Builder $query) => $query->whereHas(
+                'kel',
+                fn(Builder $query) => $query->where('code', $filter['kelurahan'])
+                    ->orWhere('name', 'like', '%'.$filter['kelurahan'].'%')
+            ));
+    }
 
     public function getColumns(): int|string|array
     {
@@ -121,7 +137,7 @@ class BantuanChartWidget extends ChartWidget
         }
 
         foreach ($kec as $key => $item) {
-            $ppksresults[$item] = BantuanPpks::with(['alamat'])->whereHas(
+            $ppksresults[$item] = BantuanPpks::with(['kec', 'kel'])->whereHas(
                 'alamat',
                 fn(Builder $query) => $query->where('kecamatan', $item)
             )
@@ -132,24 +148,20 @@ class BantuanChartWidget extends ChartWidget
 //                        ->whereDate('created_at', '>=', $dates[1]);
 //                })
                 ->when($kecamatan, fn(Builder $query) => $query->whereHas(
-                    'alamat',
-                    fn(Builder $query) => $query->whereHas(
-                        'kec',
-                        fn(Builder $query) => $query->where('code', $kecamatan)
-                    )
+                    'kec',
+                    fn(Builder $query) => $query->where('code', $kecamatan)
+                        ->orWhere('name', 'like', '%'.$kecamatan.'%')
                 ))
                 ->when($kelurahan, fn(Builder $query) => $query->whereHas(
-                    'alamat',
-                    fn(Builder $query) => $query->whereHas(
-                        'kel',
-                        fn(Builder $query) => $query->where('code', $kelurahan)
-                    )
+                    'kel',
+                    fn(Builder $query) => $query->where('code', $kelurahan)
+                        ->orWhere('name', 'like', '%'.$kelurahan.'%')
                 ))
                 ->get()->count();
         }
 
         foreach ($kec as $key => $item) {
-            $rastraresults[$item] = BantuanRastra::with(['alamat'])
+            $rastraresults[$item] = BantuanRastra::with(['kec', 'kel'])
 //                ->when($dateRange, function (Builder $query) use ($dateRange) {
 //                    return $query->whereDate('created_at', $dateRange);
 //                    $dates = explode('-', $dateRange);
@@ -158,22 +170,16 @@ class BantuanChartWidget extends ChartWidget
 //                        ->whereDate('created_at', '>=', $dates[1]);
 //                })
                 ->when($kecamatan, fn(Builder $query) => $query->whereHas(
-                    'alamat',
-                    fn(Builder $query) => $query->whereHas(
-                        'kec',
-                        fn(Builder $query) => $query->where('code', $kecamatan)
-                    )
+                    'kec',
+                    fn(Builder $query) => $query->where('code', $kecamatan)
+                        ->orWhere('name', 'like', '%'.$kecamatan.'%')
                 ))
                 ->when($kelurahan, fn(Builder $query) => $query->whereHas(
-                    'alamat',
-                    fn(Builder $query) => $query->whereHas(
-                        'kel',
-                        fn(Builder $query) => $query->where('code', $kelurahan)
-                    )
+                    'kel',
+                    fn(Builder $query) => $query->where('code', $kelurahan)
+                        ->orWhere('name', 'like', '%'.$kelurahan.'%')
                 ))
-//                ->whereHas('alamat',
-//                    fn(Builder $query) => $query->where('kecamatan', $item))
-//                ->get()
+                ->get()
                 ->count();
         }
 

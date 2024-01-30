@@ -23,6 +23,8 @@ class BnbaRastraResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 4;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -50,6 +52,14 @@ class BnbaRastraResource extends Resource
                     ->label('NAMA KPM')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('ALAMAT')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('desa_kel')
+                    ->label('DESA/KELURAHAN')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status_dtks')
                     ->label('Status DTKS')
                     ->sortable()
@@ -61,10 +71,18 @@ class BnbaRastraResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    //                    Tables\Actions\ExportBulkAction::make()
+                    //                        ->label('Ekspor CSV yang dipilih')
+                    //                        ->exporter(BnbaRastraExporter::class)
+                    //                        ->color('info')
+                    //                        ->maxRows(10000)
+                    //                        ->chunkSize(200)
+                    //                        ->icon('heroicon-o-arrow-down-tray'),
                 ]),
             ]);
     }

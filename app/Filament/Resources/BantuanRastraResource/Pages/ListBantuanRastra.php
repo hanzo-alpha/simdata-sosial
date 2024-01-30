@@ -42,6 +42,9 @@ class ListBantuanRastra extends ListRecords
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('warning')
                 ->importer(BantuanRastraImporter::class)
+                ->options([
+                    'updateExisting' => true
+                ])
                 ->maxRows(5000)
                 ->chunkSize(100),
 

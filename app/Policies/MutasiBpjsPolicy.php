@@ -111,7 +111,7 @@ class MutasiBpjsPolicy
      */
     public function restore(User $user, MutasiBpjs $mutasiBpjs): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_mutasi::bpjs');
     }
 
     /**

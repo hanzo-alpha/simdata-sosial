@@ -111,7 +111,7 @@ class HubunganKeluargaPolicy
      */
     public function restore(User $user, HubunganKeluarga $hubunganKeluarga): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_hubungan::keluarga');
     }
 
     /**

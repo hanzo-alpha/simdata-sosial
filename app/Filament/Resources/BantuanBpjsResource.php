@@ -47,7 +47,7 @@ class BantuanBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
                     ->sortable()
-                    ->description(fn($record) => 'Nik : ' . $record->nik_tmt)
+                    ->description(fn($record) => 'Nik : '.$record->nik_tmt)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk_tmt')
                     ->label('No. KK')
@@ -87,7 +87,7 @@ class BantuanBpjsResource extends Resource
                         $kec = $record->kec?->name;
                         $kel = $record->kel?->name;
 
-                        return $alamat . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
+                        return $alamat.' '.'RT.'.$rt.'/'.'RW.'.$rw.' '.$kec.', '.$kel.', '.$kodepos;
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kec.kecamatan')
@@ -102,7 +102,7 @@ class BantuanBpjsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bulan')
                     ->label('Periode')
-                    ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun)
+                    ->formatStateUsing(fn($record) => bulan_to_string($record->bulan).' '.$record->tahun)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('keterangan')
                     ->searchable(),
@@ -129,15 +129,12 @@ class BantuanBpjsResource extends Resource
                 SelectFilter::make('status_bpjs')
                     ->label('Status BPJS')
                     ->options(StatusBpjsEnum::class),
-                //                SelectFilter::make('status_nikah')
-                //                    ->label('Status Nikah')
-                //                    ->options(StatusKawinBpjsEnum::class),
-                //                SelectFilter::make('jenis_kelamin')
-                //                    ->label('Jenis Kelamin')
-                //                    ->options(JenisKelaminEnum::class),
-                //                DateRangeFilter::make('created_at')
-                //                    ->label('Rentang Tanggal'),
+                SelectFilter::make('tahun')
+                    ->label('Tahun')
+                    ->options(list_tahun())
+                    ->searchable()
             ])
+            ->hiddenFilterIndicators()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
@@ -219,7 +216,7 @@ class BantuanBpjsResource extends Resource
                                         'kabupaten_code',
                                         config('custom.default.kodekab')
                                     );
-                                    if ( ! $kab) {
+                                    if (!$kab) {
                                         return Kecamatan::where(
                                             'kabupaten_code',
                                             config('custom.default.kodekab')
@@ -301,7 +298,7 @@ class BantuanBpjsResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                        ->prepend(date('d-m-Y-H-i-s').'-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()

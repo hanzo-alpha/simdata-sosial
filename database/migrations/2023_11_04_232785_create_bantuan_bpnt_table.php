@@ -34,6 +34,7 @@ return new class () extends Migration {
             $table->string('dusun')->nullable();
             $table->string('dir')->nullable();
             $table->string('gelombang')->nullable();
+            $table->year('tahun')->nullable()->default(now()->year);
             $table->string('status_bpnt')->nullable()->default('BPNT');
             $table->softDeletes();
             $table->timestamps();

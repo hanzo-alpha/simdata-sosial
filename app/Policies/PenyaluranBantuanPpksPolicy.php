@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\PenyaluranBantuanPpks;
 use App\Models\User;
-use Awcodes\Curator\Models\Media;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MediaPolicy
+class PenyaluranBantuanPpksPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class MediaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_media');
+        return $user->can('view_any_penyaluran::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\PenyaluranBantuanPpks  $penyaluranBantuanPpks
      * @return bool
      */
-    public function view(User $user, Media $media): bool
+    public function view(User $user, PenyaluranBantuanPpks $penyaluranBantuanPpks): bool
     {
-        return $user->can('view_media');
+        return $user->can('view_penyaluran::bantuan::ppks');
     }
 
     /**
@@ -41,31 +41,31 @@ class MediaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_media');
+        return $user->can('create_penyaluran::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\PenyaluranBantuanPpks  $penyaluranBantuanPpks
      * @return bool
      */
-    public function update(User $user, Media $media): bool
+    public function update(User $user, PenyaluranBantuanPpks $penyaluranBantuanPpks): bool
     {
-        return $user->can('update_media');
+        return $user->can('update_penyaluran::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\PenyaluranBantuanPpks  $penyaluranBantuanPpks
      * @return bool
      */
-    public function delete(User $user, Media $media): bool
+    public function delete(User $user, PenyaluranBantuanPpks $penyaluranBantuanPpks): bool
     {
-        return $user->can('delete_media');
+        return $user->can('delete_penyaluran::bantuan::ppks');
     }
 
     /**
@@ -83,12 +83,12 @@ class MediaPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\PenyaluranBantuanPpks  $penyaluranBantuanPpks
      * @return bool
      */
-    public function forceDelete(User $user, Media $media): bool
+    public function forceDelete(User $user, PenyaluranBantuanPpks $penyaluranBantuanPpks): bool
     {
-        return $user->can('force_delete_media');
+        return $user->can('force_delete_penyaluran::bantuan::ppks');
     }
 
     /**
@@ -106,12 +106,12 @@ class MediaPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\PenyaluranBantuanPpks  $penyaluranBantuanPpks
      * @return bool
      */
-    public function restore(User $user, Media $media): bool
+    public function restore(User $user, PenyaluranBantuanPpks $penyaluranBantuanPpks): bool
     {
-        return $user->can('restore_media');
+        return $user->can('restore_penyaluran::bantuan::ppks');
     }
 
     /**
@@ -129,10 +129,10 @@ class MediaPolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\PenyaluranBantuanPpks  $penyaluranBantuanPpks
      * @return bool
      */
-    public function replicate(User $user, Media $media): bool
+    public function replicate(User $user, PenyaluranBantuanPpks $penyaluranBantuanPpks): bool
     {
         return $user->can('{{ Replicate }}');
     }

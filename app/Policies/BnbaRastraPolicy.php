@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\BnbaRastra;
 use App\Models\User;
-use Awcodes\Curator\Models\Media;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MediaPolicy
+class BnbaRastraPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class MediaPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_media');
+        return $user->can('view_any_bnba::rastra');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\BnbaRastra  $bnbaRastra
      * @return bool
      */
-    public function view(User $user, Media $media): bool
+    public function view(User $user, BnbaRastra $bnbaRastra): bool
     {
-        return $user->can('view_media');
+        return $user->can('view_bnba::rastra');
     }
 
     /**
@@ -41,31 +41,31 @@ class MediaPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_media');
+        return $user->can('create_bnba::rastra');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\BnbaRastra  $bnbaRastra
      * @return bool
      */
-    public function update(User $user, Media $media): bool
+    public function update(User $user, BnbaRastra $bnbaRastra): bool
     {
-        return $user->can('update_media');
+        return $user->can('update_bnba::rastra');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\BnbaRastra  $bnbaRastra
      * @return bool
      */
-    public function delete(User $user, Media $media): bool
+    public function delete(User $user, BnbaRastra $bnbaRastra): bool
     {
-        return $user->can('delete_media');
+        return $user->can('delete_bnba::rastra');
     }
 
     /**
@@ -83,12 +83,12 @@ class MediaPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\BnbaRastra  $bnbaRastra
      * @return bool
      */
-    public function forceDelete(User $user, Media $media): bool
+    public function forceDelete(User $user, BnbaRastra $bnbaRastra): bool
     {
-        return $user->can('force_delete_media');
+        return $user->can('force_delete_bnba::rastra');
     }
 
     /**
@@ -106,12 +106,12 @@ class MediaPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\BnbaRastra  $bnbaRastra
      * @return bool
      */
-    public function restore(User $user, Media $media): bool
+    public function restore(User $user, BnbaRastra $bnbaRastra): bool
     {
-        return $user->can('restore_media');
+        return $user->can('restore_bnba::rastra');
     }
 
     /**
@@ -129,10 +129,10 @@ class MediaPolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \Awcodes\Curator\Models\Media  $media
+     * @param  \App\Models\BnbaRastra  $bnbaRastra
      * @return bool
      */
-    public function replicate(User $user, Media $media): bool
+    public function replicate(User $user, BnbaRastra $bnbaRastra): bool
     {
         return $user->can('{{ Replicate }}');
     }

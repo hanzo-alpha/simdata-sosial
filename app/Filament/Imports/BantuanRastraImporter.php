@@ -7,6 +7,7 @@ use App\Models\BantuanRastra;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Illuminate\Support\Str;
 
 class BantuanRastraImporter extends Importer
 {
@@ -15,24 +16,17 @@ class BantuanRastraImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('dtks_id')
-                ->requiredMapping()
-                ->rules(['required', 'max:20']),
-            ImportColumn::make('status_dtks')
-                ->fillRecordUsing(function (BantuanRastra $record, string $state): StatusDtksEnum {
-                    return match ($state) {
-                        'DTKS' => StatusDtksEnum::DTKS,
-                        'NON DTKS' => StatusDtksEnum::NON_DTKS,
-                    };
-                })
-                ->rules(['max:30']),
             ImportColumn::make('nokk')
+                ->guess(['NO KK', 'no kk', 'kk'])
+                ->ignoreBlankState()
                 ->requiredMapping()
                 ->rules(['required', 'max:20']),
             ImportColumn::make('nik')
+                ->guess(['NO NIK', 'NIK'])
                 ->requiredMapping()
                 ->rules(['required', 'max:20']),
             ImportColumn::make('nama_lengkap')
+                ->guess(['NAMA', 'nama', 'nama lengkap'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('alamat')
@@ -42,29 +36,46 @@ class BantuanRastraImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('kelurahan')
+                ->guess(['DESA / KEL', 'DESA / KELURAHAN', 'DESA', 'KELURAHAN'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('status_verifikasi')
+            //            ImportColumn::make('status_verifikasi')
+            //                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+            //                    $record->status_verifikasi = StatusVerifikasiEnum::UNVERIFIED;
+            //                })
+            //                ->ignoreBlankState()
+            //                ->rules(['max:255']),
+            //            ImportColumn::make('status_aktif')
+            //                ->boolean()
+            //                ->ignoreBlankState()
+            //                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+            //                    $record->status_aktif = StatusAktif::AKTIF;
+            //                })
+            //                ->rules(['boolean']),
+            //            ImportColumn::make('status_rastra')
+            //                ->ignoreBlankState()
+            //                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+            //                    $record->status_rastra = StatusRastra::BARU;
+            //                })
+            //                ->rules(['integer']),
+            ImportColumn::make('status_dtks')
+                ->ignoreBlankState()
+                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+                    $record->status_dtks = Str::of($state)->contains('TERDAFTAR DTKS') ? StatusDtksEnum::DTKS :
+                        StatusDtksEnum::NON_DTKS;
+                })
+                ->label('STATUS DTKS')
                 ->rules(['max:255']),
-            ImportColumn::make('status_aktif')
-                ->boolean()
-                ->rules(['boolean']),
-            ImportColumn::make('foto_ktp_kk'),
-            ImportColumn::make('media')
-                ->relationship(),
-            ImportColumn::make('status_rastra')
-                ->boolean()
-                ->rules(['boolean']),
         ];
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Impor bantuan rastra telah selesai dan ' . number_format($import->successful_rows) . ' ' . str('baris')
-            ->plural($import->successful_rows) . ' berhasil di impor.';
+        $body = 'Impor bantuan rastra telah selesai dan '.number_format($import->successful_rows).' '.str('baris')
+                ->plural($import->successful_rows).' berhasil di impor.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' gagal mengimpor.';
+            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' gagal mengimpor.';
         }
 
         return $body;
