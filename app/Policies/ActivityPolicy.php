@@ -111,7 +111,7 @@ class ActivityPolicy
      */
     public function restore(User $user, Activity $activity): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_activity');
     }
 
     /**

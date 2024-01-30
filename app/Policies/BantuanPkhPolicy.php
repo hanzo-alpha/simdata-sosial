@@ -111,7 +111,7 @@ class BantuanPkhPolicy
      */
     public function restore(User $user, BantuanPkh $bantuanPkh): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_bantuan::pkh');
     }
 
     /**

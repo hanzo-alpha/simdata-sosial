@@ -111,7 +111,7 @@ class TipePpksPolicy
      */
     public function restore(User $user, TipePpks $tipePpks): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_tipe::ppks');
     }
 
     /**

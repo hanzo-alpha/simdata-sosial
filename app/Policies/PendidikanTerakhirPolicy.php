@@ -111,7 +111,7 @@ class PendidikanTerakhirPolicy
      */
     public function restore(User $user, PendidikanTerakhir $pendidikanTerakhir): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_pendidikan::terakhir');
     }
 
     /**

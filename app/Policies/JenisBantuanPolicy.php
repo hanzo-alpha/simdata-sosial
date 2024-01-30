@@ -111,7 +111,7 @@ class JenisBantuanPolicy
      */
     public function restore(User $user, JenisBantuan $jenisBantuan): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_jenis::bantuan');
     }
 
     /**

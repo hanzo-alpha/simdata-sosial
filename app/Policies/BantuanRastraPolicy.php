@@ -111,7 +111,7 @@ class BantuanRastraPolicy
      */
     public function restore(User $user, BantuanRastra $bantuanRastra): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_bantuan::rastra');
     }
 
     /**

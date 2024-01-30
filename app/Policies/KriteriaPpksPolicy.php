@@ -111,7 +111,7 @@ class KriteriaPpksPolicy
      */
     public function restore(User $user, KriteriaPpks $kriteriaPpks): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_kriteria::ppks');
     }
 
     /**

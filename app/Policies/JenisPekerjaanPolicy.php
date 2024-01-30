@@ -111,7 +111,7 @@ class JenisPekerjaanPolicy
      */
     public function restore(User $user, JenisPekerjaan $jenisPekerjaan): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_jenis::pekerjaan');
     }
 
     /**

@@ -111,7 +111,7 @@ class PenggantiRastraPolicy
      */
     public function restore(User $user, PenggantiRastra $penggantiRastra): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_pengganti::rastra');
     }
 
     /**

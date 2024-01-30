@@ -111,7 +111,7 @@ class BantuanBpntPolicy
      */
     public function restore(User $user, BantuanBpnt $bantuanBpnt): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_bantuan::bpnt');
     }
 
     /**

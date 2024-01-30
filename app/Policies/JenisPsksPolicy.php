@@ -111,7 +111,7 @@ class JenisPsksPolicy
      */
     public function restore(User $user, JenisPsks $jenisPsks): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_jenis::psks');
     }
 
     /**

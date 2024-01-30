@@ -111,7 +111,7 @@ class BantuanBpjsPolicy
      */
     public function restore(User $user, BantuanBpjs $bantuanBpjs): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_bantuan::bpjs');
     }
 
     /**

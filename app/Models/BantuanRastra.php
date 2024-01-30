@@ -131,7 +131,7 @@ class BantuanRastra extends Model
                         ->reactive()
                         ->options(function () {
                             $kab = Kecamatan::query()->where('kabupaten_code', config('custom.default.kodekab'));
-                            if ( ! $kab) {
+                            if (!$kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
@@ -250,13 +250,12 @@ class BantuanRastra extends Model
                     fn(
                         TemporaryUploadedFile $file
                     ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                        ->prepend(date('d-m-Y-H-i-s').'-'),
                 )
                 ->preserveFilenames()
                 ->reorderable()
                 ->appendFiles()
                 ->openable()
-                ->required()
                 ->unique(ignoreRecord: true)
                 ->helperText('maks. 2MB')
                 ->maxFiles(3)

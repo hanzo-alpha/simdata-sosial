@@ -111,7 +111,7 @@ class PesertaBpjsPolicy
      */
     public function restore(User $user, PesertaBpjs $pesertaBpjs): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_peserta::bpjs');
     }
 
     /**

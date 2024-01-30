@@ -111,7 +111,7 @@ class PenyaluranBantuanRastraPolicy
      */
     public function restore(User $user, PenyaluranBantuanRastra $penyaluranBantuanRastra): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_penyaluran::bantuan::rastra');
     }
 
     /**

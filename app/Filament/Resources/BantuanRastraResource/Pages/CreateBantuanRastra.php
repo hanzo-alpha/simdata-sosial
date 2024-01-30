@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\BantuanRastraResource\Pages;
 
+use App\Enums\StatusAktif;
+use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\BantuanRastraResource;
 use App\Models\PenggantiRastra;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
-use Str;
 
 final class CreateBantuanRastra extends CreateRecord
 {
@@ -17,12 +18,12 @@ final class CreateBantuanRastra extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['dtks_id'] ??= Str::orderedUuid()->toString();
         $data['jenis_bantuan_id'] ??= 5;
         $data['status_verifikasi'] = (auth()->user()?->hasRole(['operator']))
             ? StatusVerifikasiEnum::UNVERIFIED
             : $data['status_verifikasi'];
-
+        $data['status_rastra'] ??= StatusRastra::BARU;
+        $data['status_aktif'] ??= StatusAktif::AKTIF;
         return $data;
     }
 

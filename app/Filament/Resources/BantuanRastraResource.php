@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\StatusAktif;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
@@ -81,7 +80,7 @@ class BantuanRastraResource extends Resource
                     ->alignCenter()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('alamat_lengkap')
+                Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->sortable()
                     ->wrap()
@@ -100,15 +99,7 @@ class BantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
-//                SelectFilter::make('kecamatan')
-//                    ->label('Kecamatan')
-//                    ->relationship(
-//                        'kec',
-//                        'name',
-//                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab'))
-//                    )
-//                    ->preload()
-//                    ->searchable(),
+                Tables\Filters\TrashedFilter::make(),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')
                     ->options(StatusVerifikasiEnum::class)
@@ -117,9 +108,6 @@ class BantuanRastraResource extends Resource
                     ->label('Status Rastra')
                     ->options(StatusRastra::class)
                     ->searchable(),
-                SelectFilter::make('status_aktif')
-                    ->label('Status Aktif')
-                    ->options(StatusAktif::class),
                 SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(list_tahun())
@@ -129,14 +117,12 @@ class BantuanRastraResource extends Resource
             ->hiddenFilterIndicators()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
-//            ->headerActions([
-//                TableLayoutToggle::getToggleViewTableAction(compact: true),
-//            ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
                 ]),
                 Tables\Actions\Action::make('cetak')
                     ->label('Cetak BA')
@@ -148,6 +134,7 @@ class BantuanRastraResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                     ExportBulkAction::make()
                         ->label('Ekspor Ke Excel')
                         ->exports([
@@ -325,7 +312,7 @@ class BantuanRastraResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('status_aktif', '=', StatusAktif::AKTIF)
+//            ->where('status_aktif', '=', StatusAktif::AKTIF)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
