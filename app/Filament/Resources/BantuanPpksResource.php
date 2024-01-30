@@ -63,6 +63,7 @@ final class BantuanPpksResource extends Resource
                         ->schema([
                             Select::make('status_dtks')
                                 ->label('DTKS')
+                                ->enum(StatusDtksEnum::class)
                                 ->options(StatusDtksEnum::class)
                                 ->preload()
                                 ->default(StatusDtksEnum::DTKS)
@@ -94,6 +95,7 @@ final class BantuanPpksResource extends Resource
                                 ->label('Tgl. Lahir')
                                 ->required(),
                             Select::make('jenis_kelamin')
+                                ->enum(JenisKelaminEnum::class)
                                 ->options(JenisKelaminEnum::class)
                                 ->required()
                                 ->default(JenisKelaminEnum::LAKI),
@@ -120,6 +122,7 @@ final class BantuanPpksResource extends Resource
                                 ->optionsLimit(15)
                                 ->preload(),
                             Select::make('status_kawin')
+                                ->enum(StatusKawinBpjsEnum::class)
                                 ->options(StatusKawinBpjsEnum::class)
                                 ->default(StatusKawinBpjsEnum::KAWIN)
                                 ->preload(),
@@ -162,6 +165,7 @@ final class BantuanPpksResource extends Resource
                             Select::make('bantuan_yang_pernah_diterima')
                                 ->multiple()
                                 ->searchable()
+                                ->enum(JenisBansosDiterimaEnum::class)
                                 ->required()
                                 ->options(JenisBansosDiterimaEnum::class)
                                 ->default([JenisBansosDiterimaEnum::BANSOS])
@@ -193,6 +197,7 @@ final class BantuanPpksResource extends Resource
                                 ->preload(),
 
                             Select::make('jenis_anggaran')
+                                ->enum(JenisAnggaranEnum::class)
                                 ->options(JenisAnggaranEnum::class)
                                 ->default(JenisAnggaranEnum::APBD)
                                 ->preload(),
@@ -204,6 +209,7 @@ final class BantuanPpksResource extends Resource
 
                             Forms\Components\Select::make('status_rumah_tinggal')
                                 ->label('Status Rumah Tinggal')
+                                ->enum(StatusRumahEnum::class)
                                 ->options(StatusRumahEnum::class)
                                 ->default(StatusRumahEnum::MILIK_SENDIRI)
                                 ->lazy()
@@ -211,6 +217,7 @@ final class BantuanPpksResource extends Resource
 
                             Forms\Components\Select::make('status_kondisi_rumah')
                                 ->label('Status Kondisi Rumah')
+                                ->enum(StatusKondisiRumahEnum::class)
                                 ->options(StatusKondisiRumahEnum::class)
                                 ->default(StatusKondisiRumahEnum::BAIK)
                                 ->lazy()
@@ -218,6 +225,7 @@ final class BantuanPpksResource extends Resource
 
                             Select::make('status_verifikasi')
                                 ->label('Status Verifikasi')
+                                ->enum(StatusVerifikasiEnum::class)
                                 ->options(StatusVerifikasiEnum::class)
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
@@ -321,9 +329,9 @@ final class BantuanPpksResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                SelectFilter::make('status_rumah_tinggal')
-                    ->label('Rumah Tinggal')
-                    ->options(StatusRumahEnum::class)
+                SelectFilter::make('bantuan_yang_pernah_diterima')
+                    ->label('Bantuan Diterima')
+                    ->options(JenisBansosDiterimaEnum::class)
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
