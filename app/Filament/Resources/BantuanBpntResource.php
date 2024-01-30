@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -83,7 +84,7 @@ class BantuanBpntResource extends Resource
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if ( ! $kab) {
+                                if (!$kab) {
                                     return Kabupaten::where('code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -105,7 +106,7 @@ class BantuanBpntResource extends Resource
                             ->reactive()
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if ( ! $kab) {
+                                if (!$kab) {
                                     return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -118,7 +119,7 @@ class BantuanBpntResource extends Resource
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if ( ! $kel) {
+                                if (!$kel) {
                                     return Kelurahan::where('kecamatan_code', '731211')
                                         ->pluck('name', 'code');
                                 }
@@ -210,7 +211,7 @@ class BantuanBpntResource extends Resource
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()
                     ->toggleable()
-                    ->description(fn($record) => 'Kec. ' . $record->kec()->get()->first()->name . ' | Kel. ' .
+                    ->description(fn($record) => 'Kec. '.$record->kec()->get()->first()->name.' | Kel. '.
                         $record->kel()->get()->first()->name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
@@ -260,17 +261,22 @@ class BantuanBpntResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('kecamatan')
-                    ->relationship('kec', 'name')
-                    ->searchable()
-                    ->optionsLimit(10),
-                Tables\Filters\SelectFilter::make('kelurahan')
-                    ->relationship('kel', 'name')
-                    ->searchable()
-                    ->optionsLimit(10),
+                //                Tables\Filters\SelectFilter::make('kecamatan')
+                //                    ->relationship('kec', 'name')
+                //                    ->searchable()
+                //                    ->optionsLimit(10),
+                //                Tables\Filters\SelectFilter::make('kelurahan')
+                //                    ->relationship('kel', 'name')
+                //                    ->searchable()
+                //                    ->optionsLimit(10),
+                SelectFilter::make('tahun')
+                    ->label('Tahun')
+                    ->options(list_tahun())
+                    ->attribute('tahun')
+                    ->searchable(),
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal'),
-            ])
+            ])->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),

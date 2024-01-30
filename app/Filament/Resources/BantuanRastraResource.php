@@ -24,7 +24,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class BantuanRastraResource extends Resource
@@ -101,15 +100,15 @@ class BantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                SelectFilter::make('kecamatan')
-                    ->label('Kecamatan')
-                    ->relationship(
-                        'kec',
-                        'name',
-                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab'))
-                    )
-                    ->preload()
-                    ->searchable(),
+//                SelectFilter::make('kecamatan')
+//                    ->label('Kecamatan')
+//                    ->relationship(
+//                        'kec',
+//                        'name',
+//                        fn(Builder $query) => $query->where('kabupaten_code', config('custom.default.kodekab'))
+//                    )
+//                    ->preload()
+//                    ->searchable(),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')
                     ->options(StatusVerifikasiEnum::class)
@@ -121,9 +120,13 @@ class BantuanRastraResource extends Resource
                 SelectFilter::make('status_aktif')
                     ->label('Status Aktif')
                     ->options(StatusAktif::class),
-                DateRangeFilter::make('created_at')
-                    ->label('Rentang Tanggal'),
+                SelectFilter::make('tahun')
+                    ->label('Tahun')
+                    ->options(list_tahun())
+                    ->attribute('tahun')
+                    ->searchable(),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ->hiddenFilterIndicators()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
 //            ->headerActions([
@@ -258,7 +261,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
+                                ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 

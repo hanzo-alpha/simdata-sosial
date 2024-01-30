@@ -35,6 +35,7 @@ return new class () extends Migration {
                 ->default(0);
             $table->foreignIdFor(Media::class)->nullable()->constrained('media')->cascadeOnDelete()->cascadeOnUpdate();
             $table->json('foto_ktp_kk')->nullable();
+            $table->year('tahun')->nullable()->default(now()->year);
             $table->tinyInteger('status_rastra')->nullable();
             $table->json('pengganti_rastra')->nullable();
             $table->timestamps();
