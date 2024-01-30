@@ -70,7 +70,7 @@ final class BantuanPpksResource extends Resource
                             TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
-                                ->unique(ignoreRecord: true)
+                                ->default('TIDAK ADA')
                                 ->maxLength(20),
                             TextInput::make('nik')
                                 ->label('N I K')
@@ -95,23 +95,27 @@ final class BantuanPpksResource extends Resource
                                 ->required(),
                             Select::make('jenis_kelamin')
                                 ->options(JenisKelaminEnum::class)
+                                ->required()
                                 ->default(JenisKelaminEnum::LAKI),
 
                             Select::make('jenis_pekerjaan_id')
                                 ->relationship('jenis_pekerjaan', 'nama_pekerjaan')
                                 ->searchable()
+                                ->required()
                                 ->optionsLimit(15)
                                 ->default(6)
                                 ->preload(),
                             Select::make('pendidikan_terakhir_id')
                                 ->relationship('pendidikan_terakhir', 'nama_pendidikan')
                                 ->searchable()
+                                ->required()
                                 ->default(5)
                                 ->optionsLimit(15)
                                 ->preload(),
                             Select::make('hubungan_keluarga_id')
                                 ->relationship('hubungan_keluarga', 'nama_hubungan')
                                 ->searchable()
+                                ->required()
                                 ->default(7)
                                 ->optionsLimit(15)
                                 ->preload(),
@@ -121,6 +125,7 @@ final class BantuanPpksResource extends Resource
                                 ->preload(),
                             TextInput::make('penghasilan_rata_rata')
                                 ->prefix('Rp. ')
+                                ->default(0)
                                 ->numeric(),
 
                             TextInput::make('jumlah_bantuan')
@@ -128,6 +133,7 @@ final class BantuanPpksResource extends Resource
                                 ->numeric(),
 
                             TextInput::make('nama_bantuan')
+                                ->default('-')
                                 ->columnSpanFull(),
 
                         ])->columns(2),
@@ -156,14 +162,16 @@ final class BantuanPpksResource extends Resource
                             Select::make('bantuan_yang_pernah_diterima')
                                 ->multiple()
                                 ->searchable()
+                                ->required()
                                 ->options(JenisBansosDiterimaEnum::class)
-                                ->default(JenisBansosDiterimaEnum::NON_BANSOS)
+                                ->default([JenisBansosDiterimaEnum::BANSOS])
                                 ->preload(),
 
                             Select::make('tipe_ppks_id')
                                 ->label('Kategori PPKS')
                                 ->required()
                                 ->searchable()
+                                ->default(1)
                                 ->options(TipePpks::pluck('nama_tipe', 'id'))
                                 ->preload()
                                 ->live()
@@ -174,6 +182,7 @@ final class BantuanPpksResource extends Resource
                                 ->required()
                                 ->multiple()
                                 ->searchable()
+                                ->default(['3'])
                                 ->options(function (callable $set, callable $get) {
                                     return KriteriaPpks::where(
                                         'tipe_ppks_id',
@@ -213,7 +222,7 @@ final class BantuanPpksResource extends Resource
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                    ?->hasRole(['super_admin', 'admin'])
+                                        ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -225,7 +234,7 @@ final class BantuanPpksResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                                        ->prepend(date('d-m-Y-H-i-s').'-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
@@ -287,6 +296,12 @@ final class BantuanPpksResource extends Resource
                     ->wrap()
                     ->searchable()
                     ->alignCenter(),
+                Tables\Columns\TextColumn::make('bantuan_yang_pernah_diterima')
+                    ->inline()
+                    ->badge()
+                    ->color('warning')
+                    ->alignCenter()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status_rumah_tinggal')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
@@ -306,11 +321,6 @@ final class BantuanPpksResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                SelectFilter::make('status_kondisi_rumah')
-                    ->label('Kondisi Rumah')
-                    ->options(StatusKondisiRumahEnum::class)
-                    ->preload()
-                    ->searchable(),
                 SelectFilter::make('status_rumah_tinggal')
                     ->label('Rumah Tinggal')
                     ->options(StatusRumahEnum::class)
@@ -320,10 +330,14 @@ final class BantuanPpksResource extends Resource
                     ->label('Status Verifikasi')
                     ->options(StatusVerifikasiEnum::class)
                     ->searchable(),
-                SelectFilter::make('status_bantuan')
+                SelectFilter::make('status_aktif')
                     ->label('Status Aktif')
                     ->options(StatusAktif::class)
                     ->searchable(),
+                SelectFilter::make('tahun_anggaran')
+                    ->label('Tahun')
+                    ->options(list_tahun())
+                    ->searchable()
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()

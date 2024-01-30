@@ -42,7 +42,6 @@ class BantuanPpks extends Model
         'status_dtks' => StatusDtksEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rumah_tinggal' => StatusRumahEnum::class,
-        'status_bantuan' => StatusAktif::class,
         'status_kondisi_rumah' => StatusKondisiRumahEnum::class,
         'penghasilan_rata_rata' => MoneyCast::class,
         'bukti_foto' => 'array',
