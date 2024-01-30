@@ -23,6 +23,21 @@ final class BantuanBpjsOverview extends BaseWidget
 
     protected static ?int $sort = 1;
 
+    protected static function getQuery(array $filter): Builder
+    {
+        return BantuanBpjs::query()
+            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
+            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
+                $dates = explode('-', $filter['dateRange']);
+
+                return $query
+                    ->whereDate('created_at', '<=', $dates[0])
+                    ->whereDate('created_at', '>=', $dates[1]);
+            })
+            ->when($filter['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filter['kecamatan']))
+            ->when($filter['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filter['kelurahan']));
+    }
+
     protected function getStats(): array
     {
         $dateRange = $this->filters['daterange'] ?? null;
@@ -36,7 +51,7 @@ final class BantuanBpjsOverview extends BaseWidget
         $gagal = $query->where('status_usulan', StatusUsulanEnum::GAGAL)->count();
         $review = $query->where('status_usulan', StatusUsulanEnum::ONPROGRESS)->count();
 
-//        dd($all, $berhasil, $gagal, $review);
+        //        dd($all, $berhasil, $gagal, $review);
 
 
         $all = BantuanBpjs::query()
@@ -126,21 +141,6 @@ final class BantuanBpjsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('warning'),
         ];
-    }
-
-    protected static function getQuery(array $filter): Builder
-    {
-        return BantuanBpjs::query()
-            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
-            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
-                $dates = explode('-', $filter['dateRange']);
-
-                return $query
-                    ->whereDate('created_at', '<=', $dates[0])
-                    ->whereDate('created_at', '>=', $dates[1]);
-            })
-            ->when($filter['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filter['kecamatan']))
-            ->when($filter['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filter['kelurahan']));
     }
 
     protected function getFilter(): array

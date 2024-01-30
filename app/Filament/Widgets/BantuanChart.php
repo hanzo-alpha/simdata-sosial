@@ -36,7 +36,7 @@ class BantuanChart extends ApexChartWidget
 
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
-//    protected int|string|array $columnSpan = 'full';
+    //    protected int|string|array $columnSpan = 'full';
     protected int|string|array $columnSpan = [
         'md' => 2,
         'xl' => 3,
@@ -45,7 +45,7 @@ class BantuanChart extends ApexChartWidget
     protected function getOptions(): array
     {
         //showing a loading indicator immediately after the page load
-        if (!$this->readyToLoad) {
+        if ( ! $this->readyToLoad) {
             return [];
         }
 

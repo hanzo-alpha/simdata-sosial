@@ -35,11 +35,11 @@ class BnbaRastraExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Ekspor Data BNBA Rastra anda telah selesai dan '.number_format($export->successful_rows).' '.str('baris')
-                ->plural($export->successful_rows).' berhasil diekspor.';
+        $body = 'Ekspor Data BNBA Rastra anda telah selesai dan ' . number_format($export->successful_rows) . ' ' . str('baris')
+            ->plural($export->successful_rows) . ' berhasil diekspor.';
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' gagal diekspor.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' gagal diekspor.';
         }
 
         return $body;
@@ -57,6 +57,6 @@ class BnbaRastraExporter extends Exporter
 
     public function getFileName(Export $export): string
     {
-        return now()->format('Ymd')."-ekspor-bnba-rastra-{$export->getKey()}.csv";
+        return now()->format('Ymd') . "-ekspor-bnba-rastra-{$export->getKey()}.csv";
     }
 }
