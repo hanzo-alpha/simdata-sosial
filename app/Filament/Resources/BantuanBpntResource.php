@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
@@ -77,15 +78,18 @@ class BantuanBpntResource extends Resource
                             ->searchable()
                             ->reactive()
                             ->options(Provinsi::pluck('name', 'code'))
-                            ->default(config('custom.default.kodeprov'))
+                            ->default(setting('app.kodeprov', config('custom.default.kodeprov')))
                             ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
 
                         Select::make('kabupaten')
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if ( ! $kab) {
-                                    return Kabupaten::where('code', config('custom.default.kodekab'))
+                                if (!$kab) {
+                                    return Kabupaten::where('code', setting(
+                                        'app.kodekab',
+                                        config('custom.default.kodekab')
+                                    ))
                                         ->pluck('name', 'code');
                                 }
 
@@ -106,8 +110,11 @@ class BantuanBpntResource extends Resource
                             ->reactive()
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if ( ! $kab) {
-                                    return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
+                                if (!$kab) {
+                                    return Kecamatan::where('kabupaten_code', setting(
+                                        'app.kodekab',
+                                        config('custom.default.kodekab')
+                                    ))
                                         ->pluck('name', 'code');
                                 }
 
@@ -119,7 +126,7 @@ class BantuanBpntResource extends Resource
                             ->nullable()
                             ->options(function (callable $get) {
                                 $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if ( ! $kel) {
+                                if (!$kel) {
                                     return Kelurahan::where('kecamatan_code', '731211')
                                         ->pluck('name', 'code');
                                 }
@@ -211,7 +218,7 @@ class BantuanBpntResource extends Resource
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()
                     ->toggleable()
-                    ->description(fn($record) => 'Kec. ' . $record->kec()->get()->first()->name . ' | Kel. ' .
+                    ->description(fn($record) => 'Kec. '.$record->kec()->get()->first()->name.' | Kel. '.
                         $record->kel()->get()->first()->name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')

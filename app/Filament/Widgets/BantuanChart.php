@@ -17,7 +17,6 @@ class BantuanChart extends ApexChartWidget
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-
     /**
      * Chart Id
      *
@@ -45,7 +44,7 @@ class BantuanChart extends ApexChartWidget
     protected function getOptions(): array
     {
         //showing a loading indicator immediately after the page load
-        if ( ! $this->readyToLoad) {
+        if (!$this->readyToLoad) {
             return [];
         }
 
@@ -72,6 +71,7 @@ class BantuanChart extends ApexChartWidget
                 ],
                 'position' => 'bottom',
             ],
+            'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE']
         ];
     }
 
@@ -89,25 +89,30 @@ class BantuanChart extends ApexChartWidget
         ];
     }
 
+    //    protected function getFooter(): string|View
+    //    {
+    //        return new HtmlString('<p class="text-danger-500">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>');
+    //    }
+
     protected function extraJsOptions(): ?RawJs
     {
         return RawJs::make(
             <<<'JS'
             {
-                xaxis: {
-                    labels: {
-                        formatter: function (val, timestamp, opts) {
-                            return val + ' KPM'
-                        }
-                    }
-                },
-                yaxis: {
-                    labels: {
-                        formatter: function (val, index) {
-                            return val + ' KPM'
-                        }
-                    }
-                },
+                // xaxis: {
+                //     labels: {
+                //         formatter: function (val, timestamp, opts) {
+                //             return val + ' KPM'
+                //         }
+                //     }
+                // },
+                // yaxis: {
+                //     labels: {
+                //         formatter: function (val, index) {
+                //             return val + ' KPM'
+                //         }
+                //     }
+                // },
                 tooltip: {
                     x: {
                         formatter: function (val) {

@@ -53,7 +53,7 @@ final class PenggantiRastraResource extends Resource
                         ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(fn(
                         $record
-                    ) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
+                    ) => '<strong>'.$record->nik.'</strong><br>'.$record->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')
@@ -111,12 +111,12 @@ final class PenggantiRastraResource extends Resource
                 Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->bantuan_rastra->nik)
+                    ->description(fn($record) => $record->bantuan_rastra?->nik)
                     ->label('NIK & NO.KK Lama'),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->bantuan_rastra->alamat)
+                    ->description(fn($record) => $record->bantuan_rastra?->alamat)
                     ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')

@@ -14,6 +14,7 @@ enum StatusKawinUmumEnum: int implements HasColor, HasLabel
     case BELUM_KAWIN = 3;
     case CERAI_HIDUP = 4;
     case CERAI_MATI = 5;
+    case CERAI_BELUM_TERCATAT = 6;
 
     public function getLabel(): ?string
     {
@@ -23,6 +24,7 @@ enum StatusKawinUmumEnum: int implements HasColor, HasLabel
             self::BELUM_KAWIN => 'BELUM KAWIN',
             self::CERAI_HIDUP => 'CERAI HIDUP',
             self::CERAI_MATI => 'CERAI MATI',
+            self::CERAI_BELUM_TERCATAT => 'CERAI BELUM TERCATAT',
         };
     }
 
@@ -34,6 +36,7 @@ enum StatusKawinUmumEnum: int implements HasColor, HasLabel
             self::BELUM_KAWIN => 'danger',
             self::CERAI_HIDUP => 'success',
             self::CERAI_MATI => 'info',
+            self::CERAI_BELUM_TERCATAT => 'gray',
         };
     }
 

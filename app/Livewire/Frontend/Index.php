@@ -41,6 +41,7 @@ class Index extends Component
             ->setHeight(500)
             ->setLegendFontFamily('Poppins')
             ->setLegendFontSize('18')
+            ->setLegendPosition('bottom')
             ->setLabels(['Program BPJS', 'Program RASTRA', 'Program PKH', 'Program BPNT', 'Program PPKS'])
             ->setDataset('Jumlah KPM Per Program Bantuan', 'donut', [
                 $bantuan['bpjs'],

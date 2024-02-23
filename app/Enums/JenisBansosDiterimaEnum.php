@@ -8,6 +8,7 @@ use Filament\Support\Contracts\HasLabel;
 
 enum JenisBansosDiterimaEnum: string implements HasLabel
 {
+    case PBI = 'PBI';
     case PKH = 'PKH';
     case BPNT = 'BPNT';
     case RASTRA = 'RASTRA';
@@ -25,6 +26,7 @@ enum JenisBansosDiterimaEnum: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            self::PBI => 'PBI',
             self::PKH => 'PKH',
             self::BPNT => 'BPNT',
             self::RASTRA => 'RASTRA',
