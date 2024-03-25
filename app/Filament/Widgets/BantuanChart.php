@@ -44,7 +44,7 @@ class BantuanChart extends ApexChartWidget
     protected function getOptions(): array
     {
         //showing a loading indicator immediately after the page load
-        if (!$this->readyToLoad) {
+        if ( ! $this->readyToLoad) {
             return [];
         }
 

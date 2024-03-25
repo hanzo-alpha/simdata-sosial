@@ -58,11 +58,6 @@ class BantuanBpjsReport extends Report
             ]);
     }
 
-    private function registrationSummary(?array $filters): Collection
-    {
-        return BantuanBpjs::where('status_nikah', StatusKawinBpjsEnum::BELUM_KAWIN)->take(5)->get();
-    }
-
     public function footer(Footer $footer): Footer
     {
         return $footer
@@ -79,7 +74,7 @@ class BantuanBpjsReport extends Report
                             ]),
                         Footer\Layout\FooterColumn::make()
                             ->schema([
-                                Text::make('Generated on: '.now()->format('Y-m-d H:i:s')),
+                                Text::make('Generated on: ' . now()->format('Y-m-d H:i:s')),
                             ])
                             ->alignRight(),
                     ]),
@@ -101,6 +96,11 @@ class BantuanBpjsReport extends Report
                         'inactive' => 'Inactive',
                     ]),
             ]);
+    }
+
+    private function registrationSummary(?array $filters): Collection
+    {
+        return BantuanBpjs::where('status_nikah', StatusKawinBpjsEnum::BELUM_KAWIN)->take(5)->get();
     }
 
     //    private function verificationSummary(?array $filters): Collection

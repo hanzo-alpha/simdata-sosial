@@ -43,13 +43,13 @@ class BantuanPpksImporter extends Importer
                 ->ignoreBlankState()
                 ->guess(['Nama Ibu', 'NAMA IBU', 'NM IBU'])
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
-                    $record->nama_ibu_kandung = !blank($state) ? $state : '-';
+                    $record->nama_ibu_kandung = ! blank($state) ? $state : '-';
                 })
                 ->rules(['max:255']),
             ImportColumn::make('tempat_lahir')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
-                    $record->tempat_lahir = !blank($state) ? $state : '-';
+                    $record->tempat_lahir = ! blank($state) ? $state : '-';
                 })
                 ->rules(['max:50']),
             ImportColumn::make('tgl_lahir')
@@ -62,7 +62,7 @@ class BantuanPpksImporter extends Importer
                 ->guess(['Tgl Lahir', 'TGL LAHIR', 'Tanggal Lahir']),
             ImportColumn::make('penghasilan_rata_rata')
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
-                    $record->penghasilan_rata_rata = !blank($state) ? $state : 0;
+                    $record->penghasilan_rata_rata = ! blank($state) ? $state : 0;
                 }),
             ImportColumn::make('jenis_kelamin')
                 ->requiredMapping()
@@ -98,7 +98,7 @@ class BantuanPpksImporter extends Importer
             ImportColumn::make('jumlah_bantuan')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
-                    $record->jumlah_bantuan = !blank($state) ? $state : 0;
+                    $record->jumlah_bantuan = ! blank($state) ? $state : 0;
                 }),
             ImportColumn::make('alamat')
                 ->requiredMapping()
@@ -107,7 +107,7 @@ class BantuanPpksImporter extends Importer
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
                     $kecamatan = Kecamatan::query()
                         ->where('kabupaten_code', config('custom.default.kodekab'))
-                        ->where('name', 'like', '%'.Str::ucfirst($state).'%')
+                        ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
                         ->first()?->code;
                     $record->kecamatan = $kecamatan;
                 })
@@ -116,7 +116,7 @@ class BantuanPpksImporter extends Importer
                 ->guess(['Kelurahan/Desa', 'Kelurahan', 'Kel'])
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
                     $kelurahan = Kelurahan::query()
-                        ->where('name', 'like', '%'.Str::ucfirst($state).'%')
+                        ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
                         ->first()?->code;
                     $record->kelurahan = $kelurahan;
                 })
@@ -155,7 +155,7 @@ class BantuanPpksImporter extends Importer
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
                     //                    $search = Str::of($state)->contains($state);
-                    $kriteria = KriteriaPpks::where('nama_kriteria', 'like', '%'.$state.'%')
+                    $kriteria = KriteriaPpks::where('nama_kriteria', 'like', '%' . $state . '%')
                         ->first();
                     $record->kriteria_ppks = [$kriteria->id];
                 }),
@@ -209,11 +209,11 @@ class BantuanPpksImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Impor Data Bantuan PPKS telah selesai dan '.number_format($import->successful_rows).' '.str('baris')
-                ->plural($import->successful_rows).' berhasil diimpor.';
+        $body = 'Impor Data Bantuan PPKS telah selesai dan ' . number_format($import->successful_rows) . ' ' . str('baris')
+            ->plural($import->successful_rows) . ' berhasil diimpor.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' gagal diimpor.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' gagal diimpor.';
         }
 
         return $body;

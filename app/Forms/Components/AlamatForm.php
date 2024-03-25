@@ -21,6 +21,31 @@ final class AlamatForm extends Field
 
     protected string $view = 'filament-forms::components.group';
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->afterStateHydrated(function (AlamatForm $component, ?Model $record): void {
+            $address = $record?->getRelationValue($this->getRelationship());
+
+            $component->state($address ? $address->toArray() : [
+                'provinsi' => '73',
+                'alamat' => null,
+                'kabupaten' => '7312',
+                'kecamatan' => null,
+                'kelurahan' => null,
+                'no_rt' => null,
+                'no_rw' => null,
+                'dusun' => null,
+                //                'latitude' => null,
+                //                'longitude' => null,
+                'kodepos' => null,
+            ]);
+        });
+
+        $this->dehydrated(false);
+    }
+
     public function relationship(string|callable $relationship): static
     {
         $this->relationship = $relationship;
@@ -112,7 +137,7 @@ final class AlamatForm extends Field
                         ->reactive()
                         ->options(function (Get $get) {
                             $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                            if (!$kab) {
+                            if ( ! $kab) {
                                 return Kabupaten::where('provinsi_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
@@ -130,7 +155,7 @@ final class AlamatForm extends Field
                         ->reactive()
                         ->options(function (Get $get) {
                             $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                            if (!$kab) {
+                            if ( ! $kab) {
                                 return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
@@ -164,31 +189,6 @@ final class AlamatForm extends Field
                         ->nullable(),
                 ]),
         ];
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->afterStateHydrated(function (AlamatForm $component, ?Model $record): void {
-            $address = $record?->getRelationValue($this->getRelationship());
-
-            $component->state($address ? $address->toArray() : [
-                'provinsi' => '73',
-                'alamat' => null,
-                'kabupaten' => '7312',
-                'kecamatan' => null,
-                'kelurahan' => null,
-                'no_rt' => null,
-                'no_rw' => null,
-                'dusun' => null,
-                //                'latitude' => null,
-                //                'longitude' => null,
-                'kodepos' => null,
-            ]);
-        });
-
-        $this->dehydrated(false);
     }
 
     public function getRelationship(): string

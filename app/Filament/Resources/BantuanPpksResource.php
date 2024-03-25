@@ -166,7 +166,7 @@ final class BantuanPpksResource extends Resource
                                         ->reactive()
                                         ->options(function (Get $get) {
                                             $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kabupaten::where(
                                                     'provinsi_code',
                                                     setting('app.kodekab', config('custom.default.kodekab'))
@@ -187,7 +187,7 @@ final class BantuanPpksResource extends Resource
                                         ->reactive()
                                         ->options(function (Get $get) {
                                             $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kecamatan::where(
                                                     'kabupaten_code',
                                                     setting('app.kodekab', config('custom.default.kodekab'))
@@ -312,7 +312,7 @@ final class BantuanPpksResource extends Resource
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                        ?->hasRole(['super_admin', 'admin'])
+                                    ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -324,7 +324,7 @@ final class BantuanPpksResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s').'-'),
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
@@ -385,18 +385,18 @@ final class BantuanPpksResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->formatStateUsing(fn($state) => KriteriaPpks::find($state)->nama_kriteria),
-//                BadgeableColumn::make('tipe_ppks.nama_tipe')
-//                    ->label('Tipe Kriteria PPKS')
-//                    ->suffixBadges(function ($record) {
-//                        return $record->tipe_ppks
-//                            ->kriteria_ppks
-//                            ->whereIn('id', $record->kriteria_ppks)
-//                            ->map(fn($topic) => Badge::make($topic->nama_kriteria));
-//                    })
-//                    ->inline()
-//                    ->wrap()
-//                    ->searchable()
-//                    ->alignCenter(),
+                //                BadgeableColumn::make('tipe_ppks.nama_tipe')
+                //                    ->label('Tipe Kriteria PPKS')
+                //                    ->suffixBadges(function ($record) {
+                //                        return $record->tipe_ppks
+                //                            ->kriteria_ppks
+                //                            ->whereIn('id', $record->kriteria_ppks)
+                //                            ->map(fn($topic) => Badge::make($topic->nama_kriteria));
+                //                    })
+                //                    ->inline()
+                //                    ->wrap()
+                //                    ->searchable()
+                //                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('bansos_diterima.nama_bansos')
                     ->inline()
                     ->badge()
