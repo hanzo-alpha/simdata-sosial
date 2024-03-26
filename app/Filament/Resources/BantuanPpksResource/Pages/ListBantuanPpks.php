@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\BantuanPpksResource\Pages;
 
-use App\Exports\ExportBantuanPpks;
+use App\Filament\Exports\BantuanPpksExporter;
+use App\Filament\Imports\BantuanPpksImporter;
 use App\Filament\Resources\BantuanPpksResource;
-use App\Imports\ImportBantuanPpks;
-use App\Models\BantuanPpks;
 use App\Models\TipePpks;
 use Filament\Actions;
-use Filament\Forms\Components\FileUpload;
-use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Facades\Excel;
-use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 final class ListBantuanPpks extends ListRecords
 {
@@ -120,53 +114,67 @@ final class ListBantuanPpks extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ExportAction::make()->label('Ekspor XLS')
-                ->color('success')
-                ->exports([
-                    ExportBantuanPpks::make(),
-                ]),
+            //            ExportAction::make()->label('Ekspor XLS')
+            //                ->color('success')
+            //                ->exports([
+            //                    ExportBantuanPpks::make(),
+            //                ]),
 
-            Actions\Action::make('import')
-                ->model(BantuanPpks::class)
-                ->label('Impor Data')
-                ->modalHeading('Unggah Data Bantuan PPKS')
-                ->modalDescription('Unggah data PPKS ke database dari file excel')
-                ->modalSubmitActionLabel('Unggah')
-                ->modalIcon('heroicon-o-arrow-up-tray')
-                ->form([
-                    FileUpload::make('attachment')
-                        ->label('Impor')
-                        ->hiddenLabel()
-                        ->columnSpanFull()
-                        ->preserveFilenames()
-                        ->previewable(false)
-                        ->directory('upload')
-                        ->maxSize(5120)
-                        ->reorderable()
-                        ->appendFiles()
-                        ->storeFiles(false)
-                        ->acceptedFileTypes([
-                            'application/vnd.ms-excel',
-                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                            'text/csv',
-                        ])
-                        ->hiddenOn(['edit', 'view']),
-                ])
-                ->action(function (array $data): void {
-                    $import = Excel::import(new ImportBantuanPpks(), $data['attachment'], 'public');
-                    if ($import) {
-                        Notification::make()
-                            ->title('Data PPKS Berhasil di impor')
-                            ->success()
-                            ->sendToDatabase(auth()->user());
-                    }
-                })
+            Actions\ExportAction::make()
+                ->label('Download CSV')
+                ->color('success')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->exporter(BantuanPpksExporter::class),
+
+            Actions\ImportAction::make()
+                ->label('Upload CSV')
+                ->color('warning')
                 ->icon('heroicon-o-arrow-up-tray')
-                ->color('info')
-                ->modalAlignment(Alignment::Center)
-                ->closeModalByClickingAway(false)
-                ->successRedirectUrl(route('filament.admin.resources.program-ppks.index'))
-                ->modalWidth('lg'),
+                ->importer(BantuanPpksImporter::class)
+                ->options([
+                    'updateExisting' => true,
+                ]),
+            //            Actions\Action::make('import')
+            //                ->model(BantuanPpks::class)
+            //                ->label('Impor Data')
+            //                ->modalHeading('Unggah Data Bantuan PPKS')
+            //                ->modalDescription('Unggah data PPKS ke database dari file excel')
+            //                ->modalSubmitActionLabel('Unggah')
+            //                ->modalIcon('heroicon-o-arrow-up-tray')
+            //                ->form([
+            //                    FileUpload::make('attachment')
+            //                        ->label('Impor')
+            //                        ->hiddenLabel()
+            //                        ->columnSpanFull()
+            //                        ->preserveFilenames()
+            //                        ->previewable(false)
+            //                        ->directory('upload')
+            //                        ->maxSize(5120)
+            //                        ->reorderable()
+            //                        ->appendFiles()
+            //                        ->storeFiles(false)
+            //                        ->acceptedFileTypes([
+            //                            'application/vnd.ms-excel',
+            //                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            //                            'text/csv',
+            //                        ])
+            //                        ->hiddenOn(['edit', 'view']),
+            //                ])
+            //                ->action(function (array $data): void {
+            //                    $import = Excel::import(new ImportBantuanPpks(), $data['attachment'], 'public');
+            //                    if ($import) {
+            //                        Notification::make()
+            //                            ->title('Data PPKS Berhasil di impor')
+            //                            ->success()
+            //                            ->sendToDatabase(auth()->user());
+            //                    }
+            //                })
+            //                ->icon('heroicon-o-arrow-up-tray')
+            //                ->color('info')
+            //                ->modalAlignment(Alignment::Center)
+            //                ->closeModalByClickingAway(false)
+            //                ->successRedirectUrl(route('filament.admin.resources.program-ppks.index'))
+            //                ->modalWidth('lg'),
 
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus'),

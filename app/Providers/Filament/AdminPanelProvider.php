@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
@@ -24,6 +25,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -84,13 +86,10 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationCountBadge(),
                 FilamentJobsMonitorPlugin::make(),
                 FilamentApexChartsPlugin::make(),
-                //                TableLayoutTogglePlugin::make()
-                //                    ->persistLayoutInLocalStorage(true) // allow user to keep his layout preference in his local storage
-                //                    ->shareLayoutBetweenPages(false) // allow all tables to share the layout option (requires persistLayoutInLocalStorage to be true)
-                //                    ->displayToggleAction() // used to display the toogle button automatically, on the desired
-                //                    // filament hook (defaults to table bar)
-                //                    ->listLayoutButtonIcon('heroicon-o-list-bullet')
-                //                    ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
+                FilamentSettingsPlugin::make()
+                    ->pages([
+                        Settings::class,
+                    ]),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -99,7 +98,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logos/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
             ->darkModeBrandLogo(asset('images/logos/logo-white.png'))
-            ->darkMode(config('custom.app.dark_mode', true))
+            ->darkMode(setting('app.darkmode'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->font(config('custom.app.font', 'Inter'))
@@ -134,10 +133,10 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ], isPersistent: true)
+            ])
             ->authMiddleware([
                 Authenticate::class,
-            ], isPersistent: true)
+            ])
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([

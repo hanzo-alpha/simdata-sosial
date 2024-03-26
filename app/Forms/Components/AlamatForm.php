@@ -72,11 +72,6 @@ final class AlamatForm extends Field
         $record?->touch();
     }
 
-    public function getRelationship(): string
-    {
-        return $this->evaluate($this->relationship) ?? $this->getName();
-    }
-
     public function getChildComponents(): array
     {
         return [
@@ -192,11 +187,12 @@ final class AlamatForm extends Field
                     TextInput::make('no_rw')
                         ->label('RW')
                         ->nullable(),
-                    //                    TextInput::make('kodepos')
-                    //                        ->label('Kodepos')
-                    //                        ->default('90861')
-                    //                        ->required(),
                 ]),
         ];
+    }
+
+    public function getRelationship(): string
+    {
+        return $this->evaluate($this->relationship) ?? $this->getName();
     }
 }

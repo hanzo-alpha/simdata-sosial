@@ -34,24 +34,24 @@ class BantuanChartWidget extends ChartWidget
         'xl' => 3,
     ];
 
+    public function getColumns(): int|string|array
+    {
+        return 2;
+    }
+
     protected static function getQuery(Model $model, array $filter): Builder
     {
         return $model::query()
             ->when($filter['kecamatan'], fn(Builder $query) => $query->whereHas(
                 'kec',
                 fn(Builder $query) => $query->where('code', $filter['kecamatan'])
-                    ->orWhere('name', 'like', '%'.$filter['kecamatan'].'%')
+                    ->orWhere('name', 'like', '%' . $filter['kecamatan'] . '%')
             ))
             ->when($filter['kelurahan'], fn(Builder $query) => $query->whereHas(
                 'kel',
                 fn(Builder $query) => $query->where('code', $filter['kelurahan'])
-                    ->orWhere('name', 'like', '%'.$filter['kelurahan'].'%')
+                    ->orWhere('name', 'like', '%' . $filter['kelurahan'] . '%')
             ));
-    }
-
-    public function getColumns(): int|string|array
-    {
-        return 2;
     }
 
     protected function getOptions(): array
@@ -150,12 +150,12 @@ class BantuanChartWidget extends ChartWidget
                 ->when($kecamatan, fn(Builder $query) => $query->whereHas(
                     'kec',
                     fn(Builder $query) => $query->where('code', $kecamatan)
-                        ->orWhere('name', 'like', '%'.$kecamatan.'%')
+                        ->orWhere('name', 'like', '%' . $kecamatan . '%')
                 ))
                 ->when($kelurahan, fn(Builder $query) => $query->whereHas(
                     'kel',
                     fn(Builder $query) => $query->where('code', $kelurahan)
-                        ->orWhere('name', 'like', '%'.$kelurahan.'%')
+                        ->orWhere('name', 'like', '%' . $kelurahan . '%')
                 ))
                 ->get()->count();
         }
@@ -172,12 +172,12 @@ class BantuanChartWidget extends ChartWidget
                 ->when($kecamatan, fn(Builder $query) => $query->whereHas(
                     'kec',
                     fn(Builder $query) => $query->where('code', $kecamatan)
-                        ->orWhere('name', 'like', '%'.$kecamatan.'%')
+                        ->orWhere('name', 'like', '%' . $kecamatan . '%')
                 ))
                 ->when($kelurahan, fn(Builder $query) => $query->whereHas(
                     'kel',
                     fn(Builder $query) => $query->where('code', $kelurahan)
-                        ->orWhere('name', 'like', '%'.$kelurahan.'%')
+                        ->orWhere('name', 'like', '%' . $kelurahan . '%')
                 ))
                 ->get()
                 ->count();

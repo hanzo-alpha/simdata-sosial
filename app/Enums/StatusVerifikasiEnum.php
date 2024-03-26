@@ -9,9 +9,9 @@ use Filament\Support\Contracts\HasLabel;
 
 enum StatusVerifikasiEnum: string implements HasColor, HasLabel
 {
-    case UNVERIFIED = 'UNVERIFIED';
-    case VERIFIED = 'VERIFIED';
-    case REVIEW = 'REVIEW';
+    case UNVERIFIED = 'BELUM DIVERIFIKASI';
+    case VERIFIED = 'TERVERIFIKASI';
+    case REVIEW = 'SEDANG DITINJAU';
 
     public function getLabel(): ?string
     {

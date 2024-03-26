@@ -71,13 +71,17 @@ final class PesertaBpjsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nomor_kartu')
+                    ->label('Nomor Kartu')
                     ->searchable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
+                    ->label('N I K')
                     ->searchable()
-                    ->summarize(Tables\Columns\Summarizers\Count::make())
+//                    ->summarize(Tables\Columns\Summarizers\Count::make())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->wrap()

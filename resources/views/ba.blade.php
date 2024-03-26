@@ -77,22 +77,22 @@
             </thead>
             <tbody>
             <tr>
-                <td>
+                <td class="text-center">
                     1
                 </td>
-                <td>
+                <td class="text-center">
                     Beras Premium
                 </td>
-                <td>
+                <td class="text-center">
                     600
                 </td>
-                <td>
+                <td class="text-center">
                     Kg
                 </td>
-                <td>
+                <td class="text-right">
                     12.000
                 </td>
-                <td>
+                <td class="text-right">
                     7.200.000
                 </td>
             </tr>
@@ -104,7 +104,9 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="5" class="border-0 text-center">Terbilang</td>
+                <td colspan="5" class="border-0 text-center">Terbilang
+                    : {{ Str::ucfirst(Number::spell(720000, 'id'))  }} rupiah
+                </td>
             </tr>
             </tbody>
         </table>

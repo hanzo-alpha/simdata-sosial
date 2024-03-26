@@ -14,11 +14,14 @@ class ExportBantuanBpjs extends ExcelExport
         $this->askForWriterType();
         $this->withColumns([
             Column::make('dtks_id')->heading('DTKS ID'),
-            Column::make('nokk_tmt')->heading('No. KK'),
-            Column::make('nik_tmt')->heading('N I K'),
+            Column::make('nokk_tmt')->heading('No. KK')
+                ->formatStateUsing(fn($state) => "'" . $state),
+            Column::make('nik_tmt')->heading('N I K')
+                ->formatStateUsing(fn($state) => "'" . $state),
             Column::make('nama_lengkap')->heading('Nama Lengkap'),
             Column::make('tempat_lahir')->heading('Tempat Lahir'),
-            Column::make('tgl_lahir')->heading('Tgl. Lahir'),
+            Column::make('tgl_lahir')->heading('Tgl. Lahir')
+                ->formatStateUsing(fn($record) => $record->tgl_lahir->format('d/m/Y')),
             Column::make('jenis_kelamin')->heading('Jenis Kelamin'),
             Column::make('status_nikah')->heading('Status Nikah'),
             Column::make('bulan')->heading('Periode'),

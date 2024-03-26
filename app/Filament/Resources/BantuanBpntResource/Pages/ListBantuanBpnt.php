@@ -7,6 +7,7 @@ namespace App\Filament\Resources\BantuanBpntResource\Pages;
 use App\Filament\Resources\BantuanBpntResource;
 use App\Imports\ImportBantuanBpnt;
 use App\Models\BantuanPkh;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -17,12 +18,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ListBantuanBpnt extends ListRecords
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanBpntResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\Action::make('unggahData')
+                ->disabled($this->enableInputLimitDate())
                 ->model(BantuanPkh::class)
                 ->label('Unggah Data')
                 ->modalHeading('Unggah Data Bantuan BPNT')

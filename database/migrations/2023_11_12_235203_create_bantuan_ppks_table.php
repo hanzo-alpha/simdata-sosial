@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 use App\Enums\StatusDtksEnum;
+use App\Models\BansosDiterima;
 use App\Models\HubunganKeluarga;
 use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
 use App\Models\PendidikanTerakhir;
 use App\Models\TipePpks;
+use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,13 +34,26 @@ return new class () extends Migration {
             $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();
             $table->foreignIdFor(HubunganKeluarga::class)->constrained('hubungan_keluarga')->cascadeOnUpdate();
             $table->foreignIdFor(JenisPekerjaan::class)->constrained('jenis_pekerjaan')->cascadeOnUpdate();
+            $table->foreignIdFor(BansosDiterima::class)
+                ->nullable()
+                ->constrained('bansos_diterima')->cascadeOnUpdate();
             $table->tinyInteger('status_kawin')
                 ->nullable()
                 ->default(1);
             $table->tinyInteger('jenis_kelamin')
                 ->nullable()
                 ->default(1);
+            $table->text('alamat');
+            $table->string('kecamatan');
+            $table->string('kelurahan');
+            $table->string('dusun')->nullable();
+            $table->string('no_rt')->nullable();
+            $table->string('no_rw')->nullable();
             $table->json('bukti_foto')->nullable();
+            $table->foreignIdFor(Media::class)
+                ->nullable()
+                ->constrained('media')
+                ->cascadeOnUpdate();
             $table->foreignIdFor(TipePpks::class)->constrained('tipe_ppks')
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('kriteria_ppks')->nullable();

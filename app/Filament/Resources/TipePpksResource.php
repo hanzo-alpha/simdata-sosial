@@ -19,15 +19,10 @@ final class TipePpksResource extends Resource
     protected static ?string $model = TipePpks::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
-
     protected static ?string $slug = 'tipe-ppks';
-
     protected static ?string $label = 'Tipe PPKS';
-
     protected static ?string $pluralLabel = 'Tipe PPKS';
-
     protected static ?string $navigationLabel = 'Tipe PPKS';
-
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form

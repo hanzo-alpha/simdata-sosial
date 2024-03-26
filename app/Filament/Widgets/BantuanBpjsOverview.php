@@ -36,7 +36,7 @@ final class BantuanBpjsOverview extends BaseWidget
         $gagal = $query->where('status_usulan', StatusUsulanEnum::GAGAL)->count();
         $review = $query->where('status_usulan', StatusUsulanEnum::ONPROGRESS)->count();
 
-//        dd($all, $berhasil, $gagal, $review);
+        //        dd($all, $berhasil, $gagal, $review);
 
 
         $all = BantuanBpjs::query()
@@ -99,28 +99,28 @@ final class BantuanBpjsOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM BPJS',
-                value: Number::abbreviate($all, 2)
+                value: Number::format($jamkesda, 2, 0, 'id') . ' KPM'
             )
                 ->description('Total Seluruh Usulan BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),
             Stat::make(
                 label: 'Usulan BPJS Berhasil',
-                value: Number::abbreviate($verified, 2)
+                value: Number::format($verified, 2, 2, 'id') . ' KPM'
             )
                 ->description('Jumlah Usulan BPJS Berhasil')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),
             Stat::make(
                 label: 'Usulan BPJS Gagal',
-                value: Number::abbreviate($unverified, 2)
+                value: Number::format($unverified, 2, 2, 'id') . ' KPM'
             )
                 ->description('Jumlah Usulan BPJS Gagal')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
             Stat::make(
                 label: 'Usulan BPJS Sedang Proses',
-                value: Number::abbreviate($review, 2)
+                value: Number::format($review, 2, 2, 'id') . ' KPM'
             )
                 ->description('Jumlah Usulan BPJS Sedang Proses')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')

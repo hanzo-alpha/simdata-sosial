@@ -16,6 +16,32 @@ class BnbaRastraOverview extends BaseWidget
 
     protected static bool $isDiscovered = false;
 
+    protected static function getQuery(array $filter): Builder
+    {
+        return BnbaRastra::query()
+            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
+                $dates = explode('-', $filter['dateRange']);
+
+                return $query
+                    ->whereDate('created_at', '>=', $dates[0])
+                    ->whereDate('created_at', '<=', $dates[1]);
+            })
+            ->when($filter['kecamatan'], fn(Builder $query) => $query->whereHas(
+                'alamat',
+                fn(Builder $query) => $query->whereHas(
+                    'kec',
+                    fn(Builder $query) => $query->where('code', $filter['kecamatan'])
+                )
+            ))
+            ->when($filter['kelurahan'], fn(Builder $query) => $query->whereHas(
+                'alamat',
+                fn(Builder $query) => $query->whereHas(
+                    'kel',
+                    fn(Builder $query) => $query->where('code', $filter['kelurahan'])
+                )
+            ));
+    }
+
     protected function getStats(): array
     {
         $query = static::getQuery($this->getFilter());
@@ -46,32 +72,6 @@ class BnbaRastraOverview extends BaseWidget
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('danger'),
         ];
-    }
-
-    protected static function getQuery(array $filter): Builder
-    {
-        return BnbaRastra::query()
-            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
-                $dates = explode('-', $filter['dateRange']);
-
-                return $query
-                    ->whereDate('created_at', '>=', $dates[0])
-                    ->whereDate('created_at', '<=', $dates[1]);
-            })
-            ->when($filter['kecamatan'], fn(Builder $query) => $query->whereHas(
-                'alamat',
-                fn(Builder $query) => $query->whereHas(
-                    'kec',
-                    fn(Builder $query) => $query->where('code', $filter['kecamatan'])
-                )
-            ))
-            ->when($filter['kelurahan'], fn(Builder $query) => $query->whereHas(
-                'alamat',
-                fn(Builder $query) => $query->whereHas(
-                    'kel',
-                    fn(Builder $query) => $query->where('code', $filter['kelurahan'])
-                )
-            ));
     }
 
     protected function getFilter(): array
