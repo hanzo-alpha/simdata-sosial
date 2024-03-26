@@ -23,21 +23,6 @@ final class BantuanBpjsOverview extends BaseWidget
 
     protected static ?int $sort = 1;
 
-    protected static function getQuery(array $filter): Builder
-    {
-        return BantuanBpjs::query()
-            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
-            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
-                $dates = explode('-', $filter['dateRange']);
-
-                return $query
-                    ->whereDate('created_at', '<=', $dates[0])
-                    ->whereDate('created_at', '>=', $dates[1]);
-            })
-            ->when($filter['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filter['kecamatan']))
-            ->when($filter['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filter['kelurahan']));
-    }
-
     protected function getStats(): array
     {
         $dateRange = $this->filters['daterange'] ?? null;
@@ -114,33 +99,48 @@ final class BantuanBpjsOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM BPJS',
-                value: Number::abbreviate($all, 2)
+                value: Number::format($jamkesda, 2, 0, 'id') . ' KPM'
             )
                 ->description('Total Seluruh Usulan BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),
             Stat::make(
                 label: 'Usulan BPJS Berhasil',
-                value: Number::abbreviate($verified, 2)
+                value: Number::format($verified, 2, 2, 'id') . ' KPM'
             )
                 ->description('Jumlah Usulan BPJS Berhasil')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),
             Stat::make(
                 label: 'Usulan BPJS Gagal',
-                value: Number::abbreviate($unverified, 2)
+                value: Number::format($unverified, 2, 2, 'id') . ' KPM'
             )
                 ->description('Jumlah Usulan BPJS Gagal')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
             Stat::make(
                 label: 'Usulan BPJS Sedang Proses',
-                value: Number::abbreviate($review, 2)
+                value: Number::format($review, 2, 2, 'id') . ' KPM'
             )
                 ->description('Jumlah Usulan BPJS Sedang Proses')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('warning'),
         ];
+    }
+
+    protected static function getQuery(array $filter): Builder
+    {
+        return BantuanBpjs::query()
+            ->select(['created_at', 'status_bpjs', 'kecamatan', 'kelurahan'])
+            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
+                $dates = explode('-', $filter['dateRange']);
+
+                return $query
+                    ->whereDate('created_at', '<=', $dates[0])
+                    ->whereDate('created_at', '>=', $dates[1]);
+            })
+            ->when($filter['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filter['kecamatan']))
+            ->when($filter['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filter['kelurahan']));
     }
 
     protected function getFilter(): array

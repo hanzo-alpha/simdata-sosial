@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Settings;
 
 use Closure;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
@@ -12,6 +13,7 @@ use Wallo\FilamentSelectify\Components\ToggleButton;
 class Settings extends BaseSettings
 {
     protected static ?string $navigationGroup = 'Pengaturan';
+
     protected static ?string $navigationLabel = 'Sistem';
 
     protected ?string $heading = 'Pengaturan';
@@ -25,6 +27,9 @@ class Settings extends BaseSettings
                         ->schema([
                             TextInput::make('app.brand_name')
                                 ->label('Nama Aplikasi')
+                                ->default('RENO'),
+                            TextInput::make('app.brand_description')
+                                ->label('Deskripsi Aplikasi')
                                 ->default('RENO'),
                             TextInput::make('app.version')
                                 ->label('Versi Aplikasi')
@@ -45,19 +50,19 @@ class Settings extends BaseSettings
                                     'd.m.Y' => 'dd.mm.yyyy',
                                     'Y.m.d' => 'yyyy.mm.dd',
                                 ]),
+                            DatePicker::make('app.batas_tgl_input')
+                                ->displayFormat(setting('app.format_tgl')),
 
                             ToggleButton::make('app.darkmode')
                                 ->onColor('primary')
                                 ->offColor('danger')
                                 ->onLabel('Aktif')
-                                ->offLabel('Non Aktif')
+                                ->offLabel('Non Aktif'),
                         ])->columns(2),
                     //                    Tabs\Tab::make('Sistem')
                     //                        ->schema([
-                    //                            TextInput::make('seo.title')
-                    //                                ->required(),
-                    //                            TextInput::make('seo.description')
-                    //                                ->required(),
+                    //                            DatePicker::make('app.batas_tgl_input')
+                    //                                ->displayFormat(setting('app.format_tgl')),
                     //                        ])->columns(2),
                 ]),
         ];

@@ -355,6 +355,8 @@ final class BantuanPpksResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll()
+            ->deferLoading()
             ->columns([
                 Tables\Columns\TextColumn::make('nik')
                     ->label('N I K')

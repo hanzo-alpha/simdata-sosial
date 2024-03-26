@@ -3,7 +3,10 @@
 namespace App\Filament\Imports;
 
 use App\Enums\StatusDtksEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanRastra;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
@@ -26,38 +29,37 @@ class BantuanRastraImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'max:20']),
             ImportColumn::make('nama_lengkap')
-                ->guess(['NAMA', 'nama', 'nama lengkap'])
+                ->guess(['NAMA', 'NAMA LENGKAP'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('alamat')
                 ->requiredMapping()
                 ->rules(['required', 'max:65535']),
             ImportColumn::make('kecamatan')
+                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+                    $kecamatan = Kecamatan::query()->where('name', Str::upper($state))->first()?->code;
+                    $record->kecamatan = $kecamatan ?? $state;
+                })
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('kelurahan')
                 ->guess(['DESA / KEL', 'DESA / KELURAHAN', 'DESA', 'KELURAHAN'])
                 ->requiredMapping()
+                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+                    $kelurahan = Kelurahan::query()->where('name', Str::upper($state))->first()?->code;
+                    $record->kelurahan = $kelurahan ?? $state;
+                })
                 ->rules(['required', 'max:255']),
-            //            ImportColumn::make('status_verifikasi')
-            //                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
-            //                    $record->status_verifikasi = StatusVerifikasiEnum::UNVERIFIED;
-            //                })
-            //                ->ignoreBlankState()
-            //                ->rules(['max:255']),
-            //            ImportColumn::make('status_aktif')
-            //                ->boolean()
-            //                ->ignoreBlankState()
-            //                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
-            //                    $record->status_aktif = StatusAktif::AKTIF;
-            //                })
-            //                ->rules(['boolean']),
-            //            ImportColumn::make('status_rastra')
-            //                ->ignoreBlankState()
-            //                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
-            //                    $record->status_rastra = StatusRastra::BARU;
-            //                })
-            //                ->rules(['integer']),
+            ImportColumn::make('status_verifikasi')
+                ->guess(['STATUS VERIFIKASI', 'VERIFIKASI'])
+                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+                    $record->status_verifikasi = match ($state) {
+                        'TERVERIFIKASI', 'default' => StatusVerifikasiEnum::VERIFIED,
+                        'BELUM DIVERIFIKASI' => StatusVerifikasiEnum::UNVERIFIED,
+                        'SEDANG DITINJAU' => StatusVerifikasiEnum::REVIEW,
+                    };
+                })
+                ->ignoreBlankState(),
             ImportColumn::make('status_dtks')
                 ->ignoreBlankState()
                 ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
@@ -83,16 +85,9 @@ class BantuanRastraImporter extends Importer
 
     public function resolveRecord(): ?BantuanRastra
     {
-        // return BantuanRastra::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
         if ($this->options['updateExisting'] ?? false) {
             return BantuanRastra::firstOrNew([
-                'nokk' => $this->data['nokk'],
                 'nik' => $this->data['nik'],
-                'nama_lengkap' => $this->data['nama_lengkap'],
             ]);
         }
 

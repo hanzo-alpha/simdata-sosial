@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Events\ImportFailed;
 
-final class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
+class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
     public function registerEvents(): array
     {
@@ -51,11 +51,11 @@ final class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, W
 
     public function batchSize(): int
     {
-        return 3000;
+        return 1000;
     }
 
     public function chunkSize(): int
     {
-        return 3000;
+        return 1000;
     }
 }

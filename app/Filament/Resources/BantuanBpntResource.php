@@ -167,6 +167,7 @@ class BantuanBpntResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll()
             ->deferLoading()
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')

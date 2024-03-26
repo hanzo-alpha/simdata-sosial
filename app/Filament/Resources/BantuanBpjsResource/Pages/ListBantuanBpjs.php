@@ -9,6 +9,7 @@ use App\Filament\Resources\BantuanBpjsResource;
 use App\Filament\Widgets\BantuanBpjsOverview;
 use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -18,8 +19,10 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
-final class ListBantuanBpjs extends ListRecords
+class ListBantuanBpjs extends ListRecords
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanBpjsResource::class;
 
     protected function getHeaderWidgets(): array
@@ -83,6 +86,7 @@ final class ListBantuanBpjs extends ListRecords
                 ->modalWidth('md'),
 
             Actions\CreateAction::make()
+                ->disabled($this->enableInputLimitDate())
                 ->icon('heroicon-o-plus'),
         ];
     }

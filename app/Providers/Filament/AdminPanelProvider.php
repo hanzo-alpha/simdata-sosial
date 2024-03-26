@@ -88,8 +88,8 @@ class AdminPanelProvider extends PanelProvider
                 FilamentApexChartsPlugin::make(),
                 FilamentSettingsPlugin::make()
                     ->pages([
-                        Settings::class
-                    ])
+                        Settings::class,
+                    ]),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -98,7 +98,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logos/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
             ->darkModeBrandLogo(asset('images/logos/logo-white.png'))
-            ->darkMode(config('custom.app.dark_mode', true))
+            ->darkMode(setting('app.darkmode'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->font(config('custom.app.font', 'Inter'))

@@ -61,6 +61,8 @@ class BantuanRastraResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll()
+            ->deferLoading()
             ->columns([
                 //                CuratorColumn::make('beritaAcara')
                 //                    ->size(60),
@@ -113,23 +115,23 @@ class BantuanRastraResource extends Resource
                     ->options(list_tahun())
                     ->attribute('tahun')
                     ->searchable(),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ])
             ->hiddenFilterIndicators()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
-                ]),
                 Tables\Actions\Action::make('cetak')
                     ->label('Cetak BA')
                     ->color('success')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
                     ->openUrlInNewTab(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -142,62 +144,6 @@ class BantuanRastraResource extends Resource
                         ]),
                 ]),
             ]);
-    }
-
-    public static function getGridTableColumns(): array
-    {
-        return [
-            Tables\Columns\TextColumn::make('nama_lengkap')
-                ->label('Nama Lengkap')
-                ->description(fn($record) => $record->nik)
-                ->sortable()
-                ->searchable(),
-            Tables\Columns\TextColumn::make('nik')
-                ->label('N I K')
-                ->alignCenter()
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->sortable(),
-        ];
-    }
-
-    public static function getTableColumns(): array
-    {
-        return [
-            Tables\Columns\TextColumn::make('nama_lengkap')
-                ->label('Nama Lengkap')
-                ->description(fn($record) => $record->nik)
-                ->sortable()
-                ->searchable(),
-            Tables\Columns\TextColumn::make('nik')
-                ->label('N I K')
-                ->alignCenter()
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->sortable(),
-            Tables\Columns\TextColumn::make('nokk')
-                ->label('No. KK')
-                ->alignCenter()
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('alamat_lengkap')
-                ->label('Alamat')
-                ->sortable()
-                ->wrap()
-                ->searchable(),
-            Tables\Columns\TextColumn::make('status_rastra')
-                ->alignCenter()
-                ->searchable()
-                ->sortable()
-                ->label('Status Rastra')
-                ->badge(),
-            Tables\Columns\TextColumn::make('status_verifikasi')
-                ->alignCenter()
-                ->searchable()
-                ->sortable()
-                ->label('Status Verifikasi')
-                ->badge(),
-        ];
     }
 
     public static function infolist(Infolist $infolist): Infolist
