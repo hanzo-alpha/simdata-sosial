@@ -46,22 +46,23 @@
                     <td>{{ Str::upper($model->bantuan_rastra->kec->name) }}</td>
                 </tr>
                 <tr class="pb-0">
-                    <th width="20%" style="text-align: right">DTKS ID</th>
+                    <th width="20%" style="text-align: right">STATUS DTKS</th>
                     <th width="10%" style="text-align: right">:</th>
-                    <td>{{ Str::upper($model->bantuan_rastra->dtks_id) }}</td>
+                    <td>{{ $model->bantuan_rastra->status_dtks->getLabel() }}</td>
                 </tr>
                 </tbody>
             </table>
 
-            <div class="text-center">
+            <div class="text-center" style="padding-top: 20px">
                 @if($model->count() > 0)
                     @forelse($model->foto_penyerahan as $foto)
-                        <div style="width: 350px; height: 280px;padding: 5px;margin-bottom: 5px" class="img-border">
+                        <div style="width: 400px; height: 500px;padding: 5px;margin-bottom: 5px;margin-top: 10px"
+                             class="img-border">
                             <img style="width: 300px"
                                  src="{{ asset('storage/' . $foto) }}"
                                  alt="foto"/>
                             <div class="m-0" style="font-size: 10px;">
-                                <p style="margin-top: 10px;">Penyaluran pada titik koordinat indonesia
+                                <p style="margin-top: 30px;">Penyaluran pada titik koordinat indonesia
                                     : {{ $model->lat }}</p>
                                 <p>{{ $model->lng . ', ' . $model->bantuan_rastra->kel->name . ' KEC. ' .
                         $model->bantuan_rastra->kec->name . ' KAB. SOPPENG, '}} </p>
