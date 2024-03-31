@@ -69,6 +69,8 @@ final class PesertaBpjsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferLoading()
+            ->poll()
             ->columns([
                 Tables\Columns\TextColumn::make('nomor_kartu')
                     ->label('Nomor Kartu')

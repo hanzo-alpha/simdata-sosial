@@ -135,7 +135,7 @@ class BantuanRastra extends Model
                                     'app.kodekab',
                                     config('custom.default.kodekab')
                                 ));
-                            if ( ! $kab) {
+                            if (!$kab) {
                                 return Kecamatan::where('kabupaten_code', setting(
                                     'app.kodekab',
                                     config('custom.default.kodekab')
@@ -257,7 +257,7 @@ class BantuanRastra extends Model
                     fn(
                         TemporaryUploadedFile $file
                     ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
+                        ->prepend(date('d-m-Y-H-i-s').'-'),
                 )
                 ->preserveFilenames()
                 ->reorderable()
@@ -301,4 +301,13 @@ class BantuanRastra extends Model
     {
         return $this->belongsTo(PenggantiRastra::class);
     }
+
+    //    protected static function booted(): void
+    //    {
+    //        static::addGlobalScope('instansi', static function (Builder $query): void {
+    //            if (auth()->check()) {
+    //                $query->where('instansi_id', auth()->user()->instansi_id);
+    //            }
+    //        });
+    //    }
 }

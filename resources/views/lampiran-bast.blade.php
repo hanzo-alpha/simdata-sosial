@@ -14,99 +14,57 @@
                 <span style="font-style: italic" class="mt-1">Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com</span>
             </p>
             <hr>
+        </div>
+        <p style="font-size: 12px;">Pada hari ini {{ now()->dayName }}
+            Tanggal {{ now()->day }} {{ now()->monthName }} {{ now()->year }}
+            Bertempat di Desa Citta Dilakukan serah terima barang Bantuan Sosial Pangan Beras Sejahtera
+        </p>
+        <div class="text-center">
             <p style="font-size: 12px;">
                 <span style="text-decoration-line: underline ">
                     <strong>{{ Str::upper('Berita Acara Serah Terima Barang') }}</strong>
                 </span><br>
                 <span>Nomor : {{ Helpers::generateNoSuratBeritaAcara() }}</span>
             </p>
-        </div><br><br><br>
-        <p style="font-size: 12px;">Pada hari ini {{ now()->dayName }}
-            Tanggal {{ now()->day }} {{ now()->monthName }} {{ now()->year }}
-            Bertempat di Desa Citta Dilakukan serah terima barang Bantuan Sosial Pangan Beras Sejahtera
-        </p>
+        </div>
         <p style="font-size: 12px;">
             Yang bertanda tangan dibawah ini :
         </p>
         <table class="table">
             <tbody>
             <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Nama</th>
-                <th width="10%" style="text-align: right">:</th>
-                <td width="87%" style="text-align: left">IRFAN SANJAYA, S.STP, M.Si</td>
+                <th width="5%" style="text-align: left">1</th>
+                <th width="20%" style="text-align: left">NAMA</th>
+                <th width="10%" style="text-align: left">:</th>
+                <td width="87%" style="text-align: left">RUDI</td>
             </tr>
             <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">NIP</th>
-                <th width="10%" style="text-align: right">:</th>
-                <td>19840118 200212 1 001</td>
-            </tr>
-            <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Jabatan</th>
-                <th width="10%" style="text-align: right">:</th>
-                <td>KEPALA BIDANG PERLINDUNGAN DAN JAMINAN SOSIAL</td>
-            </tr>
-            <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Instansi</th>
-                <th width="10%" style="text-align: right">:</th>
-                <td>DINAS SOSIAL KAB. SOPPENG</td>
-            </tr>
-            <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <td colspan="4">Selanjutnya disebut <b>PIHAK PERTAMA</b></td>
-            </tr>
-            <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Nama</th>
-                <th width="10%" style="text-align: right">:</th>
-                <td width="87%" style="text-align: left">{{ $record->nama_lengkap ??
-                $record->bantuan_rastra->nama_lengkap }}</td>
-            </tr>
-            <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">NIP</th>
+                <th width="20%" style="text-align: right">NIK</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td>7312033112710111</td>
             </tr>
             <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Jabatan</th>
+                <th width="20%" style="text-align: right">ALAMAT</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td>LOMPULLE RT 01 RW 04</td>
             </tr>
             <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Instansi</th>
+                <th width="20%" style="text-align: right">DESA/KEL</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td>KEBO</td>
             </tr>
             <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Kecamatan</th>
+                <th width="20%" style="text-align: right">KECAMATAN</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>KEC. LALABATA</td>
+                <td>LILIRILAU</td>
             </tr>
             <tr class="pb-0">
-                <th width="5%" style="text-align: left"></th>
-                <td colspan="4">Selanjutnya disebut <b>PIHAK KEDUA</b></td>
+                <th width="20%" style="text-align: right">DTKS ID</th>
+                <th width="10%" style="text-align: right">:</th>
+                <td>817BB1FF-E6A7-4C11-BBDA-80255EB88359</td>
             </tr>
-
             </tbody>
         </table>
-        <p>
-            Untuk kewenangan masing masing dengan ini Para Pihak menyatakan dengan sebenarnya bahwa :
-        </p>
-        <p>
-            a. <b>PIHAK PERTAMA</b> menyerahkan Barang Bantuan Sosial Pangan Beras Sejahtera Tahun 2023
-            kepada <b>PIHAK KEDUA</b> sebagaimana <b>PIHAK KEDUA</b> menerima Barang dari <b>PIHAK PERTAMA</b>
-        </p><br>
-        <p>
-            b. Jenis, spesifikasi, kuantitas, satuan, harga satuan dan total harga barang / jasa yang diserahterimakan
-            sebagai berikut :
-        </p><br><br><br>
 
         <table class="table table-items">
             <thead>
@@ -158,7 +116,7 @@
         <p>
             Demikian Berita Acara Penyerahan Hasil Pekerjaan ini dibuat dalam rangkap secukupnya untuk dipergunakan
             sebagiamana mestinya.
-        </p><br>
+        </p>
 
         <table class="table">
             <tbody>
@@ -167,51 +125,55 @@
                 <td class="text-center">
                     Citta, {{ now()->dayName }}, {{ now()->day }} {{ now()->monthName }} {{ now()->year }}
                 </td>
-                <br>
             </tr>
             <tr>
                 <td class="text-center">
-                    <b>PIHAK PERTAMA</b>
+                    Disetujui Oleh
                 </td>
                 <td class="text-center">
-                    <b>PIHAK KEDUA</b>
+                    Mengetahui
                 </td>
             </tr>
             <tr>
-                <td class="text-center" style="text-decoration: underline">
+                <td class="text-center">
+                    Kepala Desa Citta
+                </td>
+                <td class="text-center">
+                    Kepala Dinas
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
                     <br><br><br>
-                    <b>IRFAN SANJAYA, S.STP, M.Si</b>
+                    <b>RUDI, S. Pd</b>
                 </td>
-                <td class="text-center" style="text-decoration: underline">
+                <td class="text-center">
                     <br><br><br>
                     <b>RUDI, S. Pd</b>
                 </td>
             </tr>
             <tr>
                 <td class="text-center">
-                    Nip. 19840118 200212 1 001
+                    NIP. 7312033112710111
                 </td>
                 <td class="text-center">
-                    Nip. 7312033112710111
+                    NIP. 7312033112710111
                 </td>
             </tr>
 
             </tbody>
         </table>
         <p class="text-center">
-            <b>MENGETAHUI</b>
+            <b>Mengetahui</b>
         </p>
         <p class="text-center">
-            <b>KEPALA DINAS SOSIAL</b>
-        </p><br><br><br>
-        <p class="text-center">
-            <b>Nama Kepala Dinas</b>
+            <b>Kepala Desa Citta</b>
         </p>
         <p class="text-center">
-            Pangkat. Pembina Utama Muda
+            <b>RUDI, S. Pd</b>
         </p>
         <p class="text-center">
-            Nip. 7312033112710111
+            NIP. 7312033112710111
         </p>
 
     @endsection

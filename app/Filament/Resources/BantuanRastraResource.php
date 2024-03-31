@@ -8,6 +8,7 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
+use App\Models\Kelurahan;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -23,6 +24,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class BantuanRastraResource extends Resource
@@ -35,28 +37,6 @@ class BantuanRastraResource extends Resource
     protected static ?string $pluralLabel = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 4;
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Group::make()->schema([
-                    Section::make('Data Keluarga')
-                        ->schema(BantuanRastra::getKeluargaForm())->columns(2),
-                    Section::make('Data Alamat')
-                        ->schema(BantuanRastra::getAlamatForm())->columns(2),
-                ])->columnSpan(['lg' => 2]),
-
-                Forms\Components\Group::make()->schema([
-                    Section::make('Status')
-                        ->schema(BantuanRastra::getStatusForm()),
-
-                    Forms\Components\Section::make('Verifikasi')
-                        ->schema(BantuanRastra::getUploadForm())
-                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
-                ])->columnSpan(1),
-            ])->columns(3);
-    }
 
     public static function table(Table $table): Table
     {
@@ -124,7 +104,41 @@ class BantuanRastraResource extends Resource
                     ->label('Cetak BA')
                     ->color('success')
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
+                    ->url(fn(Model $record, array $data) => route('pdf.ba',
+                        ['id' => $record, 'm' => self::$model, 'd' => $data]))
+                    ->form([
+                        Section::make()
+                            ->schema([
+                                Forms\Components\DatePicker::make('tanggal')
+                                    ->label('Tanggal')
+                                    ->default(today())
+                                    ->required(),
+                                Forms\Components\TextInput::make('kuantitas')
+                                    ->label('Kuantitas')
+                                    ->required(),
+                                Forms\Components\TextInput::make('satuan')
+                                    ->label('Satuan')
+                                    ->required(),
+                                Forms\Components\TextInput::make('nominal')
+                                    ->label('Nominal')
+                                    ->required(),
+                                Forms\Components\Select::make('kelurahan')
+                                    ->label('Desa/Kelurahan')
+                                    ->options(fn(): Collection => Kelurahan::whereIn(
+                                        'kecamatan_code',
+                                        [
+                                            '731201', '731202', '731203', '731204', '731204', '731205', '731206',
+                                            '731207', '731208'
+                                        ]
+                                    )->pluck('name', 'code'))
+                                    ->searchable()
+                                    ->lazy()
+
+                            ])->columns(2),
+                    ])
+//                    ->action(function (array $data, $record): void {
+//                        redirect()->route('pdf.ba', ['id' => $record, 'm' => self::$model, 'd' => $data]);
+//                    })
                     ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -144,6 +158,28 @@ class BantuanRastraResource extends Resource
                         ]),
                 ]),
             ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Group::make()->schema([
+                    Section::make('Data Keluarga')
+                        ->schema(BantuanRastra::getKeluargaForm())->columns(2),
+                    Section::make('Data Alamat')
+                        ->schema(BantuanRastra::getAlamatForm())->columns(2),
+                ])->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()->schema([
+                    Section::make('Status')
+                        ->schema(BantuanRastra::getStatusForm()),
+
+                    Forms\Components\Section::make('Verifikasi')
+                        ->schema(BantuanRastra::getUploadForm())
+                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -194,7 +230,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
+                                ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 

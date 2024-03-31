@@ -56,8 +56,10 @@ class PdfController extends Controller
 
     public function downloadBeritaAcara(Request $request): Response
     {
-        $model = $request->get('m')::find($request->get('id'));
-        $pdf = PDF::loadView('ba', compact('model'));
+        //        dd($request->all());
+        $data = $request->has('d') ? $request->get('d') : [];
+        $record = $request->get('m')::find($request->get('id'));
+        $pdf = PDF::loadView('ba', compact('record', 'data'));
         $pdf->setOption([
             'dpi' => 120,
             'defaultFont' => 'sans-serif',

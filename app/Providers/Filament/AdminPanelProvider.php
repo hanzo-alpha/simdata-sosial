@@ -98,7 +98,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logos/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
             ->darkModeBrandLogo(asset('images/logos/logo-white.png'))
-            ->darkMode(setting('app.darkmode'))
+//            ->darkMode(setting('app.darkmode'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->font(config('custom.app.font', 'Inter'))

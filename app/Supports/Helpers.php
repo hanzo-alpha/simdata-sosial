@@ -12,7 +12,7 @@ use App\Models\Store;
 use Illuminate\Support\Str;
 use Spatie\Valuestore\Valuestore;
 
-final class Helpers
+class Helpers
 {
     public static function generateNoSuratBeritaAcara($sep = '/'): string
     {
@@ -24,7 +24,7 @@ final class Helpers
         $max = BantuanRastra::max('id') + 1;
         $kodeAset = Str::padLeft($max, 2, $pad);
 
-        return $kodeAset . $sep . $text . $sep . $bulan . $sep . $tahun;
+        return $kodeAset.$sep.$text.$sep.$bulan.$sep.$tahun;
     }
 
     public static function hitungNilaiResidu($nilai, $tahun = 5): float|int
@@ -47,7 +47,12 @@ final class Helpers
         $suffix = now()->year;
         $bulan = now()->month;
 
-        return $prefix . $separator . $suffix . $bulan . $max . $kodeToko;
+        return $prefix.$separator.$suffix.$bulan.$max.$kodeToko;
+    }
+
+    public static function setting(): Valuestore
+    {
+        return Valuestore::make(storage_path('app/settings.json'));
     }
 
     public static function generateKodeSistem(): string
@@ -65,16 +70,16 @@ final class Helpers
         $assetId = ActiveAsset::max('id') + 1;
         $lokasi = Location::max('id') + 1;
 
-        return 'SKU-' . $storeId . $merkId . $assetId . $lokasi . $kodeAset;
+        return 'SKU-'.$storeId.$merkId.$assetId.$lokasi.$kodeAset;
     }
 
     public static function toPersen($jumlah, $total): int|string
     {
-        if ( ! isset($jumlah, $total)) {
+        if (!isset($jumlah, $total)) {
             return 0;
         }
 
-        if ( ! is_float($jumlah) || ! is_float($total)) {
+        if (!is_float($jumlah) || !is_float($total)) {
             $jumlah = (float) $jumlah;
             $total = (float) $total;
         }
@@ -84,13 +89,8 @@ final class Helpers
             $round = 100;
         }
 
-        return $round . '%';
+        return $round.'%';
 
-    }
-
-    public static function setting(): Valuestore
-    {
-        return Valuestore::make(storage_path('app/settings.json'));
     }
 
     public static function switchIcon($id): string
@@ -109,7 +109,7 @@ final class Helpers
     {
         $modelNamespace = 'App\\Models\\';
 
-        return app($modelNamespace . $model);
+        return app($modelNamespace.$model);
     }
 
     public static function switchBadge($id): string
@@ -127,10 +127,10 @@ final class Helpers
     public static function formatIndonesia($nilai, $koma = false): string
     {
         if ($koma) {
-            return 'Rp. ' . number_format($nilai, 2, ',', '.');
+            return 'Rp. '.number_format($nilai, 2, ',', '.');
         }
 
-        return 'Rp. ' . number_format($nilai, 0, ',', '.');
+        return 'Rp. '.number_format($nilai, 0, ',', '.');
     }
 
     public static function formatAngka($angka, $emptyVal = '0')

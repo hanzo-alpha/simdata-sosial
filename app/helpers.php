@@ -2,14 +2,14 @@
 
 use Carbon\Carbon;
 
-if ( ! function_exists('date_format')) {
+if (!function_exists('date_format')) {
     function date_format($date, $format): string
     {
         return Carbon::createFromFormat('Y-m-d', $date)->format($format);
     }
 }
 
-if ( ! function_exists('cek_batas_input')) {
+if (!function_exists('cek_batas_input')) {
     function cek_batas_input($date): bool
     {
         $date = $date instanceof Carbon ? $date : Carbon::parse($date)->format('Y-m-d');
@@ -18,7 +18,7 @@ if ( ! function_exists('cek_batas_input')) {
     }
 }
 
-if ( ! function_exists('hitung_umur')) {
+if (!function_exists('hitung_umur')) {
     function hitung_umur($date, $format = false): string
     {
         $date = $date instanceof Carbon ? $date->format('Y-m-d') : Carbon::parse($date)->format('Y-m-d');
@@ -33,7 +33,7 @@ if ( ! function_exists('hitung_umur')) {
     }
 }
 
-if ( ! function_exists('list_tahun')) {
+if (!function_exists('list_tahun')) {
     function list_tahun(): array
     {
         $year_range = range(date('Y'), date('Y') - 3);
@@ -42,7 +42,7 @@ if ( ! function_exists('list_tahun')) {
     }
 }
 
-if ( ! function_exists('bulan_to_integer')) {
+if (!function_exists('bulan_to_integer')) {
     function bulan_to_integer($bulan, $short = false): ?string
     {
         $bulan = Str::upper($bulan);
@@ -83,7 +83,7 @@ if ( ! function_exists('bulan_to_integer')) {
     }
 }
 
-if ( ! function_exists('bulan_to_string')) {
+if (!function_exists('bulan_to_string')) {
     function bulan_to_string(int|string $bulan, $short = false): string
     {
         $bulan = is_int($bulan) ? $bulan : (int) $bulan;
@@ -121,46 +121,7 @@ if ( ! function_exists('bulan_to_string')) {
         };
     }
 
-    if ( ! function_exists('bulan_to_string')) {
-        function bulan_to_string(int|string $bulan, $short = false): string
-        {
-            $bulan = is_int($bulan) ? $bulan : (int) $bulan;
-
-            if ($short) {
-                return match ($bulan) {
-                    1 => 'JAN',
-                    2 => 'FEB',
-                    3 => 'MAR',
-                    4 => 'APR',
-                    5 => 'MEI',
-                    6 => 'JUN',
-                    7 => 'JUL',
-                    8 => 'AGS',
-                    9 => 'SEP',
-                    10 => 'OKT',
-                    11 => 'NOV',
-                    12 => 'DES'
-                };
-            }
-
-            return match ($bulan) {
-                1 => 'JANUARI',
-                2 => 'FEBRUARI',
-                3 => 'MARET',
-                4 => 'APRIL',
-                5 => 'MEI',
-                6 => 'JUNI',
-                7 => 'JULI',
-                8 => 'AGUSTUS',
-                9 => 'SEPTEMBER',
-                10 => 'OKTOBER',
-                11 => 'NOVEMBER',
-                12 => 'DESEMBER'
-            };
-        }
-    }
-
-    if ( ! function_exists('convertToRoman')) {
+    if (!function_exists('convertToRoman')) {
         function convertToRoman($integer): string
         {
             // Convert the integer into an integer (just to make sure)
