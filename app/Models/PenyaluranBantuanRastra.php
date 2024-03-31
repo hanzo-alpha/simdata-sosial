@@ -22,6 +22,10 @@ class PenyaluranBantuanRastra extends Model
         'status_penyaluran' => StatusPenyaluran::class,
     ];
 
+    protected $with = [
+        'bantuan_rastra',
+    ];
+
     protected $appends = [
         'location',
     ];
