@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusAktif;
 use App\Enums\StatusPenyaluran;
 use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
@@ -15,6 +16,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -39,7 +41,9 @@ class PenyaluranBantuanRastraResource extends Resource
                         Forms\Components\Select::make('bantuan_rastra_id')
                             ->label('Nama KPM')
                             ->required()
-                            ->relationship('bantuan_rastra', 'nama_lengkap')
+                            ->relationship('bantuan_rastra', 'nama_lengkap', modifyQueryUsing: fn(
+                                Builder $query
+                            ) => $query->where('status_aktif', '=', StatusAktif::AKTIF))
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
@@ -143,7 +147,7 @@ class PenyaluranBantuanRastraResource extends Resource
                                 fn(
                                     TemporaryUploadedFile $file
                                 ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
+                                    ->prepend(date('YmdHis').'-'),
                             )
                             ->preserveFilenames()
                             ->multiple()
@@ -171,6 +175,13 @@ class PenyaluranBantuanRastraResource extends Resource
 
             ])->columns(3);
     }
+
+    //    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    //    {
+    //        return parent::getEloquentQuery()->whereHas('bantuan_rastra', function ($builder) {
+    //            $builder->where('status_aktif', '=', StatusAktif::AKTIF);
+    //        });
+    //    }
 
     public static function table(Table $table): Table
     {

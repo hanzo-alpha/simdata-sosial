@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusAktif;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
@@ -16,6 +17,7 @@ use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -79,6 +81,35 @@ class BantuanRastraResource extends Resource
                     ->sortable()
                     ->label('Status Verifikasi')
                     ->badge(),
+                Tables\Columns\TextColumn::make('status_aktif')
+                    ->alignCenter()
+                    ->label('Status Aktif')
+                    ->sortable()
+                    ->badge()
+                //                Tables\Columns\ToggleColumn::make('status_aktif')
+                //                    ->label('Status Aktif')
+                //                    ->afterStateUpdated(function ($record, $state): void {
+                //                        if (!auth()->user()?->hasRole(['super_admin', 'admin'])) {
+                //                            abort(403);
+                //                        }
+                //                        $record->status_aktif = match ($state) {
+                //                            true => StatusAktif::AKTIF,
+                //                            false => StatusAktif::NONAKTIF
+                //                        };
+                //                        if ($record->save()) {
+                //                            Notification::make()
+                //                                ->success()
+                //                                ->title('Update Status Aktif berhasil')
+                //                                ->send();
+                //                        } else {
+                //                            Notification::make()
+                //                                ->danger()
+                //                                ->title('Update Status Aktif gagal;')
+                //                                ->send();
+                //                        }
+                //                    })
+                //                    ->alignCenter()
+                //                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -104,8 +135,10 @@ class BantuanRastraResource extends Resource
                     ->label('Cetak BA')
                     ->color('success')
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Model $record, array $data) => route('pdf.ba',
-                        ['id' => $record, 'm' => self::$model, 'd' => $data]))
+                    ->url(fn(Model $record, array $data) => route(
+                        'pdf.ba',
+                        ['id' => $record, 'm' => self::$model, 'd' => $data]
+                    ))
                     ->form([
                         Section::make()
                             ->schema([
@@ -145,6 +178,32 @@ class BantuanRastraResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
+                    Tables\Actions\Action::make('Ubah Status Aktif')
+                        ->icon('heroicon-o-clipboard-document-list')
+                        ->action(function ($record): void {
+                            //                            if (StatusAktif::AKTIF === $record->status_aktif) {
+                            //                                $record->status_aktif = StatusAktif::NONAKTIF;
+                            //                            } else {
+                            //                                $record->status_aktif = StatusAktif::AKTIF;
+                            //                            }
+
+                            $record->status_aktif = match ($record->status_aktif) {
+                                StatusAktif::AKTIF => StatusAktif::NONAKTIF,
+                                StatusAktif::NONAKTIF => StatusAktif::AKTIF
+                            };
+                            if ($record->save()) {
+                                Notification::make()
+                                    ->success()
+                                    ->title('Berhasil merubah status usulan peserta')
+                                    ->send();
+                            } else {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Berhasil merubah status usulan peserta')
+                                    ->send();
+                            }
+                        })
+                        ->close()
                 ])
             ])
             ->bulkActions([
@@ -156,6 +215,27 @@ class BantuanRastraResource extends Resource
                         ->exports([
                             ExportBantuanRastra::make(),
                         ]),
+                    Tables\Actions\BulkAction::make('Ubah Status Aktif')
+                        ->label('Ubah Status Aktif')
+                        ->icon('heroicon-o-cursor-arrow-ripple')
+                        ->action(function ($records): void {
+                            $records->each(function ($records): void {
+                                $records->status_aktif = match ($records->status_aktif) {
+                                    StatusAktif::AKTIF => StatusAktif::NONAKTIF,
+                                    StatusAktif::NONAKTIF => StatusAktif::AKTIF
+                                };
+
+                                $records->save();
+                            });
+                        })
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Berhasil merubah status usulan peserta')
+                                ->send();
+                        })
+                        ->closeModalByClickingAway()
+                        ->deselectRecordsAfterCompletion()
                 ]),
             ]);
     }
@@ -189,10 +269,9 @@ class BantuanRastraResource extends Resource
                 \Filament\Infolists\Components\Group::make([
                     \Filament\Infolists\Components\Section::make('Informasi Keluarga')
                         ->schema([
-                            TextEntry::make('dtks_id')
-                                ->label('DTKS ID')
+                            TextEntry::make('status_dtks')
+                                ->label('Status DTKS')
                                 ->weight(FontWeight::SemiBold)
-                                ->copyable()
                                 ->icon('heroicon-o-identification')
                                 ->color('primary'),
                             TextEntry::make('nokk')
@@ -243,8 +322,11 @@ class BantuanRastraResource extends Resource
                             TextEntry::make('status_rastra')
                                 ->label('Status Rastra')
                                 ->badge(),
+                            TextEntry::make('status_aktif')
+                                ->label('Status Aktif')
+                                ->badge(),
                         ])
-                        ->columns(2),
+                        ->columns(3),
                     \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
                         ->schema([
                             ImageEntry::make('foto_ktp_kk')
