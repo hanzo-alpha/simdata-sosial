@@ -19,6 +19,7 @@
         "bezhansalleh/filament-shield": "^3.0",
         "cheesegrits/filament-google-maps": "^3.0",
         "coolsam/flatpickr": "^3.0",
+        "coolsam/signature-pad": "^2.0@beta",
         "croustibat/filament-jobs-monitor": "^2.1",
         "eightynine/filament-reports": "^3.0",
         "filament/filament": "^3.0",

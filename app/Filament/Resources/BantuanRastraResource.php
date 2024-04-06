@@ -181,12 +181,6 @@ class BantuanRastraResource extends Resource
                     Tables\Actions\Action::make('Ubah Status Aktif')
                         ->icon('heroicon-o-clipboard-document-list')
                         ->action(function ($record): void {
-                            //                            if (StatusAktif::AKTIF === $record->status_aktif) {
-                            //                                $record->status_aktif = StatusAktif::NONAKTIF;
-                            //                            } else {
-                            //                                $record->status_aktif = StatusAktif::AKTIF;
-                            //                            }
-
                             $record->status_aktif = match ($record->status_aktif) {
                                 StatusAktif::AKTIF => StatusAktif::NONAKTIF,
                                 StatusAktif::NONAKTIF => StatusAktif::AKTIF
@@ -215,7 +209,7 @@ class BantuanRastraResource extends Resource
                         ->exports([
                             ExportBantuanRastra::make(),
                         ]),
-                    Tables\Actions\BulkAction::make('Ubah Status Aktif')
+                    Tables\Actions\BulkAction::make('ubah status')
                         ->label('Ubah Status Aktif')
                         ->icon('heroicon-o-cursor-arrow-ripple')
                         ->action(function ($records): void {
@@ -375,8 +369,15 @@ class BantuanRastraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        if (1 === auth()->user()->id && auth()->user()->hasRole(['super_admin'])) {
+            parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
         return parent::getEloquentQuery()
-//            ->where('status_aktif', '=', StatusAktif::AKTIF)
+            ->where('kelurahan', auth()->user()->instansi_id)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

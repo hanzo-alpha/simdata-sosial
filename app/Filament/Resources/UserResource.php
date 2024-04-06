@@ -48,14 +48,15 @@ class UserResource extends Resource
                     ->required()
                     ->preload()
                     ->searchable(),
-                Forms\Components\Select::make('instansi')
+                Forms\Components\Select::make('instansi_id')
                     ->required()
                     ->unique()
                     ->options(
-                        Kelurahan::whereIn(
-                            'kecamatan_code',
-                            ['731201', '731202', '731203', '731204', '731205', '731206', '731207', '731208']
-                        )
+                        Kelurahan::query()
+                            ->whereIn(
+                                'kecamatan_code',
+                                ['731201', '731202', '731203', '731204', '731205', '731206', '731207', '731208']
+                            )
                             ->pluck('name', 'code')
                     )
                     ->searchable()

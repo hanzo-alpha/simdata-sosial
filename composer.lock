@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10149127cc2e55aad6aa7cd10726d8ba",
+    "content-hash": "416aeec3f44df014c8c2bda122f3c117",
     "packages": [
         {
             "name": "akaunting/laravel-apexcharts",
@@ -1313,6 +1313,87 @@
                 "source": "https://github.com/savannabits/filament-flatpickr/tree/v3.1.0"
             },
             "time": "2024-03-21T12:14:34+00:00"
+        },
+        {
+            "name": "coolsam/signature-pad",
+            "version": "v2.0.0-beta.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/savannabits/filament-signature-pad.git",
+                "reference": "9682250d4fdcbeffba6347e6d2a80afab7475d51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/savannabits/filament-signature-pad/zipball/9682250d4fdcbeffba6347e6d2a80afab7475d51",
+                "reference": "9682250d4fdcbeffba6347e6d2a80afab7475d51",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0",
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "filament/filament": "^3.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Coolsam\\SignaturePad\\SignaturePadServiceProvider"
+                    ],
+                    "aliases": {
+                        "SignaturePad": "Coolsam\\SignaturePad\\Facades\\SignaturePad"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Coolsam\\SignaturePad\\": "src/",
+                    "Coolsam\\SignaturePad\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam Maosa",
+                    "email": "smaosa@savannabits.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Signature Pad for FilamentPHP",
+            "homepage": "https://github.com/coolsam/signature-pad",
+            "keywords": [
+                "coolsam",
+                "laravel",
+                "signature-pad"
+            ],
+            "support": {
+                "issues": "https://github.com/coolsam/signature-pad/issues",
+                "source": "https://github.com/coolsam/signature-pad"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/coolsam",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-08-12T09:27:24+00:00"
         },
         {
             "name": "croustibat/filament-jobs-monitor",
