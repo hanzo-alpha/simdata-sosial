@@ -14,7 +14,7 @@ if (!function_exists('cek_batas_input')) {
     {
         $date = $date instanceof Carbon ? $date : Carbon::parse($date)->format('Y-m-d');
 
-        return strtotime($date) >= strtotime(now()->format('Y-m-d'));
+        return strtotime($date) <= strtotime(now()->format('Y-m-d'));
     }
 }
 
