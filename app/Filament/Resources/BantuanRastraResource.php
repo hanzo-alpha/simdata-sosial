@@ -370,7 +370,7 @@ class BantuanRastraResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         if (1 === auth()->user()->id && auth()->user()->hasRole(['super_admin'])) {
-            parent::getEloquentQuery()
+            return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]);
