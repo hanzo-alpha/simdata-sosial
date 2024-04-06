@@ -38,10 +38,13 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
+                    ->revealable()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\Select::make('roles_id')
                     ->relationship('roles', 'name')
@@ -49,8 +52,8 @@ class UserResource extends Resource
                     ->preload()
                     ->searchable(),
                 Forms\Components\Select::make('instansi_id')
-                    ->required()
-                    ->unique()
+                    ->nullable()
+                    ->unique(ignoreRecord: true)
                     ->options(
                         Kelurahan::query()
                             ->whereIn(
