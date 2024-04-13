@@ -283,23 +283,6 @@ class BantuanRastra extends Model
         ];
     }
 
-    protected static function booted(): void
-    {
-        static::deleted(static function (BantuanRastra $bantuanRastra): void {
-            foreach ($bantuanRastra->foto_ktp_kk as $image) {
-                Storage::delete("public/{$image}");
-            }
-        });
-
-        static::updating(static function (BantuanRastra $bantuanRastra): void {
-            $imagesToDelete = array_diff($bantuanRastra->getOriginal('foto_ktp_kk'), $bantuanRastra->foto_ktp_kk);
-
-            foreach ($imagesToDelete as $image) {
-                Storage::delete("public/{$image}");
-            }
-        });
-    }
-
     public function beritaAcara(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'media_id', 'id');
@@ -318,6 +301,23 @@ class BantuanRastra extends Model
     public function pengganti_rastra(): BelongsTo
     {
         return $this->belongsTo(PenggantiRastra::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::deleted(static function (BantuanRastra $bantuanRastra): void {
+            foreach ($bantuanRastra->foto_ktp_kk as $image) {
+                Storage::delete("public/{$image}");
+            }
+        });
+
+        static::updating(static function (BantuanRastra $bantuanRastra): void {
+            $imagesToDelete = array_diff($bantuanRastra->getOriginal('foto_ktp_kk'), $bantuanRastra->foto_ktp_kk);
+
+            foreach ($imagesToDelete as $image) {
+                Storage::delete("public/{$image}");
+            }
+        });
     }
 
     //    protected static function booted(): void
