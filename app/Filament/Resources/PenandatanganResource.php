@@ -86,13 +86,14 @@ class PenandatanganResource extends Resource
     {
         return $table
             ->deferLoading()
+            ->poll()
             ->columns([
                 Tables\Columns\TextColumn::make('kode_instansi')
                     ->label('Instansi')
                     ->sortable()
 //                    ->description(fn($record): string => 'Kec. '.Kecamatan::where('code',
 //                            $record->kode_kecamatan)->first()->name)
-//                    ->formatStateUsing(fn($state): string => Kelurahan::where('code', $state)->first()->name)
+                    ->formatStateUsing(fn($state): string => Kelurahan::where('code', $state)->first()?->name ?? '-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_penandatangan')
                     ->label('Nama Penandatangan')

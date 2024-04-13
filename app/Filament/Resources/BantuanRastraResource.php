@@ -9,7 +9,6 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
-use App\Models\Kelurahan;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -24,9 +23,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Collection;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class BantuanRastraResource extends Resource
@@ -131,48 +128,6 @@ class BantuanRastraResource extends Resource
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
-                Tables\Actions\Action::make('cetak')
-                    ->label('Cetak BA')
-                    ->color('success')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Model $record, array $data) => route(
-                        'pdf.ba',
-                        ['id' => $record, 'm' => self::$model, 'd' => $data]
-                    ))
-                    ->form([
-                        Section::make()
-                            ->schema([
-                                Forms\Components\DatePicker::make('tanggal')
-                                    ->label('Tanggal')
-                                    ->default(today())
-                                    ->required(),
-                                Forms\Components\TextInput::make('kuantitas')
-                                    ->label('Kuantitas')
-                                    ->required(),
-                                Forms\Components\TextInput::make('satuan')
-                                    ->label('Satuan')
-                                    ->required(),
-                                Forms\Components\TextInput::make('nominal')
-                                    ->label('Nominal')
-                                    ->required(),
-                                Forms\Components\Select::make('kelurahan')
-                                    ->label('Desa/Kelurahan')
-                                    ->options(fn(): Collection => Kelurahan::whereIn(
-                                        'kecamatan_code',
-                                        [
-                                            '731201', '731202', '731203', '731204', '731204', '731205', '731206',
-                                            '731207', '731208'
-                                        ]
-                                    )->pluck('name', 'code'))
-                                    ->searchable()
-                                    ->lazy()
-
-                            ])->columns(2),
-                    ])
-//                    ->action(function (array $data, $record): void {
-//                        redirect()->route('pdf.ba', ['id' => $record, 'm' => self::$model, 'd' => $data]);
-//                    })
-                    ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
@@ -369,7 +324,7 @@ class BantuanRastraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (1 === auth()->user()->id && auth()->user()->hasRole(['super_admin'])) {
+        if (auth()->user()->hasRole(['super_admin'])) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

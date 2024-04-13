@@ -32,6 +32,70 @@ class PenyaluranBantuanRastraResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
+                CuratorColumn::make('beritaAcara')
+                    ->size(60),
+                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
+                    ->label('Nama KPM')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
+                    ->label('No. KK KPM')
+                    ->searchable()
+                    ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('bantuan_rastra.nik')
+                    ->label('NIK KPM')
+                    ->searchable()
+                    ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tgl_penyerahan')
+                    ->label('Penyerahan')
+                    ->dateTime()
+                    ->formatStateUsing(fn($record) => $record->tgl_penyerahan->diffForHumans())
+                    ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('lokasi')
+                    ->label('Alamat')
+                    ->limit(30),
+                Tables\Columns\TextColumn::make('status_penyaluran')
+                    ->label('Status')
+                    ->alignCenter()
+                    ->badge(),
+            ])
+            ->filters([
+
+            ])
+            ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('pdf')
+                        ->label('Cetak Dokumentasi')
+                        ->color('success')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    //    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    //    {
+    //        return parent::getEloquentQuery()->whereHas('bantuan_rastra', function ($builder) {
+    //            $builder->where('status_aktif', '=', StatusAktif::AKTIF);
+    //        });
+    //    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -174,76 +238,6 @@ class PenyaluranBantuanRastraResource extends Resource
                 ])->columnSpan(1),
 
             ])->columns(3);
-    }
-
-    //    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
-    //    {
-    //        return parent::getEloquentQuery()->whereHas('bantuan_rastra', function ($builder) {
-    //            $builder->where('status_aktif', '=', StatusAktif::AKTIF);
-    //        });
-    //    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
-                CuratorColumn::make('beritaAcara')
-                    ->size(60),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
-                    ->label('Nama KPM')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
-                    ->label('No. KK KPM')
-                    ->searchable()
-                    ->alignCenter()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nik')
-                    ->label('NIK KPM')
-                    ->searchable()
-                    ->alignCenter()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tgl_penyerahan')
-                    ->label('Penyerahan')
-                    ->dateTime()
-                    ->formatStateUsing(fn($record) => $record->tgl_penyerahan->diffForHumans())
-                    ->alignCenter()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('lokasi')
-                    ->label('Alamat')
-                    ->limit(30),
-                Tables\Columns\TextColumn::make('status_penyaluran')
-                    ->label('Status')
-                    ->alignCenter()
-                    ->badge(),
-            ])
-            ->filters([
-
-            ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('cetak')
-                        ->label('Cetak Berita Acara')
-                        ->color('info')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
-                        ->openUrlInNewTab(),
-                    Tables\Actions\Action::make('pdf')
-                        ->label('Cetak Dokumentasi')
-                        ->color('success')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
-                        ->openUrlInNewTab(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
     }
 
     public static function getRelations(): array

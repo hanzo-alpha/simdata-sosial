@@ -21,6 +21,13 @@ return [
         'dark_mode' => true,
         'logo_height' => '2rem',
     ],
+    'format_auto' => [
+        'length' => 5,
+        'pad' => '0',
+        'separator' => null,
+        'suffix' => null,
+        'prefix' => 'SKU',
+    ],
     'date' => [
         'display_short' => 'D, d M Y',
         'display_short_fulltime' => 'D, d M Y H:i:s',

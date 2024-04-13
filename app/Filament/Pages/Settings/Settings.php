@@ -59,11 +59,17 @@ class Settings extends BaseSettings
                                 ->onLabel('Aktif')
                                 ->offLabel('Non Aktif'),
                         ])->columns(2),
-                    //                    Tabs\Tab::make('Sistem')
-                    //                        ->schema([
-                    //                            DatePicker::make('app.batas_tgl_input')
-                    //                                ->displayFormat(setting('app.format_tgl')),
-                    //                        ])->columns(2),
+                    Tabs\Tab::make('Persuratan')
+                        ->schema([
+                            TextInput::make('persuratan.nama_kepala_dinas')
+                                ->default('Hansen'),
+                            TextInput::make('persuratan.nip_kepala_dinas')
+                                ->default('Hansen'),
+                            TextInput::make('persuratan.jabatan')
+                                ->default('Hansen'),
+                            TextInput::make('persuratan.pangkat')
+                                ->default('Hansen'),
+                        ])->columns(2),
                 ]),
         ];
     }

@@ -1,4 +1,4 @@
-import preset from '../../../../vendor/filament/filament/tailwind.config.preset'
+import preset from '../../../../vendor/filament/filament/tailwind.config.preset';
 
 export default {
     presets: [preset],
@@ -11,4 +11,4 @@ export default {
         './vendor/awcodes/filament-curator/resources/**/*.blade.php',
         './vendor/andrewdwallo/filament-selectify/resources/views/**/*.blade.php',
     ],
-}
+};

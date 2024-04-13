@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace App\Supports;
 
-use App\Models\ActiveAsset;
 use App\Models\BantuanRastra;
-use App\Models\Brand;
-use App\Models\Location;
-use App\Models\Store;
+use App\Models\barang;
 use Illuminate\Support\Str;
-use Spatie\Valuestore\Valuestore;
 
 class Helpers
 {
@@ -37,40 +33,28 @@ class Helpers
 
     public static function generateNoInvoice($pemisah = null): string
     {
-        $query = Store::query();
-        $length = self::setting()->get('format_kode')['panjang_autonumber'] ?? config('custom.generator_length');
-        $pad = self::setting()->get('format_kode')['pad'] ?? config('custom.pad');
-        $separator = $pemisah ?? self::setting()->get('format_kode')['pemisah'];
+        $query = Barang::query();
+        $length = setting('format.autonumber_length') ?? config('custom.format_auto.length');
+        $pad = setting('format.pad') ?? config('custom.format_auto.pad');
+        $separator = $pemisah ?? setting('format.pemisah', config('custom.format_auto.separator'));
         $max = $query->max('id') + 1;
         $kodeToko = Str::padLeft($max, $length, $pad);
-        $prefix = self::setting()->get('format_kode')['suffix'] ?? 'INV';
+        $prefix = setting('format.prefix') ?? config('custom.format_auto.prefix');
         $suffix = now()->year;
         $bulan = now()->month;
 
         return $prefix.$separator.$suffix.$bulan.$max.$kodeToko;
     }
 
-    public static function setting(): Valuestore
+    public static function generateKodeBarang(): string
     {
-        return Valuestore::make(storage_path('app/settings.json'));
-    }
-
-    public static function generateKodeSistem(): string
-    {
-        $length = self::setting()->get('format_kode')['panjang_autonumber'] ?? config('custom.generator_length');
-        $pad = self::setting()->get('format_kode')['pad'] ?? config('custom.pad');
-        $separator = self::setting()->get('format_kode')['pemisah'] ?? config('custom.separator');
-        $max = ActiveAsset::max('id') + 1;
+        $length = setting('panjang') ?? config('custom.format_auto.length');
+        $pad = setting('pad') ?? config('custom.format_auto.pad');
+        $separator = setting('separator') ?? config('custom.format_auto.separator');
+        $max = Barang::max('id') + 1;
         $kodeAset = Str::padLeft($max, $length, $pad);
-        $prefix = self::setting()->get('format_kode')['suffix'] ?? 'INV';
-        $suffix = now()->year;
 
-        $storeId = Store::max('id') + 1;
-        $merkId = Brand::max('id') + 1;
-        $assetId = ActiveAsset::max('id') + 1;
-        $lokasi = Location::max('id') + 1;
-
-        return 'SKU-'.$storeId.$merkId.$assetId.$lokasi.$kodeAset;
+        return 'SKU'.$separator.$kodeAset;
     }
 
     public static function toPersen($jumlah, $total): int|string

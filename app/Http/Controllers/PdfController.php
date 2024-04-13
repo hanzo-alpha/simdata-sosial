@@ -56,7 +56,6 @@ class PdfController extends Controller
 
     public function downloadBeritaAcara(Request $request): Response
     {
-        //        dd($request->all());
         $data = $request->has('d') ? $request->get('d') : [];
         $record = $request->get('m')::find($request->get('id'));
         $pdf = PDF::loadView('ba', compact('record', 'data'));

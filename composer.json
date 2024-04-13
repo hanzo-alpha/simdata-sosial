@@ -13,7 +13,7 @@
         "andrewdwallo/filament-selectify": "^2.0",
         "awcodes/filament-badgeable-column": "^2.2",
         "awcodes/filament-curator": "^3.4",
-        "awcodes/filament-table-repeater": "^2.0",
+        "awcodes/filament-table-repeater": "^3.0",
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
         "barryvdh/laravel-dompdf": "2.0.1",
         "bezhansalleh/filament-shield": "^3.0",

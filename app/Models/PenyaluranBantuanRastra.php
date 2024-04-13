@@ -62,6 +62,11 @@ class PenyaluranBantuanRastra extends Model
         });
     }
 
+    public function penandatangan(): BelongsTo
+    {
+        return $this->belongsTo(Penandatangan::class);
+    }
+
     public function bantuan_rastra(): BelongsTo
     {
         return $this->belongsTo(BantuanRastra::class);
