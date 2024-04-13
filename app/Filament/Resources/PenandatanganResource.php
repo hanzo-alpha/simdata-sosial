@@ -88,30 +88,53 @@ class PenandatanganResource extends Resource
             ->deferLoading()
             ->poll()
             ->columns([
+                Tables\Columns\TextColumn::make('kode_kecamatan')
+                    ->label('Kecamatan')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+//                    ->description(fn($record): string => 'Kec. '.Kecamatan::where('code',
+//                            $record->kode_kecamatan)->first()->name)
+                    ->formatStateUsing(fn($state): string => Kecamatan::where('code', $state)->first()?->name ?? '-')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kode_instansi')
                     ->label('Instansi')
                     ->sortable()
+                    ->toggleable()
 //                    ->description(fn($record): string => 'Kec. '.Kecamatan::where('code',
 //                            $record->kode_kecamatan)->first()->name)
                     ->formatStateUsing(fn($state): string => Kelurahan::where('code', $state)->first()?->name ?? '-')
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('nip')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nama_penandatangan')
                     ->label('Nama Penandatangan')
                     ->sortable()
+                    ->toggleable()
                     ->searchable(),
                 //                    ->description(fn($record): string => $record->jabatan),
-                Tables\Columns\TextColumn::make('nip')
+                Tables\Columns\TextColumn::make('jabatan')
                     ->sortable()
+                    ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_penandatangan')
                     ->label('Status')
                     ->sortable()
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->alignCenter()
                     ->badge(),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('kode_instansi')
+                    ->options(Kelurahan::whereIn(
+                        'kecamatan_code',
+                        config('custom.kode_kecamatan')
+                    )->pluck('name', 'code'))
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
