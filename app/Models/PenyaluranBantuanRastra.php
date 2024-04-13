@@ -45,23 +45,6 @@ class PenyaluranBantuanRastra extends Model
         return 'location';
     }
 
-    protected static function booted(): void
-    {
-        static::deleted(static function (PenyaluranBantuanRastra $penyaluran): void {
-            foreach ($penyaluran->foto_penyerahan as $image) {
-                Storage::delete("app/public/{$image}");
-            }
-        });
-
-        static::updating(static function (PenyaluranBantuanRastra $penyaluran): void {
-            $imagesToDelete = array_diff($penyaluran->getOriginal('foto_penyerahan'), $penyaluran->foto_penyerahan);
-
-            foreach ($imagesToDelete as $image) {
-                Storage::delete("app/public/{$image}");
-            }
-        });
-    }
-
     public function penandatangan(): BelongsTo
     {
         return $this->belongsTo(Penandatangan::class);
@@ -92,5 +75,22 @@ class PenyaluranBantuanRastra extends Model
             $this->attributes['lng'] = $location['lng'];
             unset($this->attributes['location']);
         }
+    }
+
+    protected static function booted(): void
+    {
+        static::deleted(static function (PenyaluranBantuanRastra $penyaluran): void {
+            foreach ($penyaluran->foto_penyerahan as $image) {
+                Storage::delete("app/public/{$image}");
+            }
+        });
+
+        static::updating(static function (PenyaluranBantuanRastra $penyaluran): void {
+            $imagesToDelete = array_diff($penyaluran->getOriginal('foto_penyerahan'), $penyaluran->foto_penyerahan);
+
+            foreach ($imagesToDelete as $image) {
+                Storage::delete("app/public/{$image}");
+            }
+        });
     }
 }

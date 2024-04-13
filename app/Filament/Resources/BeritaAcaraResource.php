@@ -174,7 +174,7 @@ class BeritaAcaraResource extends Resource
                                     'kabupaten_code',
                                     setting('app.kodekab', config('custom.default.kodekab'))
                                 );
-                                if (!$kab) {
+                                if ( ! $kab) {
                                     return Kecamatan::where(
                                         'kabupaten_code',
                                         setting('app.kodekab', config('custom.default.kodekab'))
@@ -224,7 +224,7 @@ class BeritaAcaraResource extends Resource
                                 name: 'penandatangan',
                                 titleAttribute: 'nama_penandatangan',
                                 modifyQueryUsing: function (Builder $query) {
-                                    if (!auth()->user()->hasRole('super_admin')) {
+                                    if ( ! auth()->user()->hasRole('super_admin')) {
                                         return $query->where('kode_instansi', auth()->user()->instansi_id);
                                     }
                                     return $query->with(['kecamatan', 'kelurahan']);
