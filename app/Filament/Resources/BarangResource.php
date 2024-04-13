@@ -22,6 +22,7 @@ class BarangResource extends Resource
     protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 9;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

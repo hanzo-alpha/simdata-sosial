@@ -9,11 +9,13 @@ use App\Models\BeritaAcara;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Supports\Helpers;
+use Awcodes\Shout\Components\Shout;
 use Awcodes\TableRepeater\Components\TableRepeater;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -105,6 +107,11 @@ class BeritaAcaraResource extends Resource
     {
         return $form
             ->schema([
+                Shout::make('so-important')
+                    ->content('Sebelum mengisi form berita acara, harap mengisi terlebih dahulu penandatangan. Silahkan ke menu Dashboard Bantuan -> Penandatangan')
+                    ->color(Color::Blue)
+                    ->icon('heroicon-o-information-circle')
+                    ->columnSpanFull(),
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Select::make('bantuan_rastra_id')
@@ -299,6 +306,16 @@ class BeritaAcaraResource extends Resource
                     ])
 
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery()
+            ->where('kelurahan', auth()->user()->instansi_id);
     }
 
     public static function getPages(): array
