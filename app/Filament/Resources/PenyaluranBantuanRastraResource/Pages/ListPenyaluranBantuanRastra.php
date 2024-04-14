@@ -10,7 +10,7 @@ use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 
-final class ListPenyaluranBantuanRastra extends ListRecords
+class ListPenyaluranBantuanRastra extends ListRecords
 {
     protected static string $resource = PenyaluranBantuanRastraResource::class;
 

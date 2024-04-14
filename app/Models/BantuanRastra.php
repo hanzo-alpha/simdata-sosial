@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Storage;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanRastra extends Model
@@ -301,4 +302,30 @@ class BantuanRastra extends Model
     {
         return $this->belongsTo(PenggantiRastra::class);
     }
+
+    protected static function booted(): void
+    {
+        static::deleted(static function (BantuanRastra $bantuanRastra): void {
+            foreach ($bantuanRastra->foto_ktp_kk as $image) {
+                Storage::delete("public/{$image}");
+            }
+        });
+
+        static::updating(static function (BantuanRastra $bantuanRastra): void {
+            $imagesToDelete = array_diff($bantuanRastra->getOriginal('foto_ktp_kk'), $bantuanRastra->foto_ktp_kk);
+
+            foreach ($imagesToDelete as $image) {
+                Storage::delete("public/{$image}");
+            }
+        });
+    }
+
+    //    protected static function booted(): void
+    //    {
+    //        static::addGlobalScope('instansi', static function (Builder $query): void {
+    //            if (auth()->check()) {
+    //                $query->where('instansi_id', auth()->user()->instansi_id);
+    //            }
+    //        });
+    //    }
 }

@@ -3,7 +3,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "check": "npx prettier --check resources/",
+        "format": "npx prettier --write resources/"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.6",
@@ -13,6 +15,9 @@
         "cropperjs": "^1.6.1",
         "laravel-vite-plugin": "^0.8.0",
         "postcss": "^8.4.31",
+        "prettier": "^3.2.5",
+        "prettier-plugin-blade": "^2.1.11",
+        "prettier-plugin-tailwindcss": "^0.5.13",
         "tailwindcss": "^3.3.5",
         "vite": "^4.5.1"
     },

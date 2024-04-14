@@ -8,6 +8,7 @@ return [
         'kodekab' => '7312',
         'kodepos' => '90861',
     ],
+    'kode_kecamatan' => ['731201', '731202', '731203', '731204', '731205', '731206', '731207', '731208'],
     'jenis_bantuan_default' => [
         'id' => [3, 4, 5],
     ],
@@ -19,6 +20,13 @@ return [
         'font' => 'Poppins',
         'dark_mode' => true,
         'logo_height' => '2rem',
+    ],
+    'format_auto' => [
+        'length' => 5,
+        'pad' => '0',
+        'separator' => null,
+        'suffix' => null,
+        'prefix' => 'SKU',
     ],
     'date' => [
         'display_short' => 'D, d M Y',

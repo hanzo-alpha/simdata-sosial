@@ -5,12 +5,16 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\Kelurahan;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class UserResource extends Resource
 {
@@ -36,16 +40,43 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
+                    ->revealable()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\Select::make('roles_id')
                     ->relationship('roles', 'name')
                     ->required()
                     ->preload()
                     ->searchable(),
+                Forms\Components\Select::make('instansi_id')
+                    ->nullable()
+                    ->unique(ignoreRecord: true)
+                    ->options(
+                        Kelurahan::query()
+                            ->whereIn(
+                                'kecamatan_code',
+                                ['731201', '731202', '731203', '731204', '731205', '731206', '731207', '731208']
+                            )
+                            ->pluck('name', 'code')
+                    )
+                    ->searchable()
+                    ->label('Instansi')
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function ($state, callable $set): void {
+                        $namaKel = Kelurahan::find($state)?->name;
+                        if (blank($namaKel)) {
+                            $set('slug', null);
+                            $set('nama_instansi', null);
+                        }
+
+                        $set('slug', Str::slug($namaKel));
+                        $set('nama_instansi', $namaKel);
+                    }),
             ]);
     }
 
@@ -59,9 +90,10 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')
                     ->badge(),
-                //                Tables\Columns\TextColumn::make('is_admin')
-                //                    ->label('Is Superadmin')
-                //                    ->badge()
+                Tables\Columns\TextColumn::make('instansi_id')
+                    ->formatStateUsing(fn($state) => Kelurahan::find($state)?->name)
+                    ->label('Instansi')
+                    ->badge()
             ])
             ->filters([
 
@@ -82,6 +114,22 @@ class UserResource extends Resource
         return [
             'index' => Pages\ManageUsers::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (1 === auth()->user()->id) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
+        return parent::getEloquentQuery()
+            ->whereNot('id', 1)
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     //    public static function getNavigationBadge(): ?string

@@ -8,15 +8,26 @@ use App\Models\PesertaBpjs as PesertaJamkesda;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use JetBrains\PhpStorm\NoReturn;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Validators\Failure;
+use Throwable;
 
 class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
 {
+    use Importable;
+    use SkipsErrors;
+    use SkipsFailures;
+
     public function registerEvents(): array
     {
         return [
@@ -49,13 +60,38 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
         ]);
     }
 
+    #[NoReturn]
+    public function onError(Throwable $e): void
+    {
+        Log::error($e);
+    }
+
+    public function onFailure(Failure ...$failures): void
+    {
+        foreach ($failures as $failure) {
+            $baris = $failure->row();
+            $errmsg = $failure->errors()[0];
+            $values = $failure->values();
+
+            //            Notification::make('Failure Import')
+            //                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+            //                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' . $values['nama_lengkap'] ?? '-')
+            //                ->danger()
+            //                ->sendToDatabase(auth()->user())
+            //                ->broadcast(User::where('is_admin', 1)->get());
+
+            Log::error($errmsg);
+        }
+    }
+
+
     public function batchSize(): int
     {
-        return 1000;
+        return 3000;
     }
 
     public function chunkSize(): int
     {
-        return 1000;
+        return 3000;
     }
 }

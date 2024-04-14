@@ -9,6 +9,7 @@ use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class PenyaluranBantuanRastra extends Model
 {
@@ -20,6 +21,11 @@ class PenyaluranBantuanRastra extends Model
         'tgl_penyerahan' => 'datetime',
         'foto_penyerahan' => 'array',
         'status_penyaluran' => StatusPenyaluran::class,
+    ];
+
+    protected $with = [
+        'bantuan_rastra',
+        'beritaAcara'
     ];
 
     protected $appends = [
@@ -37,6 +43,11 @@ class PenyaluranBantuanRastra extends Model
     public static function getComputedLocation(): string
     {
         return 'location';
+    }
+
+    public function penandatangan(): BelongsTo
+    {
+        return $this->belongsTo(Penandatangan::class);
     }
 
     public function bantuan_rastra(): BelongsTo
@@ -64,5 +75,22 @@ class PenyaluranBantuanRastra extends Model
             $this->attributes['lng'] = $location['lng'];
             unset($this->attributes['location']);
         }
+    }
+
+    protected static function booted(): void
+    {
+        static::deleted(static function (PenyaluranBantuanRastra $penyaluran): void {
+            foreach ($penyaluran->foto_penyerahan as $image) {
+                Storage::delete("app/public/{$image}");
+            }
+        });
+
+        static::updating(static function (PenyaluranBantuanRastra $penyaluran): void {
+            $imagesToDelete = array_diff($penyaluran->getOriginal('foto_penyerahan'), $penyaluran->foto_penyerahan);
+
+            foreach ($imagesToDelete as $image) {
+                Storage::delete("app/public/{$image}");
+            }
+        });
     }
 }

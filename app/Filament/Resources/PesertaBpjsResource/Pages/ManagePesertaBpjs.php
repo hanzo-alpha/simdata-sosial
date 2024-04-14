@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PesertaBpjsResource\Pages;
 use App\Filament\Resources\PesertaBpjsResource;
 use App\Filament\Widgets\PesertaBpjsOverview;
 use App\Imports\ImportPesertaBpjs;
+use App\Models\PesertaBpjs;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
@@ -29,8 +30,9 @@ class ManagePesertaBpjs extends ManageRecords
                 ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-down-tray')
                 ->action(function (array $data): void {
+                    $deleteAll = PesertaBpjs::query()->delete();
                     $import = Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
-                    if ($import) {
+                    if ($deleteAll && $import) {
                         Notification::make()
                             ->title('Usulan Peserta BPJS Berhasil di impor')
                             ->success()

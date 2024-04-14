@@ -2,7 +2,9 @@
 
 namespace App\Filament\Imports;
 
+use App\Enums\StatusAktif;
 use App\Enums\StatusDtksEnum;
+use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
@@ -29,7 +31,7 @@ class BantuanRastraImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'max:20']),
             ImportColumn::make('nama_lengkap')
-                ->guess(['NAMA', 'NAMA LENGKAP'])
+                ->guess(['nama', 'nama lengkap', 'nama '])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('alamat')
@@ -60,6 +62,21 @@ class BantuanRastraImporter extends Importer
                     };
                 })
                 ->ignoreBlankState(),
+            ImportColumn::make('status_rastra')
+                ->guess(['status rastra'])
+                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+                    $record->status_rastra = match ($state) {
+                        'BARU', 'default' => StatusRastra::BARU,
+                        'PENGGANTI' => StatusRastra::PENGGANTI,
+                    };
+                })
+                ->ignoreBlankState(),
+            ImportColumn::make('status_aktif')
+                ->guess(['status aktif'])
+                ->fillRecordUsing(function (BantuanRastra $record): void {
+                    $record->status_aktif = StatusAktif::AKTIF;
+                })
+                ->ignoreBlankState(),
             ImportColumn::make('status_dtks')
                 ->ignoreBlankState()
                 ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
@@ -67,7 +84,7 @@ class BantuanRastraImporter extends Importer
                         StatusDtksEnum::NON_DTKS;
                 })
                 ->label('STATUS DTKS')
-                ->rules(['max:255']),
+                ->ignoreBlankState(),
         ];
     }
 

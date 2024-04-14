@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\StatusPenyaluran;
 use App\Models\BantuanRastra;
+use App\Models\Penandatangan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,6 +28,7 @@ return new class () extends Migration {
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
             $table->string('status_penyaluran')->nullable()->default(StatusPenyaluran::BELUM_TERSALURKAN);
+            $table->foreignIdFor(Penandatangan::class)->nullable()->index();
             $table->softDeletes();
             $table->timestamps();
         });
