@@ -27,7 +27,6 @@ class PenandatanganResource extends Resource
     protected static ?string $label = 'Penandatangan';
     protected static ?string $pluralLabel = 'Penandatangan';
     protected static ?string $navigationLabel = 'Penandatangan';
-    //    protected static ?string $navigationParentItem = 'Tipe PPKS';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
@@ -38,13 +37,7 @@ class PenandatanganResource extends Resource
                     ->options(Kecamatan::where('kabupaten_code', setting('app.kodekab'))->pluck('name', 'code'))
                     ->searchable()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(function (Set $set, $state): void {
-                        //                        $kelurahan = Kelurahan::where('kecamatan_code', $state)
-                        //                            ->first()->code;
-                        //                        if (null === $kelurahan) {
-                        //                            $set('kode_instansi', null);
-                        //                        }
-                        //                        $set('kode_instansi', $kelurahan);
+                    ->afterStateUpdated(function (Set $set): void {
                         $set('kode_instansi', null);
                     })
                     ->required(),
@@ -72,12 +65,6 @@ class PenandatanganResource extends Resource
                 SignaturePad::make('signature')
                     ->label('Tanda Tangan')
                     ->columnSpanFull()
-//                    ->backgroundColor('white')
-//                    ->penColor('blue')
-//                    ->strokeMinDistance(2.0)
-//                    ->strokeMaxWidth(2.5)
-//                    ->strokeMinWidth(1.0) // set the minimum width of the pen stroke
-//                    ->strokeDotSize(2.0) // set the stroke dot size.
                     ->hideDownloadButtons()
             ]);
     }
