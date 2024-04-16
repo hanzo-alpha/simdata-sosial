@@ -13,6 +13,7 @@ use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
+use Str;
 
 final class ListBantuanPpks extends ListRecords
 {
@@ -20,106 +21,24 @@ final class ListBantuanPpks extends ListRecords
 
     public function getTabs(): array
     {
-        $bantuan = TipePpks::pluck('nama_tipe', 'id');
-        return [
-            'all' => Tab::make(),
-            $bantuan[1] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 1)
-                )),
-            $bantuan[2] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 2)
-                )),
-            $bantuan[3] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 3)
-                )),
-            $bantuan[4] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 4)
-                )),
-            $bantuan[5] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 5)
-                )),
-            $bantuan[6] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 6)
-                )),
-            $bantuan[7] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 7)
-                )),
-            $bantuan[8] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 8)
-                )),
-            $bantuan[9] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 9)
-                )),
-            $bantuan[10] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 10)
-                )),
-            $bantuan[11] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 11)
-                )),
-            $bantuan[12] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 12)
-                )),
-            $bantuan[13] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 13)
-                )),
-            $bantuan[14] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 14)
-                )),
-            $bantuan[15] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 15)
-                )),
-            $bantuan[16] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 16)
-                )),
-            $bantuan[17] => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', 17)
-                )),
-        ];
+        $bantuan = TipePpks::query()->select('id', 'nama_tipe')->get();
+        $results = collect();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('all', Tab::make());
+            $results->put(Str::lower($item->nama_tipe), Tab::make()
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas('tipe_ppks',
+                        fn(Builder $query) => $query->where('bantuan_ppks.id', $key)
+                    )
+                ));
+        });
+
+        return $results->toArray();
     }
 
     protected function getHeaderActions(): array
     {
         return [
-            //            ExportAction::make()->label('Ekspor XLS')
-            //                ->color('success')
-            //                ->exports([
-            //                    ExportBantuanPpks::make(),
-            //                ]),
-
             Actions\ExportAction::make()
                 ->label('Download CSV')
                 ->color('success')

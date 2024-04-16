@@ -6,7 +6,6 @@ namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Exports\ExportBantuanBpjs;
 use App\Filament\Resources\BantuanBpjsResource;
-use App\Filament\Widgets\BantuanBpjsOverview;
 use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
 use App\Traits\HasInputDateLimit;
@@ -25,12 +24,12 @@ class ListBantuanBpjs extends ListRecords
 
     protected static string $resource = BantuanBpjsResource::class;
 
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            BantuanBpjsOverview::class,
-        ];
-    }
+//    protected function getHeaderWidgets(): array
+//    {
+//        return [
+//            BantuanBpjsOverview::class,
+//        ];
+//    }
 
     protected function getHeaderActions(): array
     {
