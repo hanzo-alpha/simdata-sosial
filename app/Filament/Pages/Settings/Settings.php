@@ -52,7 +52,8 @@ class Settings extends BaseSettings
                                 ]),
                             DatePicker::make('app.batas_tgl_input')
                                 ->displayFormat(setting('app.format_tgl')),
-
+                            TextInput::make('app.angka_kemiskinan')
+                                ->label('Angka Kemiskinan'),
                             ToggleButton::make('app.darkmode')
                                 ->onColor('primary')
                                 ->offColor('danger')
@@ -62,12 +63,28 @@ class Settings extends BaseSettings
                     Tabs\Tab::make('Persuratan')
                         ->schema([
                             TextInput::make('persuratan.nama_kepala_dinas')
+                                ->label('Nama Kepala Dinas')
                                 ->default('Hansen'),
                             TextInput::make('persuratan.nip_kepala_dinas')
+                                ->label('NIP Kepala Dinas')
                                 ->default('Hansen'),
                             TextInput::make('persuratan.jabatan')
+                                ->label('Jabatan Kepala Dinas')
                                 ->default('Hansen'),
                             TextInput::make('persuratan.pangkat')
+                                ->label('Pangkat Kepala Dinas')
+                                ->default('Hansen'),
+                            TextInput::make('persuratan.nama_pps')
+                                ->label('Nama Pejabat Sementara')
+                                ->default('Hansen'),
+                            TextInput::make('persuratan.nip_pps')
+                                ->label('Nip Pejabat Sementara')
+                                ->default('Hansen'),
+                            TextInput::make('persuratan.jabatan_pps')
+                                ->label('Jabatan Pejabat Sementara')
+                                ->default('Hansen'),
+                            TextInput::make('persuratan.pangkat_pps')
+                                ->label('Pangkat Pejabat Sementara')
                                 ->default('Hansen'),
                         ])->columns(2),
                 ]),

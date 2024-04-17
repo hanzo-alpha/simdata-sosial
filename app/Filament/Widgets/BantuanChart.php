@@ -36,10 +36,10 @@ class BantuanChart extends ApexChartWidget
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
     //    protected int|string|array $columnSpan = 'full';
-    protected int|string|array $columnSpan = [
-        'md' => 2,
-        'xl' => 3,
-    ];
+//    protected int|string|array $columnSpan = [
+//        'md' => 2,
+//        'xl' => 3,
+//    ];
 
     protected function getOptions(): array
     {
@@ -77,15 +77,13 @@ class BantuanChart extends ApexChartWidget
 
     protected function renderBantuan($filter = null): array
     {
-        $pdd = 17.21 * 1000;
-        $angka = $pdd;
         return [
             'rastra' => BantuanRastra::count(),
             'bpjs' => BantuanBpjs::count(),
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
-            'angka_kemiskinan' => $angka,
+            'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
         ];
     }
 
