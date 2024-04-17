@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\User;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
+
+class LatestUser extends BaseWidget
+{
+    use HasWidgetShield;
+
+    protected static ?string $heading = 'Latest User';
+    protected static ?int $sort = 4;
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->deferLoading()
+            ->poll()
+            ->emptyStateHeading('Tidak ada data ditemukan')
+            ->query(
+                User::query()->whereNot('is_admin', 1)->orderByDesc('created_at')
+            )
+            ->columns([
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('instansi.name'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->date('d/m/Y H:i'),
+            ]);
+    }
+}
