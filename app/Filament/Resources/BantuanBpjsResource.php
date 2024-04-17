@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Str;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanBpjsResource extends Resource
@@ -106,8 +107,6 @@ class BantuanBpjsResource extends Resource
                     ->label('Periode')
                     ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun)
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('keterangan')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('status_usulan')
                     ->label('Status Usulan')
                     ->sortable()
@@ -122,6 +121,8 @@ class BantuanBpjsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->badge(),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->searchable(),
             ])
             ->filters([
                 SelectFilter::make('status_usulan')
@@ -134,7 +135,8 @@ class BantuanBpjsResource extends Resource
                 SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(list_tahun())
-                    ->searchable()
+                    ->searchable(),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->hiddenFilterIndicators()
             ->persistFiltersInSession()
@@ -144,6 +146,8 @@ class BantuanBpjsResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
@@ -183,15 +187,18 @@ class BantuanBpjsResource extends Resource
                             Forms\Components\TextInput::make('nokk_tmt')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
-                                ->maxLength(20),
+                                ->minLength(16)
+                                ->maxLength(16),
                             Forms\Components\TextInput::make('nik_tmt')
                                 ->label('N I K')
                                 ->required()
                                 ->unique('peserta_bpjs', 'nik')
-                                ->maxLength(20),
+                                ->minLength(16)
+                                ->maxLength(16),
                             Forms\Components\TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
                                 ->required()
+                                ->afterStateUpdated(fn($state) => Str::upper($state))
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('tempat_lahir')
                                 ->label('Tempat Lahir')
