@@ -504,8 +504,8 @@ class BantuanBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (1 === auth()->user()->id && auth()->user()->hasRole(['super_admin'])) {
-            parent::getEloquentQuery()
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]);
