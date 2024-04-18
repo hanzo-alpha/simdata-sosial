@@ -55,7 +55,7 @@ class BeritaAcaraResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('itemBantuan.nama_barang')
-                    ->label('Jenis Bantuan')
+                    ->label('Item Bantuan')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
