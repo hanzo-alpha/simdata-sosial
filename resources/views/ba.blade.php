@@ -354,8 +354,7 @@
                 </tr>
             @endforelse
             <tr>
-                <td colspan="4" class="border-0"></td>
-                <td class="pl-0 text-right">Total</td>
+                <td colspan="5" class="pl-0 text-right">Total Jumlah Beras</td>
                 <td class="pr-0 text-right">{{ $record->itemBantuan()->get()->sum('kuantitas') }} Kg</td>
             </tr>
             </tbody>

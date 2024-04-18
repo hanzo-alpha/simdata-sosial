@@ -62,6 +62,7 @@
 
             table {
                 border-collapse: collapse;
+                border: 0.6rem;
             }
 
             th {
@@ -101,15 +102,17 @@
             .table th,
             .table td {
                 padding: 0.3rem;
-                vertical-align: top;
+                vertical-align: middle;
             }
 
             .table.table-items td {
                 border-top: 1px solid #dee2e6;
+                border-bottom: 1px solid #dee2e6;
             }
 
             .table thead th {
-                vertical-align: bottom;
+                vertical-align: middle;
+                border-top: 2px solid #dee2e6;
                 border-bottom: 2px solid #dee2e6;
             }
 
