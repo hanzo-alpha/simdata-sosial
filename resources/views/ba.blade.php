@@ -340,10 +340,10 @@
             @forelse($penerima as $kpm)
                 <tr>
                     <td class="text-center">{{ $i++ }}</td>
-                    <td class="text-center">{{ $kpm->nama_lengkap }}</td>
+                    <td class="text-left">{{ $kpm->nama_lengkap }}</td>
                     <td class="text-center">{{ $kpm->nokk }}</td>
                     <td class="text-center">{{ $kpm->nik }}</td>
-                    <td class="text-right">{{ $kpm->kel()?->first()?->name }}</td>
+                    <td class="text-center">{{ $kpm->kel()?->first()?->name }}</td>
                     <td class="text-right">{{ $jumlahBeras }} Kg</td>
                     <td class="text-right"></td>
                     <td class="text-right"></td>
