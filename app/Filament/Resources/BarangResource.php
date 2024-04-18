@@ -29,6 +29,8 @@ class BarangResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('kode_barang')
                     ->required()
+                    ->disabled()
+                    ->dehydrated()
                     ->default(Helpers::generateKodeBarang())
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nama_barang')
@@ -43,10 +45,8 @@ class BarangResource extends Resource
                 Forms\Components\TextInput::make('harga_satuan')
                     ->numeric()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn(Forms\Get $get, Forms\Set $set, $state) => $set(
-                        'total_harga',
-                        $get('kuantitas') * $state
-                    ))
+                    ->afterStateUpdated(
+                        fn(Forms\Get $get, Forms\Set $set, $state) => $set('total_harga', $get('kuantitas') * $state))
                     ->default(0),
                 Forms\Components\TextInput::make('total_harga')
                     ->numeric()

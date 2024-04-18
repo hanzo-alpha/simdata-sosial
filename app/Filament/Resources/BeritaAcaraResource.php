@@ -35,13 +35,6 @@ class BeritaAcaraResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
-                    ->label('Nama KPM')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nik')
-                    ->label('NIK KPM')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('judul_ba')
                     ->label('Judul')
                     ->toggleable(isToggledHiddenByDefault: true)

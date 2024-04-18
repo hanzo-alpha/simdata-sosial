@@ -18,7 +18,7 @@ class BeritaAcara extends Model
     ];
 
     protected $with = [
-        'penandatangan', 'bantuan_rastra', 'itemBantuan', 'kel', 'kec'
+        'penandatangan', 'itemBantuan', 'kel', 'kec'
     ];
 
     public function barang(): BelongsTo
@@ -40,6 +40,4 @@ class BeritaAcara extends Model
     {
         return $this->belongsToMany(Barang::class, 'barang_berita_acara', 'berita_acara_id', 'barang_id');
     }
-
-
 }

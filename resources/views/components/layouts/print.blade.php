@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Print Dokumentasi</title>
+        <title>Cetak Dokumen</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
         {{-- @vite(['resources/css/app.css']) --}}

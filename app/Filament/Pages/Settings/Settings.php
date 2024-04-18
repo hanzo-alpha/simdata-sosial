@@ -102,21 +102,24 @@ class Settings extends BaseSettings
                                         ->default('Hansen'),
                                 ])->columns(2),
 
-                            Section::make('Pejabat Sementara')
+                            Section::make('Pejabat Penanggungjawab')
                                 ->icon('heroicon-o-user')
                                 ->schema([
                                     TextInput::make('persuratan.nama_pps')
-                                        ->label('Nama Pejabat Sementara')
+                                        ->label('Nama Pejabat')
                                         ->default('Hansen'),
                                     TextInput::make('persuratan.nip_pps')
-                                        ->label('Nip Pejabat Sementara')
+                                        ->label('Nip Pejabat')
                                         ->default('Hansen'),
                                     TextInput::make('persuratan.jabatan_pps')
-                                        ->label('Jabatan Pejabat Sementara')
+                                        ->label('Jabatan Pejabat')
                                         ->default('Hansen'),
                                     TextInput::make('persuratan.pangkat_pps')
-                                        ->label('Pangkat Pejabat Sementara')
+                                        ->label('Pangkat Pejabat')
                                         ->default('Hansen'),
+                                    TextInput::make('persuratan.instansi_pps')
+                                        ->label('Instansi Pejabat')
+                                        ->default('DINAS SOSIAL KAB. SOPPENG'),
                                 ])->columns(2),
                         ])->columns(2),
                 ]),
