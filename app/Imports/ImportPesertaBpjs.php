@@ -47,10 +47,10 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
     public function model(array $row): Model|PesertaJamkesda|null
     {
         return new PesertaJamkesda([
-            'nomor_kartu' => $row['no_kartu'] ?? 'NO KARTU',
-            'nik' => $row['nik'] ?? 'NO NIK',
-            'nama_lengkap' => $row['nama'] ?? 'NO NAME',
-            'alamat' => $row['alamat'] ?? 'NO ALAMAT',
+            'nomor_kartu' => $row['no_kartu'] ?? '-',
+            'nik' => $row['nik'] ?? '-',
+            'nama_lengkap' => $row['nama'] ?? '-',
+            'alamat' => $row['alamat'] ?? '-',
             'no_rt' => null,
             'no_rw' => null,
             'kabupaten' => null,

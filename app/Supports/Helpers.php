@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Supports;
 
-use App\Models\BantuanRastra;
 use App\Models\barang;
+use App\Models\PenyaluranBantuanRastra;
 use Illuminate\Support\Str;
 
 class Helpers
 {
     public static function generateNoSuratBeritaAcara($sep = '/'): string
     {
-        $text = 'BAST-RASTRA/DINSOS';
-        $pad = '0';
-        $sep ??= '/';
+        $text = setting('app.nomor_surat_rastra') ?? 'BAST-RASTRA/DINSOS';
+        $pad = setting('app.pad') ?? '0';
+        $sep = setting('app.separator') ?? $sep;
         $bulan = convertToRoman(now()->month);
         $tahun = now()->year;
-        $max = BantuanRastra::max('id') + 1;
-        $kodeAset = Str::padLeft($max, 2, $pad);
+        $max = PenyaluranBantuanRastra::max('id') + 1;
+        $kodeAset = Str::padLeft($max, 4, $pad);
 
         return $kodeAset . $sep . $text . $sep . $bulan . $sep . $tahun;
     }

@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Settings;
 
 use Closure;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
@@ -24,68 +25,99 @@ class Settings extends BaseSettings
             Tabs::make('Pengaturan')
                 ->schema([
                     Tabs\Tab::make('Aplikasi')
+                        ->icon('heroicon-o-computer-desktop')
                         ->schema([
-                            TextInput::make('app.brand_name')
-                                ->label('Nama Aplikasi')
-                                ->default('RENO'),
-                            TextInput::make('app.brand_description')
-                                ->label('Deskripsi Aplikasi')
-                                ->default('RENO'),
-                            TextInput::make('app.version')
-                                ->label('Versi Aplikasi')
-                                ->default('v1.0.0'),
-                            TextInput::make('app.kodeprov')
-                                ->label('Kode Provinsi'),
-                            TextInput::make('app.kodekab')
-                                ->label('Kode Kabupaten'),
-                            TextInput::make('app.kodepos')
-                                ->label('Kode POS'),
-                            Select::make('app.format_tgl')
-                                ->label('Format Tanggal')
-                                ->options([
-                                    'd-m-Y' => 'dd-mm-yyyy',
-                                    'Y-m-d' => 'yyyy-mm-dd',
-                                    'd/m/Y' => 'dd/mm/yyyy',
-                                    'Y/m/d' => 'yyyy/mm/dd',
-                                    'd.m.Y' => 'dd.mm.yyyy',
-                                    'Y.m.d' => 'yyyy.mm.dd',
-                                ]),
-                            DatePicker::make('app.batas_tgl_input')
-                                ->displayFormat(setting('app.format_tgl')),
-                            TextInput::make('app.angka_kemiskinan')
-                                ->label('Angka Kemiskinan'),
-                            ToggleButton::make('app.darkmode')
-                                ->onColor('primary')
-                                ->offColor('danger')
-                                ->onLabel('Aktif')
-                                ->offLabel('Non Aktif'),
+                            Section::make('Sistem')
+                                ->icon('heroicon-o-computer-desktop')
+                                ->schema([
+                                    TextInput::make('app.brand_name')
+                                        ->label('Nama Aplikasi')
+                                        ->default('RENO'),
+                                    TextInput::make('app.brand_description')
+                                        ->label('Deskripsi Aplikasi')
+                                        ->default('RENO'),
+                                    TextInput::make('app.version')
+                                        ->label('Versi Aplikasi')
+                                        ->default('v1.0.0'),
+                                    ToggleButton::make('app.darkmode')
+                                        ->onColor('primary')
+                                        ->offColor('danger')
+                                        ->onLabel('Aktif')
+                                        ->offLabel('Non Aktif'),
+                                ])->columns(2),
+                            Section::make('Format')
+                                ->icon('heroicon-o-bars-4')
+                                ->schema([
+                                    TextInput::make('app.kodeprov')
+                                        ->label('Kode Provinsi'),
+                                    TextInput::make('app.kodekab')
+                                        ->label('Kode Kabupaten'),
+                                    TextInput::make('app.kodepos')
+                                        ->label('Kode POS'),
+                                    Select::make('app.format_tgl')
+                                        ->label('Format Tanggal')
+                                        ->options([
+                                            'd-m-Y' => 'dd-mm-yyyy',
+                                            'Y-m-d' => 'yyyy-mm-dd',
+                                            'd/m/Y' => 'dd/mm/yyyy',
+                                            'Y/m/d' => 'yyyy/mm/dd',
+                                            'd.m.Y' => 'dd.mm.yyyy',
+                                            'Y.m.d' => 'yyyy.mm.dd',
+                                        ]),
+                                    DatePicker::make('app.batas_tgl_input')
+                                        ->displayFormat(setting('app.format_tgl')),
+                                ])->columns(2),
+                            Section::make('Pengkodean Otomatis')
+                                ->icon('heroicon-o-code-bracket')
+                                ->schema([
+                                    TextInput::make('app.nomor_surat_rastra')
+                                        ->label('Nomor Surat RASTRA'),
+                                    TextInput::make('app.separator')
+                                        ->label('Pemisah Nomor Surat'),
+                                    TextInput::make('app.pad')
+                                        ->label('Simbol Nomor Surat'),
+                                ])->columns(3),
+                            Section::make('Pendukung')->schema([
+                                TextInput::make('app.angka_kemiskinan')
+                                    ->label('Angka Kemiskinan'),
+                            ])->columns(2)
                         ])->columns(2),
                     Tabs\Tab::make('Persuratan')
+                        ->icon('heroicon-o-envelope')
                         ->schema([
-                            TextInput::make('persuratan.nama_kepala_dinas')
-                                ->label('Nama Kepala Dinas')
-                                ->default('Hansen'),
-                            TextInput::make('persuratan.nip_kepala_dinas')
-                                ->label('NIP Kepala Dinas')
-                                ->default('Hansen'),
-                            TextInput::make('persuratan.jabatan')
-                                ->label('Jabatan Kepala Dinas')
-                                ->default('Hansen'),
-                            TextInput::make('persuratan.pangkat')
-                                ->label('Pangkat Kepala Dinas')
-                                ->default('Hansen'),
-                            TextInput::make('persuratan.nama_pps')
-                                ->label('Nama Pejabat Sementara')
-                                ->default('Hansen'),
-                            TextInput::make('persuratan.nip_pps')
-                                ->label('Nip Pejabat Sementara')
-                                ->default('Hansen'),
-                            TextInput::make('persuratan.jabatan_pps')
-                                ->label('Jabatan Pejabat Sementara')
-                                ->default('Hansen'),
-                            TextInput::make('persuratan.pangkat_pps')
-                                ->label('Pangkat Pejabat Sementara')
-                                ->default('Hansen'),
+                            Section::make('Kepala Dinas')
+                                ->icon('heroicon-o-envelope')
+                                ->schema([
+                                    TextInput::make('persuratan.nama_kepala_dinas')
+                                        ->label('Nama Kepala Dinas')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.nip_kepala_dinas')
+                                        ->label('NIP Kepala Dinas')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.jabatan')
+                                        ->label('Jabatan Kepala Dinas')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.pangkat')
+                                        ->label('Pangkat Kepala Dinas')
+                                        ->default('Hansen'),
+                                ])->columns(2),
+
+                            Section::make('Pejabat Sementara')
+                                ->icon('heroicon-o-user')
+                                ->schema([
+                                    TextInput::make('persuratan.nama_pps')
+                                        ->label('Nama Pejabat Sementara')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.nip_pps')
+                                        ->label('Nip Pejabat Sementara')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.jabatan_pps')
+                                        ->label('Jabatan Pejabat Sementara')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.pangkat_pps')
+                                        ->label('Pangkat Pejabat Sementara')
+                                        ->default('Hansen'),
+                                ])->columns(2),
                         ])->columns(2),
                 ]),
         ];

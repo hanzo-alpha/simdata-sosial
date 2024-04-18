@@ -16,13 +16,12 @@ class BarangResource extends Resource
     protected static ?string $model = Barang::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
-    protected static ?string $slug = 'barang';
-    protected static ?string $label = 'Barang Rastra';
-    protected static ?string $pluralLabel = 'Barang Rastra';
+    protected static ?string $slug = 'item-bantuan';
+    protected static ?string $label = 'Item Bantuan Rastra';
+    protected static ?string $pluralLabel = 'Item Bantuan Rastra';
     protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 9;
-    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -43,20 +42,20 @@ class BarangResource extends Resource
                     ->default(null),
                 Forms\Components\TextInput::make('harga_satuan')
                     ->numeric()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn(Forms\Get $get, Forms\Set $set, $state) => $set(
+                        'total_harga',
+                        $get('kuantitas') * $state
+                    ))
                     ->default(0),
                 Forms\Components\TextInput::make('total_harga')
                     ->numeric()
+                    ->disabled()
+                    ->dehydrated()
                     ->default(0),
                 Forms\Components\Textarea::make('keterangan')
-                    ->required()
+                    ->nullable()
                     ->columnSpanFull(),
-                Forms\Components\Select::make('penandatangan_id')
-                    ->relationship('penandatangan', 'nama_penandatangan')
-                    ->searchable()
-                    ->preload()
-                    ->lazy()
-                    ->native(false)
-                    ->required(),
             ]);
     }
 
@@ -64,32 +63,19 @@ class BarangResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kode_barang')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kuantitas')
-                    ->numeric()
+                    ->numeric(locale: 'id')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('satuan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('harga_satuan')
-                    ->numeric()
+                    ->numeric(locale: 'id')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_harga')
-                    ->numeric()
+                    ->numeric(locale: 'id')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('penandatangan.id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
 

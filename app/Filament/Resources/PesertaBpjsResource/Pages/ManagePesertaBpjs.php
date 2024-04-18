@@ -31,8 +31,8 @@ class ManagePesertaBpjs extends ManageRecords
                 ->modalIcon('heroicon-o-arrow-down-tray')
                 ->action(function (array $data): void {
                     $deleteAll = PesertaBpjs::query()->delete();
-                    $import = Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
-                    if ($deleteAll && $import) {
+                    if ($deleteAll) {
+                        Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
                         Notification::make()
                             ->title('Usulan Peserta BPJS Berhasil di impor')
                             ->success()
