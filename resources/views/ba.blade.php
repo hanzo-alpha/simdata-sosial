@@ -334,10 +334,11 @@
             @php
                 $penerima = BantuanRastra::where('kecamatan',$record->kecamatan)->where('kelurahan',$record->kelurahan)->get();
                 $jumlahBeras = $record->itemBantuan()->get()->sum('kuantitas') / $penerima->count();
+                $i = 1;
             @endphp
             @forelse($penerima as $kpm)
                 <tr>
-                    <td class="text-center">{{ $kpm->id }}</td>
+                    <td class="text-center">{{ $i++ }}</td>
                     <td class="text-center">{{ $kpm->nama_lengkap }}</td>
                     <td class="text-center">{{ $kpm->nokk }}</td>
                     <td class="text-center">{{ $kpm->nik }}</td>
