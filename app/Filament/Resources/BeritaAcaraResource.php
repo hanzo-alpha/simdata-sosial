@@ -104,35 +104,6 @@ class BeritaAcaraResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Section::make()
                     ->schema([
-                        //                        Forms\Components\Select::make('bantuan_rastra_id')
-                        //                            ->label('Nama KPM')
-                        //                            ->required()
-                        //                            ->relationship('bantuan_rastra', 'nama_lengkap', modifyQueryUsing: fn(
-                        //                                Builder $query
-                        //                            ) => $query->where('status_aktif', '=', StatusAktif::AKTIF))
-                        //                            ->native(false)
-                        //                            ->searchable(['nama_lengkap', 'nik', 'nokk'])
-                        //                            ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
-                        //                            ->searchPrompt('Cari KPM berdasarkan no.kk , nik, atau nama')
-                        //                            ->getOptionLabelFromRecordUsing(fn(
-                        //                                Model $record
-                        //                            ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
-                        //                            ->allowHtml()
-                        //                            ->live(onBlur: true)
-                        //                            ->afterStateUpdated(function ($state, Forms\Set $set): void {
-                        //                                $rastra = BantuanRastra::find($state);
-                        //
-                        //                                if (isset($rastra) && $rastra->count() > 0) {
-                        //                                    $set('kecamatan', $rastra->kecamatan);
-                        //                                    $set('kelurahan', $rastra->kelurahan);
-                        //                                } else {
-                        //                                    $set('kecamatan', null);
-                        //                                    $set('kelurahan', null);
-                        //                                }
-                        //                            })
-                        //                            ->columnSpanFull()
-                        //                            ->helperText(str('**Nama KPM** disini, termasuk dengan NIK.')->inlineMarkdown()->toHtmlString())
-                        //                            ->optionsLimit(20),
                         Forms\Components\TextInput::make('nomor_ba')
                             ->label('Nomor Berita Acara')
                             ->helperText(str('**Nomor Berita Acara** pada laporan Berita Acara.')
@@ -159,20 +130,14 @@ class BeritaAcaraResource extends Resource
                             ->relationship(
                                 name: 'penandatangan',
                                 titleAttribute: 'nama_penandatangan',
-                                modifyQueryUsing: function (Builder $query) {
-                                    if (!auth()->user()->hasRole('super_admin')) {
-                                        return $query->where('kode_instansi', auth()->user()->instansi_id);
-                                    }
-                                    return $query->with(['kecamatan', 'kelurahan']);
-
-                                }
+                                modifyQueryUsing: fn(Builder $query) => $query->with(['kecamatan', 'kelurahan'])
                             )
                             ->native(false)
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari Penandatangan')
                             ->getOptionLabelFromRecordUsing(
-                                fn(Model $record) => "<strong>{$record->nama_penandatangan}</strong><br>
-                            {$record->jabatan} - {$record->kelurahan?->name}"
+                                fn(Model $record
+                                ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan} - {$record->kelurahan?->name}"
                             )
                             ->allowHtml()
                             ->live(onBlur: true)
@@ -215,20 +180,16 @@ class BeritaAcaraResource extends Resource
                             ->searchable(),
                         Forms\Components\Select::make('barang_id')
                             ->label('Item Bantuan')
-                            ->nullable()
                             ->helperText(str('**Item** bantuan pada laporan.')->inlineMarkdown()->toHtmlString())
-                            ->relationship('barang', 'nama_barang')
+                            ->relationship('itemBantuan', 'nama_barang')
                             ->native(false)
                             ->preload()
                             ->searchable()
                             ->default(1)
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari Item Bantuan')
-                            ->getOptionLabelFromRecordUsing(
-                                fn(
-                                    Model $record
-                                ) => "<strong>{$record->nama_barang}</strong><br> {$record->kode_barang}"
-                            )
+                            ->getOptionLabelFromRecordUsing(fn(Model $record
+                            ) => "<strong>{$record->nama_barang}</strong><br> {$record->kode_barang}")
                             ->allowHtml()
                             ->live(onBlur: true)
                             ->required(),

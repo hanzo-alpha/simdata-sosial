@@ -33,7 +33,7 @@ class BeritaAcara extends Model
 
     public function itemBantuan(): BelongsToMany
     {
-        return $this->belongsToMany(Barang::class, 'barang_berita_acara', 'berita_acara_id', 'barang_id')
+        return $this->belongsToMany(Barang::class, 'barang_berita_acara')
             ->withTimestamps();
     }
 }

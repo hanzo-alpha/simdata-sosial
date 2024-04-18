@@ -271,6 +271,7 @@
         <br>
         <br>
         <br>
+        <div class="page-break"></div>
 
         {{-- Lampiran BAST --}}
         <table class="table border-0">
