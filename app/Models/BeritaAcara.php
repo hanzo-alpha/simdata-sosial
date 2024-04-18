@@ -21,11 +21,6 @@ class BeritaAcara extends Model
         'penandatangan', 'itemBantuan', 'kel', 'kec'
     ];
 
-    public function barang(): BelongsTo
-    {
-        return $this->belongsTo(barang::class);
-    }
-
     public function penandatangan(): BelongsTo
     {
         return $this->belongsTo(Penandatangan::class);
