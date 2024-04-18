@@ -44,15 +44,15 @@ class BeritaAcaraResource extends Resource
                     ->toggleable()
                     ->date('l, d M Y')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('kec.name')
+                    ->label('Kecamatan')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->sortable()
                     ->toggleable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kec.name')
-                    ->label('Kecamatan')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('itemBantuan.nama_barang')
                     ->label('Item Bantuan')
@@ -136,7 +136,8 @@ class BeritaAcaraResource extends Resource
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari Penandatangan')
                             ->getOptionLabelFromRecordUsing(
-                                fn(Model $record
+                                fn(
+                                    Model $record
                                 ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan} - {$record->kelurahan?->name}"
                             )
                             ->allowHtml()
@@ -188,7 +189,8 @@ class BeritaAcaraResource extends Resource
                             ->default(1)
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari Item Bantuan')
-                            ->getOptionLabelFromRecordUsing(fn(Model $record
+                            ->getOptionLabelFromRecordUsing(fn(
+                                Model $record
                             ) => "<strong>{$record->nama_barang}</strong><br> {$record->kode_barang}")
                             ->allowHtml()
                             ->live(onBlur: true)
