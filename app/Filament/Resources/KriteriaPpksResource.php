@@ -49,8 +49,8 @@ class KriteriaPpksResource extends Resource
                 BadgeableColumn::make('nama_kriteria')
                     ->label('Kriteria Tipe PPKS')
                     ->suffixBadges([
-                        Badge::make('tipe_ppks.nama_tipe')
-                            ->label(fn(Model $record) => $record->tipe_ppks()->first()->nama_tipe),
+                        Badge::make('tipePpks.nama_tipe')
+                            ->label(fn(Model $record) => $record->tipePpks()->first()->nama_tipe),
                     ]),
             ])
             ->filters([
