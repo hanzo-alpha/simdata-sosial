@@ -164,15 +164,12 @@ class BantuanBpntResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('kecamatan')
-                    ->relationship('kel', 'name')
-                    ->preload()
-                    ->searchable()
-                    ->native(false),
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
