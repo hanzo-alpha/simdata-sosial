@@ -24,6 +24,7 @@ final class JenisBantuanResource extends Resource
     protected static ?string $label = 'Jenis Bantuan';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
     protected static ?string $pluralLabel = 'Jenis Bantuan';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
