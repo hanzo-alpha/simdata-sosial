@@ -31,6 +31,7 @@ final class JenisPekerjaanResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_pekerjaan')
+                    ->label('Nama Pekerjaan')
                     ->required()
                     ->columnSpanFull(),
             ]);

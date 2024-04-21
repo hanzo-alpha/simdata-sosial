@@ -36,6 +36,7 @@ class PenandatanganResource extends Resource
                 Select::make('kode_kecamatan')
                     ->options(Kecamatan::where('kabupaten_code', setting('app.kodekab'))->pluck('name', 'code'))
                     ->searchable()
+                    ->autofocus()
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (Set $set): void {
                         $set('kode_instansi', null);
@@ -60,7 +61,7 @@ class PenandatanganResource extends Resource
                     ->inline()
                     ->options(StatusPenandatangan::class)
                     ->default(StatusPenandatangan::AKTIF)
-                    ->required(),
+                    ->nullable(),
 
                 SignaturePad::make('signature')
                     ->label('Tanda Tangan')

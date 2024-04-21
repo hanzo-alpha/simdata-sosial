@@ -31,6 +31,7 @@ final class PendidikanTerakhirResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_pendidikan')
+                    ->label('Nama Pendidikan')
                     ->required()
                     ->autofocus(),
             ])->columns(1)

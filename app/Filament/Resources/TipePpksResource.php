@@ -30,6 +30,7 @@ final class TipePpksResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_tipe')
+                    ->label('Nama Tipe')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('alias')
