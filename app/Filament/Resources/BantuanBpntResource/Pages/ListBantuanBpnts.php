@@ -23,7 +23,8 @@ class ListBantuanBpnts extends ListRecords
                 ->importer(BantuanBpntImporter::class)
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
-                ->label('Import CSV'),
+                ->label('Import CSV')
+                ->closeModalByClickingAway(false),
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus'),
         ];

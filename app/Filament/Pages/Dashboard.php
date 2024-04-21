@@ -23,16 +23,16 @@ class Dashboard extends \Filament\Pages\Dashboard
             ->schema([
                 Section::make()
                     ->schema([
-//                        Select::make('tipe')
-//                            ->label('Berdasarkan')
-//                            ->options([
-//                                'kelurahan' => 'Kelurahan',
-//                                'kecamatan' => 'Kecamatan',
-//                            ])
-//                            ->default('kecamatan')
-//                            ->preload()
-//                            ->native(false)
-//                            ->live(onBlur: true),
+                        //                        Select::make('tipe')
+                        //                            ->label('Berdasarkan')
+                        //                            ->options([
+                        //                                'kelurahan' => 'Kelurahan',
+                        //                                'kecamatan' => 'Kecamatan',
+                        //                            ])
+                        //                            ->default('kecamatan')
+                        //                            ->preload()
+                        //                            ->native(false)
+                        //                            ->live(onBlur: true),
                         Select::make('kecamatan')
                             ->searchable()
                             ->live(onBlur: true)
