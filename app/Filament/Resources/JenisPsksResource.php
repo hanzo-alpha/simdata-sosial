@@ -21,6 +21,7 @@ class JenisPsksResource extends Resource
     protected static ?string $navigationLabel = 'Jenis PSKS';
     protected static ?string $navigationParentItem = 'Tipe PPKS';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
