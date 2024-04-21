@@ -27,7 +27,8 @@ final class ListBantuanPpks extends ListRecords
             $results->put('all', Tab::make());
             $results->put(Str::lower($item->nama_tipe), Tab::make()
                 ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas('tipe_ppks',
+                    fn(Builder $query) => $query->whereHas(
+                        'tipe_ppks',
                         fn(Builder $query) => $query->where('bantuan_ppks.id', $key)
                     )
                 ));

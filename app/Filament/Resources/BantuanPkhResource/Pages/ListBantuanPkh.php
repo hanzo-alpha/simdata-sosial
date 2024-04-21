@@ -7,18 +7,44 @@ namespace App\Filament\Resources\BantuanPkhResource\Pages;
 use App\Exports\ExportBantuanPkh;
 use App\Filament\Resources\BantuanPkhResource;
 use App\Imports\ImportBantuanPkh;
+use App\Models\BantuanPkh;
+use App\Models\Kecamatan;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 final class ListBantuanPkh extends ListRecords
 {
     protected static string $resource = BantuanPkhResource::class;
+
+    public function getTabs(): array
+    {
+        $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
+        $results = collect();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanPkh::query()->whereHas(
+                    'kec',
+                    fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code)
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kec',
+                        fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code)
+                    )
+                ));
+        });
+
+        return $results->toArray();
+    }
 
     protected function getHeaderActions(): array
     {
