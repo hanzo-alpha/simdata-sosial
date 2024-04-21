@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\BantuanBpnt;
-use App\Models\BantuanPkh;
 use App\Models\Kecamatan;
 use App\Traits\HasGlobalFilters;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
@@ -49,7 +48,7 @@ class BantuanBpntOverview extends BaseWidget
         }
 
         $results['all'] = $this->renderStats(
-            BantuanPkh::count(),
+            BantuanBpnt::count(),
             'Rekap KPM BPNT',
             'Total BPNT All Kecamatan',
             'users',
