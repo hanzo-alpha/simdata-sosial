@@ -6,7 +6,9 @@ namespace App\Filament\Widgets;
 
 use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanPpks;
+use App\Models\Kecamatan;
 use App\Models\KriteriaPpks;
+use App\Traits\HasGlobalFilters;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -17,6 +19,7 @@ use Number;
 
 class BantuanPpksOverview extends BaseWidget
 {
+    use HasGlobalFilters;
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
@@ -25,42 +28,91 @@ class BantuanPpksOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $unverified = $this->queryBantuan($this->filterField())
-            ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
-            ->count();
+        $results = [];
+        $filters = $this->getFilters();
 
-        $verified = $this->queryBantuan($this->filterField())
-            ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
-            ->count();
-
-        $review = $this->queryBantuan($this->filterField())
-            ->where('status_verifikasi', StatusVerifikasiEnum::REVIEW)
-            ->count();
+        $statistik = $this->getDataOverview($this->getFilters());
+        $overview = $this->getOverview($statistik) ?? [];
 
         $tipe = BantuanPpks::each(function ($item) {
             return KriteriaPpks::where('tipe_ppks_id', $item->tipe_ppks_id)
                 ->whereIn('id', $item->kriteria_ppks);
         });
 
+        $listKecamatan = Kecamatan::query()
+            ->where('kabupaten_code', setting('app.kodekab'))
+            ->pluck('name', 'code');
 
+        foreach ($listKecamatan as $code => $name) {
+            $value = BantuanPpks::query()
+                ->select(['created_at', 'kecamatan', 'kelurahan'])
+                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters))
+                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters))
+                ->where('kecamatan', $code)
+                ->count();
+            $label = 'KPM PPKS Kec. '.$name;
+            $desc = 'Total PPKS Kec. '.$name;
+            $icon = 'user';
+
+            $results[] = $this->renderStats($value, $label, $desc, $icon);
+        }
+
+        $results['all'] = $this->renderStats(
+            BantuanPpks::count(),
+            'Rekap KPM PPKS',
+            'Total PPKS All Kecamatan',
+            'users',
+            'primary'
+        );
+
+        if (count($overview) > 0) {
+            return array_merge($overview, $results);
+        }
+
+        return $results;
+    }
+
+    protected function getDataOverview(array $filters): array
+    {
+        $unverified = $this->queryBantuan($filters)
+            ->where('status_verifikasi', StatusVerifikasiEnum::UNVERIFIED)
+            ->count();
+
+        $verified = $this->queryBantuan($filters)
+            ->where('status_verifikasi', StatusVerifikasiEnum::VERIFIED)
+            ->count();
+
+        $review = $this->queryBantuan($filters)
+            ->where('status_verifikasi', StatusVerifikasiEnum::REVIEW)
+            ->count();
+
+        return [
+            'verified' => $verified,
+            'unverified' => $unverified,
+            'review' => $review,
+        ];
+    }
+
+    protected function getOverview(array $data): array
+    {
         return [
             Stat::make(
                 label: 'KPM PPKS Tidak Terverifikasi',
-                value: Number::abbreviate($unverified, 2)
+                value: Number::abbreviate($data['unverified'], 2)
             )
                 ->description('Total KPM PPKS Tidak Terverifikasi')
                 ->descriptionIcon('heroicon-o-minus-circle')
                 ->color('danger'),
             Stat::make(
                 label: 'KPM PPKS Terverifikasi',
-                value: Number::abbreviate($verified, 2)
+                value: Number::abbreviate($data['verified'], 2)
             )
                 ->description('Total KPM PPKS Terverifikasi')
                 ->descriptionIcon('heroicon-o-check-badge')
                 ->color('success'),
             Stat::make(
                 label: 'KPM PPKS Ditinjau',
-                value: Number::abbreviate($review, 2)
+                value: Number::abbreviate($data['review'], 2)
             )
                 ->description('Total KPM PPKS Ditinjau')
                 ->descriptionIcon('heroicon-o-exclamation-circle')
@@ -68,36 +120,28 @@ class BantuanPpksOverview extends BaseWidget
         ];
     }
 
-    protected function queryBantuan(array $filter): Builder|Collection|array
+    protected function renderStats($value, $label, $desc, $icon, $color = 'success')
+    {
+        return Stat::make(
+            label: $label ?? 'KPM PPKS',
+            value: Number::format($value ?? 0, 0, locale: 'id').config('custom.app.stat_prefix')
+        )
+            ->description($desc ?? 'Total KPM Kec. Marioriwawo')
+            ->descriptionIcon('heroicon-o-'.$icon ?? 'user')
+            ->color($color ?? 'success');
+    }
+
+    protected function queryBantuan(array $filters): Builder|Collection|array
     {
         return BantuanPpks::query()->with(['tipe_ppks'])
-            ->when($filter['dateRange'], function (Builder $query) use ($filter) {
-                $dates = explode('-', $filter['dateRange']);
-
-                return $query
-                    ->whereDate('created_at', '>=', $dates[0])
-                    ->whereDate('created_at', '<=', $dates[1]);
-            })
-            ->when($filter['kecamatan'], fn(Builder $query) => $query->whereHas(
-                'alamat',
-                fn(Builder $query) => $query->whereHas(
-                    'kec',
-                    fn(Builder $query) => $query->where('code', $filter['kecamatan'])
-                )
-            ))
-            ->when($filter['kelurahan'], fn(Builder $query) => $query->whereHas(
-                'alamat',
-                fn(Builder $query) => $query->whereHas(
-                    'kel',
-                    fn(Builder $query) => $query->where('code', $filter['kelurahan'])
-                )
-            ));
+            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']));
     }
 
     protected function filterField(): array
     {
         return [
-            'dateRange' => $this->filters['daterange'] ?? null,
+            'tipe' => $this->filters['tipe'] ?? null,
             'kecamatan' => $this->filters['kecamatan'] ?? null,
             'kelurahan' => $this->filters['kelurahan'] ?? null,
         ];
