@@ -46,6 +46,7 @@ class BantuanBpjsResource extends Resource
         return $table
             ->poll()
             ->deferLoading()
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')

@@ -71,6 +71,7 @@ final class PesertaBpjsResource extends Resource
         return $table
             ->deferLoading()
             ->poll()
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('nomor_kartu')
                     ->label('Nomor Kartu')

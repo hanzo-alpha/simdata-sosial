@@ -357,6 +357,7 @@ final class BantuanPpksResource extends Resource
         return $table
             ->poll()
             ->deferLoading()
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('nik')
                     ->label('N I K')

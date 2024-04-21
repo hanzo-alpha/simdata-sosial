@@ -130,6 +130,7 @@ class BantuanBpntResource extends Resource
         return $table
             ->deferLoading()
             ->poll()
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('no_nik')
                     ->label('N I K')

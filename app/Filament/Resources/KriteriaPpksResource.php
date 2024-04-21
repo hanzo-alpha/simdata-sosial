@@ -45,6 +45,7 @@ class KriteriaPpksResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 BadgeableColumn::make('nama_kriteria')
                     ->label('Kriteria Tipe PPKS')

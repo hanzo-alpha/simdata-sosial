@@ -42,6 +42,7 @@ class BantuanRastraResource extends Resource
         return $table
             ->poll()
             ->deferLoading()
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 //                CuratorColumn::make('beritaAcara')
                 //                    ->size(60),
