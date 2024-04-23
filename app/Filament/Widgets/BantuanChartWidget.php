@@ -24,19 +24,10 @@ class BantuanChartWidget extends ChartWidget
     use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Statistik Program Bantuan Per Kecamatan';
-
     protected static ?string $maxHeight = '400px';
-
-    protected static ?string $pollingInterval = null;
+    protected static ?string $pollingInterval = '30s';
     protected static ?int $sort = 2;
     protected int|string|array $columnSpan = 'full';
-
-    protected static function getQuery(string $model, array $filter): Builder
-    {
-        return $model::query()
-            ->when($filter['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filter['kecamatan']))
-            ->when($filter['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filter['kelurahan']));
-    }
 
     protected function getOptions(): array
     {
@@ -81,19 +72,15 @@ class BantuanChartWidget extends ChartWidget
                 [
                     'label' => 'Bantuan BPJS',
                     'data' => array_values($results['bpjs']),
-                    //                    'backgroundColor' => '#9BD0F5',
-                    //                    'borderColor' => '#36A2EB'
                 ],
                 [
                     'label' => 'Bantuan PKH',
                     'data' => array_values($results['pkh']),
-                    //                    'backgroundColor' => '#FF6384',
                     'borderColor' => '#FFB1C1',
                 ],
                 [
                     'label' => 'Bantuan BPNT',
                     'data' => array_values($results['bpnt']),
-                    //                    'backgroundColor' => '#9BD0F5',
                     'borderColor' => '#36A2EB',
                 ],
                 [

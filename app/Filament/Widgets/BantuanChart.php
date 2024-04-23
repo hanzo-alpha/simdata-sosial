@@ -35,11 +35,6 @@ class BantuanChart extends ApexChartWidget
 
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
-    //    protected int|string|array $columnSpan = 'full';
-//    protected int|string|array $columnSpan = [
-//        'md' => 2,
-//        'xl' => 3,
-//    ];
 
     protected function getOptions(): array
     {
@@ -69,9 +64,9 @@ class BantuanChart extends ApexChartWidget
                 'labels' => [
                     'fontFamily' => 'inherit',
                 ],
-                'position' => 'bottom',
+//                'position' => 'bottom',
             ],
-            'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE']
+//            'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE']
         ];
     }
 
