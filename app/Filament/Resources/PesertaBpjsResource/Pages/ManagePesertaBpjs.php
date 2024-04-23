@@ -34,8 +34,8 @@ class ManagePesertaBpjs extends ManageRecords
                     if ($deleteAll) {
                         Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
                         Notification::make()
-                            ->title('Usulan Peserta BPJS Berhasil di impor')
-                            ->success()
+                            ->title('Data Peserta BPJS sedang diimpor secara background')
+                            ->info()
                             ->sendToDatabase(auth()->user());
                     }
                 })
