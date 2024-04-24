@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BarangResource\Pages;
 use App\Models\Barang;
-use App\Supports\Helpers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,12 +26,6 @@ class BarangResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('kode_barang')
-                    ->required()
-                    ->disabled()
-                    ->dehydrated()
-                    ->default(Helpers::generateKodeBarang())
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('nama_barang')
                     ->required()
                     ->maxLength(255),
@@ -46,7 +39,8 @@ class BarangResource extends Resource
                     ->numeric()
                     ->live(onBlur: true)
                     ->afterStateUpdated(
-                        fn(Forms\Get $get, Forms\Set $set, $state) => $set('total_harga', $get('kuantitas') * $state))
+                        fn(Forms\Get $get, Forms\Set $set, $state) => $set('total_harga', $get('kuantitas') * $state)
+                    )
                     ->default(0),
                 Forms\Components\TextInput::make('total_harga')
                     ->numeric()
