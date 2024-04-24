@@ -13,20 +13,20 @@
                      height="100" />
             </th>
             <th class="text-center">
-                <h2 style="margin-bottom: 0"><strong>PEMERINTAH KABUPATEN SOPPENG</strong></h2></th>
+                <h2 style="margin-bottom: 0"><strong>{{ setting('ba.kop_title') }}</strong></h2></th>
             </tbody>
             <tbody>
             <th class="text-center">
-                <h1 style="margin-top: 3px; margin-bottom: 3px"><strong>DINAS SOSIAL</strong></h1>
+                <h1 style="margin-top: 3px; margin-bottom: 3px"><strong>{{ setting('ba.kop_instansi') }}</strong></h1>
             </th>
             </tbody>
             <tbody>
             <th class="text-center">
                  <span style="font-style: italic">
-                    Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng
+                    {{ setting('ba.kop_jalan') }}
                  </span><br>
                 <span style="font-style: italic">
-                    Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com
+                     {{ setting('ba.kop_website') }}
                 </span>
             </th>
             </tbody>

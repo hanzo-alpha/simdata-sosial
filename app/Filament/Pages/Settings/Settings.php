@@ -122,6 +122,26 @@ class Settings extends BaseSettings
                                         ->default('DINAS SOSIAL KAB. SOPPENG'),
                                 ])->columns(2),
                         ])->columns(2),
+                    Tabs\Tab::make('Laporan')
+                        ->icon('heroicon-o-document-chart-bar')
+                        ->schema([
+                            Section::make('Berita Acara & Lampiran BAST')
+                                ->icon('heroicon-o-document-chart-bar')
+                                ->schema([
+                                    TextInput::make('ba.kop_title')
+                                        ->label('Kop Judul')
+                                        ->default('PEMERINTAH KABUPATEN SOPPENG'),
+                                    TextInput::make('ba.kop_instansi')
+                                        ->label('Kop Judul')
+                                        ->default('DINAS SOSIAL'),
+                                    TextInput::make('ba.kop_website')
+                                        ->label('Kop Website')
+                                        ->default('Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com'),
+                                    TextInput::make('ba.kop_jalan')
+                                        ->label('Kop Jalan')
+                                        ->default('Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng'),
+                                ])->columns(2),
+                        ])
                 ]),
         ];
     }
