@@ -7,7 +7,6 @@ use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
-use App\Filament\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
@@ -44,8 +43,6 @@ class BantuanRastraResource extends Resource
             ->deferLoading()
             ->defaultSort('created_at', 'desc')
             ->columns([
-                //                CuratorColumn::make('beritaAcara')
-                //                    ->size(60),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
                     ->description(fn($record) => $record->nik)
@@ -84,30 +81,6 @@ class BantuanRastraResource extends Resource
                     ->label('Status Aktif')
                     ->sortable()
                     ->badge()
-                //                Tables\Columns\ToggleColumn::make('status_aktif')
-                //                    ->label('Status Aktif')
-                //                    ->afterStateUpdated(function ($record, $state): void {
-                //                        if (!auth()->user()?->hasRole(['super_admin', 'admin'])) {
-                //                            abort(403);
-                //                        }
-                //                        $record->status_aktif = match ($state) {
-                //                            true => StatusAktif::AKTIF,
-                //                            false => StatusAktif::NONAKTIF
-                //                        };
-                //                        if ($record->save()) {
-                //                            Notification::make()
-                //                                ->success()
-                //                                ->title('Update Status Aktif berhasil')
-                //                                ->send();
-                //                        } else {
-                //                            Notification::make()
-                //                                ->danger()
-                //                                ->title('Update Status Aktif gagal;')
-                //                                ->send();
-                //                        }
-                //                    })
-                //                    ->alignCenter()
-                //                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -134,24 +107,21 @@ class BantuanRastraResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
-                    Tables\Actions\Action::make('Ubah Status Aktif')
-                        ->icon('heroicon-o-clipboard-document-list')
+                    Tables\Actions\Action::make('Toggle Aktif')
+                        ->icon('heroicon-s-arrow-path-rounded-square')
                         ->action(function ($record): void {
                             $record->status_aktif = match ($record->status_aktif) {
                                 StatusAktif::AKTIF => StatusAktif::NONAKTIF,
                                 StatusAktif::NONAKTIF => StatusAktif::AKTIF
                             };
-                            if ($record->save()) {
-                                Notification::make()
-                                    ->success()
-                                    ->title('Berhasil merubah status usulan peserta')
-                                    ->send();
-                            } else {
-                                Notification::make()
-                                    ->danger()
-                                    ->title('Berhasil merubah status usulan peserta')
-                                    ->send();
-                            }
+
+                            $record->save();
+                        })
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Status Berhasil Diubah')
+                                ->send();
                         })
                         ->close()
                 ])
@@ -165,8 +135,8 @@ class BantuanRastraResource extends Resource
                         ->exports([
                             ExportBantuanRastra::make(),
                         ]),
-                    Tables\Actions\BulkAction::make('ubah status')
-                        ->label('Ubah Status Aktif')
+                    Tables\Actions\BulkAction::make('toggle aktif')
+                        ->label('Toggle Status Aktif')
                         ->icon('heroicon-o-cursor-arrow-ripple')
                         ->action(function ($records): void {
                             $records->each(function ($records): void {
@@ -181,7 +151,7 @@ class BantuanRastraResource extends Resource
                         ->after(function (): void {
                             Notification::make()
                                 ->success()
-                                ->title('Berhasil merubah status usulan peserta')
+                                ->title('Status Berhasil Diubah')
                                 ->send();
                         })
                         ->closeModalByClickingAway()
@@ -296,7 +266,7 @@ class BantuanRastraResource extends Resource
     public static function getWidgets(): array
     {
         return [
-            BantuanRastraOverview::class,
+            //            BantuanRastraOverview::class,
         ];
     }
 
