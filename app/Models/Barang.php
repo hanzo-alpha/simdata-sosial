@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Barang extends Model
 {
@@ -11,8 +11,8 @@ class Barang extends Model
 
     protected $guarded = [];
 
-    public function beritaAcara(): BelongsTo
+    public function beritaAcara(): BelongsToMany
     {
-        return $this->belongsTo(BeritaAcara::class);
+        return $this->belongsToMany(BeritaAcara::class, 'barang_berita_acara', 'barang_id', 'berita_acara_id');
     }
 }

@@ -31,10 +31,13 @@ class BarangResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('kuantitas')
                     ->numeric()
-                    ->default(0),
+                    ->default(10),
+                Forms\Components\TextInput::make('jumlah_bulan')
+                    ->numeric()
+                    ->default(3),
                 Forms\Components\TextInput::make('satuan')
                     ->maxLength(255)
-                    ->default(null),
+                    ->default('Kg'),
                 Forms\Components\TextInput::make('harga_satuan')
                     ->numeric()
                     ->live(onBlur: true)
@@ -59,16 +62,28 @@ class BarangResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('nama_barang')
+                    ->label('Nama Barang')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kuantitas')
                     ->numeric(locale: 'id')
+                    ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jumlah_bulan')
+                    ->label('Jumlah Bulan')
+                    ->numeric(locale: 'id')
+                    ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('satuan')
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('harga_satuan')
+                    ->label('Harga Satuan')
+                    ->alignLeft()
                     ->numeric(locale: 'id')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_harga')
+                    ->label('Total Harga')
+                    ->alignLeft()
                     ->numeric(locale: 'id')
                     ->sortable(),
             ])
