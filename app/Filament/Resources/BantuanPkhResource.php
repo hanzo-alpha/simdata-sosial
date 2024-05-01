@@ -163,11 +163,9 @@ final class BantuanPkhResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll()
             ->deferLoading()
-//            ->recordClasses(fn(Model $record) => match ($record->status_pkh) {
-//                StatusPkhBpntEnum::BPNT => 'border-s-2 border-blue-600 dark:border-blue-300',
-//                StatusPkhBpntEnum::PKH => 'border-s-2 border-green-600 dark:border-green-300',
-//            })
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')

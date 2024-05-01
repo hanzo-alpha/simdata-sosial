@@ -25,7 +25,10 @@ class BansosDiterimaResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama_bansos'),
+                TextInput::make('nama_bansos')
+                    ->label('Nama BANSOS')
+                    ->required()
+                    ->autofocus(),
                 TextInput::make('deskripsi')
                     ->nullable(),
             ]);
@@ -34,8 +37,10 @@ class BansosDiterimaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('nama_bansos')
+                    ->label('Nama BANSOS')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi'),

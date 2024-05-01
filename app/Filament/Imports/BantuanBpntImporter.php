@@ -3,6 +3,10 @@
 namespace App\Filament\Imports;
 
 use App\Models\BantuanBpnt;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
+use App\Models\Provinsi;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
@@ -14,61 +18,45 @@ class BantuanBpntImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('jenis_bantuan')
-                ->requiredMapping()
-                ->relationship()
-                ->rules(['required']),
-            ImportColumn::make('dtks_id')
-                ->requiredMapping()
-                ->rules(['required', 'max:36']),
-            ImportColumn::make('nokk')
-                ->requiredMapping()
-                ->rules(['required', 'max:255']),
-            ImportColumn::make('nik_ktp')
+            ImportColumn::make('no_nik')
+                ->guess(['nik', 'no nik', 'nik ktp'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('nama_penerima')
+                ->guess(['nama', 'nama penerima'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
-            ImportColumn::make('kode_wilayah')
-                ->requiredMapping()
-                ->rules(['required', 'max:10']),
-            ImportColumn::make('tahap')
-                ->requiredMapping()
-                ->boolean()
-                ->rules(['required', 'boolean']),
-            ImportColumn::make('bansos')
-                ->requiredMapping()
-                ->rules(['required', 'max:255']),
-            ImportColumn::make('bank')
-                ->requiredMapping()
-                ->rules(['required', 'max:255']),
-            ImportColumn::make('nominal')
-                ->numeric()
-                ->rules(['integer']),
             ImportColumn::make('provinsi')
-                ->rules(['max:2']),
-            ImportColumn::make('kabupaten')
-                ->rules(['max:5']),
-            ImportColumn::make('kecamatan')
-                ->rules(['max:7']),
-            ImportColumn::make('kelurahan')
-                ->rules(['max:10']),
-            ImportColumn::make('alamat')
                 ->requiredMapping()
-                ->rules(['required', 'max:255']),
-            ImportColumn::make('no_rt')
-                ->rules(['max:255']),
-            ImportColumn::make('no_rw')
-                ->rules(['max:255']),
-            ImportColumn::make('dusun')
-                ->rules(['max:255']),
-            ImportColumn::make('dir')
-                ->rules(['max:255']),
-            ImportColumn::make('gelombang')
-                ->rules(['max:255']),
-            ImportColumn::make('status_bpnt')
-                ->rules(['max:255']),
+                ->fillRecordUsing(function (BantuanBpnt $record, $state): void {
+                    $prov = Provinsi::where('name', $state)->first();
+                    $record->provinsi = $prov?->code;
+                }),
+            ImportColumn::make('kabupaten')
+                ->requiredMapping()
+                ->fillRecordUsing(function (BantuanBpnt $record, $state): void {
+                    $kab = Kabupaten::query()
+                        ->where('provinsi_code', setting('app.kodeprov', config('custom.default.kodeprov')))
+                        ->where('name', $state)
+                        ->first();
+                    $record->kabupaten = $kab?->code;
+                }),
+            ImportColumn::make('kecamatan')
+                ->requiredMapping()
+                ->fillRecordUsing(function (BantuanBpnt $record, $state): void {
+                    $kec = Kecamatan::query()
+                        ->where('kabupaten_code', setting('app.kodekab', config('custom.default.kodekab')))
+                        ->where('name', $state)
+                        ->first();
+                    $record->kecamatan = $kec?->code;
+                }),
+            ImportColumn::make('kelurahan')
+                ->requiredMapping()
+                ->fillRecordUsing(function (BantuanBpnt $record, $state): void {
+                    $kel = Kelurahan::whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                        ->where('name', $state)->first();
+                    $record->kelurahan = $kel?->code;
+                }),
         ];
     }
 
@@ -91,5 +79,10 @@ class BantuanBpntImporter extends Importer
         // ]);
 
         return new BantuanBpnt();
+    }
+
+    public function getJobConnection(): ?string
+    {
+        return 'redis';
     }
 }

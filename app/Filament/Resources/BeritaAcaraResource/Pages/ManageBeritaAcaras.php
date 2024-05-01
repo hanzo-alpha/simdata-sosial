@@ -5,8 +5,6 @@ namespace App\Filament\Resources\BeritaAcaraResource\Pages;
 use App\Filament\Resources\BeritaAcaraResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
-use Filament\Support\Enums\MaxWidth;
-use Illuminate\Database\Eloquent\Model;
 
 class ManageBeritaAcaras extends ManageRecords
 {
@@ -16,11 +14,7 @@ class ManageBeritaAcaras extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->icon('heroicon-o-plus')
-                ->modalWidth(MaxWidth::SevenExtraLarge)
-                ->successRedirectUrl(fn(Model $record) => route('pdf.ba', [
-                    'id' => $record, 'm' => $this->getModel()
-                ])),
+                ->icon('heroicon-o-plus'),
         ];
     }
 }

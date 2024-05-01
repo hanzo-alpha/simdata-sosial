@@ -30,6 +30,7 @@ final class TipePpksResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_tipe')
+                    ->label('Nama Tipe')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('alias')
@@ -54,6 +55,7 @@ final class TipePpksResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 BadgeableColumn::make('nama_tipe')
                     ->label('Kategori PPKS')

@@ -18,7 +18,7 @@ class TipePpks extends Model
 
     public function kriteria_ppks(): BelongsToMany
     {
-        return $this->belongsToMany(KriteriaPpks::class, 'tipe_kriteria_ppks');
+        return $this->belongsToMany(KriteriaPpks::class, 'tipe_kriteria_ppks')->withTimestamps();
     }
 
     public function kriteriaPpks(): HasMany

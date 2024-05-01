@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Storage;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanRastra extends Model
@@ -81,46 +80,6 @@ class BantuanRastra extends Model
     public static function getAlamatForm(): array
     {
         return [
-            //            Grid::make()
-            //                ->schema([
-            //                    Geocomplete::make('alamat')
-            //                        ->countries(['id'])
-            //                        ->updateLatLng()
-            //                        ->geocodeOnLoad()
-            //                        ->columnSpanFull()
-            //                        ->reverseGeocode([
-            //                            'country' => '%C',
-            //                            'city' => '%L',
-            //                            'city_district' => '%D',
-            //                            'zip' => '%z',
-            //                            'state' => '%A1',
-            //                            'street' => '%S %n',
-            //                        ]),
-            //                    Grid::make(2)->schema([
-            //                        TextInput::make('latitude')
-            //                            ->disabled()
-            //                            ->dehydrated()
-            //                            ->reactive()
-            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-            //                                $set('location', [
-            //                                    'lat' => floatVal($state),
-            //                                    'lng' => floatVal($get('longitude')),
-            //                                ]);
-            //                            })
-            //                            ->lazy(), // important to use lazy, to avoid updates as you type
-            //                        TextInput::make('longitude')
-            //                            ->disabled()
-            //                            ->dehydrated()
-            //                            ->reactive()
-            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-            //                                $set('location', [
-            //                                    'lat' => (float) $get('latitude'),
-            //                                    'lng' => floatVal($state),
-            //                                ]);
-            //                            })
-            //                            ->lazy(),
-            //                    ]),
-            //                ]),
             Grid::make(2)
                 ->schema([
                     TextInput::make('alamat')
@@ -288,6 +247,11 @@ class BantuanRastra extends Model
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
+    public function attachments(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'media_id', 'id');
+    }
+
     public function alamat(): MorphOne
     {
         return $this->morphOne(Alamat::class, 'alamatable');
@@ -305,27 +269,18 @@ class BantuanRastra extends Model
 
     protected static function booted(): void
     {
-        static::deleted(static function (BantuanRastra $bantuanRastra): void {
-            foreach ($bantuanRastra->foto_ktp_kk as $image) {
-                Storage::delete("public/{$image}");
-            }
-        });
-
-        static::updating(static function (BantuanRastra $bantuanRastra): void {
-            $imagesToDelete = array_diff($bantuanRastra->getOriginal('foto_ktp_kk'), $bantuanRastra->foto_ktp_kk);
-
-            foreach ($imagesToDelete as $image) {
-                Storage::delete("public/{$image}");
-            }
-        });
+//        static::deleted(static function (BantuanRastra $bantuanRastra): void {
+//            foreach ($bantuanRastra->foto_ktp_kk as $image) {
+//                Storage::delete("public/{$image}");
+//            }
+//        });
+//
+//        static::updating(static function (BantuanRastra $bantuanRastra): void {
+//            $imagesToDelete = array_diff($bantuanRastra->getOriginal('foto_ktp_kk'), $bantuanRastra->foto_ktp_kk);
+//
+//            foreach ($imagesToDelete as $image) {
+//                Storage::delete("public/{$image}");
+//            }
+//        });
     }
-
-    //    protected static function booted(): void
-    //    {
-    //        static::addGlobalScope('instansi', static function (Builder $query): void {
-    //            if (auth()->check()) {
-    //                $query->where('instansi_id', auth()->user()->instansi_id);
-    //            }
-    //        });
-    //    }
 }

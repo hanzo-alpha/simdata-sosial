@@ -35,10 +35,11 @@ class PenyaluranBantuanRastraResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferLoading()
+            ->poll()
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
-                CuratorColumn::make('beritaAcara')
-                    ->size(60),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->label('Nama KPM')
                     ->searchable()
@@ -62,6 +63,9 @@ class PenyaluranBantuanRastraResource extends Resource
                 Tables\Columns\TextColumn::make('lokasi')
                     ->label('Alamat')
                     ->limit(30),
+                CuratorColumn::make('beritaAcara')
+                    ->label('Berita Acara')
+                    ->size(60),
                 Tables\Columns\TextColumn::make('status_penyaluran')
                     ->label('Status')
                     ->alignCenter()

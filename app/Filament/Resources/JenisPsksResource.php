@@ -21,6 +21,7 @@ class JenisPsksResource extends Resource
     protected static ?string $navigationLabel = 'Jenis PSKS';
     protected static ?string $navigationParentItem = 'Tipe PPKS';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -36,6 +37,7 @@ class JenisPsksResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('nama_psks')
                     ->label('Nama PSKS')

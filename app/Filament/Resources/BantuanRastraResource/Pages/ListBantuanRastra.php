@@ -7,11 +7,14 @@ namespace App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Imports\BantuanRastraImporter;
 use App\Filament\Resources\BantuanRastraResource;
-use App\Filament\Widgets\BantuanRastraOverview;
+use App\Models\BantuanRastra;
+use App\Models\Kecamatan;
 use Filament\Actions;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ListBantuanRastra extends ListRecords
@@ -20,10 +23,32 @@ class ListBantuanRastra extends ListRecords
 
     protected static string $resource = BantuanRastraResource::class;
 
+    public function getTabs(): array
+    {
+        $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
+        $results = collect();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()->badge(BantuanRastra::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanRastra::query()->whereHas(
+                    'kec',
+                    fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code)
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kec',
+                        fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code)
+                    )
+                ));
+        });
+
+        return $results->toArray();
+    }
+
     protected function getHeaderWidgets(): array
     {
         return [
-            BantuanRastraOverview::class,
+//            BantuanRastraOverview::class,
         ];
     }
 

@@ -31,26 +31,13 @@ class BantuanChart extends ApexChartWidget
      */
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
 
-    protected static ?int $contentHeight = 300;
+    protected static ?int $contentHeight = 400;
 
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
-    //    protected int|string|array $columnSpan = 'full';
-    protected int|string|array $columnSpan = [
-        'md' => 2,
-        'xl' => 3,
-    ];
 
     protected function getOptions(): array
     {
-        //showing a loading indicator immediately after the page load
-        if ( ! $this->readyToLoad) {
-            return [];
-        }
-
-        //slow query
-        sleep(2);
-
         return [
             'chart' => [
                 'type' => 'pie',
@@ -69,23 +56,21 @@ class BantuanChart extends ApexChartWidget
                 'labels' => [
                     'fontFamily' => 'inherit',
                 ],
-                'position' => 'bottom',
+                //                'position' => 'bottom',
             ],
-            'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE']
+            //            'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE']
         ];
     }
 
-    protected function renderBantuan($filter = null): array
+    protected function renderBantuan(): array
     {
-        $pdd = 17.21 * 1000;
-        $angka = $pdd;
         return [
             'rastra' => BantuanRastra::count(),
             'bpjs' => BantuanBpjs::count(),
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
-            'angka_kemiskinan' => $angka,
+            'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
         ];
     }
 

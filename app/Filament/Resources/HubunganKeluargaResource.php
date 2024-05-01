@@ -31,6 +31,7 @@ final class HubunganKeluargaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_hubungan')
+                    ->label('Nama Hubungan')
                     ->required()
                     ->autofocus(),
             ])->columns(1)

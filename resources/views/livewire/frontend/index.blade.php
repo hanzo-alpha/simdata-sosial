@@ -191,30 +191,35 @@
                     <span class="text-primary bg-primary/10 rounded-full px-3 py-1 text-sm font-medium">
                         Jumlah KPM Program Bantuan
                     </span>
-                    <h2 class="my-5 text-xl font-semibold md:text-3xl">Buktikan Dengan Angka</h2>
+                    <h2 class="my-5 text-xl font-semibold md:text-3xl">Data Statistik Program Bantuan Sosial</h2>
                     {{-- <p class="text-slate-500">Saat ini program bantuan pada Dinas Sosial berjumlah 5 Program.</p> --}}
                 </div>
 
-                <div class="mt-14 grid grid-cols-2 gap-5 py-16 md:grid-cols-5" data-aos="fade-up" wire:poll.keep-alive>
+                <div class="mt-14 grid grid-cols-2 gap-6 py-16 md:grid-cols-3" data-aos="fade-up" wire:poll.keep-alive>
                     <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::abbreviate($bantuan['bpjs'], 2) }}</h4>
+                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpjs'], 0, locale: 'id') }} KPM</h4>
                         <p class="text-slate-600">Program BPJS</p>
                     </div>
                     <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::abbreviate($bantuan['rastra'], 2) }}</h4>
+                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['rastra'], 0, locale: 'id') }} KPM</h4>
                         <p class="text-slate-600">Program RASTRA</p>
                     </div>
                     <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::abbreviate($bantuan['pkh'], 2) }}</h4>
+                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['pkh'], 0, locale: 'id') }} KPM</h4>
                         <p class="text-slate-600">Program PKH</p>
                     </div>
-                    <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::abbreviate($bantuan['bpnt'], 2) }}</h4>
+                    <div class="text-center mt-4">
+                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpnt'], 0, locale: 'id') }} KPM</h4>
                         <p class="text-slate-600">Program BPNT</p>
                     </div>
-                    <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::abbreviate($bantuan['ppks'], 2) }}</h4>
+                    <div class="text-center mt-4">
+                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['ppks'], 0, locale: 'id') }} KPM</h4>
                         <p class="text-slate-600">Program PPKS</p>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['angka_kemiskinan'], 0, locale: 'id')
+                        }} KPM</h4>
+                        <p class="text-slate-600">Angka Kemiskinan</p>
                     </div>
                 </div>
             </div>

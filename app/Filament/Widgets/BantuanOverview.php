@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Kenepa\MultiWidget\MultiWidget;
 
 class BantuanOverview extends MultiWidget
 {
     use HasWidgetShield;
+    use InteractsWithPageFilters;
 
     public array $widgets = [
         BantuanBpjsOverview::class,
@@ -19,9 +21,9 @@ class BantuanOverview extends MultiWidget
         BantuanPpksOverview::class,
     ];
 
-    //    public function shouldPersistMultiWidgetTabsInSession(): bool
-    //    {
-    //        return true;
-    //    }
+//    public function shouldPersistMultiWidgetTabsInSession(): bool
+//    {
+//        return true;
+//    }
 
 }

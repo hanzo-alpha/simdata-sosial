@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Imports;
 
 use App\Models\PesertaBpjs as PesertaJamkesda;
+use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -32,8 +33,8 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
     {
         return [
             ImportFailed::class => function (ImportFailed $event): void {
-                Notification::make('Import Failed')
-                    ->title('Gagal Impor Peserta JAMKESDA')
+                Notification::make()
+                    ->title('Gagal Impor Peserta BPJS')
                     ->danger()
                     ->send()
                     ->sendToDatabase(auth()->user());
@@ -47,10 +48,10 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
     public function model(array $row): Model|PesertaJamkesda|null
     {
         return new PesertaJamkesda([
-            'nomor_kartu' => $row['no_kartu'] ?? 'NO KARTU',
-            'nik' => $row['nik'] ?? 'NO NIK',
-            'nama_lengkap' => $row['nama'] ?? 'NO NAME',
-            'alamat' => $row['alamat'] ?? 'NO ALAMAT',
+            'nomor_kartu' => $row['no_kartu'] ?? '-',
+            'nik' => $row['nik'] ?? '-',
+            'nama_lengkap' => $row['nama'] ?? '-',
+            'alamat' => $row['alamat'] ?? '-',
             'no_rt' => null,
             'no_rw' => null,
             'kabupaten' => null,
@@ -73,12 +74,12 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
             $errmsg = $failure->errors()[0];
             $values = $failure->values();
 
-            //            Notification::make('Failure Import')
-            //                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-            //                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' . $values['nama_lengkap'] ?? '-')
-            //                ->danger()
-            //                ->sendToDatabase(auth()->user())
-            //                ->broadcast(User::where('is_admin', 1)->get());
+            Notification::make('Terjadi Kesalahan Impor')
+                ->title('Baris Ke : '.$baris.' | '.$errmsg)
+                ->body('NIK : '.$values['nik'] ?? '-'.' | Nama : '.$values['nama_lengkap'] ?? '-')
+                ->danger()
+                ->sendToDatabase(auth()->user())
+                ->broadcast(User::where('is_admin', 1)->get());
 
             Log::error($errmsg);
         }

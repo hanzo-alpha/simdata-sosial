@@ -20,6 +20,7 @@ return [
         'font' => 'Poppins',
         'dark_mode' => true,
         'logo_height' => '2rem',
+        'stat_prefix' => ' Kpm'
     ],
     'format_auto' => [
         'length' => 5,
@@ -40,6 +41,6 @@ return [
     ],
     'version' => [
         'app' => 'v1.0.0',
-        'name' => 'SIMKADA',
+        'name' => 'RENO DINSOS',
     ],
 ];

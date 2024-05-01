@@ -94,6 +94,7 @@ final class PenggantiRastraResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 CuratorColumn::make('beritaAcara')
                     ->label('Berita Acara')

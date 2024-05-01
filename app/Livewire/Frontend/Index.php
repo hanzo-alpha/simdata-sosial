@@ -31,6 +31,7 @@ class Index extends Component
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
+            'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
         ];
     }
 
@@ -42,13 +43,16 @@ class Index extends Component
             ->setLegendFontFamily('Poppins')
             ->setLegendFontSize('18')
             ->setLegendPosition('bottom')
-            ->setLabels(['Program BPJS', 'Program RASTRA', 'Program PKH', 'Program BPNT', 'Program PPKS'])
+            ->setLabels([
+                'Program BPJS', 'Program RASTRA', 'Program PKH', 'Program BPNT', 'Program PPKS', 'Angka Kemiskinan'
+            ])
             ->setDataset('Jumlah KPM Per Program Bantuan', 'donut', [
                 $bantuan['bpjs'],
                 $bantuan['rastra'],
                 $bantuan['pkh'],
                 $bantuan['bpnt'],
                 $bantuan['ppks'],
+                $bantuan['angka_kemiskinan'],
             ]);
     }
 }
