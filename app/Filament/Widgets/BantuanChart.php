@@ -62,7 +62,7 @@ class BantuanChart extends ApexChartWidget
         ];
     }
 
-    protected function renderBantuan($filter = null): array
+    protected function renderBantuan(): array
     {
         return [
             'rastra' => BantuanRastra::count(),
