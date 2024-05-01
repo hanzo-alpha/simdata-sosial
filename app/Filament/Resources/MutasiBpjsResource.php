@@ -43,7 +43,7 @@ final class MutasiBpjsResource extends Resource
                     ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
                     ->native(false)
                     ->getOptionLabelFromRecordUsing(fn(
-                        $record
+                        $record,
                     ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
                     ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
                         $peserta = PesertaBpjs::find($state);

@@ -43,7 +43,7 @@ final class Kelurahan extends Model
             'code',
             'code',
             'kecamatan_code',
-            'kabupaten_code'
+            'kabupaten_code',
         );
     }
 

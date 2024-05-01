@@ -8,7 +8,6 @@ use Illuminate\Http\Response;
 
 class PdfController extends Controller
 {
-
     public function downloadRastra(Request $request): Response
     {
         $model = $request->get('m')::find($request->get('id'));
@@ -16,7 +15,7 @@ class PdfController extends Controller
         $pdf->setOption([
             'dpi' => 96,
             'defaultFont' => 'sans-serif',
-            'defaultPaperSize' => 'a4'
+            'defaultPaperSize' => 'a4',
         ]);
         return $pdf->stream('dokumentasi-rastra.pdf');
     }
@@ -29,7 +28,7 @@ class PdfController extends Controller
         $pdf->setOption([
             'dpi' => 120,
             'defaultFont' => 'sans-serif',
-            'defaultPaperSize' => 'a4'
+            'defaultPaperSize' => 'a4',
         ]);
 
         return $pdf->stream('berita-acara-serah-terima-barang.pdf');

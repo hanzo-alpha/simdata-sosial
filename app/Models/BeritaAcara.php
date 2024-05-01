@@ -18,7 +18,7 @@ class BeritaAcara extends Model
     ];
 
     protected $with = [
-        'penandatangan', 'itemBantuan', 'kel', 'kec'
+        'penandatangan', 'itemBantuan', 'kel', 'kec',
     ];
 
     public function penandatangan(): BelongsTo

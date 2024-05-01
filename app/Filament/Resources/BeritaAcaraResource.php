@@ -81,8 +81,8 @@ class BeritaAcaraResource extends Resource
                     ->form([
                         Forms\Components\Section::make()
                             ->schema([
-                                Forms\Components\TextInput::make('beritaAcara')
-                            ])
+                                Forms\Components\TextInput::make('beritaAcara'),
+                            ]),
                     ])
                     ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make(),
@@ -132,15 +132,15 @@ class BeritaAcaraResource extends Resource
                             ->relationship(
                                 name: 'penandatangan',
                                 titleAttribute: 'nama_penandatangan',
-                                modifyQueryUsing: fn(Builder $query) => $query->with(['kecamatan', 'kelurahan'])
+                                modifyQueryUsing: fn(Builder $query) => $query->with(['kecamatan', 'kelurahan']),
                             )
                             ->native(false)
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari Penandatangan')
                             ->getOptionLabelFromRecordUsing(
                                 fn(
-                                    Model $record
-                                ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan} - {$record->kelurahan?->name}"
+                                    Model $record,
+                                ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan} - {$record->kelurahan?->name}",
                             )
                             ->allowHtml()
                             ->live(onBlur: true)
@@ -154,12 +154,12 @@ class BeritaAcaraResource extends Resource
                             ->options(function () {
                                 $kab = Kecamatan::query()->where(
                                     'kabupaten_code',
-                                    setting('app.kodekab', config('custom.default.kodekab'))
+                                    setting('app.kodekab', config('custom.default.kodekab')),
                                 );
-                                if (!$kab) {
+                                if ( ! $kab) {
                                     return Kecamatan::where(
                                         'kabupaten_code',
-                                        setting('app.kodekab', config('custom.default.kodekab'))
+                                        setting('app.kodekab', config('custom.default.kodekab')),
                                     )
                                         ->pluck('name', 'code');
                                 }
@@ -173,10 +173,10 @@ class BeritaAcaraResource extends Resource
                             ->options(function (callable $get) {
                                 return Kelurahan::query()->where(
                                     'kecamatan_code',
-                                    $get('kecamatan')
+                                    $get('kecamatan'),
                                 )?->pluck(
                                     'name',
-                                    'code'
+                                    'code',
                                 );
                             })
                             ->reactive()
@@ -192,7 +192,7 @@ class BeritaAcaraResource extends Resource
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari Item Bantuan')
                             ->getOptionLabelFromRecordUsing(fn(
-                                Model $record
+                                Model $record,
                             ) => "<strong>{$record->nama_barang}</strong><br> {$record->kode_barang}")
                             ->allowHtml()
                             ->live(onBlur: true)

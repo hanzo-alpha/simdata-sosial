@@ -84,7 +84,7 @@ class PenyaluranBantuanRastraResource extends Resource
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -110,14 +110,14 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->label('Nama KPM')
                             ->required()
                             ->relationship('bantuan_rastra', 'nama_lengkap', modifyQueryUsing: fn(
-                                Builder $query
+                                Builder $query,
                             ) => $query->where('status_aktif', '=', StatusAktif::AKTIF))
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari KPM berdasarkan no.kk , nik, atau nama')
                             ->getOptionLabelFromRecordUsing(fn(
-                                Model $record
+                                Model $record,
                             ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)
@@ -166,7 +166,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->afterStateUpdated(function (
                                 $state,
                                 callable $get,
-                                callable $set
+                                callable $set,
                             ): void {
                                 $set('location', [
                                     'lat' => (float) $state,
@@ -182,7 +182,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->afterStateUpdated(function (
                                 $state,
                                 callable $get,
-                                callable $set
+                                callable $set,
                             ): void {
                                 $set('location', [
                                     'lat' => (float) $get('lat'),
@@ -213,7 +213,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->required()
                             ->getUploadedFileNameForStorageUsing(
                                 fn(
-                                    TemporaryUploadedFile $file
+                                    TemporaryUploadedFile $file,
                                 ): string => (string) str($file->getClientOriginalName())
                                     ->prepend(date('YmdHis') . '-'),
                             )
@@ -237,7 +237,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->relationship('beritaAcara', 'id')
                             ->nullable()
                             ->preserveFilenames()
-                            ->columnSpanFull()
+                            ->columnSpanFull(),
                     ]),
                 ])->columnSpan(1),
 

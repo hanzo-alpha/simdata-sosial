@@ -34,7 +34,7 @@ class PenandatanganImporter extends Importer
                     $instansi = Kelurahan::query()
                         ->whereIn('kecamatan_code', [
                             '731201', '731202', '731203', '731204', '731205', '731206',
-                            '731207', '731208'
+                            '731207', '731208',
                         ])
                         ->where('name', $state)->first();
                     $record->kode_instansi = $instansi?->code ?? '-';
@@ -72,7 +72,7 @@ class PenandatanganImporter extends Importer
                 ->guess(['status'])
                 ->fillRecordUsing(function ($record): void {
                     $record->status_penandatangan = StatusPenandatangan::AKTIF->value ?? 1;
-                })
+                }),
         ];
     }
 
@@ -105,7 +105,7 @@ class PenandatanganImporter extends Importer
             $penandatangan = Penandatangan::query()
                 ->whereIn('kecamatan_code', [
                     '731201', '731202', '731203', '731204', '731205', '731206',
-                    '731207', '731208'
+                    '731207', '731208',
                 ])
                 ->where('name', $this->data['kode_instansi'])->first();
 

@@ -47,7 +47,7 @@ class PenyaluranBantuanPpksResource extends Resource
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
                             ->searchPrompt('Cari KPM berdasarkan no.kk , nik, atau nama')
                             ->getOptionLabelFromRecordUsing(fn(
-                                Model $record
+                                Model $record,
                             ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)
@@ -96,7 +96,7 @@ class PenyaluranBantuanPpksResource extends Resource
                             ->afterStateUpdated(function (
                                 $state,
                                 callable $get,
-                                callable $set
+                                callable $set,
                             ): void {
                                 $set('location', [
                                     'lat' => (float) $state,
@@ -112,7 +112,7 @@ class PenyaluranBantuanPpksResource extends Resource
                             ->afterStateUpdated(function (
                                 $state,
                                 callable $get,
-                                callable $set
+                                callable $set,
                             ): void {
                                 $set('location', [
                                     'lat' => (float) $get('lat'),
@@ -142,7 +142,7 @@ class PenyaluranBantuanPpksResource extends Resource
                             ->required()
                             ->getUploadedFileNameForStorageUsing(
                                 fn(
-                                    TemporaryUploadedFile $file
+                                    TemporaryUploadedFile $file,
                                 ): string => (string) str($file->getClientOriginalName())
                                     ->prepend(date('YmdHis') . '-'),
                             )
@@ -211,7 +211,7 @@ class PenyaluranBantuanPpksResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -80,7 +80,7 @@ class Settings extends BaseSettings
                             Section::make('Pendukung')->schema([
                                 TextInput::make('app.angka_kemiskinan')
                                     ->label('Angka Kemiskinan'),
-                            ])->columns(2)
+                            ])->columns(2),
                         ])->columns(2),
                     Tabs\Tab::make('Persuratan')
                         ->icon('heroicon-o-envelope')
@@ -141,7 +141,7 @@ class Settings extends BaseSettings
                                         ->label('Kop Jalan')
                                         ->default('Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng'),
                                 ])->columns(2),
-                        ])
+                        ]),
                 ]),
         ];
     }

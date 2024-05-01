@@ -44,7 +44,7 @@ class Index extends Component
             ->setLegendFontSize('18')
             ->setLegendPosition('bottom')
             ->setLabels([
-                'Program BPJS', 'Program RASTRA', 'Program PKH', 'Program BPNT', 'Program PPKS', 'Angka Kemiskinan'
+                'Program BPJS', 'Program RASTRA', 'Program PKH', 'Program BPNT', 'Program PPKS', 'Angka Kemiskinan',
             ])
             ->setDataset('Jumlah KPM Per Program Bantuan', 'donut', [
                 $bantuan['bpjs'],

@@ -42,7 +42,7 @@ class BantuanRastra extends Model
         'status_dtks' => StatusDtksEnum::class,
         'status_rastra' => StatusRastra::class,
         'status_aktif' => StatusAktif::class,
-        'status_verifikasi' => StatusVerifikasiEnum::class
+        'status_verifikasi' => StatusVerifikasiEnum::class,
     ];
 
     public static function getLatLngAttributes(): array
@@ -93,12 +93,12 @@ class BantuanRastra extends Model
                             $kab = Kecamatan::query()
                                 ->where('kabupaten_code', setting(
                                     'app.kodekab',
-                                    config('custom.default.kodekab')
+                                    config('custom.default.kodekab'),
                                 ));
                             if ( ! $kab) {
                                 return Kecamatan::where('kabupaten_code', setting(
                                     'app.kodekab',
-                                    config('custom.default.kodekab')
+                                    config('custom.default.kodekab'),
                                 ))
                                     ->pluck('name', 'code');
                             }
@@ -112,7 +112,7 @@ class BantuanRastra extends Model
                         ->options(function (callable $get) {
                             return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
                                 'name',
-                                'code'
+                                'code',
                             );
                         })
                         ->reactive()
@@ -145,7 +145,7 @@ class BantuanRastra extends Model
                 ->relationship(
                     name: 'jenis_bantuan',
                     titleAttribute: 'alias',
-                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2]),
                 )
                 ->default(5)
                 ->dehydrated(),
@@ -215,7 +215,7 @@ class BantuanRastra extends Model
                 ->label('Unggah Foto KTP / KK')
                 ->getUploadedFileNameForStorageUsing(
                     fn(
-                        TemporaryUploadedFile $file
+                        TemporaryUploadedFile $file,
                     ): string => (string) str($file->getClientOriginalName())
                         ->prepend(date('d-m-Y-H-i-s') . '-'),
                 )
@@ -238,7 +238,7 @@ class BantuanRastra extends Model
                 ->relationship('beritaAcara', 'id')
                 ->nullable()
                 ->preserveFilenames()
-                ->columnSpanFull()
+                ->columnSpanFull(),
         ];
     }
 
@@ -269,18 +269,18 @@ class BantuanRastra extends Model
 
     protected static function booted(): void
     {
-//        static::deleted(static function (BantuanRastra $bantuanRastra): void {
-//            foreach ($bantuanRastra->foto_ktp_kk as $image) {
-//                Storage::delete("public/{$image}");
-//            }
-//        });
-//
-//        static::updating(static function (BantuanRastra $bantuanRastra): void {
-//            $imagesToDelete = array_diff($bantuanRastra->getOriginal('foto_ktp_kk'), $bantuanRastra->foto_ktp_kk);
-//
-//            foreach ($imagesToDelete as $image) {
-//                Storage::delete("public/{$image}");
-//            }
-//        });
+        //        static::deleted(static function (BantuanRastra $bantuanRastra): void {
+        //            foreach ($bantuanRastra->foto_ktp_kk as $image) {
+        //                Storage::delete("public/{$image}");
+        //            }
+        //        });
+        //
+        //        static::updating(static function (BantuanRastra $bantuanRastra): void {
+        //            $imagesToDelete = array_diff($bantuanRastra->getOriginal('foto_ktp_kk'), $bantuanRastra->foto_ktp_kk);
+        //
+        //            foreach ($imagesToDelete as $image) {
+        //                Storage::delete("public/{$image}");
+        //            }
+        //        });
     }
 }

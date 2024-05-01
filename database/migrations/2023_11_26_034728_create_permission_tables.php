@@ -59,7 +59,7 @@ return new class () extends Migration {
                 $table->unsignedBigInteger($columnNames['model_morph_key']);
                 $table->index(
                     [$columnNames['model_morph_key'], 'model_type'],
-                    'model_has_permissions_model_id_model_type_index'
+                    'model_has_permissions_model_id_model_type_index',
                 );
 
                 $table->foreign($pivotPermission)
@@ -75,16 +75,16 @@ return new class () extends Migration {
                             $columnNames['team_foreign_key'], $pivotPermission, $columnNames['model_morph_key'],
                             'model_type',
                         ],
-                        'model_has_permissions_permission_model_type_primary'
+                        'model_has_permissions_permission_model_type_primary',
                     );
                 } else {
                     $table->primary(
                         [$pivotPermission, $columnNames['model_morph_key'], 'model_type'],
-                        'model_has_permissions_permission_model_type_primary'
+                        'model_has_permissions_permission_model_type_primary',
                     );
                 }
 
-            }
+            },
         );
 
         Schema::create(
@@ -96,7 +96,7 @@ return new class () extends Migration {
                 $table->unsignedBigInteger($columnNames['model_morph_key']);
                 $table->index(
                     [$columnNames['model_morph_key'], 'model_type'],
-                    'model_has_roles_model_id_model_type_index'
+                    'model_has_roles_model_id_model_type_index',
                 );
 
                 $table->foreign($pivotRole)
@@ -111,15 +111,15 @@ return new class () extends Migration {
                         [
                             $columnNames['team_foreign_key'], $pivotRole, $columnNames['model_morph_key'], 'model_type',
                         ],
-                        'model_has_roles_role_model_type_primary'
+                        'model_has_roles_role_model_type_primary',
                     );
                 } else {
                     $table->primary(
                         [$pivotRole, $columnNames['model_morph_key'], 'model_type'],
-                        'model_has_roles_role_model_type_primary'
+                        'model_has_roles_role_model_type_primary',
                     );
                 }
-            }
+            },
         );
 
         Schema::create(
@@ -139,7 +139,7 @@ return new class () extends Migration {
                     ->onDelete('cascade');
 
                 $table->primary([$pivotPermission, $pivotRole], 'role_has_permissions_permission_id_role_id_primary');
-            }
+            },
         );
 
         app('cache')

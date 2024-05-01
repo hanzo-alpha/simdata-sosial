@@ -169,7 +169,7 @@ final class BantuanPpksResource extends Resource
                                             if ( ! $kab) {
                                                 return Kabupaten::where(
                                                     'provinsi_code',
-                                                    setting('app.kodekab', config('custom.default.kodekab'))
+                                                    setting('app.kodekab', config('custom.default.kodekab')),
                                                 )
                                                     ->pluck('name', 'code');
                                             }
@@ -190,7 +190,7 @@ final class BantuanPpksResource extends Resource
                                             if ( ! $kab) {
                                                 return Kecamatan::where(
                                                     'kabupaten_code',
-                                                    setting('app.kodekab', config('custom.default.kodekab'))
+                                                    setting('app.kodekab', config('custom.default.kodekab')),
                                                 )
                                                     ->pluck('name', 'code');
                                             }
@@ -204,10 +204,10 @@ final class BantuanPpksResource extends Resource
                                         ->options(function (callable $get) {
                                             return Kelurahan::query()->where(
                                                 'kecamatan_code',
-                                                $get('kecamatan')
+                                                $get('kecamatan'),
                                             )?->pluck(
                                                 'name',
-                                                'code'
+                                                'code',
                                             );
                                         })
                                         ->reactive()
@@ -239,7 +239,7 @@ final class BantuanPpksResource extends Resource
                                 ->relationship(
                                     name: 'jenis_bantuan',
                                     titleAttribute: 'alias',
-                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2])
+                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2]),
                                 )
                                 ->default(4)
                                 ->dehydrated(),
@@ -272,7 +272,7 @@ final class BantuanPpksResource extends Resource
                                 ->options(function (callable $set, callable $get) {
                                     return KriteriaPpks::where(
                                         'tipe_ppks_id',
-                                        $get('tipe_ppks_id')
+                                        $get('tipe_ppks_id'),
                                     )
                                         ?->pluck('nama_kriteria', 'id');
                                 })
@@ -322,7 +322,7 @@ final class BantuanPpksResource extends Resource
                                 ->label('Dokumentasi')
                                 ->getUploadedFileNameForStorageUsing(
                                     fn(
-                                        TemporaryUploadedFile $file
+                                        TemporaryUploadedFile $file,
                                     ): string => (string) str($file->getClientOriginalName())
                                         ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
@@ -443,7 +443,7 @@ final class BantuanPpksResource extends Resource
                 SelectFilter::make('tahun_anggaran')
                     ->label('Tahun')
                     ->options(list_tahun())
-                    ->searchable()
+                    ->searchable(),
             ])
             ->deferFilters()
             ->persistFiltersInSession()
@@ -569,8 +569,8 @@ final class BantuanPpksResource extends Resource
                                 ->hiddenLabel()
                                 ->extraImgAttributes([
                                     'alt' => 'foto rumah',
-                                    'loading' => 'lazy'
-                                ])
+                                    'loading' => 'lazy',
+                                ]),
                         ])->columns(3),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
