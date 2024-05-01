@@ -10,7 +10,7 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::create('breezy_sessions', function (
-            Blueprint $table
+            Blueprint $table,
         ): void {
             $table->id();
             $table->string('authenticatable_type');

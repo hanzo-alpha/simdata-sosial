@@ -14,7 +14,7 @@ class PenyaluranBantuanPpks extends Model
     protected $casts = [
         'tgl_penyerahan' => 'datetime',
         'foto_penyerahan' => 'array',
-        'status_penyaluran' => StatusPenyaluran::class
+        'status_penyaluran' => StatusPenyaluran::class,
     ];
 
     protected $appends = [

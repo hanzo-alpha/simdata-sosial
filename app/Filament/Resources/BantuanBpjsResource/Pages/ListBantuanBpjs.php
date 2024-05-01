@@ -27,12 +27,12 @@ class ListBantuanBpjs extends ListRecords
 
     protected static string $resource = BantuanBpjsResource::class;
 
-//    protected function getHeaderWidgets(): array
-//    {
-//        return [
-//            BantuanBpjsOverview::class,
-//        ];
-//    }
+    //    protected function getHeaderWidgets(): array
+    //    {
+    //        return [
+    //            BantuanBpjsOverview::class,
+    //        ];
+    //    }
 
     public function getTabs(): array
     {
@@ -43,13 +43,13 @@ class ListBantuanBpjs extends ListRecords
             $results->put(Str::lower($item->name), Tab::make()
                 ->badge(BantuanBpjs::query()->whereHas(
                     'kec',
-                    fn(Builder $query) => $query->where('bantuan_bpjs.kecamatan', $item->code)
+                    fn(Builder $query) => $query->where('bantuan_bpjs.kecamatan', $item->code),
                 )->count())
                 ->modifyQueryUsing(
                     fn(Builder $query) => $query->whereHas(
                         'kec',
-                        fn(Builder $query) => $query->where('bantuan_bpjs.kecamatan', $item->code)
-                    )
+                        fn(Builder $query) => $query->where('bantuan_bpjs.kecamatan', $item->code),
+                    ),
                 ));
         });
 

@@ -75,8 +75,8 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
             $values = $failure->values();
 
             Notification::make('Terjadi Kesalahan Impor')
-                ->title('Baris Ke : '.$baris.' | '.$errmsg)
-                ->body('NIK : '.$values['nik'] ?? '-'.' | Nama : '.$values['nama_lengkap'] ?? '-')
+                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+                ->body('NIK : ' . $values['nik'] ?? '-' . ' | Nama : ' . $values['nama_lengkap'] ?? '-')
                 ->danger()
                 ->sendToDatabase(auth()->user())
                 ->broadcast(User::where('is_admin', 1)->get());

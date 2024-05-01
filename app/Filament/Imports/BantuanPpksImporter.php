@@ -90,7 +90,7 @@ class BantuanPpksImporter extends Importer
                         'CERAI MATI' => StatusKawinUmumEnum::CERAI_MATI,
                         'CERAI HIDUP' => StatusKawinUmumEnum::CERAI_HIDUP,
                         'CERAI BELUM TERCATAT' => StatusKawinUmumEnum::CERAI_BELUM_TERCATAT,
-                        'BELUM KAWIN' => StatusKawinUmumEnum::BELUM_KAWIN
+                        'BELUM KAWIN' => StatusKawinUmumEnum::BELUM_KAWIN,
                     };
                 }),
             ImportColumn::make('nama_bantuan')

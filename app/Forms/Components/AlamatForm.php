@@ -169,7 +169,7 @@ final class AlamatForm extends Field
                         ->options(function (callable $get) {
                             return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
                                 'name',
-                                'code'
+                                'code',
                             );
                         })
                         ->reactive()

@@ -57,7 +57,7 @@ class AdminPanelProvider extends PanelProvider
                         shouldRegisterUserMenu: true,
                         shouldRegisterNavigation: false,
                         hasAvatars: false,
-                        slug: 'profil'
+                        slug: 'profil',
                     )
                     ->enableTwoFactorAuthentication(),
                 SpotlightPlugin::make(),

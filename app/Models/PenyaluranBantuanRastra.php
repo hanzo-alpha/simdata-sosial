@@ -25,7 +25,7 @@ class PenyaluranBantuanRastra extends Model
 
     protected $with = [
         'bantuan_rastra',
-        'beritaAcara'
+        'beritaAcara',
     ];
 
     protected $appends = [
