@@ -132,7 +132,7 @@ class BantuanChart extends ApexChartWidget
                     },
                 }
             }
-        JS
+        JS,
         );
     }
 }

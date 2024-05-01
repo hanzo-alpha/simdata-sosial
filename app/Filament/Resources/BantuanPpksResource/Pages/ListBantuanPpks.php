@@ -29,8 +29,8 @@ final class ListBantuanPpks extends ListRecords
                 ->modifyQueryUsing(
                     fn(Builder $query) => $query->whereHas(
                         'tipe_ppks',
-                        fn(Builder $query) => $query->where('bantuan_ppks.id', $key)
-                    )
+                        fn(Builder $query) => $query->where('bantuan_ppks.id', $key),
+                    ),
                 ));
         });
 

@@ -50,8 +50,8 @@ class BantuanPpksOverview extends BaseWidget
                 ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters))
                 ->where('kecamatan', $code)
                 ->count();
-            $label = 'KPM PPKS Kec. '.$name;
-            $desc = 'Total PPKS Kec. '.$name;
+            $label = 'KPM PPKS Kec. ' . $name;
+            $desc = 'Total PPKS Kec. ' . $name;
             $icon = 'user';
 
             $results[] = $this->renderStats($value, $label, $desc, $icon);
@@ -62,7 +62,7 @@ class BantuanPpksOverview extends BaseWidget
             'Rekap KPM PPKS',
             'Total PPKS All Kecamatan',
             'users',
-            'primary'
+            'primary',
         );
 
         if (count($overview) > 0) {
@@ -98,21 +98,21 @@ class BantuanPpksOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM PPKS Tidak Terverifikasi',
-                value: Number::abbreviate($data['unverified'], 2)
+                value: Number::abbreviate($data['unverified'], 2),
             )
                 ->description('Total KPM PPKS Tidak Terverifikasi')
                 ->descriptionIcon('heroicon-o-minus-circle')
                 ->color('danger'),
             Stat::make(
                 label: 'KPM PPKS Terverifikasi',
-                value: Number::abbreviate($data['verified'], 2)
+                value: Number::abbreviate($data['verified'], 2),
             )
                 ->description('Total KPM PPKS Terverifikasi')
                 ->descriptionIcon('heroicon-o-check-badge')
                 ->color('success'),
             Stat::make(
                 label: 'KPM PPKS Ditinjau',
-                value: Number::abbreviate($data['review'], 2)
+                value: Number::abbreviate($data['review'], 2),
             )
                 ->description('Total KPM PPKS Ditinjau')
                 ->descriptionIcon('heroicon-o-exclamation-circle')
@@ -124,10 +124,10 @@ class BantuanPpksOverview extends BaseWidget
     {
         return Stat::make(
             label: $label ?? 'KPM PPKS',
-            value: Number::format($value ?? 0, 0, locale: 'id').config('custom.app.stat_prefix')
+            value: Number::format($value ?? 0, 0, locale: 'id') . config('custom.app.stat_prefix'),
         )
             ->description($desc ?? 'Total KPM Kec. Marioriwawo')
-            ->descriptionIcon('heroicon-o-'.$icon ?? 'user')
+            ->descriptionIcon('heroicon-o-' . $icon ?? 'user')
             ->color($color ?? 'success');
     }
 

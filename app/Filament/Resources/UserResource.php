@@ -60,9 +60,9 @@ class UserResource extends Resource
                         Kelurahan::query()
                             ->whereIn(
                                 'kecamatan_code',
-                                ['731201', '731202', '731203', '731204', '731205', '731206', '731207', '731208']
+                                ['731201', '731202', '731203', '731204', '731205', '731206', '731207', '731208'],
                             )
-                            ->pluck('name', 'code')
+                            ->pluck('name', 'code'),
                     )
                     ->searchable()
                     ->label('Instansi')
@@ -94,7 +94,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('instansi_id')
                     ->formatStateUsing(fn($state) => Kelurahan::find($state)?->name)
                     ->label('Instansi')
-                    ->badge()
+                    ->badge(),
             ])
             ->filters([
 

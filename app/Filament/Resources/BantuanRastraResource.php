@@ -80,7 +80,7 @@ class BantuanRastraResource extends Resource
                     ->alignCenter()
                     ->label('Status Aktif')
                     ->sortable()
-                    ->badge()
+                    ->badge(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -112,7 +112,7 @@ class BantuanRastraResource extends Resource
                         ->action(function ($record): void {
                             $record->status_aktif = match ($record->status_aktif) {
                                 StatusAktif::AKTIF => StatusAktif::NONAKTIF,
-                                StatusAktif::NONAKTIF => StatusAktif::AKTIF
+                                StatusAktif::NONAKTIF => StatusAktif::AKTIF,
                             };
 
                             $record->save();
@@ -123,8 +123,8 @@ class BantuanRastraResource extends Resource
                                 ->title('Status Berhasil Diubah')
                                 ->send();
                         })
-                        ->close()
-                ])
+                        ->close(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -142,7 +142,7 @@ class BantuanRastraResource extends Resource
                             $records->each(function ($records): void {
                                 $records->status_aktif = match ($records->status_aktif) {
                                     StatusAktif::AKTIF => StatusAktif::NONAKTIF,
-                                    StatusAktif::NONAKTIF => StatusAktif::AKTIF
+                                    StatusAktif::NONAKTIF => StatusAktif::AKTIF,
                                 };
 
                                 $records->save();
@@ -155,7 +155,7 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->closeModalByClickingAway()
-                        ->deselectRecordsAfterCompletion()
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
@@ -177,7 +177,7 @@ class BantuanRastraResource extends Resource
 
                     Forms\Components\Section::make('Verifikasi')
                         ->schema(BantuanRastra::getUploadForm())
-                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin'])),
                 ])->columnSpan(1),
             ])->columns(3);
     }

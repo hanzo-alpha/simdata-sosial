@@ -19,7 +19,7 @@ final class DatabaseSeeder extends Seeder
     {
         //        $this->command->warn(PHP_EOL.'Seeding Wilayah Data...');
         $this->call([
-            WilayahSeeder::class
+            WilayahSeeder::class,
         ]);
         //        $this->command->info('Wilayah created.');
     }
@@ -34,7 +34,7 @@ final class DatabaseSeeder extends Seeder
 
         foreach (range(1, $amount) as $i) {
             $items = $items->merge(
-                $createCollectionOfOne()
+                $createCollectionOfOne(),
             );
             $progressBar->advance();
         }

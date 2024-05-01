@@ -66,7 +66,7 @@ class PenandatanganResource extends Resource
                 SignaturePad::make('signature')
                     ->label('Tanda Tangan')
                     ->columnSpanFull()
-                    ->hideDownloadButtons()
+                    ->hideDownloadButtons(),
             ]);
     }
 
@@ -120,7 +120,7 @@ class PenandatanganResource extends Resource
                 Tables\Filters\SelectFilter::make('kode_instansi')
                     ->options(Kelurahan::whereIn(
                         'kecamatan_code',
-                        config('custom.kode_kecamatan')
+                        config('custom.kode_kecamatan'),
                     )->pluck('name', 'code'))
                     ->searchable()
                     ->preload(),

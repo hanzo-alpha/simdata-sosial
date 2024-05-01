@@ -52,8 +52,8 @@ class BantuanBpjsOverview extends BaseWidget
                 ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
                 ->where('kecamatan', $code)
                 ->count();
-            $label = 'KPM BPJS Kec. '.$name;
-            $desc = 'Total BPJS Kec. '.$name;
+            $label = 'KPM BPJS Kec. ' . $name;
+            $desc = 'Total BPJS Kec. ' . $name;
             $icon = 'user';
 
             $results[] = $this->renderStats($value, $label, $desc, $icon);
@@ -64,7 +64,7 @@ class BantuanBpjsOverview extends BaseWidget
             'Rekap KPM BPJS',
             'Total BPJS All Kecamatan',
             'users',
-            'primary'
+            'primary',
         );
         if (count($overview) > 0) {
             return array_merge($overview, $results);
@@ -111,28 +111,28 @@ class BantuanBpjsOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM BPJS',
-                value: Number::format($data['jamkesda'], 2, 0, 'id').config('custom.app.stat_prefix')
+                value: Number::format($data['jamkesda'], 2, 0, 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total Seluruh Usulan BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),
             Stat::make(
                 label: 'Usulan BPJS Berhasil',
-                value: Number::format($data['verified'], 2, 2, 'id').config('custom.app.stat_prefix')
+                value: Number::format($data['verified'], 2, 2, 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Jumlah Usulan BPJS Berhasil')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),
             Stat::make(
                 label: 'Usulan BPJS Gagal',
-                value: Number::format($data['unverified'], 2, 2, 'id').config('custom.app.stat_prefix')
+                value: Number::format($data['unverified'], 2, 2, 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Jumlah Usulan BPJS Gagal')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
             Stat::make(
                 label: 'Usulan BPJS Sedang Proses',
-                value: Number::format($data['review'], 2, 2, 'id').config('custom.app.stat_prefix')
+                value: Number::format($data['review'], 2, 2, 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Jumlah Usulan BPJS Sedang Proses')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
@@ -144,10 +144,10 @@ class BantuanBpjsOverview extends BaseWidget
     {
         return Stat::make(
             label: $label ?? 'KPM BPJS',
-            value: Number::format($value ?? 0, 0, locale: ('id')).config('custom.app.stat_prefix')
+            value: Number::format($value ?? 0, 0, locale: ('id')) . config('custom.app.stat_prefix'),
         )
             ->description($desc ?? 'Total KPM Kec. Marioriwawo')
-            ->descriptionIcon('heroicon-o-'.$icon ?? 'user')
+            ->descriptionIcon('heroicon-o-' . $icon ?? 'user')
             ->color($color ?? 'success');
     }
 }

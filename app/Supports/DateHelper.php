@@ -139,7 +139,7 @@ final class DateHelper
             '10' => 'Oktober',
             '11' => 'November',
             '12' => 'Desember',
-            default => ''
+            default => '',
         };
     }
 
@@ -251,7 +251,7 @@ final class DateHelper
 
         return Date::createFromFormat(
             config('custom.date.only_date'),
-            $date->format(config('custom.date.only_date'))
+            $date->format(config('custom.date.only_date')),
         )->format($format);
     }
 

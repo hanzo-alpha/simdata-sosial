@@ -78,7 +78,7 @@ class ImportBantuanBpjs implements
         $jenkel = match ($row['jenis_kelamin']) {
             'L' => 1,
             'P' => 2,
-            default => null
+            default => null,
         };
 
         $bulan = (isset($row['periode_bulan']) && 0 !== $row['periode_bulan']) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;

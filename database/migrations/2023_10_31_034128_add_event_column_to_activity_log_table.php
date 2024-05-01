@@ -14,7 +14,7 @@ final class AddEventColumnToActivityLogTable extends Migration
             config('activitylog.table_name'),
             function (Blueprint $table): void {
                 $table->string('event')->nullable()->after('subject_type');
-            }
+            },
         );
     }
 
@@ -24,7 +24,7 @@ final class AddEventColumnToActivityLogTable extends Migration
             config('activitylog.table_name'),
             function (Blueprint $table): void {
                 $table->dropColumn('event');
-            }
+            },
         );
     }
 }

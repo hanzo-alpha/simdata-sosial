@@ -35,7 +35,7 @@ class BantuanPpks extends Model
     protected $guarded = [];
 
     protected $with = [
-        'tipe_ppks'
+        'tipe_ppks',
     ];
 
     protected $casts = [
@@ -76,7 +76,7 @@ class BantuanPpks extends Model
     {
         return $this->belongsToMany(
             KriteriaPpks::class,
-            'tipe_kriteria_ppks'
+            'tipe_kriteria_ppks',
         )->withTimestamps();
     }
 

@@ -44,7 +44,7 @@ final class TipePpksResource extends Resource
                     ->simple(
                         Forms\Components\TextInput::make('nama_kriteria')
                             ->label('Nama Kriteria')
-                            ->required()
+                            ->required(),
                     )
                     ->addActionLabel('Tambah Kriteria PPKS')
                     ->reorderableWithButtons()

@@ -61,7 +61,7 @@ if ( ! function_exists('bulan_to_integer')) {
                 'OKT' => 10,
                 'NOV' => 11,
                 'DES' => 12,
-                default => null
+                default => null,
             };
         }
 
@@ -78,7 +78,7 @@ if ( ! function_exists('bulan_to_integer')) {
             'OKTOBER' => 10,
             'NOVEMBER' => 11,
             'DESEMBER' => 12,
-            default => null
+            default => null,
         };
     }
 }
@@ -101,7 +101,7 @@ if ( ! function_exists('bulan_to_string')) {
                 9 => 'SEP',
                 10 => 'OKT',
                 11 => 'NOV',
-                12 => 'DES'
+                12 => 'DES',
             };
         }
 
@@ -117,7 +117,7 @@ if ( ! function_exists('bulan_to_string')) {
             9 => 'SEPTEMBER',
             10 => 'OKTOBER',
             11 => 'NOVEMBER',
-            12 => 'DESEMBER'
+            12 => 'DESEMBER',
         };
     }
 

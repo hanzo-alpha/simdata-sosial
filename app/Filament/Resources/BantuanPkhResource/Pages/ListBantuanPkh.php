@@ -33,13 +33,13 @@ final class ListBantuanPkh extends ListRecords
             $results->put(Str::lower($item->name), Tab::make()
                 ->badge(BantuanPkh::query()->whereHas(
                     'kec',
-                    fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code)
+                    fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
                 )->count())
                 ->modifyQueryUsing(
                     fn(Builder $query) => $query->whereHas(
                         'kec',
-                        fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code)
-                    )
+                        fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
+                    ),
                 ));
         });
 

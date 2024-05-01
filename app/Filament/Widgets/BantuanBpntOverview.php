@@ -40,8 +40,8 @@ class BantuanBpntOverview extends BaseWidget
                 ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters))
                 ->where('kecamatan', $code)
                 ->count();
-            $label = 'KPM BPNT Kec. '.$name;
-            $desc = 'Total BPNT Kec. '.$name;
+            $label = 'KPM BPNT Kec. ' . $name;
+            $desc = 'Total BPNT Kec. ' . $name;
             $icon = 'user';
 
             $results[] = $this->renderStats($value, $label, $desc, $icon);
@@ -52,7 +52,7 @@ class BantuanBpntOverview extends BaseWidget
             'Rekap KPM BPNT',
             'Total BPNT All Kecamatan',
             'users',
-            'primary'
+            'primary',
         );
 
         return $results;
@@ -62,10 +62,10 @@ class BantuanBpntOverview extends BaseWidget
     {
         return Stat::make(
             label: $label ?? 'KPM PKH Kec. Marioriwawo',
-            value: Number::format($value ?? 0, 0, locale: 'id').config('custom.app.stat_prefix')
+            value: Number::format($value ?? 0, 0, locale: 'id') . config('custom.app.stat_prefix'),
         )
             ->description($desc ?? 'Total KPM')
-            ->descriptionIcon('heroicon-o-'.$icon ?? 'document-chart-bar')
+            ->descriptionIcon('heroicon-o-' . $icon ?? 'document-chart-bar')
             ->color($color ?? 'success');
     }
 }

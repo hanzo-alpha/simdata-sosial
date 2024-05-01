@@ -22,7 +22,7 @@ class LatestUser extends BaseWidget
             ->poll()
             ->emptyStateHeading('Tidak ada data ditemukan')
             ->query(
-                User::query()->whereNot('is_admin', 1)->orderByDesc('created_at')
+                User::query()->whereNot('is_admin', 1)->orderByDesc('created_at'),
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name'),

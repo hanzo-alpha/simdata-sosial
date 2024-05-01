@@ -163,7 +163,7 @@ class BantuanBpjsResource extends Resource
                             Select::make('status_usulan')
                                 ->options(StatusUsulanEnum::class)
                                 ->preload()
-                                ->lazy()
+                                ->lazy(),
                         ])
                         ->action(fn(Collection $record, $data) => $record->each->update($data))
                         ->after(function (): void {
@@ -173,7 +173,7 @@ class BantuanBpjsResource extends Resource
                                 ->send();
                         })
                         ->closeModalByClickingAway()
-                        ->deselectRecordsAfterCompletion()
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
@@ -224,12 +224,12 @@ class BantuanBpjsResource extends Resource
                                 ->options(function () {
                                     $kab = Kecamatan::query()->where(
                                         'kabupaten_code',
-                                        setting('app.kodekab', config('custom.default.kodekab'))
+                                        setting('app.kodekab', config('custom.default.kodekab')),
                                     );
                                     if ( ! $kab) {
                                         return Kecamatan::where(
                                             'kabupaten_code',
-                                            setting('app.kodekab', config('custom.default.kodekab'))
+                                            setting('app.kodekab', config('custom.default.kodekab')),
                                         )
                                             ->pluck('name', 'code');
                                     }
@@ -243,10 +243,10 @@ class BantuanBpjsResource extends Resource
                                 ->options(function (callable $get) {
                                     return Kelurahan::query()->where(
                                         'kecamatan_code',
-                                        $get('kecamatan')
+                                        $get('kecamatan'),
                                     )?->pluck(
                                         'name',
-                                        'code'
+                                        'code',
                                     );
                                 })
                                 ->reactive()
@@ -306,7 +306,7 @@ class BantuanBpjsResource extends Resource
                                 ->label('Unggah Foto KTP / KK')
                                 ->getUploadedFileNameForStorageUsing(
                                     fn(
-                                        TemporaryUploadedFile $file
+                                        TemporaryUploadedFile $file,
                                     ): string => (string) str($file->getClientOriginalName())
                                         ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
