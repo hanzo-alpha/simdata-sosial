@@ -31,21 +31,13 @@ class BantuanChart extends ApexChartWidget
      */
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
 
-    protected static ?int $contentHeight = 300;
+    protected static ?int $contentHeight = 400;
 
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
 
     protected function getOptions(): array
     {
-        //showing a loading indicator immediately after the page load
-        if ( ! $this->readyToLoad) {
-            return [];
-        }
-
-        //slow query
-        sleep(2);
-
         return [
             'chart' => [
                 'type' => 'pie',
