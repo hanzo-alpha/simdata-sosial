@@ -50,9 +50,11 @@ class ListBantuanBpnts extends ListRecords
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
                 ->label('Import CSV')
-                ->closeModalByClickingAway(false),
+                ->closeModalByClickingAway(false)
+                ->disabled(fn(): bool => cek_batas_input(setting('program.batas_tgl_input'))),
             Actions\CreateAction::make()
-                ->icon('heroicon-o-plus'),
+                ->icon('heroicon-o-plus')
+                ->disabled(fn(): bool => cek_batas_input(setting('program.batas_tgl_input'))),
         ];
     }
 

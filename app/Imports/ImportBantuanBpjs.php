@@ -87,9 +87,7 @@ class ImportBantuanBpjs implements
 
         $usulan = match ($statusUsulan[0]) {
             'BERHASIL' => StatusUsulanEnum::BERHASIL,
-            'GAGAL' => StatusUsulanEnum::GAGAL,
-            'DOMISILI' => StatusUsulanEnum::GAGAL,
-            'NIK' => StatusUsulanEnum::GAGAL,
+            'GAGAL', 'DOMISILI', 'NIK' => StatusUsulanEnum::GAGAL,
             default => StatusUsulanEnum::ONPROGRESS,
         };
 
