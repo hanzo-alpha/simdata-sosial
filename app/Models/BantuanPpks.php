@@ -36,6 +36,7 @@ class BantuanPpks extends Model
 
     protected $with = [
         'tipe_ppks',
+        'bansos_diterima',
     ];
 
     protected $casts = [
@@ -78,11 +79,6 @@ class BantuanPpks extends Model
             KriteriaPpks::class,
             'tipe_kriteria_ppks',
         )->withTimestamps();
-    }
-
-    public function alamat(): MorphOne
-    {
-        return $this->morphOne(Alamat::class, 'alamatable');
     }
 
     public function beritaAcara(): BelongsTo
