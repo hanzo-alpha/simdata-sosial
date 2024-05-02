@@ -178,16 +178,16 @@ class BantuanPpksImporter extends Importer
                 ->guess(['Kategori PPKS', 'PPKS'])
                 ->requiredMapping()
                 ->relationship(resolveUsing: 'nama_tipe'),
-//            ImportColumn::make('kriteria_ppks')
-//                ->requiredMapping()
-//                ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
-//                    $kriteriaIds = collect();
-//                    $kriteria = KriteriaPpks::query()
-//                        ->where('nama_kriteria', 'like', '%' . $state . '%')
-//                        ->first();
-//                    $kriteriaIds->push($kriteria->id);
-//                    $record->kriteria_ppks[] = json_encode($kriteriaIds->toArray());
-//                }),
+            //            ImportColumn::make('kriteria_ppks')
+            //                ->requiredMapping()
+            //                ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
+            //                    $kriteriaIds = collect();
+            //                    $kriteria = KriteriaPpks::query()
+            //                        ->where('nama_kriteria', 'like', '%' . $state . '%')
+            //                        ->first();
+            //                    $kriteriaIds->push($kriteria->id);
+            //                    $record->kriteria_ppks[] = json_encode($kriteriaIds->toArray());
+            //                }),
             ImportColumn::make('status_rumah_tinggal')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
