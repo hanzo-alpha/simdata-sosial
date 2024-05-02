@@ -41,8 +41,8 @@ return new class () extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-//            $table->string('alamat_lengkap')->virtualAs("CONCAT(alamat, ', ', dusun, ', ',
-//             'RT. ' ,no_rt, ', ', 'RW. ', no_rw)");
+            //            $table->string('alamat_lengkap')->virtualAs("CONCAT(alamat, ', ', dusun, ', ',
+            //             'RT. ' ,no_rt, ', ', 'RW. ', no_rw)");
         });
     }
 };
