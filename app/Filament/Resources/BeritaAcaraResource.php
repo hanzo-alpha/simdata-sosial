@@ -207,6 +207,7 @@ class BeritaAcaraResource extends Resource
 
                         Forms\Components\FileUpload::make('upload_ba')
                             ->label('Upload Berita Acara')
+                            ->preserveFilenames()
                             ->nullable()
                             ->maxSize(1024 * 5),
                     ])->columns(2),
