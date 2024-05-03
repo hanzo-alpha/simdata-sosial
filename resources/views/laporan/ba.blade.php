@@ -56,10 +56,10 @@
         <br />
         <br />
         <p style="font-size: 12px">
-            Pada hari ini {{ $record->tgl_ba->dayName ?? now()->dayName }} Tanggal
+            Pada hari ini {{ $record->tgl_ba->dayName ?? now()->dayName }} tanggal
             {{ $record->tgl_ba->day ?? now()->day }} {{ $record->tgl_ba->monthName ?? now()->monthName }}
             {{ $record->tgl_ba->year ?? now()->year }} Bertempat di Desa/Kelurahan {{ $record->kel->name }} Dilakukan
-            serah terima barang Bantuan Sosial Pangan Beras Sejahtera
+            serah terima barang Bantuan Sosial Pangan Beras Sejahtera.
         </p>
         <p style="font-size: 12px">Yang bertanda tangan dibawah ini :</p>
         <table class="table">
@@ -156,12 +156,11 @@
         </p>
         <br />
         <br />
-        <br />
 
         <table class="table-items table">
             <thead>
             <tr>
-                <th scope="col" class="border-0 pl-0">No.</th>
+                <th scope="col" class="border-0 text-center">No.</th>
                 <th scope="col" class="border-0 text-center">Uraian Jenis Barang/Jasa Lainnya</th>
                 <th scope="col" class="border-0 text-center">Kuantitas</th>
                 <th scope="col" class="border-0 text-center">Satuan</th>
@@ -195,19 +194,20 @@
             </tr>
             <tr>
                 <td colspan="4" class="border-0"></td>
-                <td class="pl-0 text-right">Total Harga</td>
-                <td class="pr-0 text-right">
+                <td class="text-right">Total Harga</td>
+                <td class="text-right">
                     {{ Number::format($record->itemBantuan()->sum('total_harga'), 0, locale: 'id') }}
                 </td>
             </tr>
             <tr>
-                <td colspan="5" class="border-0 text-center">
+                <td colspan="5" class="text-center">
                     Terbilang : {{ Str::ucfirst(Number::spell($record->itemBantuan()->sum('total_harga'), 'id')) }}
                     rupiah
                 </td>
+                <td></td>
             </tr>
             </tbody>
-        </table>
+        </table><br>
 
         <p>
             Demikian Berita Acara Penyerahan Hasil Pekerjaan ini dibuat dalam rangkap secukupnya untuk dipergunakan
@@ -283,20 +283,20 @@
                      height="100" />
             </th>
             <th class="text-center">
-                <h2 style="margin-bottom: 0"><strong>PEMERINTAH KABUPATEN SOPPENG</strong></h2></th>
+                <h2 style="margin-bottom: 0"><strong>{{ setting('ba.kop_title') }}</strong></h2></th>
             </tbody>
             <tbody>
             <th class="text-center">
-                <h1 style="margin-top: 3px; margin-bottom: 3px"><strong>DINAS SOSIAL</strong></h1>
+                <h1 style="margin-top: 3px; margin-bottom: 3px"><strong>{{ setting('ba.kop_instansi') }}</strong></h1>
             </th>
             </tbody>
             <tbody>
             <th class="text-center">
                  <span style="font-style: italic">
-                    Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng
+                    {{ setting('ba.kop_jalan') }}
                  </span><br>
                 <span style="font-style: italic">
-                    Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com
+                    {{ setting('ba.kop_website') }}
                 </span>
             </th>
             </tbody>
@@ -334,7 +334,8 @@
             <tbody>
             @php
                 $penerima = BantuanRastra::where('kecamatan',$record->kecamatan)->where('kelurahan',$record->kelurahan)->get();
-                $jumlahBeras = $record->itemBantuan()->get()->sum('kuantitas') / $penerima->count();
+                $jumlahBeras = ($record->itemBantuan()->get()->sum('kuantitas') / $penerima->count()) /
+                $record->itemBantuan()->get()->sum('jumlah_bulan') ;
                 $i = 1;
             @endphp
             @forelse($penerima as $kpm)
@@ -346,7 +347,7 @@
                     <td class="text-center">{{ $kpm->kel()?->first()?->name }}</td>
                     <td class="text-right">{{ $jumlahBeras }} Kg</td>
                     <td class="text-right"></td>
-                    <td class="text-right"></td>
+                    <td class="text-center">{{ 'Selama ' . $record->itemBantuan()->first()->jumlah_bulan . ' bulan'}}</td>
                 </tr>
             @empty
                 <tr>
@@ -356,6 +357,8 @@
             <tr>
                 <td colspan="5" class="pl-0 text-right">Total Jumlah Beras</td>
                 <td class="pr-0 text-right">{{ $record->itemBantuan()->get()->sum('kuantitas') }} Kg</td>
+                <td class="pr-0 text-right"></td>
+                <td class="pr-0 text-right"></td>
             </tr>
             </tbody>
         </table>

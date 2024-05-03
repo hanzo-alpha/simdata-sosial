@@ -9,11 +9,13 @@ use App\Enums\StatusPkhBpntEnum;
 use App\Traits\HasJenisBantuan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class BantuanPkh extends Model
+class BantuanPkh extends Model
 {
     use HasJenisBantuan;
     use HasWilayah;
+    use SoftDeletes;
 
     protected $table = 'bantuan_pkh';
 

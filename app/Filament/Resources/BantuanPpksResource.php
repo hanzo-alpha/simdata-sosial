@@ -166,7 +166,7 @@ final class BantuanPpksResource extends Resource
                                         ->reactive()
                                         ->options(function (Get $get) {
                                             $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kabupaten::where(
                                                     'provinsi_code',
                                                     setting('app.kodekab', config('custom.default.kodekab')),
@@ -187,7 +187,7 @@ final class BantuanPpksResource extends Resource
                                         ->reactive()
                                         ->options(function (Get $get) {
                                             $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kecamatan::where(
                                                     'kabupaten_code',
                                                     setting('app.kodekab', config('custom.default.kodekab')),
@@ -312,7 +312,7 @@ final class BantuanPpksResource extends Resource
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                        ?->hasRole(['super_admin', 'admin'])
+                                    ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -324,7 +324,7 @@ final class BantuanPpksResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file,
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s').'-'),
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
@@ -425,11 +425,26 @@ final class BantuanPpksResource extends Resource
                     ->boolean(),
             ])
             ->filters([
+                SelectFilter::make('kecamatan')
+                    ->options(function () {
+                        return Kecamatan::query()
+                            ->where('kabupaten_code', setting('app.kodekab'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
+                SelectFilter::make('kelurahan')
+                    ->options(function () {
+                        return Kelurahan::query()
+                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
                 SelectFilter::make('bantuan_yang_pernah_diterima')
                     ->label('Bantuan Diterima')
                     ->multiple()
                     ->relationship('bansos_diterima', 'nama_bansos')
-//                    ->options(JenisBansosDiterimaEnum::class)
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
@@ -444,10 +459,12 @@ final class BantuanPpksResource extends Resource
                     ->label('Tahun')
                     ->options(list_tahun())
                     ->searchable(),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\Action::make('cetak ba')
                     ->label('Cetak Berita Acara')
@@ -457,6 +474,7 @@ final class BantuanPpksResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([

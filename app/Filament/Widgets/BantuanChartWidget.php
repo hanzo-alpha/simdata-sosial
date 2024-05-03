@@ -21,6 +21,7 @@ class BantuanChartWidget extends ChartWidget
 {
     use HasGlobalFilters;
     use HasWidgetShield;
+    use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Statistik Program Bantuan Per Kecamatan';
     protected static ?string $maxHeight = '400px';
@@ -43,8 +44,8 @@ class BantuanChartWidget extends ChartWidget
     {
         return $model::query()
             ->select(['created_at', 'kecamatan', 'kelurahan'])
-//            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-//            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
             ->where('kecamatan', $kodekec)
             ->count();
     }

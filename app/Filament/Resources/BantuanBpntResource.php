@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -164,8 +165,27 @@ class BantuanBpntResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-
+                SelectFilter::make('kecamatan')
+                    ->options(function () {
+                        return Kecamatan::query()
+                            ->where('kabupaten_code', setting('app.kodekab'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
+                SelectFilter::make('kelurahan')
+                    ->options(function () {
+                        return Kelurahan::query()
+                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
             ])
+            ->deferFilters()
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

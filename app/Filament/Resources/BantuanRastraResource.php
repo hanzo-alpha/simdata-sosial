@@ -101,7 +101,6 @@ class BantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
                 SelectFilter::make('kecamatan')
                     ->options(function () {
                         return Kecamatan::query()
@@ -133,10 +132,12 @@ class BantuanRastraResource extends Resource
                     ->options(list_tahun())
                     ->attribute('tahun')
                     ->searchable(),
+                Tables\Filters\TrashedFilter::make(),
             ])
-            ->hiddenFilterIndicators()
+            ->deferFilters()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),

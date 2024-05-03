@@ -126,6 +126,22 @@ class BantuanBpjsResource extends Resource
                     ->searchable(),
             ])
             ->filters([
+                SelectFilter::make('kecamatan')
+                    ->options(function () {
+                        return Kecamatan::query()
+                            ->where('kabupaten_code', setting('app.kodekab'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
+                SelectFilter::make('kelurahan')
+                    ->options(function () {
+                        return Kelurahan::query()
+                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
                 SelectFilter::make('status_usulan')
                     ->label('Status Usulan')
                     ->options(StatusUsulanEnum::class)
@@ -139,9 +155,10 @@ class BantuanBpjsResource extends Resource
                     ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
-            ->hiddenFilterIndicators()
+            ->deferFilters()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),

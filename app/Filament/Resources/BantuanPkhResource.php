@@ -20,6 +20,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
@@ -42,7 +44,7 @@ final class BantuanPkhResource extends Resource
             ->schema([
                 Section::make('Data Pribadi')->schema([
                     TextInput::make('dtks_id')
-                        ->required()
+                        ->nullable()
                         ->default(Str::upper(Str::orderedUuid()->toString()))
                         ->maxLength(36),
                     TextInput::make('nokk')
@@ -211,7 +213,6 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('nominal')
                     ->sortable()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()
@@ -267,14 +268,22 @@ final class BantuanPkhResource extends Resource
             ])
             ->searchPlaceholder('Cari...')
             ->filters([
-                //                Tables\Filters\SelectFilter::make('kecamatan')
-                //                    ->relationship('kec', 'name')
-                //                    ->searchable()
-                //                    ->optionsLimit(10),
-                //                Tables\Filters\SelectFilter::make('kelurahan')
-                //                    ->relationship('kel', 'name')
-                //                    ->searchable()
-                //                    ->optionsLimit(10),
+                SelectFilter::make('kecamatan')
+                    ->options(function () {
+                        return Kecamatan::query()
+                            ->where('kabupaten_code', setting('app.kodekab'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
+                SelectFilter::make('kelurahan')
+                    ->options(function () {
+                        return Kelurahan::query()
+                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
                 SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(list_tahun())
@@ -282,12 +291,18 @@ final class BantuanPkhResource extends Resource
                     ->searchable(),
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal'),
-            ])->hiddenFilterIndicators()
+                Tables\Filters\TrashedFilter::make(),
+            ])
+            ->deferFilters()
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
@@ -320,5 +335,21 @@ final class BantuanPkhResource extends Resource
             'view' => Pages\ViewBantuanPkh::route('/{record}'),
             'edit' => Pages\EditBantuanPkh::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
+        return parent::getEloquentQuery()
+            ->where('kelurahan', auth()->user()->instansi_id)
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }
