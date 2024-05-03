@@ -14,7 +14,7 @@ class PesertaBpjsOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageTable;
 
-    //    protected static bool $isDiscovered = false;
+    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
 
     protected function getTablePage(): string
