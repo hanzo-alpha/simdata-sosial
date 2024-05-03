@@ -611,7 +611,6 @@ final class BantuanPpksResource extends Resource
                                 ->color('primary'),
                             TextEntry::make('jenis_anggaran')
                                 ->label('Jenis Anggaran')
-//                                ->formatStateUsing(fn($record) => $record->jenis_anggaran . $record->tahun_anggaran)
                                 ->badge(),
                             TextEntry::make('tahun_anggaran')
                                 ->label('Tahun Anggaran'),
