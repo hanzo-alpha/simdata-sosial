@@ -20,6 +20,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
@@ -289,6 +291,7 @@ final class BantuanPkhResource extends Resource
                     ->searchable(),
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal'),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
             ->persistFiltersInSession()
@@ -299,6 +302,7 @@ final class BantuanPkhResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
@@ -331,5 +335,21 @@ final class BantuanPkhResource extends Resource
             'view' => Pages\ViewBantuanPkh::route('/{record}'),
             'edit' => Pages\EditBantuanPkh::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
+        return parent::getEloquentQuery()
+            ->where('kelurahan', auth()->user()->instansi_id)
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

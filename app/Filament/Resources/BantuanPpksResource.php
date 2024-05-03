@@ -460,6 +460,7 @@ final class BantuanPpksResource extends Resource
                     ->label('Tahun')
                     ->options(list_tahun())
                     ->searchable(),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
             ->persistFiltersInSession()
@@ -474,6 +475,7 @@ final class BantuanPpksResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
