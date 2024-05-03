@@ -166,7 +166,7 @@ final class BantuanPpksResource extends Resource
                                         ->reactive()
                                         ->options(function (Get $get) {
                                             $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kabupaten::where(
                                                     'provinsi_code',
                                                     setting('app.kodekab', config('custom.default.kodekab')),
@@ -187,7 +187,7 @@ final class BantuanPpksResource extends Resource
                                         ->reactive()
                                         ->options(function (Get $get) {
                                             $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kecamatan::where(
                                                     'kabupaten_code',
                                                     setting('app.kodekab', config('custom.default.kodekab')),
@@ -312,7 +312,7 @@ final class BantuanPpksResource extends Resource
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                        ?->hasRole(['super_admin', 'admin'])
+                                    ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -324,7 +324,7 @@ final class BantuanPpksResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file,
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s').'-'),
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Imports;
 
-use App\Enums\StatusAktif;
 use App\Enums\StatusDtksEnum;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
