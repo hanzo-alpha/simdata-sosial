@@ -445,7 +445,6 @@ final class BantuanPpksResource extends Resource
                     ->label('Bantuan Diterima')
                     ->multiple()
                     ->relationship('bansos_diterima', 'nama_bansos')
-//                    ->options(JenisBansosDiterimaEnum::class)
                     ->preload()
                     ->searchable(),
                 SelectFilter::make('status_verifikasi')
