@@ -91,13 +91,13 @@ class BantuanChart extends ApexChartWidget
                 //         }
                 //     }
                 // },
-                // yaxis: {
-                //     labels: {
-                //         formatter: function (val, index) {
-                //             return val + ' KPM'
-                //         }
-                //     }
-                // },
+                yaxis: {
+                    labels: {
+                        formatter: function (val, index) {
+                            return val + ' KPM'
+                        }
+                    }
+                },
                 tooltip: {
                     x: {
                         formatter: function (val) {
