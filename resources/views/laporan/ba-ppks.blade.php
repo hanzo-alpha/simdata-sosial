@@ -71,25 +71,25 @@
                 <th width="5%" style="text-align: left"></th>
                 <th width="20%" style="text-align: right">Nama</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td width="87%" style="text-align: left">{{ setting('persuratan.nama_pps') }}</td>
+                <td width="87%" style="text-align: left">{{ setting('persuratan.nama_ppk') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
                 <th width="20%" style="text-align: right">NIP</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ setting('persuratan.nip_pps') }}</td>
+                <td>{{ setting('persuratan.nik_ppk') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
                 <th width="20%" style="text-align: right">Jabatan</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ setting('persuratan.jabatan_pps') }}</td>
+                <td>{{ setting('persuratan.jabatan_ppk') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
                 <th width="20%" style="text-align: right">Instansi</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ setting('persuratan.instansi_pps') }}</td>
+                <td>{{ setting('persuratan.instansi_ppk') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
@@ -215,10 +215,10 @@
             </tr>
             <tr>
                 <td class="text-center">
-                    <b>Penerima</b>
+                    <b>PIHAK PERTAMA</b>
                 </td>
                 <td class="text-center">
-                    <b>Mengetahui</b>
+                    <b>PIHAK KEDUA</b>
                 </td>
             </tr>
             <tr>
@@ -226,25 +226,37 @@
                     <br />
                     <br />
                     <br />
-                    <b>{{ $record->nama_lengkap ?? '-' }}</b>
+                    <b>{{ setting('persuratan.nama_ppk') }}</b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
                     <br />
                     <br />
                     <br />
-                    <b>{{ setting('persuratan.nama_kepala_dinas') ?? '-' }}</b>
+                    <b>{{ $record->nama_lengkap  }}</b>
                 </td>
             </tr>
             <tr>
-                <td class="text-center"></td>
-                <td class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</td>
-            </tr>
-            <tr>
-                <td class="text-center"></td>
-                <td class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') ?? '-' }}</td>
+                <td class="text-center">Nip. {{ setting('persuratan.nip_ppk') ?? '-' }}</td>
+                <td class="text-center">Penerima Bantuan</td>
             </tr>
             </tbody>
         </table>
+        <br>
+        <br>
+        <p class="text-center">
+            <b>MENGETAHUI</b>
+        </p>
+        <p class="text-center">
+            <b>{{ setting('persuratan.jabatan') }}</b>
+        </p>
+        <br />
+        <br />
+        <br />
+        <p class="text-center">
+            <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
+        </p>
+        <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
+        <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
         <br>
         <br>
         <br>
@@ -349,7 +361,7 @@
                     <br />
                     <br />
                     <br />
-                    <b>{{ setting('persuratan.nama_pps') }}</b>
+                    <b>{{ setting('persuratan.nama_ppk') }}</b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
                     <br />
@@ -359,7 +371,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="text-center">Nip. {{ setting('persuratan.nip_pps') }}</td>
+                <td class="text-center">Nip. {{ setting('persuratan.nik_ppk') }}</td>
                 <td class="text-center">Penerima</td>
             </tr>
             </tbody>
