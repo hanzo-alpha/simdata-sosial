@@ -15,6 +15,7 @@ class BeritaAcara extends Model
 
     protected $casts = [
         'tgl_ba' => 'date',
+        'upload_ba' => 'array',
     ];
 
     protected $with = [
