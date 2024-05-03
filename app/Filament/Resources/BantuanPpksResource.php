@@ -449,6 +449,10 @@ final class BantuanPpksResource extends Resource
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->actions([
+                Tables\Actions\Action::make('cetak ba')
+                    ->label('Cetak Berita Acara')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn($record) => route('ba.ppks', ['id' => $record,'m' => BantuanPpks::class]), true),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),

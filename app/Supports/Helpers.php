@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace App\Supports;
 
 use App\Models\barang;
+use App\Models\PenyaluranBantuanPpks;
 use App\Models\PenyaluranBantuanRastra;
 use Illuminate\Support\Str;
 
 class Helpers
 {
-    public static function generateNoSuratBeritaAcara($sep = '/'): string
+    public static function generateNoSuratBeritaAcara($sep = '/', $model = 'rastra'): string
     {
-        $text = setting('app.nomor_surat_rastra') ?? 'BAST-RASTRA/DINSOS';
+        $model = ('rastra' === $model) ? PenyaluranBantuanRastra::class : PenyaluranBantuanPpks::class;
+        $text = ('rastra' === $model) ? setting('app.nomor_surat_rastra') : 'BAST-PPKS/DINSOS';
         $pad = setting('app.pad') ?? '0';
         $sep = setting('app.separator') ?? $sep;
         $bulan = convertToRoman(now()->month);
         $tahun = now()->year;
-        $max = PenyaluranBantuanRastra::max('id') + 1;
+        $max = $model::max('id') + 1;
         $kodeAset = Str::padLeft($max, 4, $pad);
 
         return $kodeAset . $sep . $text . $sep . $bulan . $sep . $tahun;

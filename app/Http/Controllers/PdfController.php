@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BantuanPpks;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -25,6 +26,21 @@ class PdfController extends Controller
         $data = $request->has('d') ? $request->get('d') : [];
         $record = $request->get('m')::find($request->get('id'));
         $pdf = PDF::loadView('ba', compact('record', 'data'));
+        $pdf->setOption([
+            'dpi' => 120,
+            'defaultFont' => 'sans-serif',
+            'defaultPaperSize' => 'a4',
+        ]);
+
+        return $pdf->stream('berita-acara-serah-terima-barang.pdf');
+    }
+
+    public function cetakBeritaAcaraPpks(Request $request): Response
+    {
+        $data = $request->has('d') ? $request->get('d') : [];
+        $records = $request->has('m') ? $request->get('m') : BantuanPpks::class;
+        $record = $records::find($request->get('id'));
+        $pdf = PDF::loadView('laporan.ba-ppks', compact('record', 'data'));
         $pdf->setOption([
             'dpi' => 120,
             'defaultFont' => 'sans-serif',

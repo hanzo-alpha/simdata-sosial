@@ -102,7 +102,7 @@ class Settings extends BaseSettings
                                         ->default('Hansen'),
                                 ])->columns(2),
 
-                            Section::make('Pejabat Penanggungjawab')
+                            Section::make('Pejabat Pelaksana Teknis Kegiatan')
                                 ->icon('heroicon-o-user')
                                 ->schema([
                                     TextInput::make('persuratan.nama_pps')
@@ -132,7 +132,7 @@ class Settings extends BaseSettings
                                         ->label('Kop Judul')
                                         ->default('PEMERINTAH KABUPATEN SOPPENG'),
                                     TextInput::make('ba.kop_instansi')
-                                        ->label('Kop Judul')
+                                        ->label('Kop Instansi')
                                         ->default('DINAS SOSIAL'),
                                     TextInput::make('ba.kop_website')
                                         ->label('Kop Website')

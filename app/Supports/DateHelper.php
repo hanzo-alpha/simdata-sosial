@@ -217,7 +217,7 @@ final class DateHelper
             return $emptyVal;
         }
         if ('now' === $tanggal) {
-            $tanggal = date(config('custom.date.date_db'));
+            $tanggal = date('Y-m-d H:i:s');
         }
         $tgl = date('j', strtotime($tanggal));
         $thn = date('Y', strtotime($tanggal));
