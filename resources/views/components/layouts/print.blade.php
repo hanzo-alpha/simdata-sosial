@@ -100,20 +100,25 @@
             }
 
             .table th,
+
             .table td {
                 padding: 0.3rem;
                 vertical-align: middle;
             }
 
             .table.table-items td {
-                border-top: 1px solid #dee2e6;
-                border-bottom: 1px solid #dee2e6;
+                border-top: 2px solid #dee2e6;
+                border-bottom: 2px solid #dee2e6;
+                border-left: 2px solid #dee2e6;
+                border-right: 2px solid #dee2e6;
             }
 
             .table thead th {
                 vertical-align: middle;
                 border-top: 2px solid #dee2e6;
                 border-bottom: 2px solid #dee2e6;
+                border-left: 2px solid #dee2e6;
+                border-right: 2px solid #dee2e6;
             }
 
             .mt-5 {
@@ -215,6 +220,78 @@
             div.content {
                 padding: 10mm;
             }
+
+            /**, *:after, *:before {*/
+            /*    box-sizing: border-box;*/
+            /*    -webkit-box-sizing: border-box;*/
+            /*}*/
+
+            /*table {*/
+            /*    width: 800px;*/
+            /*    margin: 50px auto;*/
+            /*    font-family: Arial, sans-serif;*/
+            /*    font-size: 12px;*/
+            /*    border-collapse: separate;*/
+            /*    border-spacing: 0 7px;*/
+
+            /*    thead {*/
+            /*        background-color: green;*/
+            /*        color: #fff;*/
+
+            /*        td {*/
+            /*            &:first-child {*/
+            /*                border-left: 1px solid green;*/
+            /*            }*/
+
+            /*            &:last-child {*/
+            /*                border-right: 1px solid green;*/
+            /*            }*/
+            /*        }*/
+            /*    }*/
+
+            /*    td {*/
+            /*        height: 30px;*/
+            /*        vertical-align: middle;*/
+            /*        text-align: center;*/
+            /*        position: relative;*/
+
+            /*        &:after {*/
+            /*            content: '';*/
+            /*            width: 1px;*/
+            /*            position: absolute;*/
+            /*            right: 0;*/
+            /*            top: 8px;*/
+            /*            bottom: 8px;*/
+            /*            background-color: #eee;*/
+            /*        }*/
+
+            /*        &:last-child {*/
+            /*            &:after {*/
+            /*                content: none;*/
+            /*            }*/
+            /*        }*/
+            /*    }*/
+
+            /*    tbody {*/
+            /*        td {*/
+            /*            border-top: 1px solid #eee;*/
+            /*            border-bottom: 1px solid #eee;*/
+
+            /*            &:first-child {*/
+            /*                border-left: 1px solid #eee;*/
+            /*            }*/
+
+            /*            &:last-child {*/
+            /*                border-right: 1px solid #eee;*/
+            /*            }*/
+            /*        }*/
+
+            /*        tr:hover {*/
+            /*            background-color: #fafafa;*/
+            /*        }*/
+            /*    }*/
+
+            /*}*/
         </style>
     </head>
 

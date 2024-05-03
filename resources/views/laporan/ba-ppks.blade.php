@@ -35,17 +35,6 @@
             </tbody>
         </table>
         <div class="text-center">
-            {{--            <h2 style="margin-bottom: 5px">--}}
-            {{--                <img src="{{ asset('images/logos/logo-soppeng2.png') }}" alt="logo" height="60" />--}}
-            {{--                <strong>PEMERINTAH KABUPATEN SOPPENG</strong></h2>--}}
-            {{--            <h1 style="margin-top: 3px; margin-bottom: 5px"><strong>DINAS SOSIAL</strong></h1>--}}
-            {{--            <p class="pt-0">--}}
-            {{--                <span style="font-style: italic">Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng</span>--}}
-            {{--                <br />--}}
-            {{--                <span style="font-style: italic" class="mt-1">--}}
-            {{--                    Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com--}}
-            {{--                </span>--}}
-            {{--            </p>--}}
             <hr />
             <p style="font-size: 12px">
                 <span style="text-decoration-line: underline">
@@ -164,12 +153,10 @@
         <table class="table-items table">
             <thead>
             <tr>
-                <th scope="col" class="border-0 text-center">No.</th>
-                <th scope="col" class="border-0 text-center">Uraian Jenis Barang/Jasa Lainnya</th>
-                <th scope="col" class="border-0 text-center">Bansos Pernah Diterima</th>
-                <th scope="col" class="border-0 text-center">Jumlah Bantuan</th>
-                {{--                <th scope="col" class="border-0 text-center">Harga Satuan (RP)</th>--}}
-                {{--                <th scope="col" class="border-0 text-center">Jumlah Harga (Rp)</th>--}}
+                <th scope="col" class="text-center">No.</th>
+                <th scope="col" class="text-center">Uraian Jenis Barang/Jasa Lainnya</th>
+                <th scope="col" class="text-center">Bansos Pernah Diterima</th>
+                <th scope="col" class="text-center">Jumlah Bantuan</th>
             </tr>
             </thead>
             <tbody>
@@ -186,18 +173,11 @@
                 <td class="text-center">
                     {{ $record->jumlah_bantuan }}
                 </td>
-                {{--                <td class="text-right">--}}
-                {{--                    {{Number::format($item->harga_satuan, 0, locale: 'id') }}--}}
-                {{--                </td>--}}
-                {{--                <td class="text-right">--}}
-                {{--                    {{ Number::format($item->total_harga, 0, locale: 'id') }}--}}
-                {{--                </td>--}}
             </tr>
             <tr>
-                {{--                <td colspan="2" class="border-0"></td>--}}
-                <td colspan="3" class="pl-0 text-right">Total Bantuan</td>
+                <td colspan="3" class="pl-0 text-right"><strong>Total Bantuan</strong></td>
                 <td class="text-center">
-                    {{ Number::format($record->jumlah_bantuan, 0, locale: 'id') }}
+                    <strong>{{ Number::format($record->jumlah_bantuan, 0, locale: 'id') }}</strong>
                 </td>
             </tr>
             </tbody>
@@ -319,15 +299,15 @@
 
         <table class="table-items table">
             <thead>
-            <tr>
+            <tr style="height: 50px;">
                 {{--                <th scope="col" class="border-0 pl-0">No.</th>--}}
-                <th scope="col" class="border-0 text-center">Nama Penerima</th>
-{{--                <th scope="col" class="border-0 text-center">KK</th>--}}
-                <th scope="col" class="border-0 text-center">NIK</th>
-                <th scope="col" class="border-0 text-center">Desa/Kelurahan</th>
-                <th scope="col" class="border-0 text-center">Jumlah</th>
-                <th scope="col" class="border-0 text-center">Tanda Tangan/Cap Jempol</th>
-                <th scope="col" class="border-0 text-center">Keterangan</th>
+                <th scope="col" class="text-center">Nama Penerima</th>
+{{--                <th scope="col" class="text-center">KK</th>--}}
+                <th scope="col" class="text-center">NIK</th>
+                <th scope="col" class="text-center">Desa/Kelurahan</th>
+                <th scope="col" class="text-center">Jumlah</th>
+                <th scope="col" class="text-center">Tanda Tangan/Cap Jempol</th>
+                <th scope="col" class="text-center">Keterangan</th>
             </tr>
             </thead>
             <tbody>
@@ -342,8 +322,8 @@
                 <td class="text-right"></td>
             </tr>
             <tr>
-                <td colspan="5" class="pl-0 text-right">Total Jumlah Bantuan</td>
-                <td class="text-right">{{ $record->jumlah_bantuan }}</td>
+                <td colspan="5" class="pl-0 text-right"><strong>Total Jumlah Bantuan</strong></td>
+                <td class="text-right"><strong>{{ $record->jumlah_bantuan }}</strong></td>
             </tr>
             </tbody>
         </table>
