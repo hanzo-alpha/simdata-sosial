@@ -14,7 +14,8 @@ class ManageBeritaAcaras extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->icon('heroicon-o-plus'),
+                ->icon('heroicon-o-plus')
+                ->closeModalByClickingAway(false),
         ];
     }
 }

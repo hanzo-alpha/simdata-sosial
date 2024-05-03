@@ -17,6 +17,7 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class PenandatanganResource extends Resource
 {
@@ -28,6 +29,7 @@ class PenandatanganResource extends Resource
     protected static ?string $pluralLabel = 'Penandatangan';
     protected static ?string $navigationLabel = 'Penandatangan';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    //    protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form
     {
@@ -141,5 +143,15 @@ class PenandatanganResource extends Resource
         return [
             'index' => Pages\ManagePenandatangans::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery()
+            ->where('kode_instansi', auth()->user()->instansi_id);
     }
 }

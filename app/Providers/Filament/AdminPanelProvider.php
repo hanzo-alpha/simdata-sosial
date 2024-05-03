@@ -25,6 +25,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
@@ -90,6 +91,7 @@ class AdminPanelProvider extends PanelProvider
                     ->pages([
                         Settings::class,
                     ]),
+                FilamentProgressbarPlugin::make(),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')

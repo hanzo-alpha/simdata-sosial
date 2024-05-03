@@ -50,7 +50,7 @@ class BantuanBpntOverview extends BaseWidget
         $results['all'] = $this->renderStats(
             BantuanBpnt::count(),
             'Rekap KPM BPNT',
-            'Total BPNT All Kecamatan',
+            'Total KPM Program BPNT Semua Kecamatan',
             'users',
             'primary',
         );

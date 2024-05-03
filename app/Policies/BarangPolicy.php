@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\JenisPekerjaan;
+use App\Models\Barang;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class JenisPekerjaanPolicy
+class BarangPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class JenisPekerjaanPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_jenis::pekerjaan');
+        return $user->can('view_any_barang');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, JenisPekerjaan $jenisPekerjaan): bool
+    public function view(User $user, Barang $barang): bool
     {
-        return $user->can('view_jenis::pekerjaan');
+        return $user->can('view_barang');
     }
 
     /**
@@ -31,23 +31,23 @@ class JenisPekerjaanPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_jenis::pekerjaan');
+        return $user->can('create_barang');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, JenisPekerjaan $jenisPekerjaan): bool
+    public function update(User $user, Barang $barang): bool
     {
-        return $user->can('update_jenis::pekerjaan');
+        return $user->can('update_barang');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, JenisPekerjaan $jenisPekerjaan): bool
+    public function delete(User $user, Barang $barang): bool
     {
-        return $user->can('delete_jenis::pekerjaan');
+        return $user->can('delete_barang');
     }
 
     /**
@@ -61,9 +61,9 @@ class JenisPekerjaanPolicy
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, JenisPekerjaan $jenisPekerjaan): bool
+    public function forceDelete(User $user, Barang $barang): bool
     {
-        return $user->can('force_delete_jenis::pekerjaan');
+        return $user->can('force_delete_barang');
     }
 
     /**
@@ -77,9 +77,9 @@ class JenisPekerjaanPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, JenisPekerjaan $jenisPekerjaan): bool
+    public function restore(User $user, Barang $barang): bool
     {
-        return $user->can('restore_jenis::pekerjaan');
+        return $user->can('restore_barang');
     }
 
     /**
@@ -93,7 +93,7 @@ class JenisPekerjaanPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, JenisPekerjaan $jenisPekerjaan): bool
+    public function replicate(User $user, Barang $barang): bool
     {
         return $user->can('{{ Replicate }}');
     }

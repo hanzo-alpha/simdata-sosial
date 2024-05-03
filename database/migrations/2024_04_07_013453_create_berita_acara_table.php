@@ -19,6 +19,7 @@ return new class () extends Migration {
             $table->foreignId('barang_id');
             $table->foreignId('penandatangan_id');
             $table->string('keterangan')->nullable();
+            $table->json('upload_ba')->nullable();
             $table->timestamps();
         });
     }

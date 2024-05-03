@@ -11,5 +11,6 @@ Route::middleware(['auth'])->group(function (): void {
         Route::get('/download', 'download')->name('pdf.download');
         Route::get('/download-rastra', 'downloadRastra')->name('pdf.rastra');
         Route::get('/cetak-berita-acara', 'downloadBeritaAcara')->name('pdf.ba');
+        Route::get('/cetak-berita-acara-ppks', 'cetakBeritaAcaraPpks')->name('ba.ppks');
     });
 });

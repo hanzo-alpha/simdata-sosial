@@ -46,7 +46,7 @@ class BantuanRastraOverview extends BaseWidget
         $results['all'] = $this->renderStats(
             BantuanRastra::count(),
             'Rekap KPM RASTRA',
-            'Total RASTRA All Kecamatan',
+            'Total KPM Program RASTRA Semua Kecamatan',
             'users',
             'primary',
         );

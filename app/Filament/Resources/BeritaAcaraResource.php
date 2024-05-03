@@ -68,6 +68,8 @@ class BeritaAcaraResource extends Resource
                 Tables\Columns\TextColumn::make('keterangan')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('upload_ba')
+                    ->label('Berita Acara'),
             ])
             ->filters([
 
@@ -85,8 +87,8 @@ class BeritaAcaraResource extends Resource
                             ]),
                     ])
                     ->openUrlInNewTab(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->closeModalByClickingAway(false),
+                Tables\Actions\DeleteAction::make()->closeModalByClickingAway(false),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -202,6 +204,12 @@ class BeritaAcaraResource extends Resource
                             ->maxLength(255)
                             ->nullable()
                             ->default(null),
+
+                        Forms\Components\FileUpload::make('upload_ba')
+                            ->label('Upload Berita Acara')
+                            ->preserveFilenames()
+                            ->nullable()
+                            ->maxSize(1024 * 5),
                     ])->columns(2),
 
             ]);

@@ -12,7 +12,7 @@
 </div>
 
 
-## Tentang SIMDADU
+## Tentang RENO
 
 Sistem Informasi Managemen Rumah Data Terpadu merupakan aplikasi kemiskinan untuk mendata keluarga atau penerima
 manfaat yang layak untuk mendapatkan bantuan dari pemerintah.
@@ -36,7 +36,7 @@ manfaat yang layak untuk mendapatkan bantuan dari pemerintah.
     ````
    php artisan db:seed
    ````
-5. Silahkan buka di web browser anda : ```https://localhost/admin``` atau ```https://simdata-sosial.local```
+5. Silahkan buka di web browser anda : ```http://localhost/admin``` atau ```https://your-local-domain.local```
    jika anda menggunakan domain pada lokal development anda. Untuk login ke aplikasi bisa menggunakan akun berikut :
     ````
    email : sadmin@simdata-sosial.local
@@ -58,8 +58,8 @@ manfaat yang layak untuk mendapatkan bantuan dari pemerintah.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Hanzo Alpha
-via [hanzo.asashi.dev@gmail.com](mailto:hanzo.asashi.dev@gmail.com). All security vulnerabilities will be promptly
+If you discover a security vulnerability within RENO, please send an e-mail to Hanzo Alpha
+via [hansen.makangiras@hotmail.com](mailto:hanzo.asashi.dev@gmail.com). All security vulnerabilities will be promptly
 addressed.
 
 ## License

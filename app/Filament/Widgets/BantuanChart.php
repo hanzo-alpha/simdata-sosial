@@ -91,13 +91,13 @@ class BantuanChart extends ApexChartWidget
                 //         }
                 //     }
                 // },
-                // yaxis: {
-                //     labels: {
-                //         formatter: function (val, index) {
-                //             return val + ' KPM'
-                //         }
-                //     }
-                // },
+                yaxis: {
+                    labels: {
+                        formatter: function (val, index) {
+                            return val + ' KPM'
+                        }
+                    }
+                },
                 tooltip: {
                     x: {
                         formatter: function (val) {
@@ -121,16 +121,16 @@ class BantuanChart extends ApexChartWidget
                     // }
                   }
                 },
-                dataLabels: {
-                    enabled: true,
-                    formatter: function (val, opt) {
-                        const name = opt.w.globals.labels[opt.seriesIndex]
-                        return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
-                    },
-                    dropShadow: {
-                        enabled: true
-                    },
-                }
+                // dataLabels: {
+                //     enabled: true,
+                //     formatter: function (val, opt) {
+                //         const name = opt.w.globals.labels[opt.seriesIndex]
+                //         return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
+                //     },
+                //     dropShadow: {
+                //         enabled: true
+                //     },
+                // }
             }
         JS,
         );

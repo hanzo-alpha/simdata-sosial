@@ -62,7 +62,7 @@ class BantuanBpjsOverview extends BaseWidget
         $results['all'] = $this->renderStats(
             BantuanBpjs::count(),
             'Rekap KPM BPJS',
-            'Total BPJS All Kecamatan',
+            'Total KPM Program BPJS Semua Kecamatan',
             'users',
             'primary',
         );
@@ -102,7 +102,7 @@ class BantuanBpjsOverview extends BaseWidget
             'jamkesda' => $jamkesda,
             'verified' => $verified,
             'unverified' => $unverified,
-            'review' => $verified,
+            'review' => $review,
         ];
     }
 
