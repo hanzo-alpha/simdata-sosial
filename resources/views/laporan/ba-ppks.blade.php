@@ -77,7 +77,7 @@
                 <th width="5%" style="text-align: left"></th>
                 <th width="20%" style="text-align: right">NIP</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ setting('persuratan.nik_ppk') }}</td>
+                <td>{{ setting('persuratan.nip_ppk') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
