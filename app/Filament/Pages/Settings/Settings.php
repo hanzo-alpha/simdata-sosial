@@ -102,7 +102,7 @@ class Settings extends BaseSettings
                                         ->default('Hansen'),
                                 ])->columns(2),
 
-                            Section::make('Pejabat Pelaksana Teknis Kegiatan')
+                            Section::make('Pejabat Pelaksana Teknis Kegiatan (RASTRA)')
                                 ->icon('heroicon-o-user')
                                 ->schema([
                                     TextInput::make('persuratan.nama_pps')
@@ -118,6 +118,25 @@ class Settings extends BaseSettings
                                         ->label('Pangkat Pejabat')
                                         ->default('Hansen'),
                                     TextInput::make('persuratan.instansi_pps')
+                                        ->label('Instansi Pejabat')
+                                        ->default('DINAS SOSIAL KAB. SOPPENG'),
+                                ])->columns(2),
+                            Section::make('Pejabat Pelaksana Teknis Kegiatan (PPKS)')
+                                ->icon('heroicon-o-user')
+                                ->schema([
+                                    TextInput::make('persuratan.nama_ppk')
+                                        ->label('Nama Pejabat')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.nip_ppk')
+                                        ->label('Nip Pejabat')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.jabatan_ppk')
+                                        ->label('Jabatan Pejabat')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.pangkat_ppk')
+                                        ->label('Pangkat Pejabat')
+                                        ->default('Hansen'),
+                                    TextInput::make('persuratan.instansi_ppk')
                                         ->label('Instansi Pejabat')
                                         ->default('DINAS SOSIAL KAB. SOPPENG'),
                                 ])->columns(2),
