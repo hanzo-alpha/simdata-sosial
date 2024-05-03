@@ -7,6 +7,8 @@ use App\Models\BeritaAcara;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Supports\Helpers;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Awcodes\Shout\Components\Shout;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -208,8 +210,8 @@ class BeritaAcaraResource extends Resource
                         Forms\Components\FileUpload::make('upload_ba')
                             ->label('Upload Berita Acara')
                             ->preserveFilenames()
-                            ->nullable()
-                            ->maxSize(1024 * 5),
+                            ->maxSize(1024 * 5)
+                            ->columnSpanFull(),
                     ])->columns(2),
 
             ]);

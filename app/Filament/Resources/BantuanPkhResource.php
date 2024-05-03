@@ -42,7 +42,7 @@ final class BantuanPkhResource extends Resource
             ->schema([
                 Section::make('Data Pribadi')->schema([
                     TextInput::make('dtks_id')
-                        ->required()
+                        ->nullable()
                         ->default(Str::upper(Str::orderedUuid()->toString()))
                         ->maxLength(36),
                     TextInput::make('nokk')
@@ -211,7 +211,6 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('nominal')
                     ->sortable()
                     ->toggleable()
-                    ->toggledHiddenByDefault()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()

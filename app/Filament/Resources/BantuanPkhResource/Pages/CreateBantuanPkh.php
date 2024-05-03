@@ -6,6 +6,7 @@ namespace App\Filament\Resources\BantuanPkhResource\Pages;
 
 use App\Filament\Resources\BantuanPkhResource;
 use Filament\Resources\Pages\CreateRecord;
+use Str;
 
 final class CreateBantuanPkh extends CreateRecord
 {
@@ -14,6 +15,7 @@ final class CreateBantuanPkh extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['kode_wilayah'] = $data['kelurahan'];
+        $data['dtks_id'] = Str::orderedUuid()->toString();
         return $data;
     }
 }
