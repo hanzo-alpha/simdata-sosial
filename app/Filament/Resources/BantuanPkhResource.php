@@ -266,14 +266,22 @@ final class BantuanPkhResource extends Resource
             ])
             ->searchPlaceholder('Cari...')
             ->filters([
-                //                Tables\Filters\SelectFilter::make('kecamatan')
-                //                    ->relationship('kec', 'name')
-                //                    ->searchable()
-                //                    ->optionsLimit(10),
-                //                Tables\Filters\SelectFilter::make('kelurahan')
-                //                    ->relationship('kel', 'name')
-                //                    ->searchable()
-                //                    ->optionsLimit(10),
+                SelectFilter::make('kecamatan')
+                    ->options(function () {
+                        return Kecamatan::query()
+                            ->where('kabupaten_code', setting('app.kodekab'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
+                SelectFilter::make('kelurahan')
+                    ->options(function () {
+                        return Kelurahan::query()
+                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
                 SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(list_tahun())
@@ -281,7 +289,11 @@ final class BantuanPkhResource extends Resource
                     ->searchable(),
                 DateRangeFilter::make('created_at')
                     ->label('Rentang Tanggal'),
-            ])->hiddenFilterIndicators()
+            ])
+            ->deferFilters()
+            ->persistFiltersInSession()
+            ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),

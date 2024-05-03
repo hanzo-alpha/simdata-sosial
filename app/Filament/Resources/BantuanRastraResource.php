@@ -134,9 +134,10 @@ class BantuanRastraResource extends Resource
                     ->attribute('tahun')
                     ->searchable(),
             ])
-            ->hiddenFilterIndicators()
+            ->deferFilters()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),

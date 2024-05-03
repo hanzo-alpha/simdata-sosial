@@ -425,6 +425,22 @@ final class BantuanPpksResource extends Resource
                     ->boolean(),
             ])
             ->filters([
+                SelectFilter::make('kecamatan')
+                    ->options(function () {
+                        return Kecamatan::query()
+                            ->where('kabupaten_code', setting('app.kodekab'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
+                SelectFilter::make('kelurahan')
+                    ->options(function () {
+                        return Kelurahan::query()
+                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
                 SelectFilter::make('bantuan_yang_pernah_diterima')
                     ->label('Bantuan Diterima')
                     ->multiple()
@@ -448,6 +464,7 @@ final class BantuanPpksResource extends Resource
             ->deferFilters()
             ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\Action::make('cetak ba')
                     ->label('Cetak Berita Acara')
