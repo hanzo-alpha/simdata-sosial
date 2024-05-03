@@ -34,6 +34,9 @@ class BantuanRastra extends Model
     protected $table = 'bantuan_rastra';
 
     protected $guarded = [];
+    protected $with = [
+        'kec','kel',
+    ];
 
     protected $casts = [
         'dtks_id' => 'string',
