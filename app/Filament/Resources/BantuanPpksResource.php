@@ -592,7 +592,8 @@ final class BantuanPpksResource extends Resource
                                 ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
-                            TextEntry::make('bantuan_yang_pernah_diterima')
+                            TextEntry::make('bansos_diterima.nama_bansos')
+                                ->badge()
                                 ->label('Bantuan Yang Pernah Diterima')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),

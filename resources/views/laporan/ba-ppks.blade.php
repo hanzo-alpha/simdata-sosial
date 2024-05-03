@@ -62,7 +62,7 @@
             Pada hari ini {{ $tglBa->dayName ?? now()->dayName }} Tanggal
             {{ $tglBa->day ?? now()->day }} {{ $tglBa->monthName ?? now()->monthName }}
             {{ $tglBa->year ?? now()->year }} Bertempat di Desa/Kelurahan {{ $record->kel->name }} Dilakukan
-            serah terima barang Bantuan Sosial {{ $record->nama_bantuan }}
+            serah terima barang Bantuan Sosial {{ $record->tipe_ppks->nama_tipe }}
         </p>
         <p style="font-size: 12px">Yang bertanda tangan dibawah ini :</p>
         <table class="table">
@@ -126,6 +126,12 @@
                 <th width="10%" style="text-align: right">:</th>
                 <td>{{ 'Kec. ' . $record->kec->name . ', Kel. ' .$record->kel->name }}</td>
             </tr>
+{{--            <tr class="pb-0">--}}
+{{--                <th width="5%" style="text-align: left"></th>--}}
+{{--                <th width="20%" style="text-align: right">Bansos Yang Pernah Diterima</th>--}}
+{{--                <th width="10%" style="text-align: right">:</th>--}}
+{{--                <td>{{ $record->bansos_diterima()->implode('nama_bansos', ', ') }}</td>--}}
+{{--            </tr>--}}
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
                 <td colspan="4">
@@ -139,7 +145,7 @@
         <p>
             a.
             <b>PIHAK PERTAMA</b>
-            menyerahkan Barang Bantuan Sosial {{ $record->nama_bantuan }} Tahun {{ today()->year }} kepada
+            menyerahkan Barang Bantuan Sosial {{ $record->tipe_ppks->nama_tipe }} Tahun {{ today()->year }} kepada
             <b>PIHAK KEDUA</b>
             sebagaimana
             <b>PIHAK KEDUA</b>
@@ -148,7 +154,7 @@
         </p>
         <br />
         <p>
-            b. Jenis, spesifikasi, kuantitas, satuan, harga satuan dan total harga barang / jasa yang diserahterimakan
+            b. Jenis, spesifikasi, kriteria, dan jumlah barang / jasa yang diserahterimakan
             sebagai berikut :
         </p>
         <br />
@@ -160,7 +166,7 @@
             <tr>
                 <th scope="col" class="border-0 text-center">No.</th>
                 <th scope="col" class="border-0 text-center">Uraian Jenis Barang/Jasa Lainnya</th>
-                <th scope="col" class="border-0 text-center">Kategori PPKS</th>
+                <th scope="col" class="border-0 text-center">Bansos Pernah Diterima</th>
                 <th scope="col" class="border-0 text-center">Jumlah Bantuan</th>
                 {{--                <th scope="col" class="border-0 text-center">Harga Satuan (RP)</th>--}}
                 {{--                <th scope="col" class="border-0 text-center">Jumlah Harga (Rp)</th>--}}
@@ -172,12 +178,12 @@
                     {{ 1 }}
                 </td>
                 <td class="text-center">
-                    {{ $record->nama_bantuan }}
+                    {{ $record->nama_bantuan . ' - ' . $record->tipe_ppks->nama_tipe }}
                 </td>
                 <td class="text-center">
-                    {{ $record->tipe_ppks->nama_tipe }}
+                    {{ $record->bansos_diterima()->implode('nama_bansos', ', ') }}
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                     {{ $record->jumlah_bantuan }}
                 </td>
                 {{--                <td class="text-right">--}}
@@ -189,8 +195,8 @@
             </tr>
             <tr>
                 {{--                <td colspan="2" class="border-0"></td>--}}
-                <td colspan="3" class="pl-0 text-right">Total Harga</td>
-                <td class="text-right">
+                <td colspan="3" class="pl-0 text-right">Total Bantuan</td>
+                <td class="text-center">
                     {{ Number::format($record->jumlah_bantuan, 0, locale: 'id') }}
                 </td>
             </tr>
@@ -302,7 +308,10 @@
             <p style="font-size: 12px">
                 <span style="text-decoration-line: underline">
                     <strong>
-                        {{ Str::upper('DAFTAR PENERIMA MANFAAT BANTUAN SOSIAL PPKS TAHUN ANGGARAN ') . now()->year }}
+                        {{ Str::upper('DAFTAR PENERIMA MANFAAT BANTUAN SOSIAL '
+                            . $record->tipe_ppks->nama_tipe . ' TAHUN ANGGARAN ')
+                            . now()->year
+                        }}
                     </strong>
                 </span>
             </p>
@@ -312,11 +321,11 @@
             <thead>
             <tr>
                 {{--                <th scope="col" class="border-0 pl-0">No.</th>--}}
-                <th scope="col" class="border-0 text-center">Nama Lengkap</th>
-                <th scope="col" class="border-0 text-center">KK</th>
+                <th scope="col" class="border-0 text-center">Nama Penerima</th>
+{{--                <th scope="col" class="border-0 text-center">KK</th>--}}
                 <th scope="col" class="border-0 text-center">NIK</th>
                 <th scope="col" class="border-0 text-center">Desa/Kelurahan</th>
-                <th scope="col" class="border-0 text-center">Jumlah Bantuan</th>
+                <th scope="col" class="border-0 text-center">Jumlah</th>
                 <th scope="col" class="border-0 text-center">Tanda Tangan/Cap Jempol</th>
                 <th scope="col" class="border-0 text-center">Keterangan</th>
             </tr>
@@ -325,7 +334,7 @@
             <tr>
                 {{--                <td class="text-center">{{ $i++ }}</td>--}}
                 <td class="text-center">{{ $record->nama_lengkap }}</td>
-                <td class="text-center">{{ $record->nokk }}</td>
+{{--                <td class="text-center">{{ $record->nokk }}</td>--}}
                 <td class="text-center">{{ $record->nik }}</td>
                 <td class="text-center">{{ $record->kel()?->first()?->name }}</td>
                 <td class="text-center">{{ $record->jumlah_bantuan }}</td>
@@ -333,7 +342,7 @@
                 <td class="text-right"></td>
             </tr>
             <tr>
-                <td colspan="6" class="pl-0 text-right">Total Jumlah Bantuan</td>
+                <td colspan="5" class="pl-0 text-right">Total Jumlah Bantuan</td>
                 <td class="text-right">{{ $record->jumlah_bantuan }}</td>
             </tr>
             </tbody>
