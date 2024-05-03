@@ -50,7 +50,7 @@ class BantuanPkhOverview extends BaseWidget
         $results['all'] = $this->renderStats(
             BantuanPkh::count(),
             'Rekap KPM PKH',
-            'Total PKH All ' . $filters['tipe'],
+            'Total KPM Program PKH Semua ' . $filters['tipe'],
             'users',
             'primary',
         );

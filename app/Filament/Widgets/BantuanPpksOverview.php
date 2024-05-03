@@ -7,7 +7,6 @@ namespace App\Filament\Widgets;
 use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanPpks;
 use App\Models\Kecamatan;
-use App\Models\KriteriaPpks;
 use App\Traits\HasGlobalFilters;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -55,7 +54,7 @@ class BantuanPpksOverview extends BaseWidget
         $results['all'] = $this->renderStats(
             BantuanPpks::count(),
             'Rekap KPM PPKS',
-            'Total PPKS All Kecamatan',
+            'Total KPM Program PPKS Semua Kecamatan',
             'users',
             'primary',
         );
@@ -93,21 +92,21 @@ class BantuanPpksOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM PPKS Tidak Terverifikasi',
-                value: Number::abbreviate($data['unverified'], 2),
+                value: Number::format($data['unverified'], locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total KPM PPKS Tidak Terverifikasi')
                 ->descriptionIcon('heroicon-o-minus-circle')
                 ->color('danger'),
             Stat::make(
                 label: 'KPM PPKS Terverifikasi',
-                value: Number::abbreviate($data['verified'], 2),
+                value: Number::format($data['verified'], locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total KPM PPKS Terverifikasi')
                 ->descriptionIcon('heroicon-o-check-badge')
                 ->color('success'),
             Stat::make(
                 label: 'KPM PPKS Ditinjau',
-                value: Number::abbreviate($data['review'], 2),
+                value: Number::format($data['review'], locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total KPM PPKS Ditinjau')
                 ->descriptionIcon('heroicon-o-exclamation-circle')
@@ -119,9 +118,9 @@ class BantuanPpksOverview extends BaseWidget
     {
         return Stat::make(
             label: $label ?? 'KPM PPKS',
-            value: Number::format($value ?? 0, 0, locale: 'id') . config('custom.app.stat_prefix'),
+            value: Number::format($value ?? 0, locale: 'id') . config('custom.app.stat_prefix'),
         )
-            ->description($desc ?? 'Total KPM Kec. Marioriwawo')
+            ->description($desc ?? 'Total KPM Kec. ')
             ->descriptionIcon('heroicon-o-' . $icon ?? 'user')
             ->color($color ?? 'success');
     }
