@@ -14,15 +14,20 @@ class Helpers
     public static function generateNoSuratBeritaAcara($sep = '/', $model = 'rastra'): string
     {
         $model = ('rastra' === $model) ? PenyaluranBantuanRastra::class : PenyaluranBantuanPpks::class;
-        $text = ('rastra' === $model) ? setting('app.nomor_surat_rastra') : 'BAST-PPKS/DINSOS';
+        $instansi = setting('app.alias_dinas', 'DINSOS');
+        $judulNo  = setting('app.judul_no', 'BAST');
+        $text = ('rastra' === $model) ? $judulNo . '-RASTRA' : $judulNo;
         $pad = setting('app.pad') ?? '0';
         $sep = setting('app.separator') ?? $sep;
         $bulan = convertToRoman(now()->month);
         $tahun = now()->year;
         $max = $model::max('id') + 1;
-        $kodeAset = Str::padLeft($max, 4, $pad);
+        $kodePpks = setting('app.no_ppks', '400.9') . $sep . setting('app.no_ba_ppks') . $sep . $text;
+        $kodeAset = Str::padLeft($max, 4, $pad) . $sep . $text;
 
-        return $kodeAset . $sep . $text . $sep . $bulan . $sep . $tahun;
+        $kode = ('rastra' === $model) ? $kodeAset : $kodePpks;
+
+        return $kode . $sep . $instansi . $sep . $bulan . $sep . $tahun;
     }
 
     public static function hitungNilaiResidu($nilai, $tahun = 5): float|int
