@@ -34,11 +34,6 @@ class BantuanPpksOverview extends BaseWidget
         $statistik = $this->getDataOverview($this->getFilters());
         $overview = $this->getOverview($statistik) ?? [];
 
-        $tipe = BantuanPpks::each(function ($item) {
-            return KriteriaPpks::where('tipe_ppks_id', $item->tipe_ppks_id)
-                ->whereIn('id', $item->kriteria_ppks);
-        });
-
         $listKecamatan = Kecamatan::query()
             ->where('kabupaten_code', setting('app.kodekab'))
             ->pluck('name', 'code');
