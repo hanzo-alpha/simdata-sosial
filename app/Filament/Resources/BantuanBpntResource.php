@@ -58,7 +58,7 @@ class BantuanBpntResource extends Resource
                                 if ( ! $kab) {
                                     return Kabupaten::where('code', setting(
                                         'app.kodekab',
-                                        config('custom.default.kodekab')
+                                        config('custom.default.kodekab'),
                                     ))
                                         ->pluck('name', 'code');
                                 }
@@ -83,7 +83,7 @@ class BantuanBpntResource extends Resource
                                 if ( ! $kab) {
                                     return Kecamatan::where('kabupaten_code', setting(
                                         'app.kodekab',
-                                        config('custom.default.kodekab')
+                                        config('custom.default.kodekab'),
                                     ))
                                         ->pluck('name', 'code');
                                 }

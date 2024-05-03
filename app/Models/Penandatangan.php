@@ -14,7 +14,7 @@ class Penandatangan extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'status_penandatangan' => StatusPenandatangan::class
+        'status_penandatangan' => StatusPenandatangan::class,
     ];
 
     public function kecamatan(): BelongsTo

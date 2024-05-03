@@ -60,7 +60,7 @@ return [
 
         'pages' => [
             'Dashboard',
-            'MyProfilePage'
+            'MyProfilePage',
         ],
 
         'widgets' => [

@@ -50,7 +50,7 @@ class ManagePesertaBpjs extends ManageRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            PesertaBpjsOverview::class
+            PesertaBpjsOverview::class,
         ];
     }
 

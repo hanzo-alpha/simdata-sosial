@@ -8,6 +8,8 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -62,35 +64,69 @@ class BantuanRastraResource extends Resource
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->sortable()
-                    ->wrap()
+                    ->toggleable()
+                    ->description(function ($record): void {
+                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
+                    })
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kec.name')
+                    ->label('Kecamatan')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kel.name')
+                    ->label('Kelurahan')
+                    ->sortable()
+                    ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_rastra')
                     ->alignCenter()
                     ->searchable()
                     ->sortable()
+                    ->toggleable()
                     ->label('Status Rastra')
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_verifikasi')
                     ->alignCenter()
                     ->searchable()
                     ->sortable()
+                    ->toggleable()
                     ->label('Status Verifikasi')
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_aktif')
                     ->alignCenter()
+                    ->toggleable()
                     ->label('Status Aktif')
                     ->sortable()
-                    ->badge()
+                    ->badge(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('kecamatan')
+                    ->options(function () {
+                        return Kecamatan::query()
+                            ->where('kabupaten_code', setting('app.kodekab'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
+                SelectFilter::make('kelurahan')
+                    ->options(function () {
+                        return Kelurahan::query()
+                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                            ->pluck('name', 'code');
+                    })
+                    ->searchable()
+                    ->native(false),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')
                     ->options(StatusVerifikasiEnum::class)
+                    ->native(false)
                     ->searchable(),
                 SelectFilter::make('status_rastra')
                     ->label('Status Rastra')
                     ->options(StatusRastra::class)
+                    ->native(false)
                     ->searchable(),
                 SelectFilter::make('tahun')
                     ->label('Tahun')
@@ -112,7 +148,7 @@ class BantuanRastraResource extends Resource
                         ->action(function ($record): void {
                             $record->status_aktif = match ($record->status_aktif) {
                                 StatusAktif::AKTIF => StatusAktif::NONAKTIF,
-                                StatusAktif::NONAKTIF => StatusAktif::AKTIF
+                                StatusAktif::NONAKTIF => StatusAktif::AKTIF,
                             };
 
                             $record->save();
@@ -123,8 +159,8 @@ class BantuanRastraResource extends Resource
                                 ->title('Status Berhasil Diubah')
                                 ->send();
                         })
-                        ->close()
-                ])
+                        ->close(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -142,7 +178,7 @@ class BantuanRastraResource extends Resource
                             $records->each(function ($records): void {
                                 $records->status_aktif = match ($records->status_aktif) {
                                     StatusAktif::AKTIF => StatusAktif::NONAKTIF,
-                                    StatusAktif::NONAKTIF => StatusAktif::AKTIF
+                                    StatusAktif::NONAKTIF => StatusAktif::AKTIF,
                                 };
 
                                 $records->save();
@@ -155,7 +191,7 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->closeModalByClickingAway()
-                        ->deselectRecordsAfterCompletion()
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
@@ -177,7 +213,7 @@ class BantuanRastraResource extends Resource
 
                     Forms\Components\Section::make('Verifikasi')
                         ->schema(BantuanRastra::getUploadForm())
-                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin'])),
                 ])->columnSpan(1),
             ])->columns(3);
     }

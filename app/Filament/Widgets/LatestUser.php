@@ -12,7 +12,7 @@ class LatestUser extends BaseWidget
 {
     use HasWidgetShield;
 
-    protected static ?string $heading = 'Latest User';
+    protected static ?string $heading = 'Pengguna Terakhir';
     protected static ?int $sort = 4;
 
     public function table(Table $table): Table
@@ -22,12 +22,15 @@ class LatestUser extends BaseWidget
             ->poll()
             ->emptyStateHeading('Tidak ada data ditemukan')
             ->query(
-                User::query()->whereNot('is_admin', 1)->orderByDesc('created_at')
+                User::query()
+                    ->whereNot('is_admin', 1)
+                    ->limit(10)
+                    ->orderByDesc('created_at'),
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('instansi.name'),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->label('Dibuat Pada')
                     ->date('d/m/Y H:i'),
             ]);
     }

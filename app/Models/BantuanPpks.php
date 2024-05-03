@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -35,7 +34,8 @@ class BantuanPpks extends Model
     protected $guarded = [];
 
     protected $with = [
-        'tipe_ppks'
+        'tipe_ppks',
+        'bansos_diterima',
     ];
 
     protected $casts = [
@@ -76,13 +76,8 @@ class BantuanPpks extends Model
     {
         return $this->belongsToMany(
             KriteriaPpks::class,
-            'tipe_kriteria_ppks'
+            'tipe_kriteria_ppks',
         )->withTimestamps();
-    }
-
-    public function alamat(): MorphOne
-    {
-        return $this->morphOne(Alamat::class, 'alamatable');
     }
 
     public function beritaAcara(): BelongsTo

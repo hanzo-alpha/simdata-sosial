@@ -15,10 +15,11 @@ class BeritaAcara extends Model
 
     protected $casts = [
         'tgl_ba' => 'date',
+        'upload_ba' => 'array',
     ];
 
     protected $with = [
-        'penandatangan', 'itemBantuan', 'kel', 'kec'
+        'penandatangan', 'itemBantuan', 'kel', 'kec',
     ];
 
     public function penandatangan(): BelongsTo

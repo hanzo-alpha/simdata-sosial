@@ -42,7 +42,7 @@ class BarangResource extends Resource
                     ->numeric()
                     ->live(onBlur: true)
                     ->afterStateUpdated(
-                        fn(Forms\Get $get, Forms\Set $set, $state) => $set('total_harga', $get('kuantitas') * $state)
+                        fn(Forms\Get $get, Forms\Set $set, $state) => $set('total_harga', $get('kuantitas') * $state),
                     )
                     ->default(0),
                 Forms\Components\TextInput::make('total_harga')

@@ -17,7 +17,7 @@ class PenggantiRastra extends Model
 
     protected $casts = [
         'alasan_dikeluarkan' => AlasanEnum::class,
-        'attachment' => 'array'
+        'attachment' => 'array',
     ];
 
     public function keluarga(): BelongsTo

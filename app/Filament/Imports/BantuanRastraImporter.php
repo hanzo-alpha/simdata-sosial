@@ -52,39 +52,38 @@ class BantuanRastraImporter extends Importer
                     $record->kelurahan = $kelurahan ?? $state;
                 })
                 ->rules(['required', 'max:255']),
+            ImportColumn::make('no_rt')
+                ->guess(['RT', 'NO RT'])
+                ->requiredMapping(),
+            ImportColumn::make('no_rw')
+                ->guess(['RW', 'NO RW'])
+                ->requiredMapping(),
             ImportColumn::make('status_verifikasi')
                 ->guess(['STATUS VERIFIKASI', 'VERIFIKASI'])
+                ->requiredMapping()
                 ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
                     $record->status_verifikasi = match ($state) {
                         'TERVERIFIKASI', 'default' => StatusVerifikasiEnum::VERIFIED,
                         'BELUM DIVERIFIKASI' => StatusVerifikasiEnum::UNVERIFIED,
                         'SEDANG DITINJAU' => StatusVerifikasiEnum::REVIEW,
                     };
-                })
-                ->ignoreBlankState(),
+                }),
             ImportColumn::make('status_rastra')
                 ->guess(['status rastra'])
-                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+                ->requiredMapping()
+                ->fillRecordUsing(function (BantuanRastra $record, $state): void {
                     $record->status_rastra = match ($state) {
                         'BARU', 'default' => StatusRastra::BARU,
                         'PENGGANTI' => StatusRastra::PENGGANTI,
                     };
-                })
-                ->ignoreBlankState(),
-            ImportColumn::make('status_aktif')
-                ->guess(['status aktif'])
-                ->fillRecordUsing(function (BantuanRastra $record): void {
-                    $record->status_aktif = StatusAktif::AKTIF;
-                })
-                ->ignoreBlankState(),
+                }),
             ImportColumn::make('status_dtks')
-                ->ignoreBlankState()
-                ->fillRecordUsing(function (BantuanRastra $record, string $state): void {
+                ->requiredMapping()
+                ->fillRecordUsing(function (BantuanRastra $record, $state): void {
                     $record->status_dtks = Str::of($state)->contains('TERDAFTAR DTKS') ? StatusDtksEnum::DTKS :
                         StatusDtksEnum::NON_DTKS;
                 })
-                ->label('STATUS DTKS')
-                ->ignoreBlankState(),
+                ->label('STATUS DTKS'),
         ];
     }
 

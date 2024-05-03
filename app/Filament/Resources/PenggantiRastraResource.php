@@ -46,13 +46,13 @@ final class PenggantiRastraResource extends Resource
                     ->getSearchResultsUsing(fn(string $search): array => BantuanRastra::where(
                         'nama_lengkap',
                         'like',
-                        "%{$search}%"
+                        "%{$search}%",
                     )
                         ->orWhere('nik', 'like', "%{$search}%")
                         ->orWhere('nokk', 'like', "%{$search}%")
                         ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(fn(
-                        $record
+                        $record,
                     ) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)

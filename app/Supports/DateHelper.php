@@ -139,7 +139,7 @@ final class DateHelper
             '10' => 'Oktober',
             '11' => 'November',
             '12' => 'Desember',
-            default => ''
+            default => '',
         };
     }
 
@@ -217,7 +217,7 @@ final class DateHelper
             return $emptyVal;
         }
         if ('now' === $tanggal) {
-            $tanggal = date(config('custom.date.date_db'));
+            $tanggal = date('Y-m-d H:i:s');
         }
         $tgl = date('j', strtotime($tanggal));
         $thn = date('Y', strtotime($tanggal));
@@ -251,7 +251,7 @@ final class DateHelper
 
         return Date::createFromFormat(
             config('custom.date.only_date'),
-            $date->format(config('custom.date.only_date'))
+            $date->format(config('custom.date.only_date')),
         )->format($format);
     }
 

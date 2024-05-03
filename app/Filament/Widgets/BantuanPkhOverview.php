@@ -40,8 +40,8 @@ class BantuanPkhOverview extends BaseWidget
                 ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters))
                 ->where('kecamatan', $code)
                 ->count();
-            $label = 'KPM PKH Kec. '.$name;
-            $desc = 'Total PKH Kec. '.$name;
+            $label = 'KPM PKH Kec. ' . $name;
+            $desc = 'Total PKH Kec. ' . $name;
             $icon = 'user';
 
             $results[] = $this->renderStats($value, $label, $desc, $icon);
@@ -50,9 +50,9 @@ class BantuanPkhOverview extends BaseWidget
         $results['all'] = $this->renderStats(
             BantuanPkh::count(),
             'Rekap KPM PKH',
-            'Total PKH All '.$filters['tipe'],
+            'Total KPM Program PKH Semua ' . $filters['tipe'],
             'users',
-            'primary'
+            'primary',
         );
 
         return $results;
@@ -62,10 +62,10 @@ class BantuanPkhOverview extends BaseWidget
     {
         return Stat::make(
             label: $label ?? 'KPM PKH Kec. Marioriwawo',
-            value: Number::format($value ?? 0, 0, locale: 'id').config('custom.app.stat_prefix')
+            value: Number::format($value ?? 0, 0, locale: 'id') . config('custom.app.stat_prefix'),
         )
             ->description($desc ?? 'Total KPM Kec. Marioriwawo')
-            ->descriptionIcon('heroicon-o-'.$icon ?? 'arrow-trending-up')
+            ->descriptionIcon('heroicon-o-' . $icon ?? 'arrow-trending-up')
             ->color($color ?? 'success');
     }
 }

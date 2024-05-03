@@ -12,16 +12,14 @@ use App\Models\PenggantiRastra;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
-final class CreateBantuanRastra extends CreateRecord
+class CreateBantuanRastra extends CreateRecord
 {
     protected static string $resource = BantuanRastraResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['jenis_bantuan_id'] ??= 5;
-        $data['status_verifikasi'] = (auth()->user()?->hasRole(['operator']))
-            ? StatusVerifikasiEnum::UNVERIFIED
-            : $data['status_verifikasi'];
+        $data['status_verifikasi'] ??= StatusVerifikasiEnum::UNVERIFIED;
         $data['status_rastra'] ??= StatusRastra::BARU;
         $data['status_aktif'] ??= StatusAktif::AKTIF;
         return $data;

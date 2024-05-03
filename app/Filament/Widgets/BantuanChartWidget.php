@@ -21,7 +21,6 @@ class BantuanChartWidget extends ChartWidget
 {
     use HasGlobalFilters;
     use HasWidgetShield;
-    use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Statistik Program Bantuan Per Kecamatan';
     protected static ?string $maxHeight = '400px';
@@ -44,8 +43,8 @@ class BantuanChartWidget extends ChartWidget
     {
         return $model::query()
             ->select(['created_at', 'kecamatan', 'kelurahan'])
-            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+//            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+//            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
             ->where('kecamatan', $kodekec)
             ->count();
     }
@@ -53,18 +52,17 @@ class BantuanChartWidget extends ChartWidget
     protected function getData(): array
     {
         $results = [];
-        $filters = $this->getFilters();
 
         $kec = Kecamatan::where('kabupaten_code', setting('app.kodekab', config('custom.default.kodekab')))
             ->pluck('name', 'code');
 
         foreach ($kec as $code => $name) {
             $results['labels'][$code] = $name;
-            $results['bpjs'][$name] = $this->queryChart(BantuanBpjs::class, $code, $filters);
-            $results['pkh'][$name] = $this->queryChart(BantuanPkh::class, $code, $filters);
-            $results['bpnt'][$name] = $this->queryChart(BantuanBpnt::class, $code, $filters);
-            $results['ppks'][$name] = $this->queryChart(BantuanPpks::class, $code, $filters);
-            $results['rastra'][$name] = $this->queryChart(BantuanRastra::class, $code, $filters);
+            $results['bpjs'][$name] = $this->queryChart(BantuanBpjs::class, $code, $this->getFilters());
+            $results['pkh'][$name] = $this->queryChart(BantuanPkh::class, $code, $this->getFilters());
+            $results['bpnt'][$name] = $this->queryChart(BantuanBpnt::class, $code, $this->getFilters());
+            $results['ppks'][$name] = $this->queryChart(BantuanPpks::class, $code, $this->getFilters());
+            $results['rastra'][$name] = $this->queryChart(BantuanRastra::class, $code, $this->getFilters());
         }
 
         return [

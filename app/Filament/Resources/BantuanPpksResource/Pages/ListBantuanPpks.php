@@ -29,8 +29,8 @@ final class ListBantuanPpks extends ListRecords
                 ->modifyQueryUsing(
                     fn(Builder $query) => $query->whereHas(
                         'tipe_ppks',
-                        fn(Builder $query) => $query->where('bantuan_ppks.id', $key)
-                    )
+                        fn(Builder $query) => $query->where('bantuan_ppks.id', $key),
+                    ),
                 ));
         });
 
@@ -53,48 +53,8 @@ final class ListBantuanPpks extends ListRecords
                 ->importer(BantuanPpksImporter::class)
                 ->options([
                     'updateExisting' => true,
-                ]),
-            //            Actions\Action::make('import')
-            //                ->model(BantuanPpks::class)
-            //                ->label('Impor Data')
-            //                ->modalHeading('Unggah Data Bantuan PPKS')
-            //                ->modalDescription('Unggah data PPKS ke database dari file excel')
-            //                ->modalSubmitActionLabel('Unggah')
-            //                ->modalIcon('heroicon-o-arrow-up-tray')
-            //                ->form([
-            //                    FileUpload::make('attachment')
-            //                        ->label('Impor')
-            //                        ->hiddenLabel()
-            //                        ->columnSpanFull()
-            //                        ->preserveFilenames()
-            //                        ->previewable(false)
-            //                        ->directory('upload')
-            //                        ->maxSize(5120)
-            //                        ->reorderable()
-            //                        ->appendFiles()
-            //                        ->storeFiles(false)
-            //                        ->acceptedFileTypes([
-            //                            'application/vnd.ms-excel',
-            //                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            //                            'text/csv',
-            //                        ])
-            //                        ->hiddenOn(['edit', 'view']),
-            //                ])
-            //                ->action(function (array $data): void {
-            //                    $import = Excel::import(new ImportBantuanPpks(), $data['attachment'], 'public');
-            //                    if ($import) {
-            //                        Notification::make()
-            //                            ->title('Data PPKS Berhasil di impor')
-            //                            ->success()
-            //                            ->sendToDatabase(auth()->user());
-            //                    }
-            //                })
-            //                ->icon('heroicon-o-arrow-up-tray')
-            //                ->color('info')
-            //                ->modalAlignment(Alignment::Center)
-            //                ->closeModalByClickingAway(false)
-            //                ->successRedirectUrl(route('filament.admin.resources.program-ppks.index'))
-            //                ->modalWidth('lg'),
+                ])
+                ->closeModalByClickingAway(false),
 
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus'),

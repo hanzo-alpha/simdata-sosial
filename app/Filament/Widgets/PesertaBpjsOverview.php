@@ -14,7 +14,7 @@ class PesertaBpjsOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageTable;
 
-//    protected static bool $isDiscovered = false;
+    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
 
     protected function getTablePage(): string
@@ -28,7 +28,7 @@ class PesertaBpjsOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM BPJS',
-                value: Number::abbreviate($this->getPageTableQuery()->count(), 2)
+                value: Number::abbreviate($this->getPageTableQuery()->count(), 2),
             )
                 ->description('Total Seluruh KPM Peserta BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')

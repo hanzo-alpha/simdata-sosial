@@ -32,13 +32,13 @@ class ListBantuanRastra extends ListRecords
             $results->put(Str::lower($item->name), Tab::make()
                 ->badge(BantuanRastra::query()->whereHas(
                     'kec',
-                    fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code)
+                    fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code),
                 )->count())
                 ->modifyQueryUsing(
                     fn(Builder $query) => $query->whereHas(
                         'kec',
-                        fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code)
-                    )
+                        fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code),
+                    ),
                 ));
         });
 
@@ -48,7 +48,7 @@ class ListBantuanRastra extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-//            BantuanRastraOverview::class,
+            //            BantuanRastraOverview::class,
         ];
     }
 
@@ -68,7 +68,7 @@ class ListBantuanRastra extends ListRecords
                 ->color('warning')
                 ->importer(BantuanRastraImporter::class)
                 ->options([
-                    'updateExisting' => true
+                    'updateExisting' => true,
                 ])
                 ->maxRows(5000)
                 ->chunkSize(100),
