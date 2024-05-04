@@ -7,14 +7,17 @@ namespace App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Exports\ExportMutasiBpjs;
 use App\Filament\Resources\MutasiBpjsResource;
 use App\Models\MutasiBpjs;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
-final class ManageMutasiBpjs extends ManageRecords
+class ManageMutasiBpjs extends ManageRecords
 {
+    use HasInputDateLimit;
+
     protected static string $resource = MutasiBpjsResource::class;
 
     protected function getHeaderActions(): array
@@ -23,10 +26,12 @@ final class ManageMutasiBpjs extends ManageRecords
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
                 ->model(MutasiBpjs::class)
+                ->disabled($this->enableInputLimitDate())
                 ->closeModalByClickingAway(),
             ExportAction::make()
                 ->label('Ekspor XLS')
                 ->color('info')
+                ->disabled($this->enableInputLimitDate())
                 ->exports([
                     ExportMutasiBpjs::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),

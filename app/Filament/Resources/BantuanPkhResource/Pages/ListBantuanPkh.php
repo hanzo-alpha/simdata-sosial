@@ -9,6 +9,7 @@ use App\Filament\Resources\BantuanPkhResource;
 use App\Imports\ImportBantuanPkh;
 use App\Models\BantuanPkh;
 use App\Models\Kecamatan;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -22,6 +23,8 @@ use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 final class ListBantuanPkh extends ListRecords
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanPkhResource::class;
 
     public function getTabs(): array
@@ -58,7 +61,8 @@ final class ListBantuanPkh extends ListRecords
                 ->exports([
                     ExportBantuanPkh::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
-                ]),
+                ])
+                ->disabled($this->enableInputLimitDate()),
             Actions\Action::make('unggahData')
 //                ->model(BantuanPkh::class)
                 ->label('Impor XLS')
@@ -108,6 +112,7 @@ final class ListBantuanPkh extends ListRecords
                 ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
+                ->disabled($this->enableInputLimitDate())
                 ->successRedirectUrl(route('filament.admin.resources.program-pkh.index'))
                 ->modalWidth('lg'),
         ];

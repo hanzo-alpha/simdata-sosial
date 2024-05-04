@@ -5,6 +5,7 @@ namespace App\Filament\Resources\BeritaAcaraResource\Pages;
 use App\Filament\Resources\BeritaAcaraResource;
 use App\Models\BeritaAcara;
 use App\Models\Kecamatan;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ManageRecords;
@@ -13,6 +14,8 @@ use Illuminate\Support\Str;
 
 class ManageBeritaAcaras extends ManageRecords
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BeritaAcaraResource::class;
 
     public function getTabs(): array
@@ -42,7 +45,8 @@ class ManageBeritaAcaras extends ManageRecords
         return [
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->closeModalByClickingAway(false),
+                ->closeModalByClickingAway(false)
+                ->disabled($this->enableInputLimitDate())
         ];
     }
 }

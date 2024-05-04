@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Shield;
+namespace App\Filament\Resources;
 
-use App\Filament\Resources\Shield\RoleResource\Pages;
+use App\Filament\Resources\RoleResource\Pages;
+use App\Filament\Resources\RoleResource\Pages\CreateRole;
+use App\Filament\Resources\RoleResource\Pages\EditRole;
+use App\Filament\Resources\RoleResource\Pages\ListRoles;
+use App\Filament\Resources\RoleResource\Pages\ViewRole;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -77,7 +81,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->contained()
                     ->tabs([
                         Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.resources'))
-                            ->visible(fn(): bool => (bool) Utils::isResourceEntityEnabled())
+                            ->visible(fn(): bool => Utils::isResourceEntityEnabled())
                             ->badge(static::getResourceTabBadgeCount())
                             ->schema([
                                 Forms\Components\Grid::make()
@@ -202,8 +206,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                     ->columnSpan(FilamentShieldPlugin::get()->getCheckboxListColumnSpan()),
                             ]),
                         Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.custom'))
-                            ->visible(fn(
-                            ): bool => (bool) Utils::isCustomPermissionEntityEnabled() && count(static::getCustomEntities()) > 0)
+                            ->visible(fn(): bool => Utils::isCustomPermissionEntityEnabled() && count(static::getCustomEntities()) > 0)
                             ->badge(count(static::getCustomPermissionOptions()))
                             ->schema([
                                 Forms\Components\CheckboxList::make('custom_permissions')
@@ -308,10 +311,10 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRoles::route('/'),
-            'create' => Pages\CreateRole::route('/create'),
-            'view' => Pages\ViewRole::route('/{record}'),
-            'edit' => Pages\EditRole::route('/{record}/edit'),
+            'index' => ListRoles::route('/'),
+            'create' => CreateRole::route('/create'),
+            'view' => ViewRole::route('/{record}'),
+            'edit' => EditRole::route('/{record}/edit'),
         ];
     }
 
@@ -385,17 +388,15 @@ class RoleResource extends Resource implements HasShieldPermissions
 
         return collect(FilamentShield::getResources())
             ->sortKeys()
-            ->map(function ($entity) {
-                return Forms\Components\Section::make(FilamentShield::getLocalizedResourceLabel($entity['fqcn']))
-                    ->description(fn(
-                    ) => new HtmlString('<span style="word-break: break-word;">' . Utils::showModelPath($entity['fqcn']) . '</span>'))
-                    ->compact()
-                    ->schema([
-                        static::getCheckBoxListComponentForResource($entity),
-                    ])
-                    ->columnSpan(FilamentShieldPlugin::get()->getSectionColumnSpan())
-                    ->collapsible();
-            })
+            ->map(fn($entity) => Forms\Components\Section::make(FilamentShield::getLocalizedResourceLabel($entity['fqcn']))
+                ->description(fn(
+                ) => new HtmlString('<span style="word-break: break-word;">' . Utils::showModelPath($entity['fqcn']) . '</span>'))
+                ->compact()
+                ->schema([
+                    static::getCheckBoxListComponentForResource($entity),
+                ])
+                ->columnSpan(FilamentShieldPlugin::get()->getSectionColumnSpan())
+                ->collapsible())
             ->toArray();
     }
 
@@ -447,9 +448,7 @@ class RoleResource extends Resource implements HasShieldPermissions
         if ($state) {
             $entitiesComponents
                 ->each(
-                    function (Forms\Components\CheckboxList $component) use ($set): void {
-                        $set($component->getName(), array_keys($component->getOptions()));
-                    },
+                    fn(Forms\Components\CheckboxList $component): mixed => $set($component->getName(), array_keys($component->getOptions())),
                 );
         } else {
             $entitiesComponents
@@ -464,7 +463,6 @@ class RoleResource extends Resource implements HasShieldPermissions
                 if ($component instanceof Forms\Components\CheckboxList) {
                     $counts[$component->getName()] = count(array_keys($component->getOptions())) === count(collect($component->getState())->values()->unique()->toArray());
                 }
-
                 return $counts;
             }, collect())
             ->values();
@@ -564,14 +562,9 @@ class RoleResource extends Resource implements HasShieldPermissions
     protected static function getCustomEntities(): ?Collection
     {
         $resourcePermissions = collect();
-        collect(FilamentShield::getResources())->each(function ($entity) use ($resourcePermissions): void {
-            collect(Utils::getResourcePermissionPrefixes($entity['fqcn']))->map(function ($permission) use (
-                $resourcePermissions,
-                $entity
-            ): void {
-                $resourcePermissions->push((string) Str::of($permission . '_' . $entity['resource']));
-            });
-        });
+        collect(FilamentShield::getResources())
+            ->each(fn($entity): Collection => collect(Utils::getResourcePermissionPrefixes($entity['fqcn']))
+                ->map(fn($permission): Collection => $resourcePermissions->push((string) Str::of($permission . '_' . $entity['resource']))));
 
         $entitiesPermissions = $resourcePermissions
             ->merge(collect(FilamentShield::getPages())->map(fn($page) => $page['permission'])->values())

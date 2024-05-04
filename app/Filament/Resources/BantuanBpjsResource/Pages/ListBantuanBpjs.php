@@ -65,7 +65,8 @@ class ListBantuanBpjs extends ListRecords
                 ->exports([
                     ExportBantuanBpjs::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
-                ]),
+                ])
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 
             Actions\Action::make('import')
                 ->model(BantuanBpjs::class)
@@ -106,6 +107,7 @@ class ListBantuanBpjs extends ListRecords
                 ->icon('heroicon-o-arrow-down-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
                 ->successRedirectUrl(route('filament.admin.resources.program-bpjs.index'))
                 ->modalWidth('md'),
 

@@ -9,6 +9,7 @@ use App\Filament\Imports\BantuanRastraImporter;
 use App\Filament\Resources\BantuanRastraResource;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
@@ -19,7 +20,7 @@ use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ListBantuanRastra extends ListRecords
 {
-    //    use HasToggleableTable;
+    use HasInputDateLimit;
 
     protected static string $resource = BantuanRastraResource::class;
 
@@ -60,7 +61,8 @@ class ListBantuanRastra extends ListRecords
                 ->color('success')
                 ->exports([
                     ExportBantuanRastra::make(),
-                ]),
+                ])
+                ->disabled($this->enableInputLimitDate()),
 
             Actions\ImportAction::make()
                 ->label('Upload CSV')
@@ -71,10 +73,12 @@ class ListBantuanRastra extends ListRecords
                     'updateExisting' => true,
                 ])
                 ->maxRows(5000)
-                ->chunkSize(100),
+                ->chunkSize(100)
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 
             Actions\CreateAction::make()
-                ->icon('heroicon-o-plus'),
+                ->icon('heroicon-o-plus')
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 

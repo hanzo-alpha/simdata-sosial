@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Shield\RoleResource\Pages;
+namespace App\Filament\Resources\RoleResource\Pages;
 
-use App\Filament\Resources\Shield\RoleResource;
+use App\Filament\Resources\RoleResource;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
