@@ -25,4 +25,9 @@ class TipePpks extends Model
     {
         return $this->hasMany(KriteriaPpks::class);
     }
+
+    public function bantuanPpks(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(BantuanPpks::class);
+    }
 }

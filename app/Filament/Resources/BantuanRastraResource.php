@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AlasanEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
@@ -10,9 +11,11 @@ use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\PenggantiRastra;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -20,6 +23,7 @@ use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -161,6 +165,54 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->close(),
+//                    Tables\Actions\Action::make('Toggle Status Rastra')
+//                        ->icon('heroicon-s-arrow-path-rounded-square')
+//                        ->form([
+//                            //                            Select::make('pengganti_rastra.keluarga_id')
+//                            //                                ->label('Keluarga Yang Diganti')
+//                            //                                ->required()
+//                            //                                ->options(BantuanRastra::query()
+//                            //                                    ->where('status_rastra', StatusRastra::BARU)
+//                            //                                    ->pluck('nama_lengkap', 'id'))
+//                            //                                ->searchable(['nama_lengkap', 'nik', 'nokk'])
+//                            //                                ->lazy()
+//                            //                                ->preload(),
+//                            Select::make('pengganti_rastra.alasan_dikeluarkan')
+//                                ->searchable()
+//                                ->options(AlasanEnum::class)
+//                                ->enum(AlasanEnum::class)
+//                                ->native(false)
+//                                ->preload()
+//                                ->lazy()
+//                                ->required()
+//                                ->default(AlasanEnum::PINDAH),
+//                        ])
+//                        ->modalWidth(MaxWidth::Medium)
+//                        ->action(function ($record, array $data): void {
+//                            PenggantiRastra::create([
+//                                'keluarga_yang_diganti_id' => $record->id,
+//                                'bantuan_rastra_id' => $data['pengganti_rastra']['keluarga_id'],
+//                                'nik_pengganti' => $record->nik,
+//                                'nokk_pengganti' => $record->nokk,
+//                                'nama_pengganti' => $record->nama_lengkap,
+//                                'alamat_pengganti' => $record->alamat,
+//                                'alasan_dikeluarkan' => $data['pengganti_rastra']['alasan_dikeluarkan'],
+//                            ]);
+//
+//                            $record->status_rastra = match ($record->status_rastra) {
+//                                StatusRastra::BARU => StatusRastra::PENGGANTI,
+//                                StatusRastra::PENGGANTI => StatusRastra::BARU,
+//                            };
+//
+//                            $record->save();
+//                        })
+//                        ->after(function (): void {
+//                            Notification::make()
+//                                ->success()
+//                                ->title('Status Berhasil Diubah')
+//                                ->send();
+//                        })
+//                        ->close(),
                 ]),
             ])
             ->bulkActions([

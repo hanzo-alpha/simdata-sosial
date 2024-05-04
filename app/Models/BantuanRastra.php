@@ -175,10 +175,6 @@ class BantuanRastra extends Model
                     ->where('status_rastra', StatusRastra::BARU)
                     ->pluck('nama_lengkap', 'id'))
                 ->searchable(['nama_lengkap', 'nik', 'nokk'])
-//                ->getOptionLabelFromRecordUsing(function ($record) {
-//                    return '<strong>' . $record->family->nama_lengkap . '</strong><br>' . $record->nik;
-//                })->allowHtml()
-                ->optionsLimit(15)
                 ->lazy()
                 ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->preload(),
@@ -192,8 +188,7 @@ class BantuanRastra extends Model
                 ->lazy()
                 ->required()
                 ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
-                ->default(AlasanEnum::PINDAH)
-                ->optionsLimit(15),
+                ->default(AlasanEnum::PINDAH),
 
             ToggleButton::make('status_aktif')
                 ->label('Status Aktif')
