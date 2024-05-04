@@ -46,7 +46,7 @@ class ManageBeritaAcaras extends ManageRecords
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate())
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 }
