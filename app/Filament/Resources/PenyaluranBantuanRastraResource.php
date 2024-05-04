@@ -80,7 +80,7 @@ class PenyaluranBantuanRastraResource extends Resource
                         ->label('Cetak Dokumentasi')
                         ->color('success')
                         ->icon('heroicon-o-arrow-down-tray')
-                        ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
+                        ->url(fn(Model $record) => route('cetak-dokumentasi.rastra', ['id' => $record, 'm' => self::$model]))
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),

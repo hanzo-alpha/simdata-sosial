@@ -79,7 +79,7 @@ class BeritaAcaraResource extends Resource
                     ->label('Cetak Berita Acara')
                     ->color('info')
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Model $record) => route('pdf.ba', ['id' => $record, 'm' => self::$model]))
+                    ->url(fn(Model $record) => route('ba.rastra', ['id' => $record, 'm' => self::$model]))
                     ->form([
                         Forms\Components\Section::make()
                             ->schema([

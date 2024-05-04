@@ -9,16 +9,29 @@ use Illuminate\Http\Response;
 
 class PdfController extends Controller
 {
-    public function downloadRastra(Request $request): Response
+
+    public function cetakDokumentasiRastra(Request $request): Response
     {
         $model = $request->get('m')::find($request->get('id'));
-        $pdf = PDF::loadView('laporan.pdf', compact('model'));
+        $pdf = PDF::loadView('laporan.dokumentasi', compact('model'));
         $pdf->setOption([
             'dpi' => 96,
             'defaultFont' => 'sans-serif',
             'defaultPaperSize' => 'a4',
         ]);
         return $pdf->stream('dokumentasi-rastra.pdf');
+    }
+
+    public function cetakDokumentasi(Request $request): Response
+    {
+        $model = $request->get('m')::find($request->get('id'));
+        $pdf = PDF::loadView('laporan.dokumentasi-ppks', compact('model'));
+        $pdf->setOption([
+            'dpi' => 96,
+            'defaultFont' => 'sans-serif',
+            'defaultPaperSize' => 'a4',
+        ]);
+        return $pdf->stream('dokumentasi-ppks.pdf');
     }
 
     public function downloadBeritaAcara(Request $request): Response
