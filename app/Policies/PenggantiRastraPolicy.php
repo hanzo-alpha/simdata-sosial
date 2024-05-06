@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PenggantiRastra;
 use App\Models\User;
+use App\Models\PenggantiRastra;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PenggantiRastraPolicy

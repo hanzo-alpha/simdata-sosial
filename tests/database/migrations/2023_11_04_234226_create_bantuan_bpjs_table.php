@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class () extends Migration {
             $table->string('nama_lengkap');
             $table->string('tempat_lahir', 50);
             $table->dateTime('tgl_lahir');
+            $table->string('tgl_lahir_tmp')->nullable();
             $table->tinyInteger('jenis_kelamin')
                 ->nullable()
                 ->default(1);
@@ -37,11 +39,10 @@ return new class () extends Migration {
                 ->default(0);
             $table->string('status_usulan', 20)->nullable();
             $table->string('status_bpjs', 20)->nullable();
-            $table->string('bulan', 10)->nullable();
-            $table->unsignedInteger('tahun')->nullable();
+            $table->string('bulan', 10)->nullable()->default(today()->monthName);
+            $table->unsignedInteger('tahun')->nullable()->default(today()->year);
             $table->text('keterangan')->nullable();
             $table->json('foto_ktp')->nullable();
-            $table->date('batas_tgl_input')->default(today())->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

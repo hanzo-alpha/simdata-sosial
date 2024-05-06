@@ -6,6 +6,7 @@ namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Exports\ExportBantuanBpjs;
 use App\Filament\Resources\BantuanBpjsResource;
+use App\Filament\Widgets\BantuanBpjsOverview;
 use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
@@ -27,50 +28,63 @@ class ListBantuanBpjs extends ListRecords
 
     protected static string $resource = BantuanBpjsResource::class;
 
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanBpjsOverview::class,
-    //        ];
-    //    }
-
     public function getTabs(): array
     {
-        $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
         $results = collect();
-        $bantuan->each(function ($item, $key) use (&$results): void {
-            $results->put('semua', Tab::make()->badge(BantuanBpjs::query()->count()));
-            $results->put(Str::lower($item->name), Tab::make()
-                ->badge(BantuanBpjs::query()->whereHas(
-                    'kec',
-                    fn(Builder $query) => $query->where('bantuan_bpjs.kecamatan', $item->code),
-                )->count())
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
+
+        if (auth()->user()->hasRole(['admin','super_admin'])) {
+            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
+            $bantuan->each(function ($item, $key) use (&$results): void {
+                $results->put('semua', Tab::make()
+                    ->badge(BantuanBpjs::query()->count()));
+                $results->put(Str::lower($item->name), Tab::make()
+                    ->badge(BantuanBpjs::query()->whereHas(
                         'kec',
-                        fn(Builder $query) => $query->where('bantuan_bpjs.kecamatan', $item->code),
-                    ),
-                ));
-        });
+                        function (Builder $query) use ($item): void {
+                            $query->where('bantuan_bpjs.kecamatan', $item->code);
+
+                        },
+                    )->count())
+                    ->modifyQueryUsing(
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            function (Builder $query) use ($item): void {
+                                $query->where('bantuan_bpjs.kecamatan', $item->code);
+
+                            },
+                        ),
+                    ));
+            });
+
+            return $results->toArray();
+        }
 
         return $results->toArray();
+
     }
+
+//    protected function getHeaderWidgets(): array
+//    {
+//        return [
+//            BantuanBpjsOverview::class,
+//        ];
+//    }
 
     protected function getHeaderActions(): array
     {
         return [
             ExportAction::make()
-                ->label('Ekspor Data')
+                ->label('Download')
                 ->color('success')
                 ->exports([
                     ExportBantuanBpjs::make()
-                        ->except(['created_at', 'updated_at', 'deleted_at']),
+                        ->except(['tahun','bulan','created_at', 'updated_at', 'deleted_at']),
                 ])
                 ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 
-            Actions\Action::make('import')
+            Actions\Action::make('Upload')
                 ->model(BantuanBpjs::class)
-                ->label('Impor Data')
+                ->label('Upload')
                 ->modalHeading('Unggah Bantuan BPJS')
                 ->modalDescription('Unggah Bantuan BPJS ke database')
                 ->modalSubmitActionLabel('Unggah')
@@ -104,7 +118,7 @@ class ListBantuanBpjs extends ListRecords
                         ->send()
                         ->sendToDatabase(auth()->user());
                 })
-                ->icon('heroicon-o-arrow-down-tray')
+                ->icon('heroicon-o-arrow-up-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
                 ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))

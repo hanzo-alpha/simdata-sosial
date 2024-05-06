@@ -53,22 +53,28 @@ class BantuanBpjsResource extends Resource
                     ->sortable()
                     ->description(fn($record) => 'Nik : ' . $record->nik_tmt)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('nik_tmt')
+                    ->label('N I K')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable()
+                    ->copyable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nokk_tmt')
                     ->label('No. KK')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->toggleable()
                     ->sortable()
                     ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
                     ->label('Tempat Lahir')
-                    ->description(fn($record) => $record->tgl_lahir->format('d/M/Y'))
+                    ->description(fn($record) => $record->tgl_lahir->format('d/m/Y'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tgl_lahir')
                     ->label('Tgl. Lahir')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
-                    ->date()
+                    ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
@@ -81,36 +87,45 @@ class BantuanBpjsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->badge(),
                 Tables\Columns\TextColumn::make('alamat')
-                    ->label('Alamat Lengkap')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->description(function ($record) {
-                        $alamat = $record['alamat'];
-                        $rt = $record['nort'];
-                        $rw = $record['norw'];
-                        $kodepos = $record['kodepos'];
-                        $kec = $record->kec?->name;
-                        $kel = $record->kel?->name;
-
-                        return $alamat . ' ' . 'RT.' . $rt . '/' . 'RW.' . $rw . ' ' . $kec . ', ' . $kel . ', ' . $kodepos;
-                    })
+                    ->label('Alamat')
+                    ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
+                    ->sortable()
+                    ->toggleable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('dusun')
+                    ->label('Dusun')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nort')
+                    ->label('RT')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('norw')
+                    ->label('RW')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('bulan')
                     ->label('Periode')
                     ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun)
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('tahun')
+                    ->label('Tahun')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status_usulan')
                     ->label('Status Usulan')
                     ->sortable()
+                    ->toggleable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_bpjs')
                     ->label('Status BPJS')
@@ -122,6 +137,14 @@ class BantuanBpjsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->badge(),
+                Tables\Columns\ImageColumn::make('foto_ktp')
+                    ->label('Foto KTP')
+                    ->circular()
+                    ->stacked()
+                    ->wrap()
+                    ->limit(3)
+                    ->limitedRemainingText()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('keterangan')
                     ->searchable(),
             ])
@@ -132,6 +155,7 @@ class BantuanBpjsResource extends Resource
                             ->where('kabupaten_code', setting('app.kodekab'))
                             ->pluck('name', 'code');
                     })
+                    ->visible((bool) auth()->user()->hasRole(['super_admin', 'admin']))
                     ->searchable()
                     ->native(false),
                 SelectFilter::make('kelurahan')
@@ -140,6 +164,7 @@ class BantuanBpjsResource extends Resource
                             ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
                             ->pluck('name', 'code');
                     })
+                    ->visible((bool) auth()->user()->hasRole(['super_admin', 'admin']))
                     ->searchable()
                     ->native(false),
                 SelectFilter::make('status_usulan')
@@ -152,6 +177,10 @@ class BantuanBpjsResource extends Resource
                 SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(list_tahun())
+                    ->searchable(),
+                SelectFilter::make('bulan')
+                    ->label('Bulan')
+                    ->options(list_bulan())
                     ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
@@ -171,7 +200,9 @@ class BantuanBpjsResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make(),
+                    ExportBulkAction::make()
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->label('Download Terpilih'),
                     Tables\Actions\BulkAction::make('ubah status usulan')
                         ->label('Ubah Status Usulan')
                         ->icon('heroicon-o-cursor-arrow-ripple')

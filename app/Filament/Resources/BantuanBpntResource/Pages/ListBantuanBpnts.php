@@ -29,7 +29,12 @@ class ListBantuanBpnts extends ListRecords
             $results->put(Str::lower($item->name), Tab::make()
                 ->badge(BantuanBpnt::query()->whereHas(
                     'kec',
-                    fn(Builder $query) => $query->where('bantuan_bpnt.kecamatan', $item->code),
+                    function (Builder $query) use ($item): void {
+                        if (auth()->user()->hasRole(['super_admin'])) {
+                            $query->where('bantuan_bpnt.kelurahan', auth()->user()->instansi_id);
+                        }
+                        $query->where('bantuan_bpnt.kecamatan', $item->code);
+                    },
                 )->count())
                 ->modifyQueryUsing(
                     fn(Builder $query) => $query->whereHas(

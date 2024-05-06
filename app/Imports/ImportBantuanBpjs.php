@@ -99,12 +99,13 @@ class ImportBantuanBpjs implements
         return new DataBantuanBpjs([
             'nomor_kartu' => null,
             'dtks_id' => Str::upper(Str::orderedUuid()->toString()),
-            'nokk_tmt' => $row['no_kk'] ?? 'TIDAK ADA NOMOR KK',
-            'nik_tmt' => $row['nik'] ?? 'TIDAK ADA NIK',
-            'nama_lengkap' => $row['nama_lengkap'] ?? 'TIDAK ADA NAMA',
-            'tempat_lahir' => $row['tempat_lahir'] ?? 'TIDAK ADA',
+            'nokk_tmt' => $row['no_kk'] ?? '-',
+            'nik_tmt' => $row['nik'] ?? '-',
+            'nama_lengkap' => $row['nama_lengkap'] ?? '-',
+            'tempat_lahir' => $row['tempat_lahir'] ?? '-',
             'tgl_lahir' => now()->subDays(random_int(0, 180))
                 ->subYears(random_int(10, 50))->format('Y-m-d'),
+            'tgl_lahir_tmp' => $row['tgl_lahir'] ?? null,
             'jenis_kelamin' => $jenkel ?? 1,
             'status_nikah' => $row['status_nikah'] ?? 1,
             'alamat' => $row['alamat_tempat_tinggal'] ?? '-',

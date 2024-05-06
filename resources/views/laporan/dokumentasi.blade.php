@@ -2,16 +2,16 @@
     @section('content')
         <div class="text-center">
             <img src="{{ asset('images/logos/logo-soppeng2.png') }}" alt="logo" height="60" />
-            <h2 style="margin-bottom: 5px"><strong>PEMERINTAH KABUPATEN SOPPENG</strong></h2>
-            <h1 style="margin-top: 3px; margin-bottom: 5px"><strong>DINAS SOSIAL</strong></h1>
+            <h2 style="margin-bottom: 5px"><strong>{{ setting('ba.kop_title') }}</strong></h2>
+            <h1 style="margin-top: 3px; margin-bottom: 5px"><strong>{{ setting('ba.kop_instansi') }}</strong></h1>
             {{-- <p style="margin-top: 0"> --}}
             {{-- {{ __('invoices::invoice.address') }}: {{ $invoice->seller->address }} --}}
             {{-- </p> --}}
             <p class="pt-0">
-                <span style="font-style: italic">Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng</span>
+                <span style="font-style: italic">{{ setting('ba.kop_jalan') }}</span>
                 <br />
                 <span style="font-style: italic" class="mt-1">
-                    Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com
+                    {{ setting('ba.kop_website') }}
                 </span>
             </p>
             <hr />
@@ -81,15 +81,13 @@
                                 <p>{{ 'SULAWESI SELATAN, ' . $model->created_at->format('d/m/Y') }}</p>
                                 <p style="margin-top: 10px">
                                     {{
-                                        $model->created_at->format('d/m/Y H:i:s') .
-                                            '
-                                                                                                                WITA'
+                                        $model->created_at->format('d/m/Y H:i:s') . ' WITA'
                                     }}
                                 </p>
                             </div>
                         </div>
                     @empty
-
+                        <span></span>
                     @endforelse
                 @endif
             </div>
