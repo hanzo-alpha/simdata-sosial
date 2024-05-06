@@ -56,9 +56,9 @@ class ListBantuanBpnts extends ListRecords
         return [
             Actions\ImportAction::make('upload')
                 ->importer(BantuanBpntImporter::class)
-                ->icon('heroicon-o-arrow-down-tray')
+                ->icon('heroicon-o-arrow-up-tray')
                 ->color('success')
-                ->label('Import CSV')
+                ->label('Upload CSV')
                 ->closeModalByClickingAway(false)
                 ->disabled($this->enableInputLimitDate()),
             Actions\CreateAction::make()

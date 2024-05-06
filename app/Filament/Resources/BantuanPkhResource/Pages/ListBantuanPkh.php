@@ -60,7 +60,7 @@ final class ListBantuanPkh extends ListRecords
             //                ->label('Buat Baru')
             //                ->icon('heroicon-o-plus'),
             ExportAction::make()
-                ->label('Ekspor XLS')
+                ->label('Download XLS')
                 ->color('info')
                 ->exports([
                     ExportBantuanPkh::make()
@@ -69,11 +69,11 @@ final class ListBantuanPkh extends ListRecords
                 ->disabled($this->enableInputLimitDate()),
             Actions\Action::make('unggahData')
 //                ->model(BantuanPkh::class)
-                ->label('Impor XLS')
+                ->label('Upload XLS')
                 ->modalHeading('Unggah Data Bantuan PKH')
                 ->modalDescription('Unggah data PKH ke database dari file excel')
                 ->modalSubmitActionLabel('Unggah')
-                ->modalIcon('heroicon-o-arrow-down-tray')
+                ->modalIcon('heroicon-o-arrow-up-tray')
                 ->form([
                     FileUpload::make('attachment')
                         ->label('Impor')
@@ -112,7 +112,7 @@ final class ListBantuanPkh extends ListRecords
                     //                   Log::error($import->errors());
 
                 })
-                ->icon('heroicon-o-arrow-down-tray')
+                ->icon('heroicon-o-arrow-up-tray')
                 ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
