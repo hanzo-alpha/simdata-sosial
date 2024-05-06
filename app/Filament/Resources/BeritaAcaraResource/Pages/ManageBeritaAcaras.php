@@ -20,22 +20,26 @@ class ManageBeritaAcaras extends ManageRecords
 
     public function getTabs(): array
     {
-        $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
         $results = collect();
-        $bantuan->each(function ($item, $key) use (&$results): void {
-            $results->put('semua', Tab::make()->badge(BeritaAcara::query()->count()));
-            $results->put(Str::lower($item->name), Tab::make()
-                ->badge(BeritaAcara::query()->whereHas(
-                    'kec',
-                    fn(Builder $query) => $query->where('berita_acara.kecamatan', $item->code),
-                )->count())
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
+        if (auth()->user()->hasRole(['super_admin', 'admin_rastra', 'admin'])) {
+            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
+            $bantuan->each(function ($item, $key) use (&$results): void {
+                $results->put('semua', Tab::make()->badge(BeritaAcara::query()->count()));
+                $results->put(Str::lower($item->name), Tab::make()
+                    ->badge(BeritaAcara::query()->whereHas(
                         'kec',
                         fn(Builder $query) => $query->where('berita_acara.kecamatan', $item->code),
-                    ),
-                ));
-        });
+                    )->count())
+                    ->modifyQueryUsing(
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('berita_acara.kecamatan', $item->code),
+                        ),
+                    ));
+            });
+
+            return $results->toArray();
+        }
 
         return $results->toArray();
     }

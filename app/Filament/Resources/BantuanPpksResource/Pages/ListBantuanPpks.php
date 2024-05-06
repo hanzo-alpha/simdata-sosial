@@ -23,24 +23,29 @@ final class ListBantuanPpks extends ListRecords
 
     public function getTabs(): array
     {
-        $bantuan = TipePpks::query()->select('id', 'nama_tipe')->get();
         $results = collect();
-        $bantuan->each(function ($item) use (&$results): void {
-            $results->put('semua', Tab::make()->badge(BantuanPpks::count()));
-            $results->put(Str::lower($item->nama_tipe), Tab::make()
-                ->badge(BantuanPpks::query()->whereHas(
-                    'tipe_ppks',
-                    fn(Builder $query) => $query->where('id', $item->id),
-                )->count())
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
+        if (auth()->user()->hasRole(['super_admin', 'admin_ppks', 'admin'])) {
+            $bantuan = TipePpks::query()->select('id', 'nama_tipe')->get();
+            $bantuan->each(function ($item) use (&$results): void {
+                $results->put('semua', Tab::make()->badge(BantuanPpks::count()));
+                $results->put(Str::lower($item->nama_tipe), Tab::make()
+                    ->badge(BantuanPpks::query()->whereHas(
                         'tipe_ppks',
                         fn(Builder $query) => $query->where('id', $item->id),
-                    ),
-                ));
-        });
+                    )->count())
+                    ->modifyQueryUsing(
+                        fn(Builder $query) => $query->whereHas(
+                            'tipe_ppks',
+                            fn(Builder $query) => $query->where('id', $item->id),
+                        ),
+                    ));
+            });
+
+            return $results->toArray();
+        }
 
         return $results->toArray();
+
     }
 
     protected function getHeaderActions(): array

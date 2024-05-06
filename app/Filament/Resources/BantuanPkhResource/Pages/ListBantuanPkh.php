@@ -29,22 +29,26 @@ final class ListBantuanPkh extends ListRecords
 
     public function getTabs(): array
     {
-        $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
         $results = collect();
-        $bantuan->each(function ($item, $key) use (&$results): void {
-            $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
-            $results->put(Str::lower($item->name), Tab::make()
-                ->badge(BantuanPkh::query()->whereHas(
-                    'kec',
-                    fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
-                )->count())
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
+        if (auth()->user()->hasRole(['super_admin', 'admin_pkh', 'admin'])) {
+            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
+            $bantuan->each(function ($item, $key) use (&$results): void {
+                $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
+                $results->put(Str::lower($item->name), Tab::make()
+                    ->badge(BantuanPkh::query()->whereHas(
                         'kec',
                         fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
-                    ),
-                ));
-        });
+                    )->count())
+                    ->modifyQueryUsing(
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
+                        ),
+                    ));
+            });
+
+            return $results->toArray();
+        }
 
         return $results->toArray();
     }
