@@ -49,7 +49,7 @@ class UserResource extends Resource
                     ->revealable()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
-                Forms\Components\Select::make('roles_id')
+                Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->required()
                     ->preload()
@@ -61,7 +61,7 @@ class UserResource extends Resource
                         Kelurahan::query()
                             ->whereIn(
                                 'kecamatan_code',
-                                ['731201', '731202', '731203', '731204', '731205', '731206', '731207', '731208'],
+                                config('custom.kode_kecamatan'),
                             )
                             ->pluck('name', 'code'),
                     )

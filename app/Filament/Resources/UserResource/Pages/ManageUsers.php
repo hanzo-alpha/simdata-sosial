@@ -26,12 +26,12 @@ final class ManageUsers extends ManageRecords
         $instansi->each(function ($item): void {
             $createUser = User::updateOrCreate([
                 'name' => Str::ucfirst($item->name),
-                'email' => Str::lower($item->name) . '@gmail.com',
+                'email' => Str::lower($item->name) . '@reno.soppeng.go.id',
                 'instansi_id' => $item->code,
                 'is_admin' => StatusAdminEnum::OPERATOR,
             ], [
                 'name' => Str::ucfirst($item->name),
-                'email' => Str::lower($item->name) . '@gmail.com',
+                'email' => Str::lower($item->name) . '@reno.soppeng.go.id',
                 'password' => Hash::make(Str::lower($item->name) . '12345'),
                 'instansi_id' => $item->code,
                 'is_admin' => StatusAdminEnum::OPERATOR,
@@ -49,11 +49,11 @@ final class ManageUsers extends ManageRecords
         $program->each(function ($item): void {
             $createUser = User::updateOrCreate([
                 'name' => 'Admin ' . Str::ucfirst($item->alias),
-                'email' => Str::lower('admin.' . $item->name) . '@reno.soppeng.go.id',
+                'email' => Str::lower('admin.' . $item->alias) . '@reno.soppeng.go.id',
                 'instansi_id' => null,
                 'is_admin' => StatusAdminEnum::ADMIN,
             ], [
-                'name' => Str::ucfirst($item->name),
+                'name' => 'Admin ' . Str::ucfirst($item->alias),
                 'email' => Str::lower('admin.' . $item->alias) . '@reno.soppeng.go.id',
                 'password' => Hash::make('admin@12345'),
                 'instansi_id' => null,
@@ -83,7 +83,7 @@ final class ManageUsers extends ManageRecords
             fn($item) => User::query()
                 ->whereNotIn('id', [1, 2, 3])
                 ->whereNull('instansi_id')
-                ->where('is_admin', StatusAdminEnum::OPERATOR)
+                ->where('is_admin', StatusAdminEnum::ADMIN)
                 ->delete(),
         );
     }

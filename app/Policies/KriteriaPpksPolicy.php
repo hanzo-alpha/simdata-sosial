@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\KriteriaPpks;
 use App\Models\User;
+use App\Models\KriteriaPpks;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class KriteriaPpksPolicy
