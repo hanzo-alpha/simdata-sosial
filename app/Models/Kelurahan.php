@@ -20,6 +20,8 @@ final class Kelurahan extends Model
 
     protected $primaryKey = 'code';
 
+//    protected $with = ['bantuanRastras'];
+
     protected $fillable = [
         'kecamatan_code',
         'name',
@@ -52,15 +54,8 @@ final class Kelurahan extends Model
         return $this->belongsTo(Kecamatan::class, 'kecamatan_code', 'code');
     }
 
-    //    public function kep(): HasOneThrough
-    //    {
-    //        return $this->hasOneThrough(
-    //            Pulau::class,
-    //            Kabupaten::class,
-    //            'code',
-    //            'kabupaten_code',
-    //            'code',
-    //            'code'
-    //        );
-    //    }
+//    public function bantuanRastras(): BelongsTo
+//    {
+//        return $this->belongsTo(BantuanRastra::class, 'code', 'kelurahan');
+//    }
 }

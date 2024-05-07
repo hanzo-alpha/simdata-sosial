@@ -78,7 +78,7 @@ class ListBantuanBpjs extends ListRecords
                 ->color('success')
                 ->exports([
                     ExportBantuanBpjs::make()
-                        ->except(['tahun','bulan','created_at', 'updated_at', 'deleted_at']),
+                        ->except(['foto_ktp','dusun','tahun','bulan','created_at', 'updated_at', 'deleted_at']),
                 ])
                 ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 

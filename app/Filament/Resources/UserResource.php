@@ -4,6 +4,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusAdminEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\Kelurahan;
 use App\Models\User;
@@ -11,8 +12,12 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
@@ -21,13 +26,9 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
     protected static ?string $slug = 'pengguna';
-
     protected static ?string $label = 'Pengguna';
-
     protected static ?string $pluralLabel = 'Pengguna';
-
     protected static ?string $navigationGroup = 'Pengaturan';
 
     public static function form(Form $form): Form
@@ -77,37 +78,81 @@ class UserResource extends Resource
                         $set('slug', Str::slug($namaKel));
                         $set('nama_instansi', $namaKel);
                     }),
+                Forms\Components\ToggleButtons::make('is_admin')
+                    ->enum(StatusAdminEnum::class)
+                    ->options(StatusAdminEnum::class)
+                    ->inline(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('created_at', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->placeholder('No Name.')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->placeholder('No Email.')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')
+                    ->placeholder('No Roles.')
                     ->badge(),
                 Tables\Columns\TextColumn::make('instansi_id')
+                    ->placeholder('No Instansi.')
                     ->formatStateUsing(fn($state) => Kelurahan::find($state)?->name)
                     ->label('Instansi')
                     ->badge(),
+                Tables\Columns\TextColumn::make('is_admin')
+                    ->badge(),
+
             ])
             ->filters([
 
             ])
+            ->toggleColumnsTriggerAction(
+                fn(Action $action) => $action
+                    ->iconButton()
+//                    ->tooltip('Tampilkan / Sembunyikan Kolom Tabel')
+                    ->label('Tampilkan / Sembunyikan Kolom Tabel'),
+            )
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->closeModalByClickingAway(false),
+                Tables\Actions\DeleteAction::make()
+                    ->closeModalByClickingAway(false)
+                    ->visible(1 === auth()->user()->id),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    BulkAction::make('delete')
+                        ->icon('Hapus Terpilih')
+                        ->icon('heroicon-o-user-minus')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records): void {
+                            $records->each(function ($items): void {
+                                $items->delete();
+                                $items->syncRoles();
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    BulkAction::make('forceDelete')
+                        ->icon('Paksa Hapus Terpilih')
+                        ->icon('heroicon-o-user-minus')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records): void {
+                            $records->each(function ($items): void {
+                                $items->forceDelete();
+                                $items->syncRoles();
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
-            ]);
+            ])
+            ->checkIfRecordIsSelectableUsing(
+                fn(Model $record): bool => (StatusAdminEnum::SUPER_ADMIN !== $record->is_admin),
+            );
     }
 
     public static function getPages(): array

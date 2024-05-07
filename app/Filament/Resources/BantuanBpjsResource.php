@@ -149,24 +149,38 @@ class BantuanBpjsResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                SelectFilter::make('kecamatan')
-                    ->options(function () {
-                        return Kecamatan::query()
-                            ->where('kabupaten_code', setting('app.kodekab'))
-                            ->pluck('name', 'code');
-                    })
-                    ->visible((bool) auth()->user()->hasRole(['super_admin', 'admin']))
-                    ->searchable()
-                    ->native(false),
-                SelectFilter::make('kelurahan')
-                    ->options(function () {
-                        return Kelurahan::query()
-                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                            ->pluck('name', 'code');
-                    })
-                    ->visible((bool) auth()->user()->hasRole(['super_admin', 'admin']))
-                    ->searchable()
-                    ->native(false),
+                Tables\Filters\Filter::make('keckel')
+                    ->form([
+                        Forms\Components\Select::make('kecamatan')
+                            ->options(function () {
+                                return Kecamatan::query()
+                                    ->where('kabupaten_code', setting('app.kodekab'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->live()
+                            ->searchable()
+                            ->native(false),
+                        Forms\Components\Select::make('kelurahan')
+                            ->options(function (Forms\Get $get) {
+                                return Kelurahan::query()
+                                    ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                    ->where('kecamatan_code', $get('kecamatan'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->searchable()
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['kecamatan'],
+                                fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
+                            )
+                            ->when(
+                                $data['kelurahan'],
+                                fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
+                            );
+                    }),
                 SelectFilter::make('status_usulan')
                     ->label('Status Usulan')
                     ->options(StatusUsulanEnum::class)
@@ -333,7 +347,7 @@ class BantuanBpjsResource extends Resource
                                 ->label('Status BPJS')
                                 ->enum(StatusBpjsEnum::class)
                                 ->options(StatusBpjsEnum::class)
-                                ->default(StatusBpjsEnum::PENGAKTIFAN)
+                                ->default(StatusBpjsEnum::BARU)
                                 ->live()
                                 ->preload(),
 
@@ -347,6 +361,7 @@ class BantuanBpjsResource extends Resource
                                 ->preload(),
 
                             Forms\Components\Textarea::make('keterangan')
+                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
                                 ->autosize(),
 

@@ -425,22 +425,38 @@ final class BantuanPpksResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                SelectFilter::make('kecamatan')
-                    ->options(function () {
-                        return Kecamatan::query()
-                            ->where('kabupaten_code', setting('app.kodekab'))
-                            ->pluck('name', 'code');
-                    })
-                    ->searchable()
-                    ->native(false),
-                SelectFilter::make('kelurahan')
-                    ->options(function () {
-                        return Kelurahan::query()
-                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                            ->pluck('name', 'code');
-                    })
-                    ->searchable()
-                    ->native(false),
+                Tables\Filters\Filter::make('keckel')
+                    ->form([
+                        Forms\Components\Select::make('kecamatan')
+                            ->options(function () {
+                                return Kecamatan::query()
+                                    ->where('kabupaten_code', setting('app.kodekab'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->live()
+                            ->searchable()
+                            ->native(false),
+                        Forms\Components\Select::make('kelurahan')
+                            ->options(function (Forms\Get $get) {
+                                return Kelurahan::query()
+                                    ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                    ->where('kecamatan_code', $get('kecamatan'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->searchable()
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['kecamatan'],
+                                fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
+                            )
+                            ->when(
+                                $data['kelurahan'],
+                                fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
+                            );
+                    }),
                 SelectFilter::make('bantuan_yang_pernah_diterima')
                     ->label('Bantuan Diterima')
                     ->multiple()

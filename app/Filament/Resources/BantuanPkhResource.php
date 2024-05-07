@@ -16,6 +16,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
@@ -268,22 +269,38 @@ final class BantuanPkhResource extends Resource
             ])
             ->searchPlaceholder('Cari...')
             ->filters([
-                SelectFilter::make('kecamatan')
-                    ->options(function () {
-                        return Kecamatan::query()
-                            ->where('kabupaten_code', setting('app.kodekab'))
-                            ->pluck('name', 'code');
-                    })
-                    ->searchable()
-                    ->native(false),
-                SelectFilter::make('kelurahan')
-                    ->options(function () {
-                        return Kelurahan::query()
-                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                            ->pluck('name', 'code');
-                    })
-                    ->searchable()
-                    ->native(false),
+                Tables\Filters\Filter::make('keckel')
+                    ->form([
+                        Select::make('kecamatan')
+                            ->options(function () {
+                                return Kecamatan::query()
+                                    ->where('kabupaten_code', setting('app.kodekab'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->live()
+                            ->searchable()
+                            ->native(false),
+                        Select::make('kelurahan')
+                            ->options(function (Get $get) {
+                                return Kelurahan::query()
+                                    ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                    ->where('kecamatan_code', $get('kecamatan'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->searchable()
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['kecamatan'],
+                                fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
+                            )
+                            ->when(
+                                $data['kelurahan'],
+                                fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
+                            );
+                    }),
                 SelectFilter::make('tahun')
                     ->label('Tahun')
                     ->options(list_tahun())

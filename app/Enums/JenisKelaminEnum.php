@@ -15,8 +15,8 @@ enum JenisKelaminEnum: int implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::LAKI => 'Laki-Laki',
-            self::PEREMPUAN => 'Perempuan',
+            self::LAKI => 'LAKI-LAKI',
+            self::PEREMPUAN => 'PEREMPUAN',
         };
     }
 

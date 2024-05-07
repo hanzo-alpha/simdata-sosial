@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Supports;
 
+use App\Enums\StatusAdminEnum;
 use App\Models\barang;
 use App\Models\PenyaluranBantuanPpks;
 use App\Models\PenyaluranBantuanRastra;
@@ -36,6 +37,15 @@ class Helpers
         $nilaiResidual = 100 - $persen;
 
         return ($nilaiResidual * $nilai) / 100;
+    }
+
+    public static function checkUserRoles($roles): StatusAdminEnum
+    {
+        return match ($roles) {
+            StatusAdminEnum::SUPER_ADMIN => StatusAdminEnum::SUPER_ADMIN,
+            StatusAdminEnum::ADMIN => StatusAdminEnum::ADMIN,
+            StatusAdminEnum::OPERATOR => StatusAdminEnum::OPERATOR,
+        };
     }
 
     public static function generateNoInvoice($pemisah = null): string
