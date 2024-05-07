@@ -40,8 +40,11 @@ class BantuanChart extends ApexChartWidget
     {
         return [
             'chart' => [
-                'type' => 'pie',
+                'type' => 'donut',
                 'height' => 380,
+                'toolbar' => [
+                    'show' => false,
+                ],
             ],
             'series' => [
                 $this->renderBantuan()['rastra'],
@@ -52,6 +55,52 @@ class BantuanChart extends ApexChartWidget
                 $this->renderBantuan()['angka_kemiskinan'],
             ],
             'labels' => ['RASTRA', 'BPJS', 'PKH', 'BPNT', 'PPKS', 'ANGKA KEMISKINAN'],
+            'plotOptions' => [
+                'radialBar' => [
+                    'startAngle' => -140,
+                    'endAngle' => 130,
+                    'hollow' => [
+                        'size' => '60%',
+                        'background' => 'transparent',
+                    ],
+                    'track' => [
+                        'background' => 'transparent',
+                        'strokeWidth' => '100%',
+                    ],
+                    'dataLabels' => [
+                        'show' => true,
+                        'name' => [
+                            'show' => true,
+                            'offsetY' => -10,
+                            'fontWeight' => 600,
+                            'fontFamily' => 'inherit',
+                        ],
+                        'value' => [
+                            'show' => true,
+                            'fontWeight' => 600,
+                            'fontSize' => '24px',
+                            'fontFamily' => 'inherit',
+                        ],
+                    ],
+
+                ],
+            ],
+            'fill' => [
+                'type' => 'gradient',
+                'gradient' => [
+                    'shade' => 'dark',
+                    'type' => 'horizontal',
+                    'shadeIntensity' => 0.5,
+                    'gradientToColors' => ['#f59e0b'],
+                    'inverseColors' => true,
+                    'opacityFrom' => 1,
+                    'opacityTo' => 0.9,
+                    'stops' => [0, 100],
+                ],
+            ],
+            'stroke' => [
+                'dashArray' => 10,
+            ],
             'legend' => [
                 'labels' => [
                     'fontFamily' => 'inherit',
@@ -79,60 +128,60 @@ class BantuanChart extends ApexChartWidget
     //        return new HtmlString('<p class="text-danger-500">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>');
     //    }
 
-    protected function extraJsOptions(): ?RawJs
-    {
-        return RawJs::make(
-            <<<'JS'
-            {
-                // xaxis: {
-                //     labels: {
-                //         formatter: function (val, timestamp, opts) {
-                //             return val + ' KPM'
-                //         }
-                //     }
-                // },
-                yaxis: {
-                    labels: {
-                        formatter: function (val, index) {
-                            return val + ' KPM'
-                        }
-                    }
-                },
-                tooltip: {
-                    x: {
-                        formatter: function (val) {
-                            return val + ' KPM'
-                        }
-                    }
-                },
-                plotOptions: {
-                  pie: {
-                    // customScale: 1,
-                    offsetX: 0,
-                    offsetY: 0,
-                    dataLabels: {
-                       offset: -25,
-                       minAngleToShowLabel: -25
-                    },
-                    // donut: {
-                    //   labels: {
-                    //     show: true,
-                    //   }
-                    // }
-                  }
-                },
-                // dataLabels: {
-                //     enabled: true,
-                //     formatter: function (val, opt) {
-                //         const name = opt.w.globals.labels[opt.seriesIndex]
-                //         return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
-                //     },
-                //     dropShadow: {
-                //         enabled: true
-                //     },
-                // }
-            }
-        JS,
-        );
-    }
+//    protected function extraJsOptions(): ?RawJs
+//    {
+//        return RawJs::make(
+//            <<<'JS'
+//            {
+//                // xaxis: {
+//                //     labels: {
+//                //         formatter: function (val, timestamp, opts) {
+//                //             return val + ' KPM'
+//                //         }
+//                //     }
+//                // },
+//                yaxis: {
+//                    labels: {
+//                        formatter: function (val, index) {
+//                            return val + ' KPM'
+//                        }
+//                    }
+//                },
+//                tooltip: {
+//                    x: {
+//                        formatter: function (val) {
+//                            return val + ' KPM'
+//                        }
+//                    }
+//                },
+//                plotOptions: {
+//                  pie: {
+//                    // customScale: 1,
+//                    offsetX: 0,
+//                    offsetY: 0,
+//                    dataLabels: {
+//                       offset: -25,
+//                       minAngleToShowLabel: -25
+//                    },
+//                    // donut: {
+//                    //   labels: {
+//                    //     show: true,
+//                    //   }
+//                    // }
+//                  }
+//                },
+//                // dataLabels: {
+//                //     enabled: true,
+//                //     formatter: function (val, opt) {
+//                //         const name = opt.w.globals.labels[opt.seriesIndex]
+//                //         return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
+//                //     },
+//                //     dropShadow: {
+//                //         enabled: true
+//                //     },
+//                // }
+//            }
+//        JS,
+//        );
+//    }
 }
