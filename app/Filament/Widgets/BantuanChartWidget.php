@@ -12,7 +12,6 @@ use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Traits\HasGlobalFilters;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Toggle;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -24,7 +23,7 @@ class BantuanChartWidget extends ApexChartWidget
 {
     //    use HasGlobalFilters;
     use HasWidgetShield;
-//    use InteractsWithPageFilters;
+    //    use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Program Bantuan Sosial Per Kecamatan';
     protected static ?string $maxHeight = '400px';
@@ -171,9 +170,9 @@ class BantuanChartWidget extends ApexChartWidget
             'grid' => [
                 'show' => $filters['chartGrid'],
             ],
-//            'markers' => [
-//                'size' => $filters['chartMarkers'] ? 3 : 0,
-//            ],
+            //            'markers' => [
+            //                'size' => $filters['chartMarkers'] ? 3 : 0,
+            //            ],
             'tooltip' => [
                 'enabled' => true,
             ],
