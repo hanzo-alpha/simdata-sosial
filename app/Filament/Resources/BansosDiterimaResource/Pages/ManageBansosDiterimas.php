@@ -10,7 +10,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageBansosDiterimas extends ManageRecords
 {
     use HasInputDateLimit;
-    
+
     protected static string $resource = BansosDiterimaResource::class;
 
     protected function getHeaderActions(): array
