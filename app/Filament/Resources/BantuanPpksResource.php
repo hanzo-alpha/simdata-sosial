@@ -426,6 +426,7 @@ final class BantuanPpksResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('keckel')
+                    ->indicator('Wilayah')
                     ->form([
                         Forms\Components\Select::make('kecamatan')
                             ->options(function () {
@@ -478,7 +479,6 @@ final class BantuanPpksResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
-            ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([

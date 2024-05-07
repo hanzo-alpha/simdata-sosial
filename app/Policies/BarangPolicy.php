@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Barang;
 use App\Models\User;
+use App\Models\Barang;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BarangPolicy

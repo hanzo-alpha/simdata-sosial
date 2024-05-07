@@ -12,6 +12,7 @@ use App\Models\User;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 use Str;
 
@@ -21,25 +22,45 @@ final class ManageUsers extends ManageRecords
 
     protected function generateOperatorUser(): void
     {
-        $instansi = Kelurahan::whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $query = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'));
+        //        $instansi = Kelurahan::whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $query->chunkById(20, function (Collection $instansi): void {
+            $instansi->each(function ($item): void {
+                $createUser = User::updateOrCreate([
+                    'name' => Str::ucfirst($item->name),
+                    'email' => Str::lower($item->name) . '@reno.soppeng.go.id',
+                    'instansi_id' => $item->code,
+                    'is_admin' => StatusAdminEnum::OPERATOR,
+                ], [
+                    'name' => Str::ucfirst($item->name),
+                    'email' => Str::lower($item->name) . '@reno.soppeng.go.id',
+                    'password' => Hash::make('operator@12345'),
+                    'instansi_id' => $item->code,
+                    'is_admin' => StatusAdminEnum::OPERATOR,
+                ]);
 
-        $instansi->each(function ($item): void {
-            $createUser = User::updateOrCreate([
-                'name' => Str::ucfirst($item->name),
-                'email' => Str::lower($item->name) . '@gmail.com',
-                'instansi_id' => $item->code,
-                'is_admin' => StatusAdminEnum::OPERATOR,
-            ], [
-                'name' => Str::ucfirst($item->name),
-                'email' => Str::lower($item->name) . '@gmail.com',
-                'password' => Hash::make(Str::lower($item->name) . '12345'),
-                'instansi_id' => $item->code,
-                'is_admin' => StatusAdminEnum::OPERATOR,
-            ]);
+                $createUser->assignRole('operator');
+                $createUser->syncRoles('operator');
+            });
+        }, column: 'code');
 
-            $createUser->assignRole('operator');
-            $createUser->syncRoles('operator');
-        });
+        //        $instansi->each(function ($item): void {
+        //            $createUser = User::updateOrCreate([
+        //                'name' => Str::ucfirst($item->name),
+        //                'email' => Str::lower($item->name) . '@reno.soppeng.go.id',
+        //                'instansi_id' => $item->code,
+        //                'is_admin' => StatusAdminEnum::OPERATOR,
+        //            ], [
+        //                'name' => Str::ucfirst($item->name),
+        //                'email' => Str::lower($item->name) . '@reno.soppeng.go.id',
+        //                'password' => Hash::make('operator@12345'),
+        //                'instansi_id' => $item->code,
+        //                'is_admin' => StatusAdminEnum::OPERATOR,
+        //            ]);
+        //
+        //            $createUser->assignRole('operator');
+        //            $createUser->syncRoles('operator');
+        //        });
     }
 
     protected function generateAdminUser(): void
@@ -49,11 +70,11 @@ final class ManageUsers extends ManageRecords
         $program->each(function ($item): void {
             $createUser = User::updateOrCreate([
                 'name' => 'Admin ' . Str::ucfirst($item->alias),
-                'email' => Str::lower('admin.' . $item->name) . '@reno.soppeng.go.id',
+                'email' => Str::lower('admin.' . $item->alias) . '@reno.soppeng.go.id',
                 'instansi_id' => null,
                 'is_admin' => StatusAdminEnum::ADMIN,
             ], [
-                'name' => Str::ucfirst($item->name),
+                'name' => 'Admin ' . Str::ucfirst($item->alias),
                 'email' => Str::lower('admin.' . $item->alias) . '@reno.soppeng.go.id',
                 'password' => Hash::make('admin@12345'),
                 'instansi_id' => null,
@@ -83,7 +104,7 @@ final class ManageUsers extends ManageRecords
             fn($item) => User::query()
                 ->whereNotIn('id', [1, 2, 3])
                 ->whereNull('instansi_id')
-                ->where('is_admin', StatusAdminEnum::OPERATOR)
+                ->where('is_admin', StatusAdminEnum::ADMIN)
                 ->delete(),
         );
     }

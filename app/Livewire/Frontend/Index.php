@@ -31,7 +31,7 @@ class Index extends Component
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
-            'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
+            'angka_kemiskinan' => (float) setting('app.angka_kemiskinan_persen') ?? 0,
         ];
     }
 

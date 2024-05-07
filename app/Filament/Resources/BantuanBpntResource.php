@@ -166,6 +166,7 @@ class BantuanBpntResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('keckel')
+                    ->indicator('Wilayah')
                     ->form([
                         Select::make('kecamatan')
                             ->options(function () {
@@ -199,7 +200,6 @@ class BantuanBpntResource extends Resource
                     }),
             ])
             ->deferFilters()
-            ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
