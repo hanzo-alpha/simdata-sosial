@@ -9,7 +9,6 @@ use Illuminate\Http\Response;
 
 class PdfController extends Controller
 {
-
     public function cetakDokumentasiRastra(Request $request): Response
     {
         $model = $request->get('m')::find($request->get('id'));

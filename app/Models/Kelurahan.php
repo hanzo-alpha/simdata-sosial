@@ -20,7 +20,7 @@ final class Kelurahan extends Model
 
     protected $primaryKey = 'code';
 
-//    protected $with = ['bantuanRastras'];
+    //    protected $with = ['bantuanRastras'];
 
     protected $fillable = [
         'kecamatan_code',
@@ -54,8 +54,8 @@ final class Kelurahan extends Model
         return $this->belongsTo(Kecamatan::class, 'kecamatan_code', 'code');
     }
 
-//    public function bantuanRastras(): BelongsTo
-//    {
-//        return $this->belongsTo(BantuanRastra::class, 'code', 'kelurahan');
-//    }
+    //    public function bantuanRastras(): BelongsTo
+    //    {
+    //        return $this->belongsTo(BantuanRastra::class, 'code', 'kelurahan');
+    //    }
 }
