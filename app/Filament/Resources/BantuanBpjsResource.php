@@ -150,6 +150,7 @@ class BantuanBpjsResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('keckel')
+                    ->indicator('Wilayah')
                     ->form([
                         Forms\Components\Select::make('kecamatan')
                             ->options(function () {
