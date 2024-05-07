@@ -24,7 +24,7 @@ class BantuanChartWidget extends ApexChartWidget
 {
     //    use HasGlobalFilters;
     use HasWidgetShield;
-    use InteractsWithPageFilters;
+//    use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Program Bantuan Sosial Per Kecamatan';
     protected static ?string $maxHeight = '400px';
@@ -35,26 +35,17 @@ class BantuanChartWidget extends ApexChartWidget
     protected function getFormSchema(): array
     {
         return [
-
-            Radio::make('ordersChartType')
+            Radio::make('chartTipe')
                 ->default('bar')
                 ->options([
                     'line' => 'Line',
-                    'bar' => 'Col',
+                    'bar' => 'Bar',
                 ])
                 ->inline(true)
-                ->label('Type'),
-
-            Grid::make()
-                ->schema([
-                    Toggle::make('ordersChartMarkers')
-                        ->default(false)
-                        ->label('Markers'),
-
-                    Toggle::make('ordersChartGrid')
-                        ->default(false)
-                        ->label('Grid'),
-                ]),
+                ->label('Tipe'),
+            Toggle::make('chartGrid')
+                ->default(false)
+                ->label('Tampilkan Grid'),
         ];
     }
 
@@ -91,7 +82,7 @@ class BantuanChartWidget extends ApexChartWidget
 
         return [
             'chart' => [
-                'type' => $filters['ordersChartType'],
+                'type' => $filters['chartTipe'],
                 'height' => 380,
                 'toolbar' => [
                     'show' => false,
@@ -178,16 +169,16 @@ class BantuanChartWidget extends ApexChartWidget
                 'enabled' => false,
             ],
             'grid' => [
-                'show' => $filters['ordersChartGrid'],
+                'show' => $filters['chartGrid'],
             ],
-            'markers' => [
-                'size' => $filters['ordersChartMarkers'] ? 3 : 0,
-            ],
+//            'markers' => [
+//                'size' => $filters['chartMarkers'] ? 3 : 0,
+//            ],
             'tooltip' => [
                 'enabled' => true,
             ],
             'stroke' => [
-                'width' => 'line' === $filters['ordersChartType'] ? 4 : 0,
+                'width' => 'line' === $filters['chartTipe'] ? 4 : 0,
             ],
             'colors' => $colors,
         ];
