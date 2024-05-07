@@ -25,7 +25,6 @@ use Illuminate\Support\Str;
 class RoleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $navigationParentItem = 'Pengguna';
 
     protected static $permissionsCollection;
 

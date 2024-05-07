@@ -91,7 +91,7 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <img
-                            src="{{ asset('frontend/images/hero/dashboard-dark1.png') }}"
+                            src="{{ asset('frontend/images/hero/program-rastra.png') }}"
                             alt="dashboard-dark"
                             class="rounded-md"
                         />
