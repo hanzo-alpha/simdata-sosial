@@ -17,10 +17,10 @@ enum StatusKawinBpjsEnum: int implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::KAWIN => 'Kawin',
-            self::BELUM_KAWIN => 'Belum Kawin',
-            self::JANDA => 'Janda',
-            self::DUDA => 'Duda',
+            self::KAWIN => 'KAWIN',
+            self::BELUM_KAWIN => 'BELUM KAWIN',
+            self::JANDA => 'JANDA',
+            self::DUDA => 'DUDA',
         };
     }
 

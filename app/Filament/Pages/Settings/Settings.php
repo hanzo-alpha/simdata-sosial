@@ -92,6 +92,7 @@ class Settings extends BaseSettings
                                     TextInput::make('app.angka_kemiskinan')
                                         ->label('Angka Kemiskinan'),
                                     DatePicker::make('app.batas_tgl_input')
+                                        ->date()
                                         ->displayFormat(setting('app.format_tgl')),
                                 ])->columns(2),
                             ]),

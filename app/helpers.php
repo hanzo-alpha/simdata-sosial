@@ -42,6 +42,43 @@ if ( ! function_exists('list_tahun')) {
     }
 }
 
+if ( ! function_exists('list_bulan')) {
+    function list_bulan($short = false): array
+    {
+        if ($short) {
+            return [
+                1 => 'JAN',
+                2 => 'FEB',
+                3 => 'MAR',
+                4 => 'APR',
+                5 => 'MEI',
+                6 => 'JUN',
+                7 => 'JUL',
+                8 => 'AGS',
+                9 => 'SEP',
+                10 => 'OKT',
+                11 => 'NOV',
+                12 => 'DES',
+            ];
+        }
+
+        return [
+            1 => 'JANUARI',
+            2 => 'FEBRUARI',
+            3 => 'MARET',
+            4 => 'APRIL',
+            5 => 'MEI',
+            6 => 'JUNI',
+            7 => 'JULI',
+            8 => 'AGUSTUS',
+            9 => 'SEPTEMBER',
+            10 => 'OKTOBER',
+            11 => 'NOVEMBER',
+            12 => 'DESEMBER',
+        ];
+    }
+}
+
 if ( ! function_exists('bulan_to_integer')) {
     function bulan_to_integer($bulan, $short = false): ?string
     {

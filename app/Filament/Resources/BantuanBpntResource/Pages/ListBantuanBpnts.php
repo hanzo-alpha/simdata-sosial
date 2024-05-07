@@ -22,22 +22,31 @@ class ListBantuanBpnts extends ListRecords
 
     public function getTabs(): array
     {
-        $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
         $results = collect();
-        $bantuan->each(function ($item, $key) use (&$results): void {
-            $results->put('semua', Tab::make()->badge(BantuanBpnt::query()->count()));
-            $results->put(Str::lower($item->name), Tab::make()
-                ->badge(BantuanBpnt::query()->whereHas(
-                    'kec',
-                    fn(Builder $query) => $query->where('bantuan_bpnt.kecamatan', $item->code),
-                )->count())
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
+        if(auth()->user()->hasRole(['super_admin', 'admin_bpnt', 'admin'])) {
+            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
+            $bantuan->each(function ($item, $key) use (&$results): void {
+                $results->put('semua', Tab::make()->badge(BantuanBpnt::query()->count()));
+                $results->put(Str::lower($item->name), Tab::make()
+                    ->badge(BantuanBpnt::query()->whereHas(
                         'kec',
-                        fn(Builder $query) => $query->where('bantuan_bpnt.kecamatan', $item->code),
-                    ),
-                ));
-        });
+                        function (Builder $query) use ($item): void {
+                            if (auth()->user()->hasRole(['super_admin'])) {
+                                $query->where('bantuan_bpnt.kelurahan', auth()->user()->instansi_id);
+                            }
+                            $query->where('bantuan_bpnt.kecamatan', $item->code);
+                        },
+                    )->count())
+                    ->modifyQueryUsing(
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('bantuan_bpnt.kecamatan', $item->code),
+                        ),
+                    ));
+            });
+
+            return $results->toArray();
+        }
 
         return $results->toArray();
     }
@@ -47,14 +56,14 @@ class ListBantuanBpnts extends ListRecords
         return [
             Actions\ImportAction::make('upload')
                 ->importer(BantuanBpntImporter::class)
-                ->icon('heroicon-o-arrow-down-tray')
+                ->icon('heroicon-o-arrow-up-tray')
                 ->color('success')
-                ->label('Import CSV')
+                ->label('Upload CSV')
                 ->closeModalByClickingAway(false)
-                ->disabled(fn(): bool => cek_batas_input(setting('program.batas_tgl_input'))),
+                ->disabled($this->enableInputLimitDate()),
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled(fn(): bool => cek_batas_input(setting('program.batas_tgl_input'))),
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 

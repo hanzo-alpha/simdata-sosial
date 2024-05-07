@@ -9,6 +9,7 @@ use App\Filament\Resources\BantuanPkhResource;
 use App\Imports\ImportBantuanPkh;
 use App\Models\BantuanPkh;
 use App\Models\Kecamatan;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -22,26 +23,32 @@ use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 final class ListBantuanPkh extends ListRecords
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanPkhResource::class;
 
     public function getTabs(): array
     {
-        $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
         $results = collect();
-        $bantuan->each(function ($item, $key) use (&$results): void {
-            $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
-            $results->put(Str::lower($item->name), Tab::make()
-                ->badge(BantuanPkh::query()->whereHas(
-                    'kec',
-                    fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
-                )->count())
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
+        if (auth()->user()->hasRole(['super_admin', 'admin_pkh', 'admin'])) {
+            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
+            $bantuan->each(function ($item, $key) use (&$results): void {
+                $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
+                $results->put(Str::lower($item->name), Tab::make()
+                    ->badge(BantuanPkh::query()->whereHas(
                         'kec',
                         fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
-                    ),
-                ));
-        });
+                    )->count())
+                    ->modifyQueryUsing(
+                        fn(Builder $query) => $query->whereHas(
+                            'kec',
+                            fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
+                        ),
+                    ));
+            });
+
+            return $results->toArray();
+        }
 
         return $results->toArray();
     }
@@ -53,19 +60,20 @@ final class ListBantuanPkh extends ListRecords
             //                ->label('Buat Baru')
             //                ->icon('heroicon-o-plus'),
             ExportAction::make()
-                ->label('Ekspor XLS')
+                ->label('Download XLS')
                 ->color('info')
                 ->exports([
                     ExportBantuanPkh::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
-                ]),
+                ])
+                ->disabled($this->enableInputLimitDate()),
             Actions\Action::make('unggahData')
 //                ->model(BantuanPkh::class)
-                ->label('Impor XLS')
+                ->label('Upload XLS')
                 ->modalHeading('Unggah Data Bantuan PKH')
                 ->modalDescription('Unggah data PKH ke database dari file excel')
                 ->modalSubmitActionLabel('Unggah')
-                ->modalIcon('heroicon-o-arrow-down-tray')
+                ->modalIcon('heroicon-o-arrow-up-tray')
                 ->form([
                     FileUpload::make('attachment')
                         ->label('Impor')
@@ -104,10 +112,11 @@ final class ListBantuanPkh extends ListRecords
                     //                   Log::error($import->errors());
 
                 })
-                ->icon('heroicon-o-arrow-down-tray')
+                ->icon('heroicon-o-arrow-up-tray')
                 ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
+                ->disabled($this->enableInputLimitDate())
                 ->successRedirectUrl(route('filament.admin.resources.program-pkh.index'))
                 ->modalWidth('lg'),
         ];

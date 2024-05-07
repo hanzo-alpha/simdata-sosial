@@ -7,6 +7,7 @@ namespace App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Exports\BantuanPpksExporter;
 use App\Filament\Imports\BantuanPpksImporter;
 use App\Filament\Resources\BantuanPpksResource;
+use App\Models\BantuanPpks;
 use App\Models\TipePpks;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
@@ -21,20 +22,29 @@ final class ListBantuanPpks extends ListRecords
 
     public function getTabs(): array
     {
-        $bantuan = TipePpks::query()->select('id', 'nama_tipe')->get();
         $results = collect();
-        $bantuan->each(function ($item, $key) use (&$results): void {
-            $results->put('all', Tab::make());
-            $results->put(Str::lower($item->nama_tipe), Tab::make()
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
+        if (auth()->user()->hasRole(['super_admin', 'admin_ppks', 'admin'])) {
+            $bantuan = TipePpks::query()->select('id', 'nama_tipe')->get();
+            $bantuan->each(function ($item) use (&$results): void {
+                $results->put('semua', Tab::make()->badge(BantuanPpks::count()));
+                $results->put(Str::lower($item->nama_tipe), Tab::make()
+                    ->badge(BantuanPpks::query()->whereHas(
                         'tipe_ppks',
-                        fn(Builder $query) => $query->where('bantuan_ppks.id', $key),
-                    ),
-                ));
-        });
+                        fn(Builder $query) => $query->where('id', $item->id),
+                    )->count())
+                    ->modifyQueryUsing(
+                        fn(Builder $query) => $query->whereHas(
+                            'tipe_ppks',
+                            fn(Builder $query) => $query->where('id', $item->id),
+                        ),
+                    ));
+            });
+
+            return $results->toArray();
+        }
 
         return $results->toArray();
+
     }
 
     protected function getHeaderActions(): array

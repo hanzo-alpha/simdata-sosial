@@ -77,6 +77,9 @@ return [
         'reorder' => 'Susun Ulang',
         'restore_any' => 'Susun Ulang Apa Saja',
         'verify' => 'Verifikasi',
+        'change_status' => 'Ubah Status',
+        'download' => 'Download',
+        'upload' => 'Upload',
         'page_MyProfilePage' => 'Profil',
         'widget_'
     ],

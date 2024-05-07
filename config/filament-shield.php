@@ -38,6 +38,9 @@ return [
             'delete',
             'restore',
             'force_delete',
+            'download',
+            'upload',
+            'change_status',
         ],
 
         'page' => 'page',

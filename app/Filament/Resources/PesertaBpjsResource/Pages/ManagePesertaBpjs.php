@@ -6,6 +6,7 @@ use App\Filament\Resources\PesertaBpjsResource;
 use App\Filament\Widgets\PesertaBpjsOverview;
 use App\Imports\ImportPesertaBpjs;
 use App\Models\PesertaBpjs;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
@@ -16,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class ManagePesertaBpjs extends ManageRecords
 {
     use ExposesTableToWidgets;
+    use HasInputDateLimit;
 
     protected static string $resource = PesertaBpjsResource::class;
 
@@ -40,6 +42,7 @@ class ManagePesertaBpjs extends ManageRecords
                     }
                 })
                 ->icon('heroicon-o-arrow-down-tray')
+                ->disabled($this->enableInputLimitDate())
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.peserta-bpjs.index'))

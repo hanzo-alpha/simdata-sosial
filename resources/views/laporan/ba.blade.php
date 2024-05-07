@@ -160,12 +160,12 @@
         <table class="table-items table">
             <thead>
             <tr>
-                <th scope="col" class="border-0 text-center">No.</th>
-                <th scope="col" class="border-0 text-center">Uraian Jenis Barang/Jasa Lainnya</th>
-                <th scope="col" class="border-0 text-center">Kuantitas</th>
-                <th scope="col" class="border-0 text-center">Satuan</th>
-                <th scope="col" class="border-0 text-center">Harga Satuan (RP)</th>
-                <th scope="col" class="border-0 text-center">Jumlah Harga (Rp)</th>
+                <th scope="col" class="text-center">No.</th>
+                <th scope="col" class="text-center">Uraian Jenis Barang/Jasa Lainnya</th>
+                <th scope="col" class="text-center">Kuantitas</th>
+                <th scope="col" class="text-center">Satuan</th>
+                <th scope="col" class="text-center">Harga Satuan (RP)</th>
+                <th scope="col" class="text-center">Jumlah Harga (Rp)</th>
             </tr>
             </thead>
             <tbody>
@@ -193,7 +193,7 @@
                 @endforeach
             </tr>
             <tr>
-                <td colspan="4" class="border-0"></td>
+                <td colspan="4"></td>
                 <td class="text-right">Total Harga</td>
                 <td class="text-right">
                     {{ Number::format($record->itemBantuan()->sum('total_harga'), 0, locale: 'id') }}
@@ -320,15 +320,15 @@
 
         <table class="table-items table">
             <thead>
-            <tr>
-                <th scope="col" class="border-0 pl-0">No.</th>
-                <th scope="col" class="border-0 text-center">Nama Lengkap</th>
-                <th scope="col" class="border-0 text-center">KK</th>
-                <th scope="col" class="border-0 text-center">NIK</th>
-                <th scope="col" class="border-0 text-center">Desa/Kelurahan</th>
-                <th scope="col" class="border-0 text-center">Jumlah Beras</th>
-                <th scope="col" class="border-0 text-center">Tanda Tangan/Cap Jempol</th>
-                <th scope="col" class="border-0 text-center">Keterangan</th>
+            <tr style="border: 2px solid #dee2e6;">
+                <th scope="col" class="text-center">No.</th>
+                <th scope="col" class="text-center">Nama Lengkap</th>
+                <th scope="col" class="text-center">KK</th>
+                <th scope="col" class="text-center">NIK</th>
+                <th scope="col" class="text-center">Desa/Kelurahan</th>
+                <th scope="col" class="text-center">Jumlah Beras</th>
+                <th scope="col" class="text-center">Tanda Tangan/Cap Jempol</th>
+                <th scope="col" class="text-center">Keterangan</th>
             </tr>
             </thead>
             <tbody>
@@ -339,7 +339,7 @@
                 $i = 1;
             @endphp
             @forelse($penerima as $kpm)
-                <tr>
+                <tr style="height: 40px;">
                     <td class="text-center">{{ $i++ }}</td>
                     <td class="text-left">{{ $kpm->nama_lengkap }}</td>
                     <td class="text-center">{{ $kpm->nokk }}</td>

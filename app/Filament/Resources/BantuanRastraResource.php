@@ -44,30 +44,52 @@ class BantuanRastraResource extends Resource
             ->poll()
             ->deferLoading()
             ->defaultSort('created_at', 'desc')
+//            ->groups([
+//                Tables\Grouping\Group::make('kelurahan')
+//                    ->label('Kelurahan')
+//                    ->titlePrefixedWithLabel(true),
+//            ])
+//            ->defaultGroup('kelurahan')
+//            ->groupRecordsTriggerAction(
+//                fn(Action $action) => $action
+//                    ->button()
+//                    ->label('Grup Data'),
+//            )
+//            ->groupingSettingsInDropdownOnDesktop()
+//            ->groupingSettingsHidden()
             ->columns([
-                Tables\Columns\TextColumn::make('nama_lengkap')
-                    ->label('Nama Lengkap')
-                    ->description(fn($record) => $record->nik)
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nik')
-                    ->label('N I K')
-                    ->alignCenter()
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->alignCenter()
                     ->searchable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Count::make(),
+                    ])
                     ->sortable(),
+                Tables\Columns\TextColumn::make('nik')
+                    ->label('N I K')
+                    ->alignCenter()
+                    ->searchable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Count::make(),
+                    ])
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->description(fn($record) => $record->nik)
+                    ->sortable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Count::make(),
+                    ])
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->sortable()
                     ->toggleable()
-                    ->description(function ($record): void {
-                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
-                    })
+//                    ->description(function ($record): void {
+//                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
+//                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
@@ -79,6 +101,16 @@ class BantuanRastraResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->searchable(),
+                //                Tables\Columns\TextColumn::make('kelurahan')
+                //                    ->label('Kelurahan')
+                //                    ->sortable()
+                //                    ->toggleable()
+                //                    ->summarize([
+                //                        Tables\Columns\Summarizers\Summarizer::make()
+                //                        ->label('Kelurahan')
+                //                        ->using(fn($query) => dd($query->get())),
+                //                    ])
+                //                    ->searchable(),
                 Tables\Columns\TextColumn::make('status_rastra')
                     ->alignCenter()
                     ->searchable()
@@ -101,22 +133,38 @@ class BantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
-                SelectFilter::make('kecamatan')
-                    ->options(function () {
-                        return Kecamatan::query()
-                            ->where('kabupaten_code', setting('app.kodekab'))
-                            ->pluck('name', 'code');
-                    })
-                    ->searchable()
-                    ->native(false),
-                SelectFilter::make('kelurahan')
-                    ->options(function () {
-                        return Kelurahan::query()
-                            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                            ->pluck('name', 'code');
-                    })
-                    ->searchable()
-                    ->native(false),
+                Tables\Filters\Filter::make('keckel')
+                    ->form([
+                        Forms\Components\Select::make('kecamatan')
+                            ->options(function () {
+                                return Kecamatan::query()
+                                    ->where('kabupaten_code', setting('app.kodekab'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->live()
+                            ->searchable()
+                            ->native(false),
+                        Forms\Components\Select::make('kelurahan')
+                            ->options(function (Forms\Get $get) {
+                                return Kelurahan::query()
+                                    ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                    ->where('kecamatan_code', $get('kecamatan'))
+                                    ->pluck('name', 'code');
+                            })
+                            ->searchable()
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['kecamatan'],
+                                fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
+                            )
+                            ->when(
+                                $data['kelurahan'],
+                                fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
+                            );
+                    }),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')
                     ->options(StatusVerifikasiEnum::class)
@@ -135,7 +183,7 @@ class BantuanRastraResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
-            ->persistFiltersInSession()
+//            ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
@@ -161,6 +209,54 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->close(),
+                    //                    Tables\Actions\Action::make('Toggle Status Rastra')
+                    //                        ->icon('heroicon-s-arrow-path-rounded-square')
+                    //                        ->form([
+                    //                            //                            Select::make('pengganti_rastra.keluarga_id')
+                    //                            //                                ->label('Keluarga Yang Diganti')
+                    //                            //                                ->required()
+                    //                            //                                ->options(BantuanRastra::query()
+                    //                            //                                    ->where('status_rastra', StatusRastra::BARU)
+                    //                            //                                    ->pluck('nama_lengkap', 'id'))
+                    //                            //                                ->searchable(['nama_lengkap', 'nik', 'nokk'])
+                    //                            //                                ->lazy()
+                    //                            //                                ->preload(),
+                    //                            Select::make('pengganti_rastra.alasan_dikeluarkan')
+                    //                                ->searchable()
+                    //                                ->options(AlasanEnum::class)
+                    //                                ->enum(AlasanEnum::class)
+                    //                                ->native(false)
+                    //                                ->preload()
+                    //                                ->lazy()
+                    //                                ->required()
+                    //                                ->default(AlasanEnum::PINDAH),
+                    //                        ])
+                    //                        ->modalWidth(MaxWidth::Medium)
+                    //                        ->action(function ($record, array $data): void {
+                    //                            PenggantiRastra::create([
+                    //                                'keluarga_yang_diganti_id' => $record->id,
+                    //                                'bantuan_rastra_id' => $data['pengganti_rastra']['keluarga_id'],
+                    //                                'nik_pengganti' => $record->nik,
+                    //                                'nokk_pengganti' => $record->nokk,
+                    //                                'nama_pengganti' => $record->nama_lengkap,
+                    //                                'alamat_pengganti' => $record->alamat,
+                    //                                'alasan_dikeluarkan' => $data['pengganti_rastra']['alasan_dikeluarkan'],
+                    //                            ]);
+                    //
+                    //                            $record->status_rastra = match ($record->status_rastra) {
+                    //                                StatusRastra::BARU => StatusRastra::PENGGANTI,
+                    //                                StatusRastra::PENGGANTI => StatusRastra::BARU,
+                    //                            };
+                    //
+                    //                            $record->save();
+                    //                        })
+                    //                        ->after(function (): void {
+                    //                            Notification::make()
+                    //                                ->success()
+                    //                                ->title('Status Berhasil Diubah')
+                    //                                ->send();
+                    //                        })
+                    //                        ->close(),
                 ]),
             ])
             ->bulkActions([
@@ -266,7 +362,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
+                                ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 

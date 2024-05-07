@@ -206,7 +206,7 @@ class PenyaluranBantuanPpksResource extends Resource
                     ->label('Print Dokumentasi')
                     ->color('success')
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => self::$model]))
+                    ->url(fn(Model $record) => route('cetak-dokumentasi.ppks', ['id' => $record, 'm' => self::$model]))
                     ->openUrlInNewTab(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
