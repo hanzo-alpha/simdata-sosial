@@ -58,6 +58,11 @@ class BantuanRastraResource extends Resource
 //            ->groupingSettingsInDropdownOnDesktop()
 //            ->groupingSettingsHidden()
             ->columns([
+                Tables\Columns\TextColumn::make('nama_lengkap')
+                    ->label('Nama Lengkap')
+                    ->description(fn($record) => $record->nik)
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->alignCenter()
@@ -70,26 +75,15 @@ class BantuanRastraResource extends Resource
                     ->label('N I K')
                     ->alignCenter()
                     ->searchable()
-                    ->summarize([
-                        Tables\Columns\Summarizers\Count::make(),
-                    ])
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('nama_lengkap')
-                    ->label('Nama Lengkap')
-                    ->description(fn($record) => $record->nik)
-                    ->sortable()
-                    ->summarize([
-                        Tables\Columns\Summarizers\Count::make(),
-                    ])
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->sortable()
                     ->toggleable()
-//                    ->description(function ($record): void {
-//                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
-//                    })
+                    ->description(function ($record): void {
+                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
@@ -101,16 +95,6 @@ class BantuanRastraResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->searchable(),
-                //                Tables\Columns\TextColumn::make('kelurahan')
-                //                    ->label('Kelurahan')
-                //                    ->sortable()
-                //                    ->toggleable()
-                //                    ->summarize([
-                //                        Tables\Columns\Summarizers\Summarizer::make()
-                //                        ->label('Kelurahan')
-                //                        ->using(fn($query) => dd($query->get())),
-                //                    ])
-                //                    ->searchable(),
                 Tables\Columns\TextColumn::make('status_rastra')
                     ->alignCenter()
                     ->searchable()
