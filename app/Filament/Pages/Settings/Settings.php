@@ -91,6 +91,8 @@ class Settings extends BaseSettings
                                 Section::make('Pendukung')->schema([
                                     TextInput::make('app.angka_kemiskinan')
                                         ->label('Angka Kemiskinan'),
+                                    TextInput::make('app.angka_kemiskinan_persen')
+                                        ->label('Angka Kemiskinan (%)'),
                                     DatePicker::make('app.batas_tgl_input')
                                         ->date()
                                         ->displayFormat(setting('app.format_tgl')),
