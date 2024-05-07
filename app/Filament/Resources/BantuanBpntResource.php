@@ -200,7 +200,6 @@ class BantuanBpntResource extends Resource
                     }),
             ])
             ->deferFilters()
-            ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([

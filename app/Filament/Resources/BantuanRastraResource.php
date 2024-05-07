@@ -168,7 +168,6 @@ class BantuanRastraResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
-//            ->persistFiltersInSession()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
