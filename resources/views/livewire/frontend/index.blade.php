@@ -107,7 +107,7 @@
 
                     <div class="swiper-slide">
                         <img
-                            src="{{ asset('frontend/images/hero/reno-penyaluran-rastra.png') }}"
+                            src="{{ asset('frontend/images/hero/program-bpjs.png') }}"
                             alt="penyaluran-rastra"
                             class="rounded-md"
                         />
