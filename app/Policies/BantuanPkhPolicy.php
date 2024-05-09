@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\BantuanPkh;
 use App\Models\User;
+use App\Models\BantuanPkh;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BantuanPkhPolicy

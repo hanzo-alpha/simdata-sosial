@@ -32,7 +32,7 @@ class BantuanChart extends ApexChartWidget
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
     protected static ?int $contentHeight = 400;
     protected static bool $deferLoading = true;
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 9;
 
     protected function getOptions(): array
     {

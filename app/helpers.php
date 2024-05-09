@@ -42,6 +42,30 @@ if ( ! function_exists('list_tahun')) {
     }
 }
 
+if ( ! function_exists('getModelList')) {
+    function getModelList(): array
+    {
+        $modelList = [];
+        $path = app_path() . '/Models';
+        $results = scandir($path);
+
+        foreach ($results as $result) {
+            if ('.' === $result || '..' === $result) {
+                continue;
+            }
+            $filename = $result;
+
+            if (is_dir($filename)) {
+                $modelList = array_merge($modelList, getModelList($filename));
+            } else {
+                $modelList[] = mb_substr($filename, 0, -4);
+            }
+        }
+
+        return $modelList;
+    }
+}
+
 if ( ! function_exists('list_bulan')) {
     function list_bulan($short = false): array
     {

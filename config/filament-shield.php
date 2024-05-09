@@ -70,7 +70,7 @@ return [
             'AccountWidget',
             'FilamentInfoWidget',
             'BantuanOverview',
-            'BantuanChartWidget',
+            'BantuanSosialPerKecamatanChart',
         ],
 
         'resources' => [],

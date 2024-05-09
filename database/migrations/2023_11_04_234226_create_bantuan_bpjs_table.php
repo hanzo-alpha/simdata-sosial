@@ -31,7 +31,7 @@ return new class () extends Migration {
             $table->char('nort', 5)->nullable();
             $table->char('norw', 5)->nullable();
             $table->char('kodepos', 10)->nullable();
-            $table->unsignedBigInteger('jenis_bantuan_id')->nullable();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(3)->nullable();
             $table->unsignedTinyInteger('status_aktif')
                 ->nullable()
                 ->default(0);

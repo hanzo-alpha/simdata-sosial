@@ -19,9 +19,7 @@ return new class () extends Migration {
             $table->char('kode_wilayah', 10);
             $table->unsignedTinyInteger('tahap');
             $table->string('bansos');
-            $table->foreignIdFor(JenisBantuan::class)
-                ->constrained('jenis_bantuan')
-                ->cascadeOnUpdate();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(1)->nullable();
             $table->unsignedDouble('nominal', 20, 2)->nullable()->default(0);
             $table->string('bank');
             $table->char('provinsi', 2)->nullable();

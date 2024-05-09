@@ -9,6 +9,7 @@ return new class () extends Migration {
     {
         Schema::create('bantuan_bpnt', static function (Blueprint $table): void {
             $table->id();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(2)->nullable();
             $table->string('no_nik');
             $table->string('nama_penerima');
             $table->char('provinsi', 2)->nullable();

@@ -26,11 +26,7 @@ return new class () extends Migration {
             $table->dateTime('tgl_lahir');
             $table->string('notelp', 18);
             $table->string('nama_ibu_kandung');
-            $table->foreignIdFor(JenisBantuan::class)
-                ->nullable()
-                ->default(4)
-                ->constrained('jenis_bantuan')
-                ->cascadeOnUpdate();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(4)->nullable();
             $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();
             $table->foreignIdFor(HubunganKeluarga::class)->constrained('hubungan_keluarga')->cascadeOnUpdate();
             $table->foreignIdFor(JenisPekerjaan::class)->constrained('jenis_pekerjaan')->cascadeOnUpdate();

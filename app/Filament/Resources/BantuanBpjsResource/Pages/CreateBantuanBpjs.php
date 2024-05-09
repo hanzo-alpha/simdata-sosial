@@ -17,6 +17,7 @@ final class CreateBantuanBpjs extends CreateRecord
         $data['dtks_id'] ??= Str::uuid()->toString();
         $data['bulan'] = now()->month;
         $data['tahun'] = now()->year;
+        $data['jenis_bantuan_id'] = 1;
 
         return $data;
     }
