@@ -40,6 +40,15 @@ class BantuanBpjsResource extends Resource
     protected static ?string $pluralLabel = 'Program BPJS';
     protected static ?string $navigationLabel = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
+
+    public static function getRecordSubNavigation(\Filament\Resources\Pages\Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewBantuanBpjs::class,
+            Pages\EditBantuanBpjs::class,
+        ]);
+    }
 
     public static function table(Table $table): Table
     {

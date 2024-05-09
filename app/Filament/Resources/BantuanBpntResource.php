@@ -30,6 +30,7 @@ class BantuanBpntResource extends Resource
     protected static ?string $navigationLabel = 'Program BPNT';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 2;
+    protected static ?string $recordTitleAttribute = 'nama_penerima';
 
 
     public static function form(Form $form): Form

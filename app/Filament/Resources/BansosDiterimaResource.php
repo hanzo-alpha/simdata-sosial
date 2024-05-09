@@ -20,6 +20,7 @@ class BansosDiterimaResource extends Resource
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
     protected static ?string $pluralLabel = 'Bansos Yang Diterima';
     protected static ?string $modelLabel = 'Bansos Yang Diterima';
+    protected static ?string $recordTitleAttribute = 'nama_bansos';
 
     public static function form(Form $form): Form
     {

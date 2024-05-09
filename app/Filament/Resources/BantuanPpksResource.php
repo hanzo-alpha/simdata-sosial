@@ -55,6 +55,7 @@ final class BantuanPpksResource extends Resource
     protected static ?string $navigationLabel = 'Program PPKS';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 5;
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     public static function form(Form $form): Form
     {

@@ -38,6 +38,7 @@ final class BantuanPkhResource extends Resource
     protected static ?string $navigationLabel = 'Program PKH';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 3;
+    protected static ?string $recordTitleAttribute = 'nama_penerima';
 
     public static function form(Form $form): Form
     {

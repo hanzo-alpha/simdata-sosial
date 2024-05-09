@@ -31,7 +31,7 @@ class Index extends Component
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
-            'angka_kemiskinan' => (float) setting('app.angka_kemiskinan_persen') ?? 0,
+            'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
         ];
     }
 
@@ -40,11 +40,11 @@ class Index extends Component
         return (new Chart())->setType('donut')
             ->setWidth('100%')
             ->setHeight(500)
-            ->setLegendFontFamily('Poppins')
+            ->setLegendFontFamily('Be Vietnam Pro')
             ->setLegendFontSize('18')
             ->setLegendPosition('bottom')
             ->setLabels([
-                'Program BPJS', 'Program RASTRA', 'Program PKH', 'Program BPNT', 'Program PPKS', 'Angka Kemiskinan',
+                'BPJS', 'RASTRA', 'PKH', 'BPNT', 'PPKS', 'Angka Kemiskinan',
             ])
             ->setDataset('Jumlah KPM Per Program Bantuan', 'donut', [
                 $bantuan['bpjs'],

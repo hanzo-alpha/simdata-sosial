@@ -103,6 +103,7 @@ class AdminPanelProvider extends PanelProvider
 //            ->darkMode(setting('app.darkmode'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->font(config('custom.app.font', 'Inter'))
             ->pages([
                 Dashboard::class,
@@ -136,6 +137,8 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
+            ->globalSearchFieldKeyBindingSuffix()
             ->authMiddleware([
                 Authenticate::class,
             ])
