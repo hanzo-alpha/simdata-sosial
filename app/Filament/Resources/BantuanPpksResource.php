@@ -13,7 +13,9 @@ use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanPpks;
+use App\Filament\Resources\BantuanBpntResource\Widgets\BantuanBpntOverview;
 use App\Filament\Resources\BantuanPpksResource\Pages;
+use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -56,6 +58,13 @@ final class BantuanPpksResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 5;
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
+
+    public static function getWidgets(): array
+    {
+        return [
+            BantuanPpksOverview::class,
+        ];
+    }
 
     public static function form(Form $form): Form
     {

@@ -4,7 +4,10 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
+use App\Filament\Resources\BarangResource;
 use Awcodes\Curator\CuratorPlugin;
+use Awcodes\Overlook\OverlookPlugin;
+use Awcodes\Overlook\Widgets\OverlookWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -92,6 +95,17 @@ class AdminPanelProvider extends PanelProvider
                         Settings::class,
                     ]),
                 FilamentProgressbarPlugin::make(),
+                OverlookPlugin::make()
+                    ->sort(0)
+                    ->alphabetical()
+                    ->columns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'md' => 3,
+                        'lg' => 4,
+                        'xl' => 5,
+                        '2xl' => null,
+                    ]),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -124,7 +138,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-
+                OverlookWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -6,10 +6,11 @@ namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Exports\ExportBantuanBpjs;
 use App\Filament\Resources\BantuanBpjsResource;
-use App\Filament\Widgets\BantuanBpjsOverview;
+use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Imports\ImportBantuanBpjs;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
@@ -32,43 +33,39 @@ class ListBantuanBpjs extends ListRecords
     {
         $results = collect();
 
-        if (auth()->user()->hasRole(['admin','super_admin'])) {
-            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
-            $bantuan->each(function ($item, $key) use (&$results): void {
-                $results->put('semua', Tab::make()
-                    ->badge(BantuanBpjs::query()->count()));
-                $results->put(Str::lower($item->name), Tab::make()
-                    ->badge(BantuanBpjs::query()->whereHas(
-                        'kec',
+        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()
+                ->badge(BantuanBpjs::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanBpjs::query()->whereHas(
+                    'kel',
+                    function (Builder $query) use ($item): void {
+                        $query->where('bantuan_bpjs.kelurahan', $item->code);
+
+                    },
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
                         function (Builder $query) use ($item): void {
-                            $query->where('bantuan_bpjs.kecamatan', $item->code);
+                            $query->where('bantuan_bpjs.kelurahan', $item->code);
 
                         },
-                    )->count())
-                    ->modifyQueryUsing(
-                        fn(Builder $query) => $query->whereHas(
-                            'kec',
-                            function (Builder $query) use ($item): void {
-                                $query->where('bantuan_bpjs.kecamatan', $item->code);
-
-                            },
-                        ),
-                    ));
-            });
-
-            return $results->toArray();
-        }
+                    ),
+                ));
+        });
 
         return $results->toArray();
 
     }
 
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanBpjsOverview::class,
-    //        ];
-    //    }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BantuanBpjsOverview::class,
+        ];
+    }
 
     protected function getHeaderActions(): array
     {

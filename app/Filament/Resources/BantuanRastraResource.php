@@ -7,6 +7,7 @@ use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
+use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -70,7 +71,7 @@ class BantuanRastraResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->description(function ($record): void {
-                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
+                        'Kec. '.$record->kec->name.' Kel. '.$record->kel->name;
                     })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
@@ -334,7 +335,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
+                                ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 
@@ -371,7 +372,7 @@ class BantuanRastraResource extends Resource
     public static function getWidgets(): array
     {
         return [
-            //            BantuanRastraOverview::class,
+            BantuanRastraOverview::class,
         ];
     }
 

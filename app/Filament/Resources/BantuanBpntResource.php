@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Filament\Resources\BantuanBpntResource\Pages;
+use App\Filament\Resources\BantuanBpntResource\Widgets\BantuanBpntOverview;
 use App\Models\BantuanBpnt;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -31,6 +33,13 @@ class BantuanBpntResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 2;
     protected static ?string $recordTitleAttribute = 'nama_penerima';
+
+    public static function getWidgets(): array
+    {
+        return [
+            BantuanBpntOverview::class,
+        ];
+    }
 
 
     public static function form(Form $form): Form

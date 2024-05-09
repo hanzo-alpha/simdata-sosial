@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Filament\Resources\BantuanPkhResource\Pages;
 
 use App\Exports\ExportBantuanPkh;
+use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Filament\Resources\BantuanPkhResource;
 use App\Imports\ImportBantuanPkh;
 use App\Models\BantuanPkh;
 use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
@@ -30,27 +32,30 @@ final class ListBantuanPkh extends ListRecords
     public function getTabs(): array
     {
         $results = collect();
-        if (auth()->user()->hasRole(['super_admin', 'admin_pkh', 'admin'])) {
-            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
-            $bantuan->each(function ($item, $key) use (&$results): void {
-                $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
-                $results->put(Str::lower($item->name), Tab::make()
-                    ->badge(BantuanPkh::query()->whereHas(
-                        'kec',
-                        fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
-                    )->count())
-                    ->modifyQueryUsing(
-                        fn(Builder $query) => $query->whereHas(
-                            'kec',
-                            fn(Builder $query) => $query->where('bantuan_pkh.kecamatan', $item->code),
-                        ),
-                    ));
-            });
-
-            return $results->toArray();
-        }
+        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanPkh::query()->whereHas(
+                    'kel',
+                    fn(Builder $query) => $query->where('bantuan_pkh.kelurahan', $item->code),
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        fn(Builder $query) => $query->where('bantuan_pkh.kelurahan', $item->code),
+                    ),
+                ));
+        });
 
         return $results->toArray();
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BantuanPkhResource\Widgets\BantuanPkhOverview::class,
+        ];
     }
 
     protected function getHeaderActions(): array

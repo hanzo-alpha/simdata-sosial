@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\BantuanBpjsResource\Widgets;
 
 use App\Enums\StatusUsulanEnum;
 use App\Models\BantuanBpjs;
@@ -22,7 +22,7 @@ class BantuanBpjsOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-    protected static bool $isDiscovered = false;
+//    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
 
     protected static function getQuery(array $filter): Builder

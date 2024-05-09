@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\BantuanRastraResource\Widgets;
 
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
@@ -18,7 +18,7 @@ class BantuanRastraOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-    protected static bool $isDiscovered = false;
+//    protected static bool $isDiscovered = false;
 
     protected function getStats(): array
     {

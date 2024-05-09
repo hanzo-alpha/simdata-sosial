@@ -7,6 +7,7 @@ namespace App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Exports\BantuanPpksExporter;
 use App\Filament\Imports\BantuanPpksImporter;
 use App\Filament\Resources\BantuanPpksResource;
+use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
 use App\Models\TipePpks;
 use Filament\Actions;
@@ -45,6 +46,13 @@ final class ListBantuanPpks extends ListRecords
 
         return $results->toArray();
 
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BantuanPpksOverview::class,
+        ];
     }
 
     protected function getHeaderActions(): array

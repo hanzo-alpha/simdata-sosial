@@ -8,6 +8,7 @@ use App\Enums\StatusBpjsEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
+use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -41,14 +42,6 @@ class BantuanBpjsResource extends Resource
     protected static ?string $navigationLabel = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
-
-    public static function getRecordSubNavigation(\Filament\Resources\Pages\Page $page): array
-    {
-        return $page->generateNavigationItems([
-            Pages\ViewBantuanBpjs::class,
-            Pages\EditBantuanBpjs::class,
-        ]);
-    }
 
     public static function table(Table $table): Table
     {
@@ -247,6 +240,13 @@ class BantuanBpjsResource extends Resource
                         ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            BantuanBpjsOverview::class,
+        ];
     }
 
     public static function form(Form $form): Form

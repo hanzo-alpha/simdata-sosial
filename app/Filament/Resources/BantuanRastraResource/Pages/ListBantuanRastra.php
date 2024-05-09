@@ -7,8 +7,10 @@ namespace App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Imports\BantuanRastraImporter;
 use App\Filament\Resources\BantuanRastraResource;
+use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
@@ -27,25 +29,21 @@ class ListBantuanRastra extends ListRecords
     public function getTabs(): array
     {
         $results = collect();
-        if (auth()->user()->hasRole(['super_admin', 'admin_rastra', 'admin'])) {
-            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
-            $bantuan->each(function ($item, $key) use (&$results): void {
-                $results->put('semua', Tab::make()->badge(BantuanRastra::query()->count()));
-                $results->put(Str::lower($item->name), Tab::make()
-                    ->badge(BantuanRastra::query()->whereHas(
-                        'kec',
-                        fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code),
-                    )->count())
-                    ->modifyQueryUsing(
-                        fn(Builder $query) => $query->whereHas(
-                            'kec',
-                            fn(Builder $query) => $query->where('bantuan_rastra.kecamatan', $item->code),
-                        ),
-                    ));
-            });
-
-            return $results->toArray();
-        }
+        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()->badge(BantuanRastra::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanRastra::query()->whereHas(
+                    'kel',
+                    fn(Builder $query) => $query->where('bantuan_rastra.kelurahan', $item->code),
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        fn(Builder $query) => $query->where('bantuan_rastra.kelurahan', $item->code),
+                    ),
+                ));
+        });
 
         return $results->toArray();
     }
@@ -53,7 +51,7 @@ class ListBantuanRastra extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            //            BantuanRastraOverview::class,
+            BantuanRastraOverview::class,
         ];
     }
 

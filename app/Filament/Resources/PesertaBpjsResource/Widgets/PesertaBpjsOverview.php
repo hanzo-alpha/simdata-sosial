@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\PesertaBpjsResource\Widgets;
 
 use App\Filament\Resources\PesertaBpjsResource\Pages\ManagePesertaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
@@ -14,7 +14,6 @@ class PesertaBpjsOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageTable;
 
-    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
 
     protected function getTablePage(): string

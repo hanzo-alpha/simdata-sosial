@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Exports\ExportBantuanPkh;
+use App\Filament\Resources\BantuanBpntResource\Widgets\BantuanBpntOverview;
 use App\Filament\Resources\BantuanPkhResource\Pages;
+use App\Filament\Resources\BantuanPkhResource\Widgets\BantuanPkhOverview;
 use App\Models\BantuanPkh;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -39,6 +41,13 @@ final class BantuanPkhResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 3;
     protected static ?string $recordTitleAttribute = 'nama_penerima';
+
+    public static function getWidgets(): array
+    {
+        return [
+            BantuanPkhOverview::class,
+        ];
+    }
 
     public static function form(Form $form): Form
     {

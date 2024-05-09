@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\BantuanPpksResource\Widgets;
 
 use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanPpks;
@@ -22,7 +22,7 @@ class BantuanPpksOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-    protected static bool $isDiscovered = false;
+//    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
 
     protected function getStats(): array

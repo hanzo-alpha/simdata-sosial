@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Resources\BantuanPkhResource\Widgets;
 
-use App\Models\BantuanBpnt;
+use App\Models\BantuanPkh;
 use App\Models\Kecamatan;
 use App\Traits\HasGlobalFilters;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
@@ -14,13 +14,13 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 use Number;
 
-class BantuanBpntOverview extends BaseWidget
+class BantuanPkhOverview extends BaseWidget
 {
     use HasGlobalFilters;
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-    protected static bool $isDiscovered = false;
+//    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
 
     protected function getStats(): array
@@ -34,23 +34,23 @@ class BantuanBpntOverview extends BaseWidget
             ->pluck('name', 'code');
 
         foreach ($listKecamatan as $code => $name) {
-            $value = BantuanBpnt::query()
+            $value = BantuanPkh::query()
                 ->select(['created_at', 'kecamatan', 'kelurahan'])
                 ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters))
                 ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters))
                 ->where('kecamatan', $code)
                 ->count();
-            $label = 'KPM BPNT Kec. ' . $name;
-            $desc = 'Total BPNT Kec. ' . $name;
+            $label = 'KPM PKH Kec. ' . $name;
+            $desc = 'Total PKH Kec. ' . $name;
             $icon = 'user';
 
             $results[] = $this->renderStats($value, $label, $desc, $icon);
         }
 
         $results['all'] = $this->renderStats(
-            BantuanBpnt::count(),
-            'Rekap KPM BPNT',
-            'Total KPM Program BPNT Semua Kecamatan',
+            BantuanPkh::count(),
+            'Rekap KPM PKH',
+            'Total KPM Program PKH Semua ' . $filters['tipe'],
             'users',
             'primary',
         );
@@ -64,8 +64,8 @@ class BantuanBpntOverview extends BaseWidget
             label: $label ?? 'KPM PKH Kec. Marioriwawo',
             value: Number::format($value ?? 0, 0, locale: 'id') . config('custom.app.stat_prefix'),
         )
-            ->description($desc ?? 'Total KPM')
-            ->descriptionIcon('heroicon-o-' . $icon ?? 'document-chart-bar')
+            ->description($desc ?? 'Total KPM Kec. Marioriwawo')
+            ->descriptionIcon('heroicon-o-' . $icon ?? 'arrow-trending-up')
             ->color($color ?? 'success');
     }
 }
