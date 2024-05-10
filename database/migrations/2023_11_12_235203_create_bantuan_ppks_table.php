@@ -54,7 +54,8 @@ return new class () extends Migration {
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('kriteria_ppks')->nullable();
             $table->integer('penghasilan_rata_rata')->default(0)->nullable();
-            $table->json('bantuan_yang_pernah_diterima')->nullable();
+            $table->json('kategori_tags_ppks')->nullable();
+            $table->json('kriteria_tags_ppks')->nullable();
             $table->unsignedInteger('tahun_anggaran')->default(now()->year)->nullable();
             $table->string('jenis_anggaran', 10)->default('APBD')->nullable();
             $table->unsignedInteger('jumlah_bantuan')->default(4)->nullable();

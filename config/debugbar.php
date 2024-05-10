@@ -38,7 +38,7 @@ return [
     'storage' => [
         'enabled' => true,
         'open' => env('DEBUGBAR_OPEN_STORAGE', false), // bool/callback.
-        'driver' => 'file', // redis, file, pdo, socket, custom
+        'driver' => 'redis', // redis, file, pdo, socket, custom
         'path' => storage_path('debugbar'), // For file driver
         'connection' => null,   // Leave null for default connection (Redis/PDO)
         'provider' => '', // Instance of StorageInterface for custom driver
@@ -119,7 +119,7 @@ return [
      */
 
     'capture_ajax' => true,
-    'add_ajax_timing' => false,
+    'add_ajax_timing' => true,
 
     /*
      |--------------------------------------------------------------------------
@@ -167,7 +167,7 @@ return [
         'session' => true,  // Display session data
         'symfony_request' => true,  // Only one can be enabled..
         'mail' => true,  // Catch mail messages
-        'laravel' => false, // Laravel version and environment
+        'laravel' => true, // Laravel version and environment
         'events' => false, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
         'logs' => false, // Add the latest log messages
@@ -202,8 +202,8 @@ return [
                 'enabled' => false,
                 'types' => ['SELECT'],     // Deprecated setting, is always only SELECT
             ],
-            'hints' => false,    // Show hints for common mistakes
-            'show_copy' => false,    // Show copy button next to the query,
+            'hints' => true,    // Show hints for common mistakes
+            'show_copy' => true,    // Show copy button next to the query,
             'slow_threshold' => false,   // Only track queries that last longer than this time in ms
         ],
         'mail' => [

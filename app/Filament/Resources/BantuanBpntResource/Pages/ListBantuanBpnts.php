@@ -5,7 +5,6 @@ namespace App\Filament\Resources\BantuanBpntResource\Pages;
 use App\Filament\Imports\BantuanBpntImporter;
 use App\Filament\Resources\BantuanBpntResource;
 use App\Models\BantuanBpnt;
-use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
@@ -25,7 +24,7 @@ class ListBantuanBpnts extends ListRecords
     {
         $results = collect();
         $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
-        $bantuan->each(function ($item, $key) use (&$results): void {
+        $bantuan->each(function ($item) use (&$results): void {
             $results->put('semua', Tab::make()->badge(BantuanBpnt::query()->count()));
             $results->put(Str::lower($item->name), Tab::make()
                 ->badge(BantuanBpnt::query()->whereHas(

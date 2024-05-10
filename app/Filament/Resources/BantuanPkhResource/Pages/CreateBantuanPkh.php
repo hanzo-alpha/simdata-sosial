@@ -16,6 +16,7 @@ final class CreateBantuanPkh extends CreateRecord
     {
         $data['kode_wilayah'] = $data['kelurahan'];
         $data['dtks_id'] = Str::orderedUuid()->toString();
+        $data['jenis_bantuan_id'] = 1;
         return $data;
     }
 }

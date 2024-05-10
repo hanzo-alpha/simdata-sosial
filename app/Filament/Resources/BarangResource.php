@@ -64,13 +64,13 @@ class BarangResource extends Resource
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->label('Nama Barang')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kuantitas')
-                    ->numeric(locale: 'id')
-                    ->alignCenter()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_bulan')
                     ->label('Jumlah Bulan')
-                    ->numeric(locale: 'id')
+                    ->numeric()
+                    ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kuantitas')
+                    ->numeric()
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('satuan')
@@ -78,13 +78,13 @@ class BarangResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('harga_satuan')
                     ->label('Harga Satuan')
-                    ->alignLeft()
-                    ->numeric(locale: 'id')
+                    ->alignRight()
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_harga')
                     ->label('Total Harga')
-                    ->alignLeft()
-                    ->numeric(locale: 'id')
+                    ->alignRight()
+                    ->numeric()
                     ->sortable(),
             ])
             ->filters([

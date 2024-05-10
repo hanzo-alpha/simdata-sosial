@@ -15,9 +15,7 @@ use Wallo\FilamentSelectify\Components\ToggleButton;
 class Settings extends BaseSettings
 {
     protected static ?string $navigationGroup = 'Pengaturan';
-
-    protected static ?string $navigationLabel = 'Sistem';
-
+    protected static ?string $navigationLabel = 'Pengaturan';
     protected ?string $heading = 'Pengaturan';
 
     public function schema(): array|Closure
@@ -118,6 +116,9 @@ class Settings extends BaseSettings
                                         TextInput::make('ba.kop_jalan')
                                             ->label('Kop Jalan')
                                             ->default('Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng'),
+                                        TextInput::make('ba.kop_ba')
+                                            ->label('Kop Judul Berita Acara')
+                                            ->default('BERITA ACARA SERAH TERIMA BARANG'),
                                     ])->columns(2),
                                 Section::make('Kepala Dinas')
                                     ->icon('heroicon-o-envelope')

@@ -13,7 +13,6 @@ use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanPpks;
-use App\Filament\Resources\BantuanBpntResource\Widgets\BantuanBpntOverview;
 use App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
@@ -242,30 +241,25 @@ final class BantuanPpksResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Section::make('Status PPKS/PMKS')
                         ->schema([
-                            Select::make('jenis_bantuan_id')
-                                ->required()
-                                ->searchable()
-                                ->hidden()
-                                ->relationship(
-                                    name: 'jenis_bantuan',
-                                    titleAttribute: 'alias',
-                                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2]),
-                                )
-                                ->default(4)
-                                ->dehydrated(),
-
-                            Select::make('bantuan_yang_pernah_diterima')
+                            //                            Forms\Components\TagsInput::make('kategori_tags_ppks')
+                            //                                ->separator()
+                            //                                ->suggestions([
+                            //                                    'ATENSI', 'PKH', 'BPNT', 'RASTRA', 'SANDANG PANGAN',
+                            //                                ]),
+                            Select::make('bansos_diterima')
+                                ->label('Bantuan Yang Pernah Diterima')
                                 ->relationship('bansos_diterima', 'nama_bansos')
                                 ->multiple()
                                 ->searchable()
+                                ->native(false)
                                 ->required()
                                 ->default([1])
-                                ->lazy()
                                 ->preload(),
 
                             Select::make('tipe_ppks_id')
                                 ->label('Kategori PPKS')
                                 ->required()
+                                ->native(false)
                                 ->searchable()
                                 ->default(1)
                                 ->options(TipePpks::pluck('nama_tipe', 'id'))
@@ -276,6 +270,7 @@ final class BantuanPpksResource extends Resource
                             Select::make('kriteria_ppks')
                                 ->label('Kriteria PPKS')
                                 ->required()
+                                ->native(false)
                                 ->multiple()
                                 ->searchable()
                                 ->default(['36'])
@@ -292,6 +287,7 @@ final class BantuanPpksResource extends Resource
                                 ->enum(JenisAnggaranEnum::class)
                                 ->options(JenisAnggaranEnum::class)
                                 ->default(JenisAnggaranEnum::APBD)
+                                ->native(false)
                                 ->preload(),
 
                             TextInput::make('tahun_anggaran')
@@ -312,7 +308,7 @@ final class BantuanPpksResource extends Resource
                                 ->enum(StatusKondisiRumahEnum::class)
                                 ->options(StatusKondisiRumahEnum::class)
                                 ->default(StatusKondisiRumahEnum::BAIK)
-                                ->lazy()
+                                ->native(false)
                                 ->preload(),
 
                             Select::make('status_verifikasi')
@@ -320,6 +316,7 @@ final class BantuanPpksResource extends Resource
                                 ->enum(StatusVerifikasiEnum::class)
                                 ->options(StatusVerifikasiEnum::class)
                                 ->default(StatusVerifikasiEnum::UNVERIFIED)
+                                ->native(false)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
                                     ?->hasRole(['super_admin', 'admin'])
@@ -410,7 +407,14 @@ final class BantuanPpksResource extends Resource
                 //                    ->wrap()
                 //                    ->searchable()
                 //                    ->alignCenter(),
+                //                Tables\Columns\TextColumn::make('kategori_tags_ppks')
+                //                    ->inline()
+                //                    ->badge()
+                //                    ->color('warning')
+                //                    ->alignCenter()
+                //                    ->searchable(),
                 Tables\Columns\TextColumn::make('bansos_diterima.nama_bansos')
+                    ->label('Bantuan Yg Pernah Diterima')
                     ->inline()
                     ->badge()
                     ->color('warning')
@@ -468,7 +472,7 @@ final class BantuanPpksResource extends Resource
                                 fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
                             );
                     }),
-                SelectFilter::make('bantuan_yang_pernah_diterima')
+                SelectFilter::make('bansos_diterima')
                     ->label('Bantuan Diterima')
                     ->multiple()
                     ->relationship('bansos_diterima', 'nama_bansos')
@@ -497,7 +501,7 @@ final class BantuanPpksResource extends Resource
                     ->icon('heroicon-o-printer')
                     ->url(fn($record) => route('ba.ppks', ['id' => $record, 'm' => BantuanPpks::class]), true),
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
+                    //                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
