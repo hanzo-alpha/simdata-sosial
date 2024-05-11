@@ -10,6 +10,7 @@ use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -21,6 +22,8 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerKelurahanChart extends ApexChartWidget
 {
+    use HasWidgetShield;
+
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
     protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
     protected static ?int $sort = 3;

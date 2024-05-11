@@ -2,10 +2,13 @@
 
 namespace App\Filament\Widgets;
 
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanBpntPerMonthChart extends ApexChartWidget
 {
+    use HasWidgetShield;
+
     /**
      * Chart Id
      *

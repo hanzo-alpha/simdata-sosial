@@ -8,7 +8,6 @@ use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 
 class Dashboard extends \Filament\Pages\Dashboard
 {
-    //    use HasFiltersForm;
     use HasPageShield;
 
     //    public function filtersForm(Form $form): Form

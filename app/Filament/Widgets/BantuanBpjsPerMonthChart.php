@@ -2,10 +2,13 @@
 
 namespace App\Filament\Widgets;
 
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanBpjsPerMonthChart extends ApexChartWidget
 {
+    use HasWidgetShield;
+
     protected static ?string $chartId = 'bantuanBpjsPerMonthChart';
 
     protected static ?string $heading = 'Bantuan BPJS Per Bulan';

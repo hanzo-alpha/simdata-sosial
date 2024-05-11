@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages\Settings;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Closure;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
@@ -14,6 +15,8 @@ use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class Settings extends BaseSettings
 {
+    use HasPageShield;
+
     protected static ?string $navigationGroup = 'Pengaturan';
     protected static ?string $navigationLabel = 'Pengaturan';
     protected ?string $heading = 'Pengaturan';

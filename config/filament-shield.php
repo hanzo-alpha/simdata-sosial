@@ -62,15 +62,14 @@ return [
         'enabled' => true,
 
         'pages' => [
-            'Dashboard',
             'MyProfilePage',
         ],
 
         'widgets' => [
             'AccountWidget',
             'FilamentInfoWidget',
-            'BantuanOverview',
-            'BantuanSosialPerKecamatanChart',
+//            'BantuanOverview',
+//            'BantuanSosialPerKecamatanChart',
         ],
 
         'resources' => [],
