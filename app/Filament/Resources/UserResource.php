@@ -49,7 +49,7 @@ class UserResource extends Resource
                     ->revealable()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
-                Forms\Components\Select::make('roles')
+                Forms\Components\Select::make('roles_id')
                     ->relationship('roles', 'name')
                     ->required()
                     ->preload()
