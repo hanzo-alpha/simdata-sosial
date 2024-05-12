@@ -39,9 +39,9 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->default()
+            ->spa()
             ->sidebarCollapsibleOnDesktop()
             ->path('dashboard')
-            ->unsavedChangesAlerts()
             ->databaseTransactions()
             ->login()
             ->passwordReset()

@@ -261,7 +261,7 @@ class BantuanBpjsResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Group::make([
-                    Forms\Components\Section::make('Data Keluarga')
+                    Forms\Components\Section::make('Data Penerima Manfaat')
                         ->schema([
                             Forms\Components\TextInput::make('nokk_tmt')
                                 ->label('No. Kartu Keluarga (KK)')
@@ -277,10 +277,13 @@ class BantuanBpjsResource extends Resource
                             Forms\Components\TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
                                 ->required()
+                                ->dehydrateStateUsing(fn($state) => Str::upper($state))
                                 ->afterStateUpdated(fn($state) => Str::upper($state))
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('tempat_lahir')
                                 ->label('Tempat Lahir')
+                                ->dehydrateStateUsing(fn($state) => Str::upper($state))
+                                ->afterStateUpdated(fn($state) => Str::upper($state))
                                 ->maxLength(100),
                             Forms\Components\DatePicker::make('tgl_lahir')
                                 ->label('Tgl. Lahir')
@@ -290,10 +293,12 @@ class BantuanBpjsResource extends Resource
                                 ->options(JenisKelaminEnum::class)
                                 ->default(JenisKelaminEnum::LAKI),
                         ])->columns(2),
-                    Forms\Components\Section::make('Data Alamat')
+                    Forms\Components\Section::make('Data Alamat Penerima')
                         ->schema([
                             TextInput::make('alamat')
                                 ->required()
+                                ->dehydrateStateUsing(fn($state) => Str::upper($state))
+                                ->afterStateUpdated(fn($state) => Str::upper($state))
                                 ->columnSpanFull(),
                             Select::make('kecamatan')
                                 ->required()
@@ -353,8 +358,18 @@ class BantuanBpjsResource extends Resource
                 ])->columnSpan(2),
 
                 Forms\Components\Group::make([
-                    Forms\Components\Section::make('Status')
+                    Forms\Components\Section::make('Data Status Penerima')
                         ->schema([
+                            Grid::make()->schema([
+                                Select::make('bulan')
+                                    ->label('Periode Bulan')
+                                    ->options(list_bulan(true))
+                                    ->default(now()->month),
+                                Select::make('tahun')
+                                    ->label('Periode Tahun')
+                                    ->options(list_tahun())
+                                    ->default(now()->year),
+                            ])->columns(2),
                             Select::make('status_nikah')
                                 ->options(StatusKawinBpjsEnum::class)
                                 ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
