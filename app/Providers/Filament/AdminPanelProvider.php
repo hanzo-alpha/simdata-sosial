@@ -94,17 +94,6 @@ class AdminPanelProvider extends PanelProvider
                         Settings::class,
                     ]),
                 FilamentProgressbarPlugin::make(),
-                OverlookPlugin::make()
-                    ->sort(0)
-                    ->alphabetical()
-                    ->columns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'md' => 3,
-                        'lg' => 4,
-                        'xl' => 5,
-                        '2xl' => null,
-                    ]),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -113,7 +102,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logos/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
             ->darkModeBrandLogo(asset('images/logos/logo-white.png'))
-//            ->darkMode(setting('app.darkmode'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
@@ -137,7 +125,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                OverlookWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

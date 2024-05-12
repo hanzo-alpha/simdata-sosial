@@ -373,6 +373,7 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('nominal')
                     ->sortable()
                     ->toggleable()
+                    ->numeric()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()

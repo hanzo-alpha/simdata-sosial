@@ -49,12 +49,12 @@ final class ListBantuanPkh extends ListRecords
         return $results->toArray();
     }
 
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            BantuanPkhResource\Widgets\BantuanPkhOverview::class,
-        ];
-    }
+//    protected function getHeaderWidgets(): array
+//    {
+//        return [
+//            BantuanPkhResource\Widgets\BantuanPkhOverview::class,
+//        ];
+//    }
 
     protected function getHeaderActions(): array
     {

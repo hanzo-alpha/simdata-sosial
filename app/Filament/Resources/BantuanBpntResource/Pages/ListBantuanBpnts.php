@@ -44,12 +44,12 @@ class ListBantuanBpnts extends ListRecords
         return $results->toArray();
     }
 
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            BantuanBpntResource\Widgets\BantuanBpntOverview::class,
-        ];
-    }
+//    protected function getHeaderWidgets(): array
+//    {
+//        return [
+//            BantuanBpntResource\Widgets\BantuanBpntOverview::class,
+//        ];
+//    }
 
     protected function getHeaderActions(): array
     {
