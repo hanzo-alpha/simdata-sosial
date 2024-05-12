@@ -48,12 +48,12 @@ final class ListBantuanPpks extends ListRecords
 
     }
 
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            BantuanPpksOverview::class,
-        ];
-    }
+//    protected function getHeaderWidgets(): array
+//    {
+//        return [
+//            BantuanPpksOverview::class,
+//        ];
+//    }
 
     protected function getHeaderActions(): array
     {
