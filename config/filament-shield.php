@@ -68,8 +68,8 @@ return [
         'widgets' => [
             'AccountWidget',
             'FilamentInfoWidget',
-//            'BantuanOverview',
-//            'BantuanSosialPerKecamatanChart',
+            //            'BantuanOverview',
+            //            'BantuanSosialPerKecamatanChart',
         ],
 
         'resources' => [],

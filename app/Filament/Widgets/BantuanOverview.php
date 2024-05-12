@@ -14,11 +14,11 @@ class BantuanOverview extends MultiWidget
     use InteractsWithPageFilters;
 
     public array $widgets = [
-//        BantuanBpjsOverview::class,
-//        BantuanRastraOverview::class,
-//        BantuanPkhOverview::class,
-//        BantuanBpntOverview::class,
-//        BantuanPpksOverview::class,
+        //        BantuanBpjsOverview::class,
+        //        BantuanRastraOverview::class,
+        //        BantuanPkhOverview::class,
+        //        BantuanBpntOverview::class,
+        //        BantuanPpksOverview::class,
     ];
 
     public function shouldPersistMultiWidgetTabsInSession(): bool

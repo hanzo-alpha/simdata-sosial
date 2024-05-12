@@ -22,7 +22,7 @@ class BantuanBpjsOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-//    protected static bool $isDiscovered = false;
+    //    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
 
     protected static function getQuery(array $filter): Builder

@@ -18,7 +18,7 @@ class BantuanRastraOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-//    protected static bool $isDiscovered = false;
+    //    protected static bool $isDiscovered = false;
 
     protected function getStats(): array
     {
