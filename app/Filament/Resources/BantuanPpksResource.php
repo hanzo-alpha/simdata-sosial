@@ -525,6 +525,7 @@ final class BantuanPpksResource extends Resource
             ->schema([
                 Group::make([
                     \Filament\Infolists\Components\Section::make('Informasi Keluarga')
+                        ->icon('heroicon-o-user')
                         ->schema([
                             TextEntry::make('status_dtks')
                                 ->label('DTKS Status')
@@ -591,6 +592,7 @@ final class BantuanPpksResource extends Resource
                                 ->color('primary'),
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
+                        ->icon('heroicon-o-map-pin')
                         ->schema([
                             TextEntry::make('alamat')
                                 ->label('Alamat')
@@ -617,6 +619,7 @@ final class BantuanPpksResource extends Resource
 
                 Group::make([
                     \Filament\Infolists\Components\Section::make('Foto Rumah')
+                        ->icon('heroicon-o-photo')
                         ->schema([
                             ImageEntry::make('bukti_foto')
                                 ->hiddenLabel()
@@ -627,6 +630,7 @@ final class BantuanPpksResource extends Resource
                         ])->columns(3),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
+                        ->icon('heroicon-o-document-text')
                         ->schema([
                             TextEntry::make('nama_bantuan')
                                 ->label('Nama Bantuan')

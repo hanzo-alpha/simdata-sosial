@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Exports\ExportBantuanPkh;
-use App\Filament\Resources\BantuanBpntResource\Widgets\BantuanBpntOverview;
 use App\Filament\Resources\BantuanPkhResource\Pages;
 use App\Filament\Resources\BantuanPkhResource\Widgets\BantuanPkhOverview;
 use App\Models\BantuanPkh;
@@ -19,7 +18,11 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Infolists\Components\Group;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -173,6 +176,152 @@ final class BantuanPkhResource extends Resource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Group::make([
+                \Filament\Infolists\Components\Section::make('INFORMASI PENERIMA MANFAAT')
+                    ->icon('heroicon-o-user')
+                    ->schema([
+                        TextEntry::make('status_dtks')
+                            ->label('STATUS DTKS')
+                            ->weight(FontWeight::SemiBold)
+                            ->badge(),
+                        TextEntry::make('nokk')
+                            ->label('NO. KARTU KELUARGA (KK)')
+                            ->icon('heroicon-o-user-group')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary')
+                            ->copyable(),
+                        TextEntry::make('nik_ktp')
+                            ->label('NO. NIK KTP')
+                            ->icon('heroicon-o-identification')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary')
+                            ->copyable(),
+                        TextEntry::make('nama_penerima')
+                            ->label('NAMA PENERIMA')
+                            ->icon('heroicon-o-user-circle')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                    ])->columns(2),
+                \Filament\Infolists\Components\Section::make('INFORMASI ALAMAT')
+                    ->icon('heroicon-o-map-pin')
+                    ->schema([
+                        TextEntry::make('alamat')
+                            ->label('ALAMAT LENGKAP')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary')
+                            ->formatStateUsing(function ($record) {
+                                $alamat = Str::title($record->alamat);
+                                $prov = Str::title($record->prov->name);
+                                $kab = Str::title($record->kab->name);
+                                $kec = Str::title($record->kec->name);
+                                $kel = Str::title($record->kel->name);
+                                $dusun = ("-" !== $record->dusun || null === $record->dusun)
+                                    ? ', ' . Str::title($record->dusun)
+                                    : "";
+                                $rtrw = 'RT. ' . $record->no_rt . ' /RW. ' . $record->no_rw;
+                                return $alamat
+                                    . $dusun
+                                    . ', '
+                                    . $rtrw
+                                    . ', Kec. '
+                                    . $kec
+                                    . ', Kel. '
+                                    . $kel
+                                    . ', '
+                                    . $kab
+                                    . ', '
+                                    . $prov;
+                            })
+                            ->columnSpanFull(),
+                        TextEntry::make('prov.name')
+                            ->label('PROVINSI')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('kab.name')
+                            ->label('KABUPATEN')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('kec.name')
+                            ->label('KECAMATAN')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->formatStateUsing(fn($state) => Str::upper($state))
+                            ->color('primary'),
+                        TextEntry::make('kel.name')
+                            ->label('KELURAHAN')
+                            ->formatStateUsing(fn($state) => Str::upper($state))
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('dusun')
+                            ->label('DUSUN')
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('no_rt')
+                            ->label('RT/RW')
+                            ->formatStateUsing(fn($record) => 'RT. ' . $record->no_rt . '/RW. ' . $record->no_rw)
+                            ->icon('heroicon-o-map-pin')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                    ])->columns(2),
+            ])->columnSpan(2),
+
+            Group::make([
+                \Filament\Infolists\Components\Section::make('INFORMASI BANTUAN')
+                    ->icon('heroicon-o-lifebuoy')
+                    ->schema([
+                        TextEntry::make('tahap')
+                            ->label('TAHAP')
+                            ->icon('heroicon-o-clipboard-document')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('bansos')
+                            ->label('BANSOS')
+                            ->icon('heroicon-o-lifebuoy')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('nominal')
+                            ->label('NOMINAL')
+                            ->icon('heroicon-o-currency-dollar')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('bank')
+                            ->label('BANK')
+                            ->icon('heroicon-o-banknotes')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('dir')
+                            ->label('DIR')
+                            ->icon('heroicon-o-viewfinder-circle')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('gelombang')
+                            ->label('GELOMBANG')
+                            ->icon('heroicon-o-arrow-trending-up')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('tahun')
+                            ->label('TAHUN')
+                            ->icon('heroicon-o-clock')
+                            ->weight(FontWeight::SemiBold)
+                            ->color('primary'),
+                        TextEntry::make('status_pkh')
+                            ->label('STATUS PKH')
+                            ->badge()
+                            ->weight(FontWeight::SemiBold),
+                    ])->columns(2),
+            ])->columns(1),
+
+        ])->columns(3);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -183,7 +332,7 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')
                     ->sortable()
-                    ->description(fn($record) => $record->dtks_id)
+                    ->description(fn($record) => $record->status_dtks->getLabel())
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')

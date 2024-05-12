@@ -37,12 +37,12 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-//            ->topNavigation()
-            ->sidebarCollapsibleOnDesktop()
             ->id('admin')
+            ->default()
+            ->sidebarCollapsibleOnDesktop()
             ->path('dashboard')
-            ->spa()
+            ->unsavedChangesAlerts()
+            ->databaseTransactions()
             ->login()
             ->passwordReset()
             ->maxContentWidth(MaxWidth::Full)
@@ -150,12 +150,12 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])
+            ], isPersistent: true)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->globalSearchFieldKeyBindingSuffix()
             ->authMiddleware([
                 Authenticate::class,
-            ])
+            ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([

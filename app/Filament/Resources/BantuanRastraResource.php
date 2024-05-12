@@ -71,7 +71,7 @@ class BantuanRastraResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->description(function ($record): void {
-                        'Kec. '.$record->kec->name.' Kel. '.$record->kel->name;
+                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
                     })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
@@ -335,7 +335,7 @@ class BantuanRastraResource extends Resource
                                 ->label('Dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
-                                ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw),
+                                ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 
