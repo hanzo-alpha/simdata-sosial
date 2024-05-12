@@ -10,7 +10,6 @@ use App\Enums\StatusBpjsEnum;
 use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
-use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
