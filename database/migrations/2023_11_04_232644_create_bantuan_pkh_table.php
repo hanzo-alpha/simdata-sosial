@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\JenisBantuan;
+use App\Enums\StatusDtksEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,16 +12,14 @@ return new class () extends Migration {
     {
         Schema::create('bantuan_pkh', static function (Blueprint $table): void {
             $table->id();
-            $table->uuid('dtks_id')->default(Str::uuid()->toString());
+            $table->uuid('dtks_id')->nullable()->default(Str::uuid()->toString());
             $table->string('nokk');
             $table->string('nik_ktp');
             $table->string('nama_penerima');
             $table->char('kode_wilayah', 10);
             $table->unsignedTinyInteger('tahap');
             $table->string('bansos');
-            $table->foreignIdFor(JenisBantuan::class)
-                ->constrained('jenis_bantuan')
-                ->cascadeOnUpdate();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(1)->nullable();
             $table->unsignedDouble('nominal', 20, 2)->nullable()->default(0);
             $table->string('bank');
             $table->char('provinsi', 2)->nullable();
@@ -36,6 +34,7 @@ return new class () extends Migration {
             $table->string('gelombang')->nullable();
             $table->year('tahun')->nullable()->default(now()->year);
             $table->string('status_pkh')->nullable()->default('PKH');
+            $table->string('status_dtks', 30)->nullable()->default(StatusDtksEnum::DTKS);
             $table->softDeletes();
             $table->timestamps();
         });

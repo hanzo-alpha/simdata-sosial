@@ -7,7 +7,6 @@ use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
-use App\Models\BansosDiterima;
 use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -155,19 +154,16 @@ class BantuanPpksImporter extends Importer
                     $record->kelurahan = $kelurahan;
                 })
                 ->rules(['max:255']),
-            ImportColumn::make('bantuan_yang_pernah_diterima')
-                ->requiredMapping()
+            ImportColumn::make('kategori_tags_ppks')
                 ->guess(['BANSOS DITERIMA', 'BANTUAN YANG DITERIMA'])
-                ->fillRecordUsing(function ($record, $state): void {
-                    $bansosIds = collect();
-
-                    $bansosDiterima = BansosDiterima::query()
-                        ->where('nama_bansos', 'like', '%' . Str::ucfirst($state) . '%')
-                        ->first()?->id;
-                    $bansosIds->put('id', $bansosDiterima);
-
-                    $record->bantuan_yang_pernah_diterima = $bansosIds->toJson();
-                }),
+                ->requiredMapping(),
+            //            ImportColumn::make('bansos_diterima')
+            //                ->guess(['BANSOS DITERIMA', 'BANTUAN YANG DITERIMA'])
+            //                ->requiredMapping()
+            //                ->relationship('bansos_diterima', 'nama_bansos')
+            //                ->fillRecordUsing(function ($record, $state): void {
+            //                    $record->bansos_diterima()->attach($state);
+            //                }),
             ImportColumn::make('tahun_anggaran')
                 ->guess(['TAHUN', 'TAHUN ANGGARAN'])
                 ->requiredMapping()

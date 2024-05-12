@@ -5,7 +5,7 @@ namespace App\Filament\Resources\BantuanBpntResource\Pages;
 use App\Filament\Imports\BantuanBpntImporter;
 use App\Filament\Resources\BantuanBpntResource;
 use App\Models\BantuanBpnt;
-use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
@@ -23,32 +23,32 @@ class ListBantuanBpnts extends ListRecords
     public function getTabs(): array
     {
         $results = collect();
-        if(auth()->user()->hasRole(['super_admin', 'admin_bpnt', 'admin'])) {
-            $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
-            $bantuan->each(function ($item, $key) use (&$results): void {
-                $results->put('semua', Tab::make()->badge(BantuanBpnt::query()->count()));
-                $results->put(Str::lower($item->name), Tab::make()
-                    ->badge(BantuanBpnt::query()->whereHas(
-                        'kec',
-                        function (Builder $query) use ($item): void {
-                            if (auth()->user()->hasRole(['super_admin'])) {
-                                $query->where('bantuan_bpnt.kelurahan', auth()->user()->instansi_id);
-                            }
-                            $query->where('bantuan_bpnt.kecamatan', $item->code);
-                        },
-                    )->count())
-                    ->modifyQueryUsing(
-                        fn(Builder $query) => $query->whereHas(
-                            'kec',
-                            fn(Builder $query) => $query->where('bantuan_bpnt.kecamatan', $item->code),
-                        ),
-                    ));
-            });
-
-            return $results->toArray();
-        }
+        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $bantuan->each(function ($item) use (&$results): void {
+            $results->put('semua', Tab::make()->badge(BantuanBpnt::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanBpnt::query()->whereHas(
+                    'kel',
+                    function (Builder $query) use ($item): void {
+                        $query->where('bantuan_bpnt.kelurahan', $item->code);
+                    },
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        fn(Builder $query) => $query->where('bantuan_bpnt.kelurahan', $item->code),
+                    ),
+                ));
+        });
 
         return $results->toArray();
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BantuanBpntResource\Widgets\BantuanBpntOverview::class,
+        ];
     }
 
     protected function getHeaderActions(): array

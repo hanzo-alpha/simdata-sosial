@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusPkhBpntEnum;
 use App\Traits\HasJenisBantuan;
 use App\Traits\HasWilayah;
@@ -29,5 +30,6 @@ class BantuanPkh extends Model
         'dtks_id' => 'string',
         'nominal' => MoneyCast::class,
         'status_pkh' => StatusPkhBpntEnum::class,
+        'status_dtks' => StatusDtksEnum::class,
     ];
 }

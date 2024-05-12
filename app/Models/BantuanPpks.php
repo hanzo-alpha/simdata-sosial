@@ -18,7 +18,6 @@ use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -48,13 +47,15 @@ class BantuanPpks extends Model
         'bukti_foto' => 'array',
         'foto_ktp_kk' => 'array',
         'foto_penyerahan' => 'array',
-        'kriteria_ppks' => 'array',
         'status_aktif' => StatusAktif::class,
         'jenis_anggaran' => JenisAnggaranEnum::class,
         'jumlah_bantuan' => 'integer',
         'nama_bantuan' => 'string',
         'keterangan' => 'string',
         'tahun_anggaran' => 'integer',
+        'kriteria_ppks' => 'array',
+        'kriteria_tags_ppks' => 'array',
+        'kategori_tags_ppks' => 'array',
     ];
 
     public function tipe_ppks(): BelongsTo
@@ -65,11 +66,6 @@ class BantuanPpks extends Model
     public function bansos_diterima(): BelongsToMany
     {
         return $this->belongsToMany(BansosDiterima::class, 'bantuan_ppks_bansos_diterima')->withTimestamps();
-    }
-
-    public function kriteria(): HasOneThrough
-    {
-        return $this->hasOneThrough(KriteriaPpks::class, TipePpks::class, 'id', 'tipe_ppks_id', 'tipe_ppks_id');
     }
 
     public function kriteria_ppks(): BelongsToMany

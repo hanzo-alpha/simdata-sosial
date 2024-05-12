@@ -217,8 +217,8 @@
                         <p class="text-slate-600">Program PPKS</p>
                     </div>
                     <div class="text-center mt-4">
-                        <h4 class="mb-3 text-5xl">{{ Number::percentage($bantuan['angka_kemiskinan'], 2, locale: 'id')
-                        }} KPM</h4>
+                        <h4 class="mb-3 text-5xl">{{ Number::percentage(setting('app.angka_kemiskinan_persen'), 2, locale: 'id')
+                        }}</h4>
                         <p class="text-slate-600">Angka Kemiskinan</p>
                     </div>
                 </div>

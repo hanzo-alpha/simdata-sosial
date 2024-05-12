@@ -122,7 +122,7 @@ class BeritaAcaraResource extends Resource
                                 ->toHtmlString())
                             ->label('Judul Berita Acara')
                             ->required()
-                            ->default(Str::upper('Berita Acara Serah Terima Barang'))
+                            ->default(Str::upper(setting('ba.kop_ba', 'Berita Acara Serah Terima Barang')))
                             ->maxLength(255),
                         Forms\Components\DatePicker::make('tgl_ba')
                             ->helperText(str('**Tanggal** terbit berita acara pada laporan.')->inlineMarkdown()->toHtmlString())
@@ -191,25 +191,21 @@ class BeritaAcaraResource extends Resource
                             ->preload()
                             ->searchable()
                             ->default(1)
-                            ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
+                            ->noSearchResultsMessage('Item tidak ditemukan')
                             ->searchPrompt('Cari Item Bantuan')
-                            ->getOptionLabelFromRecordUsing(fn(
-                                Model $record,
-                            ) => "<strong>{$record->nama_barang}</strong><br> {$record->kode_barang}")
-                            ->allowHtml()
-                            ->live(onBlur: true)
                             ->required(),
-
-                        Forms\Components\TextInput::make('keterangan')
-                            ->maxLength(255)
-                            ->nullable()
-                            ->default(null),
 
                         Forms\Components\FileUpload::make('upload_ba')
                             ->label('Upload Berita Acara')
                             ->preserveFilenames()
-                            ->maxSize(1024 * 5)
-                            ->columnSpanFull(),
+                            ->maxSize(1024 * 5),
+
+                        Forms\Components\Textarea::make('keterangan')
+                            ->autosize()
+                            ->grow()
+                            ->nullable()
+                            ->columnSpanFull()
+                            ->default(null),
                     ])->columns(2),
 
             ]);

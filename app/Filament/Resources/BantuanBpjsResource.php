@@ -8,17 +8,25 @@ use App\Enums\StatusBpjsEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
+use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Group;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -40,6 +48,7 @@ class BantuanBpjsResource extends Resource
     protected static ?string $pluralLabel = 'Program BPJS';
     protected static ?string $navigationLabel = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     public static function table(Table $table): Table
     {
@@ -240,12 +249,19 @@ class BantuanBpjsResource extends Resource
             ]);
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            BantuanBpjsOverview::class,
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Group::make([
-                    Forms\Components\Section::make('Data Keluarga')
+                    Forms\Components\Section::make('Data Penerima Manfaat')
                         ->schema([
                             Forms\Components\TextInput::make('nokk_tmt')
                                 ->label('No. Kartu Keluarga (KK)')
@@ -261,10 +277,13 @@ class BantuanBpjsResource extends Resource
                             Forms\Components\TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
                                 ->required()
+                                ->dehydrateStateUsing(fn($state) => Str::upper($state))
                                 ->afterStateUpdated(fn($state) => Str::upper($state))
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('tempat_lahir')
                                 ->label('Tempat Lahir')
+                                ->dehydrateStateUsing(fn($state) => Str::upper($state))
+                                ->afterStateUpdated(fn($state) => Str::upper($state))
                                 ->maxLength(100),
                             Forms\Components\DatePicker::make('tgl_lahir')
                                 ->label('Tgl. Lahir')
@@ -274,10 +293,12 @@ class BantuanBpjsResource extends Resource
                                 ->options(JenisKelaminEnum::class)
                                 ->default(JenisKelaminEnum::LAKI),
                         ])->columns(2),
-                    Forms\Components\Section::make('Data Alamat')
+                    Forms\Components\Section::make('Data Alamat Penerima')
                         ->schema([
                             TextInput::make('alamat')
                                 ->required()
+                                ->dehydrateStateUsing(fn($state) => Str::upper($state))
+                                ->afterStateUpdated(fn($state) => Str::upper($state))
                                 ->columnSpanFull(),
                             Select::make('kecamatan')
                                 ->required()
@@ -337,8 +358,18 @@ class BantuanBpjsResource extends Resource
                 ])->columnSpan(2),
 
                 Forms\Components\Group::make([
-                    Forms\Components\Section::make('Status')
+                    Forms\Components\Section::make('Data Status Penerima')
                         ->schema([
+                            Grid::make()->schema([
+                                Select::make('bulan')
+                                    ->label('Periode Bulan')
+                                    ->options(list_bulan(true))
+                                    ->default(now()->month),
+                                Select::make('tahun')
+                                    ->label('Periode Tahun')
+                                    ->options(list_tahun())
+                                    ->default(now()->year),
+                            ])->columns(2),
                             Select::make('status_nikah')
                                 ->options(StatusKawinBpjsEnum::class)
                                 ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
@@ -401,155 +432,162 @@ class BantuanBpjsResource extends Resource
             ])->columns(3);
     }
 
-    //    public static function infolist(Infolist $infolist): Infolist
-    //    {
-    //        return $infolist
-    //            ->schema([
-    //                \Filament\Infolists\Components\Group::make([
-    //                    \Filament\Infolists\Components\Section::make('Informasi Keluarga')
-    //                        ->schema([
-    //                            TextEntry::make('dtks_id')
-    //                                ->label('DTKS ID')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->copyable()
-    //                                ->icon('heroicon-o-identification')
-    //                                ->color('primary'),
-    //                            TextEntry::make('nokk')
-    //                                ->label('No. Kartu Keluarga (KK)')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->copyable()
-    //                                ->icon('heroicon-o-identification')
-    //                                ->color('primary'),
-    //                            TextEntry::make('nik')
-    //                                ->label('No. Induk Kependudukan (NIK)')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->icon('heroicon-o-identification')
-    //                                ->copyable()
-    //                                ->color('primary'),
-    //                            TextEntry::make('nama_lengkap')
-    //                                ->label('Nama Lengkap')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->icon('heroicon-o-user')
-    //                                ->color('primary'),
-    //                            TextEntry::make('notelp')
-    //                                ->label('No. Telp/WA')
-    //                                ->icon('heroicon-o-device-phone-mobile')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('tempat_lahir')
-    //                                ->label('Tempat Lahir')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->icon('heroicon-o-home')
-    //                                ->color('primary'),
-    //                            TextEntry::make('tgl_lahir')
-    //                                ->label('Tanggal Lahir')
-    //                                ->formatStateUsing(function ($record) {
-    //                                    $tglLahir = Carbon::parse($record->tgl_lahir);
-    //                                    $umur = hitung_umur($tglLahir);
-    //
-    //                                    $tgl = $tglLahir->format('d F Y');
-    //                                    return $tgl . ' (' . $umur . ' tahun)';
-    //                                })
-    //                                ->icon('heroicon-o-calendar')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('alamat.alamat')
-    //                                ->label('Alamat')
-    //                                ->icon('heroicon-o-map-pin')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                        ])->columns(2),
-    //                    \Filament\Infolists\Components\Section::make('Informasi Alamat')
-    //                        ->schema([
-    //                            TextEntry::make('alamat.alamat_lengkap')
-    //                                ->label('Alamat Lengkap')
-    //                                ->columnSpanFull()
-    //                                ->icon('heroicon-o-map-pin')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('alamat.kec.name')
-    //                                ->label('Kecamatan'),
-    //                            TextEntry::make('alamat.kel.name')
-    //                                ->label('Kelurahan'),
-    //                            TextEntry::make('alamat.latitude')
-    //                                ->label('Latitude')
-    //                                ->state('-'),
-    //                            TextEntry::make('alamat.longitude')
-    //                                ->label('Longitude')
-    //                                ->state('-'),
-    //                        ])->columns(2),
-    //                ])->columnSpan(2),
-    //
-    //                \Filament\Infolists\Components\Group::make([
-    ////                    \Filament\Infolists\Components\Section::make('Foto Rumah')
-    ////                        ->schema([
-    ////                            ImageEntry::make('bukti_foto')
-    ////                                ->hiddenLabel()
-    ////                                ->visibility('private')
-    ////                                ->extraImgAttributes([
-    ////                                    'alt' => 'foto rumah',
-    ////                                    'loading' => 'lazy'
-    ////                                ])
-    ////                        ])->columns(3),
-    //
-    //                    \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
-    //                        ->schema([
-    //                            TextEntry::make('jenis_bantuan.alias')
-    //                                ->label('Jenis Bantuan')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('jenis_pekerjaan.nama_pekerjaan')
-    //                                ->label('Jenis Pekerjaan')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('pendidikan_terakhir.nama_pendidikan')
-    //                                ->label('Pendidikan Terakhir')
-    ////                                ->icon('heroicon-o-academic-cap')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('hubungan_keluarga.nama_hubungan')
-    //                                ->label('Hubungan Keluarga')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('nama_ibu_kandung')
-    //                                ->label('Nama Ibu Kandung')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->color('primary'),
-    //                            TextEntry::make('jenis_kelamin')
-    //                                ->label('Jenis Kelamin')
-    //                                ->weight(FontWeight::SemiBold)
-    //                                ->badge(),
-    //                            TextEntry::make('status_kawin')
-    //                                ->label('Status Kawin')
-    //                                ->badge(),
-    //                            TextEntry::make('status_verifikasi')
-    //                                ->label('Verifikasi Berkas/Foto')
-    //                                ->badge(),
-    //                            TextEntry::make('status_bpjs')
-    //                                ->label('Status BPJS')
-    //                                ->badge(),
-    //                            TextEntry::make('status_aktif')
-    //                                ->label('Status Aktif')
-    //                                ->badge(),
-    //                        ])
-    //                        ->columns(2),
-    //                ])->columns(1),
-    //
-    //            ])->columns(3);
-    //    }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Group::make([
+                    Section::make('Informasi Keluarga')
+                        ->icon('heroicon-o-user')
+                        ->schema([
+                            TextEntry::make('nomor_kartu')
+                                ->label('No. Kartu')
+                                ->copyable()
+                                ->weight(FontWeight::SemiBold)
+                                ->icon('heroicon-o-identification')
+                                ->color('primary'),
+                            TextEntry::make('nokk_tmt')
+                                ->label('No. Kartu Keluarga (KK)')
+                                ->copyable()
+                                ->weight(FontWeight::SemiBold)
+                                ->icon('heroicon-o-identification')
+                                ->color('primary'),
+                            TextEntry::make('nik_tmt')
+                                ->label('No. Induk Kependudukan (NIK)')
+                                ->weight(FontWeight::SemiBold)
+                                ->icon('heroicon-o-identification')
+                                ->copyable()
+                                ->color('primary'),
+                            TextEntry::make('nama_lengkap')
+                                ->label('Nama Lengkap')
+                                ->weight(FontWeight::SemiBold)
+                                ->icon('heroicon-o-user')
+                                ->color('primary'),
+                            TextEntry::make('tempat_lahir')
+                                ->label('Tempat Tanggal Lahir')
+                                ->weight(FontWeight::SemiBold)
+                                ->icon('heroicon-o-home')
+                                ->formatStateUsing(function ($record) {
+                                    $tglLahir = Carbon::parse($record->tgl_lahir);
+                                    $umur = hitung_umur($tglLahir);
 
-    //    public static function getNavigationBadge(): ?string
-    //    {
-    //        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
-    //    }
+                                    $tgl = $tglLahir->format('d F Y');
+                                    return $record->tempat_lahir . ', ' . $tgl . ' (' . $umur . ' tahun)';
+                                })
+                                ->color('primary'),
+                            TextEntry::make('alamat')
+                                ->label('Alamat')
+                                ->icon('heroicon-o-map-pin')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                        ])->columns(2),
+                    Section::make('Informasi Alamat')
+                        ->icon('heroicon-o-map-pin')
+                        ->schema([
+                            TextEntry::make('alamat')
+                                ->label('Alamat Lengkap')
+                                ->columnSpanFull()
+                                ->icon('heroicon-o-map-pin')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary')
+                                ->formatStateUsing(function ($record) {
+                                    $alamat = Str::title($record->alamat);
+                                    $kec = Str::title($record->kec->name);
+                                    $kel = Str::title($record->kel->name);
+                                    $dusun = ! empty($record->dusun)
+                                        ? ', ' . Str::title($record->dusun)
+                                        : '';
+                                    $rtrw = 'RT. ' . $record->nort . ' /RW. ' . $record->norw;
+                                    return $alamat
+                                        . $dusun
+                                        . ', '
+                                        . $rtrw
+                                        . ', Kec. '
+                                        . $kec
+                                        . ', Kel. '
+                                        . $kel
+                                        . ', '
+                                        . $record->kodepos;
+                                }),
+                            TextEntry::make('kec.name')
+                                ->label('Kecamatan')
+                                ->icon('heroicon-o-map')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                            TextEntry::make('kel.name')
+                                ->label('Kelurahan')
+                                ->icon('heroicon-o-map')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                            TextEntry::make('dusun')
+                                ->label('Dusun')
+                                ->icon('heroicon-o-map')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                            TextEntry::make('nort')
+                                ->label('RT/RW')
+                                ->formatStateUsing(fn($record) => 'RT. ' . $record->nort . '/RW. ' . $record->norw)
+                                ->icon('heroicon-o-map')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                        ])->columns(2),
+                ])->columnSpan(2),
 
-    //    public static function getRecordSubNavigation(\Filament\Resources\Pages\Page $page): array
-    //    {
-    //        return $page->generateNavigationItems([
-    //            Pages\ListBantuanBpjs::class,
-    //            Pages\CreateBantuanBpjs::class,
-    //        ]);
-    //    }
+                Group::make([
+                    Section::make('Informasi Bantuan Dan Status Penerima')
+                        ->icon('heroicon-o-lifebuoy')
+                        ->schema([
+                            TextEntry::make('bulan')
+                                ->label('PERIODE')
+                                ->formatStateUsing(fn($record) => bulan_to_string($record->bulan) . ' ' . $record->tahun)
+                                ->weight(FontWeight::SemiBold)
+                                ->color('primary'),
+                            TextEntry::make('jenis_kelamin')
+                                ->label('Jenis Kelamin')
+                                ->weight(FontWeight::SemiBold)
+                                ->badge(),
+                            TextEntry::make('status_kawin')
+                                ->label('Status Kawin')
+                                ->weight(FontWeight::SemiBold)
+                                ->badge(),
+                            TextEntry::make('status_verifikasi')
+                                ->label('Verifikasi Berkas/Foto')
+                                ->weight(FontWeight::SemiBold)
+                                ->badge(),
+                            TextEntry::make('status_bpjs')
+                                ->label('Status BPJS')
+                                ->weight(FontWeight::SemiBold)
+                                ->badge(),
+                            TextEntry::make('status_aktif')
+                                ->label('Status Aktif')
+                                ->weight(FontWeight::SemiBold)
+                                ->badge(),
+                            TextEntry::make('status_dtks')
+                                ->label('STATUS DTKS')
+                                ->weight(FontWeight::SemiBold)
+                                ->badge(),
+                            TextEntry::make('keterangan')
+                                ->weight(FontWeight::SemiBold)
+                                ->color('info'),
+                        ])
+                        ->columns(2),
+
+                    Section::make('Informasi Foto')
+                        ->icon('heroicon-o-photo')
+                        ->schema([
+                            ImageEntry::make('foto_ktp')
+                                ->hiddenLabel()
+                                ->columnSpanFull()
+                                ->alignCenter()
+                                ->extraImgAttributes([
+                                    'alt' => 'foto ktp',
+                                    'loading' => 'lazy',
+                                ]),
+                        ])->columns(1),
+                ])->columns(1),
+
+            ])->columns(3);
+    }
 
     //    public static function getGlobalSearchEloquentQuery(): Builder
     //    {

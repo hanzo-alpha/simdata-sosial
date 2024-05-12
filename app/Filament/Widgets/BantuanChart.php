@@ -32,7 +32,7 @@ class BantuanChart extends ApexChartWidget
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
     protected static ?int $contentHeight = 400;
     protected static bool $deferLoading = true;
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 9;
 
     protected function getOptions(): array
     {
@@ -126,60 +126,60 @@ class BantuanChart extends ApexChartWidget
     //        return new HtmlString('<p class="text-danger-500">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>');
     //    }
 
-//    protected function extraJsOptions(): ?RawJs
-//    {
-//        return RawJs::make(
-//            <<<'JS'
-//            {
-//                // xaxis: {
-//                //     labels: {
-//                //         formatter: function (val, timestamp, opts) {
-//                //             return val + ' KPM'
-//                //         }
-//                //     }
-//                // },
-//                yaxis: {
-//                    labels: {
-//                        formatter: function (val, index) {
-//                            return val + ' KPM'
-//                        }
-//                    }
-//                },
-//                tooltip: {
-//                    x: {
-//                        formatter: function (val) {
-//                            return val + ' KPM'
-//                        }
-//                    }
-//                },
-//                plotOptions: {
-//                  pie: {
-//                    // customScale: 1,
-//                    offsetX: 0,
-//                    offsetY: 0,
-//                    dataLabels: {
-//                       offset: -25,
-//                       minAngleToShowLabel: -25
-//                    },
-//                    // donut: {
-//                    //   labels: {
-//                    //     show: true,
-//                    //   }
-//                    // }
-//                  }
-//                },
-//                // dataLabels: {
-//                //     enabled: true,
-//                //     formatter: function (val, opt) {
-//                //         const name = opt.w.globals.labels[opt.seriesIndex]
-//                //         return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
-//                //     },
-//                //     dropShadow: {
-//                //         enabled: true
-//                //     },
-//                // }
-//            }
-//        JS,
-//        );
-//    }
+    //    protected function extraJsOptions(): ?RawJs
+    //    {
+    //        return RawJs::make(
+    //            <<<'JS'
+    //            {
+    //                // xaxis: {
+    //                //     labels: {
+    //                //         formatter: function (val, timestamp, opts) {
+    //                //             return val + ' KPM'
+    //                //         }
+    //                //     }
+    //                // },
+    //                yaxis: {
+    //                    labels: {
+    //                        formatter: function (val, index) {
+    //                            return val + ' KPM'
+    //                        }
+    //                    }
+    //                },
+    //                tooltip: {
+    //                    x: {
+    //                        formatter: function (val) {
+    //                            return val + ' KPM'
+    //                        }
+    //                    }
+    //                },
+    //                plotOptions: {
+    //                  pie: {
+    //                    // customScale: 1,
+    //                    offsetX: 0,
+    //                    offsetY: 0,
+    //                    dataLabels: {
+    //                       offset: -25,
+    //                       minAngleToShowLabel: -25
+    //                    },
+    //                    // donut: {
+    //                    //   labels: {
+    //                    //     show: true,
+    //                    //   }
+    //                    // }
+    //                  }
+    //                },
+    //                // dataLabels: {
+    //                //     enabled: true,
+    //                //     formatter: function (val, opt) {
+    //                //         const name = opt.w.globals.labels[opt.seriesIndex]
+    //                //         return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
+    //                //     },
+    //                //     dropShadow: {
+    //                //         enabled: true
+    //                //     },
+    //                // }
+    //            }
+    //        JS,
+    //        );
+    //    }
 }

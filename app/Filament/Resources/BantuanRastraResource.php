@@ -7,6 +7,7 @@ use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
+use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -37,6 +38,7 @@ class BantuanRastraResource extends Resource
     protected static ?string $pluralLabel = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 4;
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     public static function table(Table $table): Table
     {
@@ -44,19 +46,6 @@ class BantuanRastraResource extends Resource
             ->poll()
             ->deferLoading()
             ->defaultSort('created_at', 'desc')
-//            ->groups([
-//                Tables\Grouping\Group::make('kelurahan')
-//                    ->label('Kelurahan')
-//                    ->titlePrefixedWithLabel(true),
-//            ])
-//            ->defaultGroup('kelurahan')
-//            ->groupRecordsTriggerAction(
-//                fn(Action $action) => $action
-//                    ->button()
-//                    ->label('Grup Data'),
-//            )
-//            ->groupingSettingsInDropdownOnDesktop()
-//            ->groupingSettingsHidden()
             ->columns([
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
@@ -383,7 +372,7 @@ class BantuanRastraResource extends Resource
     public static function getWidgets(): array
     {
         return [
-            //            BantuanRastraOverview::class,
+            BantuanRastraOverview::class,
         ];
     }
 

@@ -13,7 +13,7 @@ final class CreateBantuanPpks extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['jenis_bantuan_id'] ??= 4;
+        $data['jenis_bantuan_id'] = 4;
 
         return $data;
     }

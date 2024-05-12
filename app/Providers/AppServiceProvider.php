@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Filament\Tables\Columns\Column;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Number;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,8 @@ final class AppServiceProvider extends ServiceProvider
                 ->toggleable()
                 ->searchable();
         });
+
+        Number::useLocale('id');
 
         Model::shouldBeStrict($this->app->isLocal());
         Model::unguard();

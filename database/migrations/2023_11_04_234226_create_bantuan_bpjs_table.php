@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\StatusDtksEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,17 +32,17 @@ return new class () extends Migration {
             $table->char('nort', 5)->nullable();
             $table->char('norw', 5)->nullable();
             $table->char('kodepos', 10)->nullable();
-            $table->unsignedBigInteger('jenis_bantuan_id')->nullable();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(3)->nullable();
             $table->unsignedTinyInteger('status_aktif')
                 ->nullable()
                 ->default(0);
             $table->string('status_usulan', 20)->nullable();
             $table->string('status_bpjs', 20)->nullable();
+            $table->string('status_dtks', 30)->nullable()->default(StatusDtksEnum::DTKS);
             $table->string('bulan', 10)->nullable();
             $table->unsignedInteger('tahun')->nullable();
             $table->text('keterangan')->nullable();
             $table->json('foto_ktp')->nullable();
-            $table->date('batas_tgl_input')->default(today())->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

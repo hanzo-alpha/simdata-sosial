@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BantuanBpntResource\Pages;
+use App\Filament\Resources\BantuanBpntResource\Widgets\BantuanBpntOverview;
 use App\Models\BantuanBpnt;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -14,7 +15,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,6 +34,14 @@ class BantuanBpntResource extends Resource
     protected static ?string $navigationLabel = 'Program BPNT';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 2;
+    protected static ?string $recordTitleAttribute = 'nama_penerima';
+
+    public static function getWidgets(): array
+    {
+        return [
+            BantuanBpntOverview::class,
+        ];
+    }
 
 
     public static function form(Form $form): Form
@@ -124,6 +136,46 @@ class BantuanBpntResource extends Resource
                 ])
                     ->columns(2),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            \Filament\Infolists\Components\Section::make('INFORMASI PENERIMA MANFAAT')
+                ->icon('heroicon-o-user')
+                ->schema([
+                    TextEntry::make('no_nik')
+                        ->label('NIK PENERIMA')
+                        ->icon('heroicon-o-identification')
+                        ->weight(FontWeight::SemiBold)
+                        ->color('primary'),
+                    TextEntry::make('nama_penerima')
+                        ->label('NAMA PENERIMA')
+                        ->icon('heroicon-o-user-circle')
+                        ->weight(FontWeight::SemiBold)
+                        ->color('primary'),
+                    TextEntry::make('prov.name')
+                        ->label('PROVINSI')
+                        ->icon('heroicon-o-map-pin')
+                        ->weight(FontWeight::SemiBold)
+                        ->color('primary'),
+                    TextEntry::make('kab.name')
+                        ->label('KABUPATEN')
+                        ->icon('heroicon-o-map')
+                        ->weight(FontWeight::SemiBold)
+                        ->color('primary'),
+                    TextEntry::make('kec.name')
+                        ->label('KECAMATAN')
+                        ->icon('heroicon-o-map')
+                        ->weight(FontWeight::SemiBold)
+                        ->color('primary'),
+                    TextEntry::make('kel.name')
+                        ->label('KELURAHAN')
+                        ->icon('heroicon-o-map')
+                        ->weight(FontWeight::SemiBold)
+                        ->color('primary'),
+                ])->columns(2),
+        ]);
     }
 
     public static function table(Table $table): Table

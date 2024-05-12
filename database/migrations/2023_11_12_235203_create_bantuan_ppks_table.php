@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Enums\StatusDtksEnum;
 use App\Models\BansosDiterima;
 use App\Models\HubunganKeluarga;
-use App\Models\JenisBantuan;
 use App\Models\JenisPekerjaan;
 use App\Models\PendidikanTerakhir;
 use App\Models\TipePpks;
@@ -26,11 +25,7 @@ return new class () extends Migration {
             $table->dateTime('tgl_lahir');
             $table->string('notelp', 18);
             $table->string('nama_ibu_kandung');
-            $table->foreignIdFor(JenisBantuan::class)
-                ->nullable()
-                ->default(4)
-                ->constrained('jenis_bantuan')
-                ->cascadeOnUpdate();
+            $table->unsignedBigInteger('jenis_bantuan_id')->default(4)->nullable();
             $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();
             $table->foreignIdFor(HubunganKeluarga::class)->constrained('hubungan_keluarga')->cascadeOnUpdate();
             $table->foreignIdFor(JenisPekerjaan::class)->constrained('jenis_pekerjaan')->cascadeOnUpdate();
@@ -58,7 +53,8 @@ return new class () extends Migration {
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('kriteria_ppks')->nullable();
             $table->integer('penghasilan_rata_rata')->default(0)->nullable();
-            $table->json('bantuan_yang_pernah_diterima')->nullable();
+            $table->json('kategori_tags_ppks')->nullable();
+            $table->json('kriteria_tags_ppks')->nullable();
             $table->unsignedInteger('tahun_anggaran')->default(now()->year)->nullable();
             $table->string('jenis_anggaran', 10)->default('APBD')->nullable();
             $table->unsignedInteger('jumlah_bantuan')->default(4)->nullable();

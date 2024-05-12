@@ -5,6 +5,8 @@ namespace App\Providers\Filament;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
+use Awcodes\Overlook\OverlookPlugin;
+use Awcodes\Overlook\Widgets\OverlookWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -34,12 +36,12 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-//            ->topNavigation()
-            ->sidebarCollapsibleOnDesktop()
             ->id('admin')
-            ->path('dashboard')
+            ->default()
             ->spa()
+            ->sidebarCollapsibleOnDesktop()
+            ->path('dashboard')
+            ->databaseTransactions()
             ->login()
             ->passwordReset()
             ->maxContentWidth(MaxWidth::Full)
@@ -92,6 +94,17 @@ class AdminPanelProvider extends PanelProvider
                         Settings::class,
                     ]),
                 FilamentProgressbarPlugin::make(),
+                OverlookPlugin::make()
+                    ->sort(0)
+                    ->alphabetical()
+                    ->columns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'md' => 3,
+                        'lg' => 4,
+                        'xl' => 5,
+                        '2xl' => null,
+                    ]),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -103,6 +116,7 @@ class AdminPanelProvider extends PanelProvider
 //            ->darkMode(setting('app.darkmode'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->font(config('custom.app.font', 'Inter'))
             ->pages([
                 Dashboard::class,
@@ -123,7 +137,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-
+                OverlookWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -135,10 +149,12 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])
+            ], isPersistent: true)
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
+            ->globalSearchFieldKeyBindingSuffix()
             ->authMiddleware([
                 Authenticate::class,
-            ])
+            ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([

@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
+use Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -45,11 +46,12 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->revealable()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\Select::make('roles')
+                    ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
+                    ->dehydrated(fn(?string $state): bool => filled($state))
+                    ->required(fn(string $operation): bool => 'create' === $operation)
+                    ->revealable(),
+                Forms\Components\Select::make('roles_id')
                     ->relationship('roles', 'name')
                     ->required()
                     ->preload()

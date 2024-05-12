@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\PesertaBpjsResource\Pages;
 
 use App\Filament\Resources\PesertaBpjsResource;
-use App\Filament\Widgets\PesertaBpjsOverview;
+use App\Filament\Resources\PesertaBpjsResource\Widgets\PesertaBpjsOverview;
 use App\Imports\ImportPesertaBpjs;
 use App\Models\PesertaBpjs;
 use App\Traits\HasInputDateLimit;
