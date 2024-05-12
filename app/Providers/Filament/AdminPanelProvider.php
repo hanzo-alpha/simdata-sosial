@@ -5,8 +5,6 @@ namespace App\Providers\Filament;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
-use Awcodes\Overlook\OverlookPlugin;
-use Awcodes\Overlook\Widgets\OverlookWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
