@@ -28,36 +28,36 @@ class ListBantuanBpjs extends ListRecords
 
     protected static string $resource = BantuanBpjsResource::class;
 
-//    public function getTabs(): array
-//    {
-//        $results = collect();
-//
-//        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
-//        $bantuan->each(function ($item, $key) use (&$results): void {
-//            $results->put('semua', Tab::make()
-//                ->badge(BantuanBpjs::query()->count()));
-//            $results->put(Str::lower($item->name), Tab::make()
-//                ->badge(BantuanBpjs::query()->whereHas(
-//                    'kel',
-//                    function (Builder $query) use ($item): void {
-//                        $query->where('bantuan_bpjs.kelurahan', $item->code);
-//
-//                    },
-//                )->count())
-//                ->modifyQueryUsing(
-//                    fn(Builder $query) => $query->whereHas(
-//                        'kel',
-//                        function (Builder $query) use ($item): void {
-//                            $query->where('bantuan_bpjs.kelurahan', $item->code);
-//
-//                        },
-//                    ),
-//                ));
-//        });
-//
-//        return $results->toArray();
-//
-//    }
+    public function getTabs(): array
+    {
+        $results = collect();
+
+        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()
+                ->badge(BantuanBpjs::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanBpjs::query()->whereHas(
+                    'kel',
+                    function (Builder $query) use ($item): void {
+                        $query->where('bantuan_bpjs.kelurahan', $item->code);
+
+                    },
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        function (Builder $query) use ($item): void {
+                            $query->where('bantuan_bpjs.kelurahan', $item->code);
+
+                        },
+                    ),
+                ));
+        });
+
+        return $results->toArray();
+
+    }
 
     //    protected function getHeaderWidgets(): array
     //    {

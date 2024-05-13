@@ -27,34 +27,34 @@ final class ListBantuanPkh extends ListRecords
 
     protected static string $resource = BantuanPkhResource::class;
 
-//    public function getTabs(): array
-//    {
-//        $results = collect();
-//        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
-//        $bantuan->each(function ($item, $key) use (&$results): void {
-//            $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
-//            $results->put(Str::lower($item->name), Tab::make()
-//                ->badge(BantuanPkh::query()->whereHas(
-//                    'kel',
-//                    fn(Builder $query) => $query->where('bantuan_pkh.kelurahan', $item->code),
-//                )->count())
-//                ->modifyQueryUsing(
-//                    fn(Builder $query) => $query->whereHas(
-//                        'kel',
-//                        fn(Builder $query) => $query->where('bantuan_pkh.kelurahan', $item->code),
-//                    ),
-//                ));
-//        });
-//
-//        return $results->toArray();
-//    }
+    public function getTabs(): array
+    {
+        $results = collect();
+        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()->badge(BantuanPkh::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanPkh::query()->whereHas(
+                    'kel',
+                    fn(Builder $query) => $query->where('bantuan_pkh.kelurahan', $item->code),
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        fn(Builder $query) => $query->where('bantuan_pkh.kelurahan', $item->code),
+                    ),
+                ));
+        });
 
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanPkhResource\Widgets\BantuanPkhOverview::class,
-    //        ];
-    //    }
+        return $results->toArray();
+    }
+
+//        protected function getHeaderWidgets(): array
+//        {
+//            return [
+//                BantuanPkhResource\Widgets\BantuanPkhOverview::class,
+//            ];
+//        }
 
     protected function getHeaderActions(): array
     {

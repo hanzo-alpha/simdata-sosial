@@ -25,34 +25,34 @@ class ListBantuanRastra extends ListRecords
 
     protected static string $resource = BantuanRastraResource::class;
 
-//    public function getTabs(): array
-//    {
-//        $results = collect();
-//        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
-//        $bantuan->each(function ($item, $key) use (&$results): void {
-//            $results->put('semua', Tab::make()->badge(BantuanRastra::query()->count()));
-//            $results->put(Str::lower($item->name), Tab::make()
-//                ->badge(BantuanRastra::query()->whereHas(
-//                    'kel',
-//                    fn(Builder $query) => $query->where('bantuan_rastra.kelurahan', $item->code),
-//                )->count())
-//                ->modifyQueryUsing(
-//                    fn(Builder $query) => $query->whereHas(
-//                        'kel',
-//                        fn(Builder $query) => $query->where('bantuan_rastra.kelurahan', $item->code),
-//                    ),
-//                ));
-//        });
-//
-//        return $results->toArray();
-//    }
+    public function getTabs(): array
+    {
+        $results = collect();
+        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+        $bantuan->each(function ($item, $key) use (&$results): void {
+            $results->put('semua', Tab::make()->badge(BantuanRastra::query()->count()));
+            $results->put(Str::lower($item->name), Tab::make()
+                ->badge(BantuanRastra::query()->whereHas(
+                    'kel',
+                    fn(Builder $query) => $query->where('bantuan_rastra.kelurahan', $item->code),
+                )->count())
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query->whereHas(
+                        'kel',
+                        fn(Builder $query) => $query->where('bantuan_rastra.kelurahan', $item->code),
+                    ),
+                ));
+        });
 
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanRastraOverview::class,
-    //        ];
-    //    }
+        return $results->toArray();
+    }
+
+//        protected function getHeaderWidgets(): array
+//        {
+//            return [
+//                BantuanRastraOverview::class,
+//            ];
+//        }
 
     protected function getHeaderActions(): array
     {
