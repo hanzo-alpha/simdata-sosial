@@ -94,8 +94,8 @@
         "clear-jobs": [
             "@php artisan queue:flush",
             "@php artisan queue:clear",
-            "@php artisan @php artisan queue:prune-batches",
-            "@php artisan @php artisan queue:prune-failed"
+            "@php artisan queue:prune-batches",
+            "@php artisan queue:prune-failed"
         ]
     },
     "extra": {
