@@ -20,29 +20,29 @@ class ListBantuanBpnts extends ListRecords
 
     protected static string $resource = BantuanBpntResource::class;
 
-    public function getTabs(): array
-    {
-        $results = collect();
-        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
-        $bantuan->each(function ($item) use (&$results): void {
-            $results->put('semua', Tab::make()->badge(BantuanBpnt::query()->count()));
-            $results->put(Str::lower($item->name), Tab::make()
-                ->badge(BantuanBpnt::query()->whereHas(
-                    'kel',
-                    function (Builder $query) use ($item): void {
-                        $query->where('bantuan_bpnt.kelurahan', $item->code);
-                    },
-                )->count())
-                ->modifyQueryUsing(
-                    fn(Builder $query) => $query->whereHas(
-                        'kel',
-                        fn(Builder $query) => $query->where('bantuan_bpnt.kelurahan', $item->code),
-                    ),
-                ));
-        });
-
-        return $results->toArray();
-    }
+//    public function getTabs(): array
+//    {
+//        $results = collect();
+//        $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
+//        $bantuan->each(function ($item) use (&$results): void {
+//            $results->put('semua', Tab::make()->badge(BantuanBpnt::query()->count()));
+//            $results->put(Str::lower($item->name), Tab::make()
+//                ->badge(BantuanBpnt::query()->whereHas(
+//                    'kel',
+//                    function (Builder $query) use ($item): void {
+//                        $query->where('bantuan_bpnt.kelurahan', $item->code);
+//                    },
+//                )->count())
+//                ->modifyQueryUsing(
+//                    fn(Builder $query) => $query->whereHas(
+//                        'kel',
+//                        fn(Builder $query) => $query->where('bantuan_bpnt.kelurahan', $item->code),
+//                    ),
+//                ));
+//        });
+//
+//        return $results->toArray();
+//    }
 
     //    protected function getHeaderWidgets(): array
     //    {
