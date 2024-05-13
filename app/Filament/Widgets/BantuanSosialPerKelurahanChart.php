@@ -23,7 +23,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
 {
     use HasWidgetShield;
 
-    protected static bool $isDiscovered = false;
+    protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
     protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
     protected static ?int $sort = 3;
