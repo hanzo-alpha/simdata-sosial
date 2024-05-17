@@ -780,7 +780,15 @@ final class BantuanPpksResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
         return parent::getEloquentQuery()
+            ->where('kelurahan', auth()->user()->instansi_id)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

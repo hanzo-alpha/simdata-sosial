@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-final class KriteriaPpks extends Model
+class KriteriaPpks extends Model
 {
     protected $table = 'kriteria_ppks';
 
@@ -21,11 +21,11 @@ final class KriteriaPpks extends Model
 
     public function tipe_ppks(): BelongsToMany
     {
-        return $this->belongsToMany(TipePpks::class, 'tipe_kriteria_ppks');
+        return $this->belongsToMany(TipePpks::class, 'tipe_kriteria_ppks')->withTimestamps();
     }
 
     public function bantuan_ppks(): BelongsToMany
     {
-        return $this->belongsToMany(BantuanPpks::class, 'tipe_kriteria_ppks');
+        return $this->belongsToMany(BantuanPpks::class, 'tipe_kriteria_ppks')->withTimestamps();
     }
 }
