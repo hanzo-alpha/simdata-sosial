@@ -106,7 +106,8 @@ class RoleResource extends Resource implements HasShieldPermissions
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(fn(Model $record) => $record->name === config('filament-shield.super_admin.name')),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

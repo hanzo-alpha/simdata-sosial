@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusDtksEnum;
 use App\Exports\ExportBantuanPkh;
 use App\Filament\Resources\BantuanPkhResource\Pages;
 use App\Filament\Resources\BantuanPkhResource\Widgets\BantuanPkhOverview;
@@ -56,124 +57,127 @@ final class BantuanPkhResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Data Pribadi')->schema([
-                    TextInput::make('dtks_id')
-                        ->nullable()
-                        ->default(Str::upper(Str::orderedUuid()->toString()))
-                        ->maxLength(36),
-                    TextInput::make('nokk')
-                        ->required(),
-                    TextInput::make('nik_ktp')
-                        ->required(),
-                    TextInput::make('nama_penerima')
-                        ->required(),
-                ])
-                    ->columns(2),
-                Section::make('Data Bantuan')->schema([
-                    TextInput::make('tahap')
-                        ->default(1),
-                    TextInput::make('bansos')
-                        ->default('PKH'),
-                    TextInput::make('bank')
-                        ->default('MANDIRI'),
-                    TextInput::make('nominal')
-                        ->default(0)
-                        ->numeric(),
-                    TextInput::make('dir')
-                        ->default('DIR REHSOS'),
-                    TextInput::make('gelombang')
-                        ->default('GEL 1'),
-                ])
-//                    ->visibleOn(['edit', 'view'])
-                    ->columns(2),
-                Section::make('Data Alamat')->schema([
-                    TextInput::make('alamat')
-                        ->required()
-                        ->columnSpanFull(),
-                    Grid::make()->schema([
-                        Select::make('provinsi')
-                            ->nullable()
-                            ->searchable()
-                            ->reactive()
-                            ->options(Provinsi::pluck('name', 'code'))
-                            ->default(config('custom.default.kodeprov'))
-                            ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
+                \Filament\Forms\Components\Group::make()
+                    ->schema([
+                        Section::make('Data Pribadi')->schema([
+                            Select::make('status_dtks')
+                                ->label('Status DTKS')
+                                ->enum(StatusDtksEnum::class)
+                                ->default(StatusDtksEnum::DTKS)
+                                ->options(StatusDtksEnum::class),
+                            TextInput::make('nokk')
+                                ->label('No. Kartu Keluarga (KK)')
+                                ->required(),
+                            TextInput::make('nik_ktp')
+                                ->label('No. Induk Keluarga (NIK)')
+                                ->required(),
+                            TextInput::make('nama_penerima')
+                                ->label('Nama Penerima')
+                                ->required(),
+                        ])->columns(2),
 
-                        Select::make('kabupaten')
-                            ->nullable()
-                            ->options(function (callable $get) {
-                                $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if ( ! $kab) {
-                                    return Kabupaten::where('code', config('custom.default.kodekab'))
-                                        ->pluck('name', 'code');
-                                }
+                        Section::make('Data Alamat')->schema([
+                            TextInput::make('alamat')
+                                ->required()
+                                ->columnSpanFull(),
+                            Grid::make()->schema([
+                                Select::make('provinsi')
+                                    ->nullable()
+                                    ->searchable()
+                                    ->reactive()
+                                    ->options(Provinsi::pluck('name', 'code'))
+                                    ->default(config('custom.default.kodeprov'))
+                                    ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
 
-                                return $kab->pluck('name', 'code');
-                            })
-                            ->reactive()
-                            ->default(config('custom.default.kodekab'))
-                            ->searchable()
+                                Select::make('kabupaten')
+                                    ->nullable()
+                                    ->options(function (callable $get) {
+                                        $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
+                                        if ( ! $kab) {
+                                            return Kabupaten::where('code', config('custom.default.kodekab'))
+                                                ->pluck('name', 'code');
+                                        }
+
+                                        return $kab->pluck('name', 'code');
+                                    })
+                                    ->reactive()
+                                    ->default(config('custom.default.kodekab'))
+                                    ->searchable()
+                                    ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
+                            ])
+                                ->columns(2),
+                            Grid::make()->schema([
+                                Select::make('kecamatan')
+                                    ->nullable()
+                                    ->searchable()
+                                    ->reactive()
+                                    ->options(function (callable $get) {
+                                        $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
+                                        if ( ! $kab) {
+                                            return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
+                                                ->pluck('name', 'code');
+                                        }
+
+                                        return $kab->pluck('name', 'code');
+                                    })
+                                    ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+
+                                Select::make('kelurahan')
+                                    ->nullable()
+                                    ->options(function (callable $get) {
+                                        $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
+                                        if ( ! $kel) {
+                                            return Kelurahan::where('kecamatan_code', '731211')
+                                                ->pluck('name', 'code');
+                                        }
+
+                                        return $kel->pluck('name', 'code');
+                                    })
+                                    ->reactive()
+                                    ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                            ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
+                                    ->afterStateUpdated(function (callable $set, $state): void {
+                                        $village = Kelurahan::where('code', $state)->first();
+                                        if ($village) {
+                                            $set('latitude', $village['latitude']);
+                                            $set('longitude', $village['longitude']);
+                                            $set('location', [
+                                                'lat' => (float) $village['latitude'],
+                                                'lng' => (float) $village['longitude'],
+                                            ]);
+                                        }
+
+                                    }),
+                            ])
+                                ->columns(2),
+                            Grid::make()->schema([
+                                TextInput::make('dusun'),
+                                TextInput::make('no_rt')->label('RT'),
+                                TextInput::make('no_rw')->label('RW'),
+                            ])->columns(3),
+                        ])->columns(2),
                     ])
-//                        ->visibleOn(['edit', 'view'])
-                        ->columns(2),
-                    Grid::make()->schema([
-                        Select::make('kecamatan')
-                            ->nullable()
-                            ->searchable()
-                            ->reactive()
-                            ->options(function (callable $get) {
-                                $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if ( ! $kab) {
-                                    return Kecamatan::where('kabupaten_code', config('custom.default.kodekab'))
-                                        ->pluck('name', 'code');
-                                }
-
-                                return $kab->pluck('name', 'code');
-                            })
-                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
-
-                        Select::make('kelurahan')
-                            ->nullable()
-                            ->options(function (callable $get) {
-                                $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if ( ! $kel) {
-                                    return Kelurahan::where('kecamatan_code', '731211')
-                                        ->pluck('name', 'code');
-                                }
-
-                                return $kel->pluck('name', 'code');
-                            })
-                            ->reactive()
-                            ->searchable()
-//                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                            ->afterStateUpdated(function (callable $set, $state): void {
-                                $village = Kelurahan::where('code', $state)->first();
-                                if ($village) {
-                                    $set('latitude', $village['latitude']);
-                                    $set('longitude', $village['longitude']);
-                                    $set('location', [
-                                        'lat' => (float) $village['latitude'],
-                                        'lng' => (float) $village['longitude'],
-                                    ]);
-                                }
-
-                            }),
-                    ])
-//                        ->visibleOn(['edit', 'view'])
-                        ->columns(2),
-                    Grid::make()->schema([
-                        TextInput::make('dusun'),
-                        TextInput::make('no_rt'),
-                        TextInput::make('no_rw'),
-                    ])
-//                        ->visibleOn(['edit', 'view'])
-                        ->columns(3),
-                ])
-//                    ->visibleOn(['edit', 'view'])
-                    ->columns(2),
-            ]);
+                    ->columnSpan(2),
+                \Filament\Forms\Components\Group::make()
+                    ->schema([
+                        Section::make('Data Bantuan')->schema([
+                            TextInput::make('tahap')
+                                ->default(1),
+                            TextInput::make('bansos')
+                                ->default('PKH'),
+                            TextInput::make('bank')
+                                ->default('MANDIRI'),
+                            TextInput::make('nominal')
+                                ->default(0)
+                                ->numeric(),
+                            TextInput::make('dir')
+                                ->default('DIR REHSOS'),
+                            TextInput::make('gelombang')
+                                ->default('GEL 1'),
+                        ])
+                            ->columns(2),
+                    ])->columns(1),
+            ])->columns(3);
     }
 
     public static function infolist(Infolist $infolist): Infolist

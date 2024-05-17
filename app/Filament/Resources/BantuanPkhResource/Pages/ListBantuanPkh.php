@@ -49,19 +49,16 @@ final class ListBantuanPkh extends ListRecords
         return $results->toArray();
     }
 
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanPkhResource\Widgets\BantuanPkhOverview::class,
-    //        ];
-    //    }
+    //        protected function getHeaderWidgets(): array
+    //        {
+    //            return [
+    //                BantuanPkhResource\Widgets\BantuanPkhOverview::class,
+    //            ];
+    //        }
 
     protected function getHeaderActions(): array
     {
         return [
-            //            Actions\CreateAction::make()
-            //                ->label('Buat Baru')
-            //                ->icon('heroicon-o-plus'),
             ExportAction::make()
                 ->label('Download XLS')
                 ->color('info')
@@ -71,7 +68,6 @@ final class ListBantuanPkh extends ListRecords
                 ])
                 ->disabled($this->enableInputLimitDate()),
             Actions\Action::make('unggahData')
-//                ->model(BantuanPkh::class)
                 ->label('Upload XLS')
                 ->modalHeading('Unggah Data Bantuan PKH')
                 ->modalDescription('Unggah data PKH ke database dari file excel')
@@ -122,6 +118,9 @@ final class ListBantuanPkh extends ListRecords
                 ->disabled($this->enableInputLimitDate())
                 ->successRedirectUrl(route('filament.admin.resources.program-pkh.index'))
                 ->modalWidth('lg'),
+            Actions\CreateAction::make()
+                ->label('Buat Baru')
+                ->icon('heroicon-o-plus'),
         ];
     }
 

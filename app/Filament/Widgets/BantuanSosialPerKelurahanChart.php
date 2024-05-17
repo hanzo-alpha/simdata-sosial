@@ -23,6 +23,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
 {
     use HasWidgetShield;
 
+    protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
     protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
     protected static ?int $sort = 3;
@@ -50,7 +51,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                         ->pluck('name', 'code');
                 })
                 ->native(false),
-            ToggleButtons::make('chartTipe')
+            ToggleButtons::make('cTipe')
                 ->default('bar')
                 ->options([
                     'line' => 'Line',
@@ -109,7 +110,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
 
         return [
             'chart' => [
-                'type' => $filters['chartTipe'],
+                'type' => $filters['cTipe'],
                 'height' => 480,
                 'toolbar' => [
                     'show' => true,
@@ -186,7 +187,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                 'enabled' => true,
             ],
             'stroke' => [
-                'width' => 'line' === $filters['chartTipe'] ? 4 : 0,
+                'width' => 'line' === $filters['cTipe'] ? 4 : 0,
             ],
             'colors' => $colors,
         ];

@@ -52,6 +52,7 @@ class BantuanPpks extends Model
         'jumlah_bantuan' => 'integer',
         'nama_bantuan' => 'string',
         'keterangan' => 'string',
+        'tgl_lahir' => 'date',
         'tahun_anggaran' => 'integer',
         'kriteria_ppks' => 'array',
         'kriteria_tags_ppks' => 'array',

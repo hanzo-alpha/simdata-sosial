@@ -371,17 +371,80 @@ final class BantuanPpksResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
+                    ->description(fn($record) => $record->nokk)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('notelp')
-                    ->label('No.Telp/WA')
+                Tables\Columns\TextColumn::make('tempat_lahir')
+                    ->label('Tempat Lahir')
+                    ->description(fn($record) => $record->tgl_lahir->format('d/m/Y'))
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('tgl_lahir')
+                    ->label('Tgl. Lahir')
+                    ->date('d/m/Y')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('nama_ibu_kandung')
+                    ->label('Nama Ibu Kandung')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('pendidikan_terakhir.nama_pendidikan')
+                    ->label('Pendidikan Terakhir')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('hubungan_keluarga.nama_hubungan')
+                    ->label('Hubungan Keluarga')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jenis_pekerjaan.nama_pekerjaan')
+                    ->label('Jenis Pekerjaan')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('Alamat')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('prov.name')
+                    ->label('Provinsi')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kab.name')
+                    ->label('Kabupaten')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kec.name')
+                    ->label('Kecamatan')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kel.name')
+                    ->label('Kelurahan')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('dusun')
+                    ->label('Dusun')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('no_rt')
+                    ->label('RT/RW')
+                    ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw)
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
+                    ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status_kawin')
+                    ->label('Status Kawin')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tipe_ppks.nama_tipe')
@@ -717,7 +780,15 @@ final class BantuanPpksResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
         return parent::getEloquentQuery()
+            ->where('kelurahan', auth()->user()->instansi_id)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
