@@ -29,8 +29,6 @@ class KriteriaPpksResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tipe_ppks_id')
-                    ->numeric(),
                 Forms\Components\TextInput::make('nama_kriteria')
                     ->required()
                     ->maxLength(255),
@@ -47,12 +45,14 @@ class KriteriaPpksResource extends Resource
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                BadgeableColumn::make('nama_kriteria')
-                    ->label('Kriteria Tipe PPKS')
-                    ->suffixBadges([
-                        Badge::make('tipePpks.nama_tipe')
-                            ->label(fn(Model $record) => $record->tipePpks()->first()->nama_tipe),
-                    ]),
+                Tables\Columns\TextColumn::make('nama_kriteria'),
+//                BadgeableColumn::make('nama_kriteria')
+//                    ->label('Kriteria Tipe PPKS')
+//                    ->searchable()
+//                    ->suffixBadges([
+//                        Badge::make('tipe_ppks.nama_tipe')
+//                            ->label(fn(Model $record) => $record->tipe_ppks()->first()->nama_tipe),
+//                    ]),
             ])
             ->filters([
 
