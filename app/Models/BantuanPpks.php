@@ -69,11 +69,24 @@ class BantuanPpks extends Model
         return $this->belongsToMany(BansosDiterima::class, 'bantuan_ppks_bansos_diterima')->withTimestamps();
     }
 
+    public function kriteria(): \Staudenmeir\EloquentHasManyDeep\HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->tipe_ppks(), (new TipePpks())->kriteria_ppks());
+    }
+
     public function kriteria_ppks(): BelongsToMany
     {
         return $this->belongsToMany(
             KriteriaPpks::class,
             'tipe_kriteria_ppks',
+        )->withTimestamps();
+    }
+
+    public function kriteriaPpks(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            KriteriaPpks::class,
+            'bantuan_ppks_kriteria_ppks',
         )->withTimestamps();
     }
 

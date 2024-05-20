@@ -26,6 +26,6 @@ class KriteriaPpks extends Model
 
     public function bantuan_ppks(): BelongsToMany
     {
-        return $this->belongsToMany(BantuanPpks::class, 'tipe_kriteria_ppks')->withTimestamps();
+        return $this->belongsToMany(BantuanPpks::class, 'bantuan_ppks_kriteria_ppks')->withTimestamps();
     }
 }

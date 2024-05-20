@@ -265,15 +265,24 @@ final class BantuanPpksResource extends Resource
                                 ->options(TipePpks::pluck('nama_tipe', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteria_ppks', null)),
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteriaPpks', null)),
 
-                            Select::make('kriteria_ppks')
+                            Select::make('kriteriaPpks')
                                 ->label('Kriteria PPKS')
+                                ->relationship(
+                                    name: 'kriteriaPpks',
+                                    titleAttribute: 'nama_kriteria',
+                                    //                                    modifyQueryUsing: function (Builder $query, Get $get): void {
+                                    //                                        $query->when($get('tipe_ppks_id'), function (Builder $query) use ($get): void {
+                                    //                                            $query->where('tipe_ppks_id', $get('tipe_ppks_id'));
+                                    //                                        });
+                                    //                                    },
+                                    ignoreRecord: true,
+                                )
                                 ->required()
                                 ->native(false)
                                 ->multiple()
                                 ->searchable()
-                                ->default(['36'])
                                 ->options(function (callable $set, callable $get) {
                                     return KriteriaPpks::where(
                                         'tipe_ppks_id',
@@ -451,13 +460,13 @@ final class BantuanPpksResource extends Resource
                     ->label('Tipe PPKS')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kriteria_ppks')
+                Tables\Columns\TextColumn::make('kriteriaPpks.nama_kriteria')
                     ->label('Kriteria PPKS')
                     ->badge()
                     ->inline()
+                    ->separator(', ')
                     ->sortable()
-                    ->searchable()
-                    ->formatStateUsing(fn($state) => KriteriaPpks::find($state)->nama_kriteria),
+                    ->searchable(),
                 //                BadgeableColumn::make('tipe_ppks.nama_tipe')
                 //                    ->label('Tipe Kriteria PPKS')
                 //                    ->suffixBadges(function ($record) {
