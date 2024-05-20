@@ -10,6 +10,7 @@ use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
+use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Traits\HasTambahan;
@@ -38,7 +39,7 @@ class BantuanPpks extends Model
     ];
 
     protected $casts = [
-        'status_kawin' => StatusKawinBpjsEnum::class,
+        'status_kawin' => StatusKawinUmumEnum::class,
         'status_dtks' => StatusDtksEnum::class,
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rumah_tinggal' => StatusRumahEnum::class,
@@ -54,9 +55,9 @@ class BantuanPpks extends Model
         'keterangan' => 'string',
         'tgl_lahir' => 'date',
         'tahun_anggaran' => 'integer',
-        'kriteria_ppks' => 'array',
-        'kriteria_tags_ppks' => 'array',
-        'kategori_tags_ppks' => 'array',
+        'kriteria_ppks' => 'json',
+        'kriteria_tags_ppks' => 'json',
+        'kategori_tags_ppks' => 'json',
     ];
 
     public function tipe_ppks(): BelongsTo
@@ -74,7 +75,7 @@ class BantuanPpks extends Model
         return $this->hasManyDeepFromRelations($this->tipe_ppks(), (new TipePpks())->kriteria_ppks());
     }
 
-    public function kriteria_ppks(): BelongsToMany
+    public function subKategori(): BelongsToMany
     {
         return $this->belongsToMany(
             KriteriaPpks::class,

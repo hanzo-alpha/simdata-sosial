@@ -241,11 +241,6 @@ final class BantuanPpksResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Section::make('Status PPKS/PMKS')
                         ->schema([
-                            //                            Forms\Components\TagsInput::make('kategori_tags_ppks')
-                            //                                ->separator()
-                            //                                ->suggestions([
-                            //                                    'ATENSI', 'PKH', 'BPNT', 'RASTRA', 'SANDANG PANGAN',
-                            //                                ]),
                             Select::make('bansos_diterima')
                                 ->label('Bantuan Yang Pernah Diterima')
                                 ->relationship('bansos_diterima', 'nama_bansos')
@@ -479,12 +474,6 @@ final class BantuanPpksResource extends Resource
                 //                    ->wrap()
                 //                    ->searchable()
                 //                    ->alignCenter(),
-                //                Tables\Columns\TextColumn::make('kategori_tags_ppks')
-                //                    ->inline()
-                //                    ->badge()
-                //                    ->color('warning')
-                //                    ->alignCenter()
-                //                    ->searchable(),
                 Tables\Columns\TextColumn::make('bansos_diterima.nama_bansos')
                     ->label('Bantuan Yg Pernah Diterima')
                     ->inline()

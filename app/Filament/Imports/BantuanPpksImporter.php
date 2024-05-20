@@ -7,11 +7,11 @@ use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
+use App\Models\BansosDiterima;
 use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
@@ -30,14 +30,12 @@ class BantuanPpksImporter extends Importer
                 ->requiredMapping()
                 ->guess(['Kartu Keluarga', 'KK', 'NO KK', 'No.KK'])
                 ->fillRecordUsing(function ($record, $state): void {
-                    //                    $state = Str::of($state)->replaceFirst("'", '');
                     $record->nokk = $state ?? '-';
                 }),
             ImportColumn::make('nik')
                 ->requiredMapping()
                 ->guess(['NIK', 'N I K', 'nik', 'No.NIK'])
                 ->fillRecordUsing(function ($record, $state): void {
-                    //                    $state = Str::of($state)->replaceFirst("'", '');
                     $record->nik = $state ?? '-';
                 })
                 ->rules(['required']),
@@ -87,12 +85,12 @@ class BantuanPpksImporter extends Importer
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $record->status_kawin = match ((int) $state) {
-                        1,'1' => StatusKawinUmumEnum::KAWIN_TERCATAT,
-                        2,'2' => StatusKawinUmumEnum::KAWIN_BELUM_TERCATAT,
-                        5,'5' => StatusKawinUmumEnum::CERAI_MATI,
-                        4,'4' => StatusKawinUmumEnum::CERAI_HIDUP,
-                        6,'6' => StatusKawinUmumEnum::CERAI_BELUM_TERCATAT,
-                        3,'3' => StatusKawinUmumEnum::BELUM_KAWIN,
+                        1, '1' => StatusKawinUmumEnum::KAWIN_TERCATAT,
+                        2, '2' => StatusKawinUmumEnum::KAWIN_BELUM_TERCATAT,
+                        5, '5' => StatusKawinUmumEnum::CERAI_MATI,
+                        4, '4' => StatusKawinUmumEnum::CERAI_HIDUP,
+                        6, '6' => StatusKawinUmumEnum::CERAI_BELUM_TERCATAT,
+                        3, '3' => StatusKawinUmumEnum::BELUM_KAWIN,
                     };
                 }),
             ImportColumn::make('penghasilan_rata_rata')
@@ -116,6 +114,7 @@ class BantuanPpksImporter extends Importer
                 ->rules(['max:255']),
             ImportColumn::make('provinsi')
                 ->guess(['PROVINSI', 'PROV'])
+                ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $provinsi = Provinsi::query()
                         ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
@@ -124,12 +123,13 @@ class BantuanPpksImporter extends Importer
                 })
                 ->rules(['max:255']),
             ImportColumn::make('kabupaten')
-                ->ignoreBlankState()
                 ->guess(['KABUPATEN', 'KAB'])
+                ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $kabupaten = Kabupaten::query()
                         ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
                         ->first()?->code;
+
                     $record->kabupaten = $kabupaten;
                 })
                 ->rules(['max:255']),
@@ -138,7 +138,7 @@ class BantuanPpksImporter extends Importer
                 ->guess(['KECAMATAN', 'KEC'])
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $kecamatan = Kecamatan::query()
-                        ->whereIn('kabupaten_code', ['7308','7312','7371','7604','9171'])
+                        ->whereIn('kabupaten_code', ['7308', '7312', '7371', '7604', '9171'])
                         ->where('name', 'like', '%' . Str::upper($state) . '%')
                         ->first()?->code;
                     $record->kecamatan = $kecamatan ?? null;
@@ -149,21 +149,18 @@ class BantuanPpksImporter extends Importer
                 ->guess(['Kelurahan/Desa', 'Kelurahan', 'Kel'])
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $kelurahan = Kelurahan::query()
-                        ->where('name', 'like', '%' . Str::upper($state) . '%')
+                        ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
                         ->first()?->code;
                     $record->kelurahan = $kelurahan;
                 })
                 ->rules(['max:255']),
-            ImportColumn::make('kategori_tags_ppks')
-                ->guess(['BANSOS DITERIMA', 'BANTUAN YANG DITERIMA'])
-                ->requiredMapping(),
-            //            ImportColumn::make('bansos_diterima')
-            //                ->guess(['BANSOS DITERIMA', 'BANTUAN YANG DITERIMA'])
-            //                ->requiredMapping()
-            //                ->relationship('bansos_diterima', 'nama_bansos')
-            //                ->fillRecordUsing(function ($record, $state): void {
-            //                    $record->bansos_diterima()->attach($state);
-            //                }),
+            ImportColumn::make('kriteria_ppks')
+                ->guess(['BANSOS DITERIMA', 'BANTUAN YANG PERNAH DITERIMA'])
+                ->requiredMapping()
+                ->fillRecordUsing(function ($record, $state): void {
+                    $bansos = BansosDiterima::where('nama_bansos', 'like', '%' . Str::upper($state) . '%')->first();
+                    $record->kriteria_ppks = [$bansos->nama_bansos];
+                }),
             ImportColumn::make('tahun_anggaran')
                 ->guess(['TAHUN', 'TAHUN ANGGARAN'])
                 ->requiredMapping()
@@ -184,6 +181,18 @@ class BantuanPpksImporter extends Importer
             //                    $kriteriaIds->push($kriteria->id);
             //                    $record->kriteria_ppks[] = json_encode($kriteriaIds->toArray());
             //                }),
+            ImportColumn::make('kategori_tags_ppks')
+                ->guess(['KATEGORI TAGS PPKS', 'KRITERIA TAGS'])
+                ->fillRecordUsing(function ($record, $state): void {
+                    $record->kategori_tags_ppks = [$state];
+                })
+                ->requiredMapping(),
+            ImportColumn::make('kriteria_tags_ppks')
+                ->guess(['KRITERIA TAGS PPKS', 'KRITERIA TAGS'])
+                ->fillRecordUsing(function ($record, $state): void {
+                    $record->kriteria_tags_ppks = [$state];
+                })
+                ->requiredMapping(),
             ImportColumn::make('status_rumah_tinggal')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
@@ -195,9 +204,9 @@ class BantuanPpksImporter extends Importer
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $record->status_kondisi_rumah = match ((int) $state) {
                         1, '1' => StatusKondisiRumahEnum::BAIK,
-                        3,'3' => StatusKondisiRumahEnum::RUSAK,
-                        4,'4' => StatusKondisiRumahEnum::RUSAK_BERAT,
-                        2,'2' => StatusKondisiRumahEnum::SEDANG,
+                        3, '3' => StatusKondisiRumahEnum::RUSAK,
+                        4, '4' => StatusKondisiRumahEnum::RUSAK_BERAT,
+                        2, '2' => StatusKondisiRumahEnum::SEDANG,
                     };
                 }),
             ImportColumn::make('status_verifikasi')
@@ -212,7 +221,7 @@ class BantuanPpksImporter extends Importer
                 ->rules(['max:255']),
             ImportColumn::make('status_dtks')
                 ->requiredMapping()
-                ->guess(['DTKS','STATUS DTKS'])
+                ->guess(['DTKS', 'STATUS DTKS'])
                 ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
                     $record->status_dtks = Str::of($state)->contains('TERDAFTAR') ? StatusDtksEnum::DTKS : StatusDtksEnum::NON_DTKS;
                 })
