@@ -45,7 +45,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-final class BantuanPpksResource extends Resource
+class BantuanPpksResource extends Resource
 {
     protected static ?string $model = BantuanPpks::class;
 

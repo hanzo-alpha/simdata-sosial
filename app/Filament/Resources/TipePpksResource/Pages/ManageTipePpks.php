@@ -8,7 +8,7 @@ use App\Filament\Resources\TipePpksResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-final class ManageTipePpks extends ManageRecords
+class ManageTipePpks extends ManageRecords
 {
     protected static string $resource = TipePpksResource::class;
 

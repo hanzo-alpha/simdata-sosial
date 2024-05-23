@@ -17,7 +17,7 @@ use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-final class TipePpksResource extends Resource
+class TipePpksResource extends Resource
 {
     protected static ?string $model = TipePpks::class;
 
