@@ -3,12 +3,12 @@
 return [
     'form' => [
         'actions' => [
-            'save' => 'Save changes',
+            'save' => 'Simpan Pengaturan',
         ],
     ],
     'page' => [
-        'title' => 'Settings',
-        'navigation_label' => 'Settings',
+        'title' => 'Pengaturan',
+        'navigation_label' => 'Umum',
     ],
     'notifications' => [
         'saved' => 'Saved',

@@ -3,14 +3,14 @@
 return [
     'form' => [
         'actions' => [
-            'save' => 'Simpan Pengaturan',
+            'save' => 'Save',
         ],
     ],
     'page' => [
-        'title' => 'Pengaturan',
-        'navigation_label' => 'Pengaturan',
+        'title' => 'Settings',
+        'navigation_label' => 'General',
     ],
     'notifications' => [
-        'saved' => 'Tersimpan',
+        'saved' => 'Saved',
     ],
 ];

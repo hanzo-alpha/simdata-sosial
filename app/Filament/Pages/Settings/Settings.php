@@ -124,8 +124,8 @@ class Settings extends BaseSettings
                                             ->default('BERITA ACARA SERAH TERIMA BARANG'),
                                         ToggleButton::make('ba.kop_layout')
                                             ->label('Layout Kop/Judul Berita Acara')
-                                            ->onLabel('Vertical')
-                                            ->offLabel('Horizontal'),
+                                            ->onLabel('Vertikal')
+                                            ->offLabel('Horisontal'),
                                     ])->columns(2),
                                 Section::make('Kepala Dinas')
                                     ->icon('heroicon-o-envelope')
