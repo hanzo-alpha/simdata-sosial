@@ -12,6 +12,8 @@ use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -57,33 +59,51 @@ class BantuanBpjsResource extends Resource
             ->deferLoading()
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('nama_lengkap')
+                BadgeableColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
+                    ->searchable()
                     ->sortable()
-                    ->description(fn($record) => 'Nik : ' . $record->nik_tmt)
+                    ->suffixBadges([
+                        Badge::make('umur')
+                            ->label(fn($record) => hitung_umur($record->tgl_lahir) . ' Tahun')
+                            ->color('gray'),
+                    ])
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik_tmt')
                     ->label('N I K')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->toggleable()
                     ->sortable()
                     ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk_tmt')
                     ->label('No. KK')
-                    ->toggleable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->copyable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tempat_lahir')
-                    ->label('Tempat Lahir')
-                    ->description(fn($record) => $record->tgl_lahir->format('d/m/Y'))
+                BadgeableColumn::make('tempat_lahir')
+                    ->label('Tempat Tanggal Lahir')
+                    ->searchable()
+                    ->sortable()
+                    ->suffix(fn($record) => ', ' . $record->tgl_lahir->format('d F Y'))
+//                    ->suffixBadges([
+//                        Badge::make('umur')
+//                            ->label(fn($record) => $record->tgl_lahir->format(setting('app.format_tgl')))
+//                            ->color('success'),
+//                    ])
                     ->sortable()
                     ->searchable(),
+                //                Tables\Columns\TextColumn::make('tempat_lahir')
+                //                    ->label('Tempat Lahir')
+                //                    ->description(fn($record) => $record->tgl_lahir->format('d/m/Y'))
+                //                    ->sortable()
+                //                    ->searchable(),
                 Tables\Columns\TextColumn::make('tgl_lahir')
                     ->label('Tgl. Lahir')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
-                    ->date('d/m/Y')
+                    ->date(setting('app.format_tgl', 'd/m/Y'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
@@ -102,12 +122,14 @@ class BantuanBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::upper($state))
                     ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->sortable()
                     ->toggleable()
+                    ->formatStateUsing(fn($state) => Str::upper($state))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dusun')
                     ->label('Dusun')
