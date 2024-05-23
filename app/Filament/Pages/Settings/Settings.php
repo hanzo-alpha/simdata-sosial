@@ -122,6 +122,10 @@ class Settings extends BaseSettings
                                         TextInput::make('ba.kop_ba')
                                             ->label('Kop Judul Berita Acara')
                                             ->default('BERITA ACARA SERAH TERIMA BARANG'),
+                                        ToggleButton::make('ba.kop_layout')
+                                            ->label('Layout Kop/Judul Berita Acara')
+                                            ->onLabel('Vertical')
+                                            ->offLabel('Horizontal'),
                                     ])->columns(2),
                                 Section::make('Kepala Dinas')
                                     ->icon('heroicon-o-envelope')

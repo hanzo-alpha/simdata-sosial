@@ -7,34 +7,13 @@
 
 <x-layouts.print>
     @section('content')
-        <table class="table border-0">
-            <tbody>
-            <th class="text-center" rowspan="3">
-                <img style="align-items: center; align-content: center;"
-                     src="{{ asset('images/logos/logo-soppeng2.png') }}"
-                     alt="logo"
-                     height="100" />
-            </th>
-            <th class="text-center">
-                <h2 style="margin-bottom: 0"><strong>{{ setting('ba.kop_title') }}</strong></h2></th>
-            </tbody>
-            <tbody>
-            <th class="text-center">
-                <h1 style="margin-top: 3px; margin-bottom: 3px"><strong>{{ setting('ba.kop_instansi') }}</strong></h1>
-            </th>
-            </tbody>
-            <tbody>
-            <th class="text-center">
-                 <span style="font-style: italic">
-                    {{ setting('ba.kop_jalan') }}
-                 </span><br>
-                <span style="font-style: italic">
-                     {{ setting('ba.kop_website') }}
-                </span>
-            </th>
-            </tbody>
-        </table>
-        <div class="text-center">
+        @if(setting('ba.kop_layout'))
+            @include('laporan.partials.kop')
+            <div class="text-center">
+        @else
+            <div class="text-center">
+            @include('laporan.partials.kop-center')
+        @endif
             <hr />
             <p style="font-size: 12px">
                 <span style="text-decoration-line: underline">
@@ -250,38 +229,18 @@
         <div class="page-break"></div>
 
         {{-- Lampiran BAST --}}
-        <table class="table border-0">
-            <tbody>
-            <th class="text-center" rowspan="3">
-                <img style="align-items: center; align-content: center;"
-                     src="{{ asset('images/logos/logo-soppeng2.png') }}"
-                     alt="logo"
-                     height="100" />
-            </th>
-            <th class="text-center">
-                <h2 style="margin-bottom: 0"><strong>{{ setting('ba.kop_title') }}</strong></h2></th>
-            </tbody>
-            <tbody>
-            <th class="text-center">
-                <h1 style="margin-top: 3px; margin-bottom: 3px"><strong>{{ setting('ba.kop_instansi') }}</strong></h1>
-            </th>
-            </tbody>
-            <tbody>
-            <th class="text-center">
-                 <span style="font-style: italic">
-                    {{ setting('ba.kop_jalan') }}
-                 </span><br>
-                <span style="font-style: italic">
-                   {{ setting('ba.kop_website') }}
-                </span>
-            </th>
-            </tbody>
-        </table>
+        @if(setting('ba.kop_layout'))
+            @include('laporan.partials.kop')
+            <div class="text-center">
+        @else
+            <div class="text-center">
+            @include('laporan.partials.kop-center')
+        @endif
         <hr>
-        <p style="font-size: 12px">
+        <p style="font-size: 12px; text-align: left">
             Lampiran Berita Acara Nomor : {{ $nomorBa }}
         </p>
-        <p style="font-size: 12px">
+        <p style="font-size: 12px; text-align: left">
             Tanggal : {{ DateHelper::tanggal() }}
         </p><br><br>
         <div class="text-center">
