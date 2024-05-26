@@ -38,10 +38,10 @@ enum StatusKondisiRumahEnum: int implements HasColor, HasIcon, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::BAIK => 'heroicon-o-arrow-path-rounded-square',
-            self::SEDANG => 'heroicon-o-user-minus',
-            self::RUSAK => 'heroicon-o-server-stack',
-            self::RUSAK_BERAT => 'heroicon-o-check-circle',
+            self::BAIK => 'heroicon-o-arrow-up',
+            self::SEDANG => 'heroicon-o-arrow-right',
+            self::RUSAK => 'heroicon-o-arrow-down-right',
+            self::RUSAK_BERAT => 'heroicon-o-arrow-down',
         };
     }
 }
