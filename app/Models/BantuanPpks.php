@@ -12,6 +12,7 @@ use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Awcodes\Curator\Models\Media;
@@ -43,6 +44,7 @@ class BantuanPpks extends Model
         'jenis_kelamin' => JenisKelaminEnum::class,
         'status_rumah_tinggal' => StatusRumahEnum::class,
         'status_kondisi_rumah' => StatusKondisiRumahEnum::class,
+        'status_verifikasi' => StatusVerifikasiEnum::class,
         'penghasilan_rata_rata' => MoneyCast::class,
         'bukti_foto' => 'array',
         'foto_ktp_kk' => 'array',

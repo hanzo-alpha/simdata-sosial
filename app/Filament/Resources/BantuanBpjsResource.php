@@ -86,19 +86,10 @@ class BantuanBpjsResource extends Resource
                     ->label('Tempat Tanggal Lahir')
                     ->searchable()
                     ->sortable()
-                    ->suffix(fn($record) => ', ' . $record->tgl_lahir->format('d F Y'))
-//                    ->suffixBadges([
-//                        Badge::make('umur')
-//                            ->label(fn($record) => $record->tgl_lahir->format(setting('app.format_tgl')))
-//                            ->color('success'),
-//                    ])
+                    ->toggleable()
+                    ->suffix(fn($record) => ', ' . $record->tgl_lahir->format(setting('app.format_tgl')))
                     ->sortable()
                     ->searchable(),
-                //                Tables\Columns\TextColumn::make('tempat_lahir')
-                //                    ->label('Tempat Lahir')
-                //                    ->description(fn($record) => $record->tgl_lahir->format('d/m/Y'))
-                //                    ->sortable()
-                //                    ->searchable(),
                 Tables\Columns\TextColumn::make('tgl_lahir')
                     ->label('Tgl. Lahir')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -601,6 +592,8 @@ class BantuanBpjsResource extends Resource
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->alignCenter()
+                                ->limit(2)
+                                ->height(300)
                                 ->extraImgAttributes([
                                     'alt' => 'foto ktp',
                                     'loading' => 'lazy',

@@ -46,7 +46,7 @@ final class AlamatForm extends Field
         $this->dehydrated(false);
     }
 
-    public function relationship(string|callable $relationship): static
+    public function relationship(string|callable $relationship): AlamatForm
     {
         $this->relationship = $relationship;
 

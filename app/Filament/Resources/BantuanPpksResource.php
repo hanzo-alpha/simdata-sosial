@@ -482,18 +482,28 @@ class BantuanPpksResource extends Resource
                     ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_rumah_tinggal')
+                    ->label('Status Rumah')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->alignCenter()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_kondisi_rumah')
+                    ->label('Status Kondisi Rumah')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->alignCenter()
                     ->badge(),
+                Tables\Columns\TextColumn::make('status_verifikasi')
+                    ->label('Status Verifikasi')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge(),
                 Tables\Columns\IconColumn::make('status_aktif')
+                    ->label('Status Aktif')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->alignCenter()
@@ -562,7 +572,7 @@ class BantuanPpksResource extends Resource
                     ->icon('heroicon-o-printer')
                     ->url(fn($record) => route('ba.ppks', ['id' => $record, 'm' => BantuanPpks::class]), true),
                 Tables\Actions\ActionGroup::make([
-                    //                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
@@ -712,8 +722,7 @@ class BantuanPpksResource extends Resource
                                 ->color('primary')
                                 ->icon('heroicon-o-clipboard-document-list')
                                 ->label('Tipe PPKS'),
-                            TextEntry::make('kriteria_ppks')
-                                ->formatStateUsing(fn($state) => KriteriaPpks::find($state)->nama_kriteria)
+                            TextEntry::make('kriteriaPpks.nama_kriteria')
                                 ->listWithLineBreaks()
                                 ->badge()
                                 ->label('Kriteria PPKS'),
@@ -733,11 +742,15 @@ class BantuanPpksResource extends Resource
                             TextEntry::make('status_kondisi_rumah')
                                 ->label('Kondisi Rumah')
                                 ->badge(),
+                            TextEntry::make('status_verifikasi')
+                                ->label('Status Verifikasi')
+                                ->badge(),
                             TextEntry::make('status_aktif')
                                 ->label('Status Aktif')
                                 ->badge(),
                             TextEntry::make('keterangan')
                                 ->label('Keterangan')
+                                ->columnSpanFull()
                                 ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
