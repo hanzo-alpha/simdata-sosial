@@ -35,6 +35,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
@@ -236,6 +237,7 @@ class BantuanBpjsResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                     ExportBulkAction::make()
                         ->icon('heroicon-o-arrow-down-tray')
                         ->label('Download Terpilih'),
@@ -282,9 +284,13 @@ class BantuanBpjsResource extends Resource
                                 ->minLength(16)
                                 ->maxLength(16),
                             Forms\Components\TextInput::make('nik_tmt')
-                                ->label('N I K')
+                                ->label('NIK')
                                 ->required()
-                                ->unique('peserta_bpjs', 'nik')
+                                ->unique(
+                                    table: 'peserta_bpjs',
+                                    column: 'nik',
+                                    //                                    modifyRuleUsing: fn(Unique $rule, $record) => dd($rule->where('nik')),
+                                )
                                 ->minLength(16)
                                 ->maxLength(16),
                             Forms\Components\TextInput::make('nama_lengkap')
@@ -411,26 +417,34 @@ class BantuanBpjsResource extends Resource
 
                             FileUpload::make('foto_ktp')
                                 ->label('Unggah Foto KTP / KK')
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn(
-                                        TemporaryUploadedFile $file,
-                                    ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                                )
-                                ->preserveFilenames()
+//                                ->getUploadedFileNameForStorageUsing(
+//                                    fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+//                                        ->prepend(date('dmYHis') . '-'),
+//                                )
+//                                ->preserveFilenames()
                                 ->multiple()
                                 ->reorderable()
                                 ->appendFiles()
                                 ->openable()
+                                ->downloadable()
+                                ->uploadingMessage('Sedang mengupload...')
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->helperText('maks. 2MB')
                                 ->maxFiles(3)
                                 ->maxSize(2048)
+                                ->loadingIndicatorPosition('left')
                                 ->columnSpanFull()
-                                ->imagePreviewHeight('250')
-                                ->previewable(false)
-                                ->image(),
+                                ->imagePreviewHeight('170')
+                                ->previewable(true)
+                                ->image()
+                                ->imageEditor()
+                                ->imageEditorAspectRatios([
+                                    null,
+                                    '16:9',
+                                    '4:3',
+                                    '1:1',
+                                ]),
 
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
