@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\PesertaBpjs;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PesertaBpjsPolicy
