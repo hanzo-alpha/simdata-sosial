@@ -8,13 +8,16 @@ use App\Filament\Resources\TipePpksResource\Pages;
 use App\Models\TipePpks;
 use Awcodes\FilamentBadgeableColumn\Components\Badge;
 use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
+use Awcodes\TableRepeater\Components\TableRepeater;
+use Awcodes\TableRepeater\Header;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-final class TipePpksResource extends Resource
+class TipePpksResource extends Resource
 {
     protected static ?string $model = TipePpks::class;
 
@@ -38,16 +41,26 @@ final class TipePpksResource extends Resource
                 Forms\Components\Textarea::make('deskripsi')
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Repeater::make('kriteria_ppks')
+                TableRepeater::make('kriteria_ppks')
                     ->label('Kriteria PPKS')
                     ->relationship()
+                    ->headers([
+                        Header::make('Nama Kriteria')
+                            ->align(Alignment::Center),
+                    ])
+                    ->renderHeader(true)
+                    ->showLabels()
+                    ->streamlined()
+                    ->emptyLabel('Tidak ada kriteria PPKS.')
                     ->simple(
                         Forms\Components\TextInput::make('nama_kriteria')
                             ->label('Nama Kriteria')
+                            ->unique(ignoreRecord: true)
                             ->required(),
                     )
                     ->addActionLabel('Tambah Kriteria PPKS')
                     ->reorderableWithButtons()
+                    ->collapsible()
                     ->columnSpan('full'),
             ]);
     }
@@ -67,12 +80,9 @@ final class TipePpksResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kriteria_ppks.nama_kriteria')
                     ->label('Kriteria PPKS')
-                    ->listWithLineBreaks()
-                    ->limitList(2)
-                    ->expandableLimitedList()
                     ->badge()
-                    ->color('gray')
-//                    ->inline()
+                    ->color('primary')
+                    ->inline()
                     ->searchable(),
             ])
             ->filters([

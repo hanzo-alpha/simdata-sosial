@@ -45,7 +45,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
-final class BantuanPpksResource extends Resource
+class BantuanPpksResource extends Resource
 {
     protected static ?string $model = BantuanPpks::class;
 
@@ -241,11 +241,6 @@ final class BantuanPpksResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Section::make('Status PPKS/PMKS')
                         ->schema([
-                            //                            Forms\Components\TagsInput::make('kategori_tags_ppks')
-                            //                                ->separator()
-                            //                                ->suggestions([
-                            //                                    'ATENSI', 'PKH', 'BPNT', 'RASTRA', 'SANDANG PANGAN',
-                            //                                ]),
                             Select::make('bansos_diterima')
                                 ->label('Bantuan Yang Pernah Diterima')
                                 ->relationship('bansos_diterima', 'nama_bansos')
@@ -265,15 +260,24 @@ final class BantuanPpksResource extends Resource
                                 ->options(TipePpks::pluck('nama_tipe', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteria_ppks', null)),
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteriaPpks', null)),
 
-                            Select::make('kriteria_ppks')
+                            Select::make('kriteriaPpks')
                                 ->label('Kriteria PPKS')
+                                ->relationship(
+                                    name: 'kriteriaPpks',
+                                    titleAttribute: 'nama_kriteria',
+                                    //                                    modifyQueryUsing: function (Builder $query, Get $get): void {
+                                    //                                        $query->when($get('tipe_ppks_id'), function (Builder $query) use ($get): void {
+                                    //                                            $query->where('tipe_ppks_id', $get('tipe_ppks_id'));
+                                    //                                        });
+                                    //                                    },
+                                    ignoreRecord: true,
+                                )
                                 ->required()
                                 ->native(false)
                                 ->multiple()
                                 ->searchable()
-                                ->default(['36'])
                                 ->options(function (callable $set, callable $get) {
                                     return KriteriaPpks::where(
                                         'tipe_ppks_id',
@@ -451,13 +455,13 @@ final class BantuanPpksResource extends Resource
                     ->label('Tipe PPKS')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kriteria_ppks')
+                Tables\Columns\TextColumn::make('kriteriaPpks.nama_kriteria')
                     ->label('Kriteria PPKS')
                     ->badge()
                     ->inline()
+                    ->separator(', ')
                     ->sortable()
-                    ->searchable()
-                    ->formatStateUsing(fn($state) => KriteriaPpks::find($state)->nama_kriteria),
+                    ->searchable(),
                 //                BadgeableColumn::make('tipe_ppks.nama_tipe')
                 //                    ->label('Tipe Kriteria PPKS')
                 //                    ->suffixBadges(function ($record) {
@@ -470,12 +474,6 @@ final class BantuanPpksResource extends Resource
                 //                    ->wrap()
                 //                    ->searchable()
                 //                    ->alignCenter(),
-                //                Tables\Columns\TextColumn::make('kategori_tags_ppks')
-                //                    ->inline()
-                //                    ->badge()
-                //                    ->color('warning')
-                //                    ->alignCenter()
-                //                    ->searchable(),
                 Tables\Columns\TextColumn::make('bansos_diterima.nama_bansos')
                     ->label('Bantuan Yg Pernah Diterima')
                     ->inline()
@@ -484,18 +482,28 @@ final class BantuanPpksResource extends Resource
                     ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_rumah_tinggal')
+                    ->label('Status Rumah')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->alignCenter()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_kondisi_rumah')
+                    ->label('Status Kondisi Rumah')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->alignCenter()
                     ->badge(),
+                Tables\Columns\TextColumn::make('status_verifikasi')
+                    ->label('Status Verifikasi')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge(),
                 Tables\Columns\IconColumn::make('status_aktif')
+                    ->label('Status Aktif')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->alignCenter()
@@ -564,15 +572,17 @@ final class BantuanPpksResource extends Resource
                     ->icon('heroicon-o-printer')
                     ->url(fn($record) => route('ba.ppks', ['id' => $record, 'm' => BantuanPpks::class]), true),
                 Tables\Actions\ActionGroup::make([
-                    //                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                     ExportBulkAction::make()
                         ->label('Ekspor Ke Excel')
                         ->exports([
@@ -714,8 +724,7 @@ final class BantuanPpksResource extends Resource
                                 ->color('primary')
                                 ->icon('heroicon-o-clipboard-document-list')
                                 ->label('Tipe PPKS'),
-                            TextEntry::make('kriteria_ppks')
-                                ->formatStateUsing(fn($state) => KriteriaPpks::find($state)->nama_kriteria)
+                            TextEntry::make('kriteriaPpks.nama_kriteria')
                                 ->listWithLineBreaks()
                                 ->badge()
                                 ->label('Kriteria PPKS'),
@@ -735,11 +744,15 @@ final class BantuanPpksResource extends Resource
                             TextEntry::make('status_kondisi_rumah')
                                 ->label('Kondisi Rumah')
                                 ->badge(),
+                            TextEntry::make('status_verifikasi')
+                                ->label('Status Verifikasi')
+                                ->badge(),
                             TextEntry::make('status_aktif')
                                 ->label('Status Aktif')
                                 ->badge(),
                             TextEntry::make('keterangan')
                                 ->label('Keterangan')
+                                ->columnSpanFull()
                                 ->icon('heroicon-o-bookmark')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),

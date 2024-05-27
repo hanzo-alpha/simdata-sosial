@@ -66,6 +66,7 @@ class Settings extends BaseSettings
                                                 'Y/m/d' => 'yyyy/mm/dd',
                                                 'd.m.Y' => 'dd.mm.yyyy',
                                                 'Y.m.d' => 'yyyy.mm.dd',
+                                                'd F Y' => 'dd mm yyyy',
                                             ]),
 
                                     ])->columns(2),
@@ -95,6 +96,7 @@ class Settings extends BaseSettings
                                     TextInput::make('app.angka_kemiskinan_persen')
                                         ->label('Angka Kemiskinan (%)'),
                                     DatePicker::make('app.batas_tgl_input')
+                                        ->label('Batas Tanggal Penginputan Data')
                                         ->date()
                                         ->displayFormat(setting('app.format_tgl')),
                                 ])->columns(2),
@@ -105,7 +107,7 @@ class Settings extends BaseSettings
                         ->schema([
                             Group::make([
                                 Section::make('Berita Acara & Lampiran BAST')
-                                    ->icon('heroicon-o-document-chart-bar')
+                                    ->icon('heroicon-o-envelope')
                                     ->schema([
                                         TextInput::make('ba.kop_title')
                                             ->label('Kop Judul')
@@ -122,9 +124,13 @@ class Settings extends BaseSettings
                                         TextInput::make('ba.kop_ba')
                                             ->label('Kop Judul Berita Acara')
                                             ->default('BERITA ACARA SERAH TERIMA BARANG'),
+                                        ToggleButton::make('ba.kop_layout')
+                                            ->label('Layout Kop/Judul Berita Acara')
+                                            ->onLabel('Vertikal')
+                                            ->offLabel('Horisontal'),
                                     ])->columns(2),
                                 Section::make('Kepala Dinas')
-                                    ->icon('heroicon-o-envelope')
+                                    ->icon('heroicon-o-user')
                                     ->schema([
                                         TextInput::make('persuratan.nama_kepala_dinas')
                                             ->label('Nama Kepala Dinas')

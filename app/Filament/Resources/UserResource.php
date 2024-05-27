@@ -124,13 +124,14 @@ class UserResource extends Resource
                     ->closeModalByClickingAway(false),
                 Tables\Actions\DeleteAction::make()
                     ->closeModalByClickingAway(false)
-                    ->visible(1 === auth()->user()->id),
+                    ->hidden(fn(Model $record) => 1 === $record->id),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
-                        ->icon('Hapus Terpilih')
-                        ->icon('heroicon-o-user-minus')
+                        ->label('Hapus Terpilih')
+                        ->icon('heroicon-m-trash')
+                        ->color('danger')
                         ->requiresConfirmation()
                         ->action(function (Collection $records): void {
                             $records->each(function ($items): void {
@@ -140,8 +141,9 @@ class UserResource extends Resource
                         })
                         ->deselectRecordsAfterCompletion(),
                     BulkAction::make('forceDelete')
-                        ->icon('Paksa Hapus Terpilih')
-                        ->icon('heroicon-o-user-minus')
+                        ->label('Hapus Selamanya')
+                        ->icon('heroicon-m-trash')
+                        ->color('danger')
                         ->requiresConfirmation()
                         ->action(function (Collection $records): void {
                             $records->each(function ($items): void {
@@ -153,7 +155,7 @@ class UserResource extends Resource
                 ]),
             ])
             ->checkIfRecordIsSelectableUsing(
-                fn(Model $record): bool => (StatusAdminEnum::SUPER_ADMIN !== $record->is_admin),
+                fn(Model $record): bool => (StatusAdminEnum::SUPER_ADMIN !== $record->is_admin) || 1 !== $record->id,
             );
     }
 

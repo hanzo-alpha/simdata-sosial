@@ -483,6 +483,7 @@ final class BantuanPkhResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
                 ]),
             ])
@@ -497,6 +498,7 @@ final class BantuanPkhResource extends Resource
                                 ->except(['created_at', 'updated_at', 'deleted_at']),
                         ]),
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }

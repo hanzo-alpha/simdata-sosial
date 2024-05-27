@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusVerifikasiEnum: string implements HasColor, HasLabel
+enum StatusVerifikasiEnum: string implements HasColor, HasLabel, HasIcon
 {
     case UNVERIFIED = 'BELUM DIVERIFIKASI';
     case VERIFIED = 'TERVERIFIKASI';
@@ -31,12 +32,12 @@ enum StatusVerifikasiEnum: string implements HasColor, HasLabel
         };
     }
 
-    //    public function getIcon(): ?string
-    //    {
-    //        return match ($this) {
-    //            self::UNVERIFIED => 'heroicon-o-minus-circle',
-    //            self::VERIFIED => 'heroicon-o-check-circle',
-    //            self::REVIEW => 'heroicon-o-exclamation-circle',
-    //        };
-    //    }
+    public function getIcon(): ?string
+    {
+        return match ($this) {
+            self::UNVERIFIED => 'heroicon-o-minus-circle',
+            self::VERIFIED => 'heroicon-o-check-circle',
+            self::REVIEW => 'heroicon-o-exclamation-circle',
+        };
+    }
 }

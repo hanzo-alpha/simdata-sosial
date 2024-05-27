@@ -12,6 +12,8 @@ use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -33,6 +35,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
@@ -57,33 +60,42 @@ class BantuanBpjsResource extends Resource
             ->deferLoading()
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('nama_lengkap')
+                BadgeableColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
+                    ->searchable()
                     ->sortable()
-                    ->description(fn($record) => 'Nik : ' . $record->nik_tmt)
+                    ->suffixBadges([
+                        Badge::make('umur')
+                            ->label(fn($record) => hitung_umur($record->tgl_lahir) . ' Tahun')
+                            ->color('gray'),
+                    ])
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik_tmt')
                     ->label('N I K')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->toggleable()
                     ->sortable()
                     ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk_tmt')
                     ->label('No. KK')
-                    ->toggleable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->copyable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tempat_lahir')
-                    ->label('Tempat Lahir')
-                    ->description(fn($record) => $record->tgl_lahir->format('d/m/Y'))
+                BadgeableColumn::make('tempat_lahir')
+                    ->label('Tempat Tanggal Lahir')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable()
+                    ->suffix(fn($record) => ', ' . $record->tgl_lahir->format(setting('app.format_tgl')))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tgl_lahir')
                     ->label('Tgl. Lahir')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
-                    ->date('d/m/Y')
+                    ->date(setting('app.format_tgl', 'd/m/Y'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
@@ -102,12 +114,14 @@ class BantuanBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::upper($state))
                     ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->sortable()
                     ->toggleable()
+                    ->formatStateUsing(fn($state) => Str::upper($state))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dusun')
                     ->label('Dusun')
@@ -223,6 +237,7 @@ class BantuanBpjsResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                     ExportBulkAction::make()
                         ->icon('heroicon-o-arrow-down-tray')
                         ->label('Download Terpilih'),
@@ -269,9 +284,13 @@ class BantuanBpjsResource extends Resource
                                 ->minLength(16)
                                 ->maxLength(16),
                             Forms\Components\TextInput::make('nik_tmt')
-                                ->label('N I K')
+                                ->label('NIK')
                                 ->required()
-                                ->unique('peserta_bpjs', 'nik')
+                                ->unique(
+                                    table: 'peserta_bpjs',
+                                    column: 'nik',
+                                    //                                    modifyRuleUsing: fn(Unique $rule, $record) => dd($rule->where('nik')),
+                                )
                                 ->minLength(16)
                                 ->maxLength(16),
                             Forms\Components\TextInput::make('nama_lengkap')
@@ -398,26 +417,34 @@ class BantuanBpjsResource extends Resource
 
                             FileUpload::make('foto_ktp')
                                 ->label('Unggah Foto KTP / KK')
-                                ->getUploadedFileNameForStorageUsing(
-                                    fn(
-                                        TemporaryUploadedFile $file,
-                                    ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                                )
-                                ->preserveFilenames()
+//                                ->getUploadedFileNameForStorageUsing(
+//                                    fn(TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+//                                        ->prepend(date('dmYHis') . '-'),
+//                                )
+//                                ->preserveFilenames()
                                 ->multiple()
                                 ->reorderable()
                                 ->appendFiles()
                                 ->openable()
+                                ->downloadable()
+                                ->uploadingMessage('Sedang mengupload...')
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->helperText('maks. 2MB')
                                 ->maxFiles(3)
                                 ->maxSize(2048)
+                                ->loadingIndicatorPosition('left')
                                 ->columnSpanFull()
-                                ->imagePreviewHeight('250')
-                                ->previewable(false)
-                                ->image(),
+                                ->imagePreviewHeight('170')
+                                ->previewable(true)
+                                ->image()
+                                ->imageEditor()
+                                ->imageEditorAspectRatios([
+                                    null,
+                                    '16:9',
+                                    '4:3',
+                                    '1:1',
+                                ]),
 
                             ToggleButton::make('status_aktif')
                                 ->label('Status Aktif')
@@ -579,6 +606,8 @@ class BantuanBpjsResource extends Resource
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->alignCenter()
+                                ->limit(2)
+                                ->height(300)
                                 ->extraImgAttributes([
                                     'alt' => 'foto ktp',
                                     'loading' => 'lazy',

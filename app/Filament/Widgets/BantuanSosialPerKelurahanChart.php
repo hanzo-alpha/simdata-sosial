@@ -17,6 +17,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use JetBrains\PhpStorm\NoReturn;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerKelurahanChart extends ApexChartWidget
@@ -27,7 +28,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
     protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
     protected static ?int $sort = 3;
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     protected function getFormSchema(): array
     {
@@ -59,13 +60,21 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                 ])
                 ->inline()
                 ->label('Tipe Chart'),
+            ToggleButtons::make('cStack')
+                ->default(false)
+                ->options([
+                    true => 'Stack',
+                    false => 'Normal',
+                ])
+                ->inline()
+                ->label('Stack'),
             Toggle::make('chartGrid')
                 ->default(false)
                 ->label('Tampilkan Grid'),
         ];
     }
 
-    protected function queryChart(string $model, $kodekel, array $filters): int|string|array|Builder|Collection
+    protected function queryChart(string|int $model, $kodekel, array $filters): int|string|array|Builder|Collection
     {
         $model = match ((int) $model) {
             1 => BantuanPkh::class,
@@ -76,7 +85,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         };
 
         return $model::query()
-            ->select(['created_at', 'kecamatan', 'kelurahan','jenis_bantuan_id'])
+            ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
             ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
             ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
             ->when($filters['program'], fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']))
@@ -84,7 +93,34 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             ->count();
     }
 
-    protected function getOptions(): array
+    protected function queryChartArray(array|\Illuminate\Support\Collection $bantuan, $kodekel, array $filters): array
+    {
+        $results = [];
+        foreach ($bantuan as $key => $item) {
+            $model = match ((int) $item) {
+                1 => BantuanPkh::class,
+                2 => BantuanBpnt::class,
+                3 => BantuanBpjs::class,
+                4 => BantuanPpks::class,
+                5 => BantuanRastra::class,
+            };
+
+            $results[$key] = $model::query()
+                ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
+                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+                ->when(
+                    $filters['program'],
+                    fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']),
+                )
+                ->where('kelurahan', $kodekel)
+                ->count();
+        }
+
+        return $results;
+    }
+
+    #[NoReturn] protected function getOptions(): array
     {
         $filters = $this->filterFormData;
         $results = [];
@@ -92,6 +128,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         $gradientColors = ['#fbbf24', '#79cdf2', '#ffeb9b', '#c197c9', '#96e098'];
 
         $kel = Kelurahan::query()
+            ->when(auth()->user()->instansi_id, function (Builder $query): void {
+                $query->where('code', auth()->user()->instansi_id);
+            })
             ->when($filters['kecamatan'], function (Builder $query) use ($filters): void {
                 $query->where('kecamatan_code', $filters['kecamatan']);
             })
@@ -101,16 +140,20 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
             ->pluck('name', 'code');
 
-        $jenisBantuan = JenisBantuan::find($filters['program']);
+        $jenisBantuan = JenisBantuan::find($filters['program']) ?? JenisBantuan::pluck('id', 'alias');
 
         foreach ($kel as $code => $name) {
             $results['labels'][$code] = $name;
+
             $results[$jenisBantuan->id][$name] = $this->queryChart($jenisBantuan->id, $code, $filters);
         }
 
+        $cTipe = auth()->user()->instansi_id ? 'bar' : $filters['cTipe'];
+        $cTipeOpt = (bool) auth()->user()->instansi_id;
+
         return [
             'chart' => [
-                'type' => $filters['cTipe'],
+                'type' => $cTipe,
                 'height' => 480,
                 'toolbar' => [
                     'show' => true,
@@ -124,6 +167,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             ],
             'plotOptions' => [
                 'bar' => [
+                    'distributed' => (bool) $filters['cStack'],
+                    'stacked' => (bool) $filters['cStack'],
+                    'horizontal' => $cTipeOpt,
                     'borderRadius' => 2,
                     'track' => [
                         'background' => 'transparent',
@@ -187,7 +233,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                 'enabled' => true,
             ],
             'stroke' => [
-                'width' => 'line' === $filters['cTipe'] ? 4 : 0,
+                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
             ],
             'colors' => $colors,
         ];

@@ -20,9 +20,10 @@ final class EditPenyaluranBantuanRastra extends EditRecord
                 ->label('Print Dokumentasi')
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
-                ->url(fn(Model $record) => route('pdf.rastra', ['id' => $record, 'm' => $this->getModel()]))
+                ->url(fn(Model $record) => route('cetak-dokumentasi.rastra', ['id' => $record, 'm' => $this->getModel()]))
                 ->openUrlInNewTab(),
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
     }
 }

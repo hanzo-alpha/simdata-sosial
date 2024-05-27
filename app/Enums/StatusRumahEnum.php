@@ -32,8 +32,8 @@ enum StatusRumahEnum: int implements HasColor, HasIcon, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::MILIK_SENDIRI => 'heroicon-o-arrow-path-rounded-square',
-            self::MENUMPANG => 'heroicon-o-user-minus',
+            self::MILIK_SENDIRI => 'heroicon-o-arrow-up-circle',
+            self::MENUMPANG => 'heroicon-o-arrow-down-circle',
         };
     }
 }

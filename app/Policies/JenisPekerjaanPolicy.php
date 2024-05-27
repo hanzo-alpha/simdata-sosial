@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\JenisPekerjaan;
 use App\Models\User;
+use App\Models\JenisPekerjaan;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class JenisPekerjaanPolicy
