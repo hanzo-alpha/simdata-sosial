@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\BeritaAcara;
 use App\Models\User;
+use App\Models\BeritaAcara;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BeritaAcaraPolicy
