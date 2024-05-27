@@ -15,6 +15,8 @@ class PenggantiRastra extends Model
 
     protected $guarded = [];
 
+    protected $with = ['beritaAcara'];
+
     protected $casts = [
         'alasan_dikeluarkan' => AlasanEnum::class,
         'attachment' => 'array',

@@ -20,6 +20,7 @@ use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -35,7 +36,7 @@ class BantuanRastra extends Model
 
     protected $guarded = [];
     protected $with = [
-        'kec','kel',
+        'kec','kel','pengganti_rastra',
     ];
 
     protected $casts = [
@@ -250,19 +251,14 @@ class BantuanRastra extends Model
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
-    public function alamat(): MorphOne
-    {
-        return $this->morphOne(Alamat::class, 'alamatable');
-    }
-
     public function mediaFoto(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
-    public function pengganti_rastra(): BelongsTo
+    public function pengganti_rastra(): HasOne
     {
-        return $this->belongsTo(PenggantiRastra::class);
+        return $this->hasOne(PenggantiRastra::class);
     }
 
     protected static function booted(): void

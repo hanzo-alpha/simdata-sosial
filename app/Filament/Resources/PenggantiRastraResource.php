@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
+use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\PenggantiRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\PenggantiRastra;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 final class PenggantiRastraResource extends Resource
@@ -94,11 +96,10 @@ final class PenggantiRastraResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll()
+            ->deferLoading()
             ->defaultSort('created_at', 'desc')
             ->columns([
-                CuratorColumn::make('beritaAcara')
-                    ->label('Berita Acara')
-                    ->size(60),
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
                     ->sortable()
@@ -123,10 +124,18 @@ final class PenggantiRastraResource extends Resource
                     ->label('Alasan Dikeluarkan')
                     ->alignCenter()
                     ->badge(),
+                CuratorColumn::make('beritaAcara')
+                    ->label('Berita Acara')
+                    ->size(60),
             ])
             ->filters([
-
+                SelectFilter::make('alasan_dikeluarkan')
+                    ->label('Alasan Dikeluarkan')
+                    ->options(AlasanEnum::class)
+                    ->native(false)
+                    ->searchable(),
             ])
+            ->deferFilters()
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),

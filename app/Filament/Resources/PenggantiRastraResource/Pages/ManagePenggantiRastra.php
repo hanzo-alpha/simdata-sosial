@@ -8,6 +8,8 @@ use App\Filament\Resources\PenggantiRastraResource;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 
 class ManagePenggantiRastra extends ManageRecords
 {
@@ -22,5 +24,10 @@ class ManagePenggantiRastra extends ManageRecords
                 ->icon('heroicon-o-plus')
                 ->disabled($this->enableInputLimitDate()),
         ];
+    }
+
+    protected function paginateTableQuery(Builder $query): Paginator
+    {
+        return $query->fastPaginate($this->getTableRecordsPerPage());
     }
 }
