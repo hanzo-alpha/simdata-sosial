@@ -10,7 +10,6 @@ return new class () extends Migration {
     {
         Schema::create('berita_acara', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->foreignId(BantuanRastra::class);
             $table->string('nomor_ba');
             $table->string('judul_ba');
             $table->date('tgl_ba')->nullable()->default(today());
@@ -19,6 +18,7 @@ return new class () extends Migration {
             $table->foreignId('barang_id');
             $table->foreignId('penandatangan_id');
             $table->string('keterangan')->nullable();
+            $table->json('bantuan_rastra_ids')->nullable();
             $table->timestamps();
         });
     }

@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\BeritaAcaraResource\Pages;
 
+use App\Filament\Resources\BantuanRastraResource;
 use App\Filament\Resources\BeritaAcaraResource;
+use App\Models\BantuanRastra;
 use App\Models\BeritaAcara;
 use App\Models\Kecamatan;
 use App\Traits\HasInputDateLimit;
@@ -10,6 +12,7 @@ use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class ManageBeritaAcaras extends ManageRecords
@@ -49,6 +52,15 @@ class ManageBeritaAcaras extends ManageRecords
         return [
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
+                ->using(function (array $data, string $model): Model {
+                    $bantuan = BantuanRastra::query()
+                        ->where('kecamatan', $data['kecamatan'])
+                        ->where('kelurahan', $data['kelurahan'])
+                        ->get();
+
+                    $data['bantuan_rastra_ids'] = $bantuan->pluck('id');
+                    return $model::create($data);
+                })
                 ->closeModalByClickingAway(false)
                 ->disabled($this->enableInputLimitDate()),
         ];

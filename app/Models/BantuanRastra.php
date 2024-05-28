@@ -17,6 +17,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Get;
+use Filament\Resources\Pages\Page;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,7 +37,7 @@ class BantuanRastra extends Model
 
     protected $guarded = [];
     protected $with = [
-        'kec','kel','pengganti_rastra',
+        'kec','kel','penggantiRastra',
     ];
 
     protected $casts = [
@@ -69,11 +70,22 @@ class BantuanRastra extends Model
             TextInput::make('nokk')
                 ->label('No. Kartu Keluarga (KK)')
                 ->required()
-                ->maxLength(20),
+                ->live(debounce: 500)
+                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                    $livewire->validateOnly($component->getStatePath());
+                })
+                ->minLength(16)
+                ->maxLength(16),
             TextInput::make('nik')
-                ->label('N I K')
+                ->label('No. Induk Kependudukan (NIK)')
                 ->required()
-                ->maxLength(20),
+                ->unique(ignoreRecord: true)
+                ->live(debounce: 500)
+                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                    $livewire->validateOnly($component->getStatePath());
+                })
+                ->minLength(16)
+                ->maxLength(16),
             TextInput::make('nama_lengkap')
                 ->label('Nama Lengkap')
                 ->required()
@@ -169,7 +181,7 @@ class BantuanRastra extends Model
                 ->live()
                 ->preload(),
 
-            Select::make('pengganti_rastra.keluarga_id')
+            Select::make('penggantiRastra.keluarga_id')
                 ->label('Keluarga Yang Diganti')
                 ->required()
                 ->options(self::query()
@@ -180,7 +192,7 @@ class BantuanRastra extends Model
                 ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->preload(),
 
-            Select::make('pengganti_rastra.alasan_dikeluarkan')
+            Select::make('penggantiRastra.alasan_dikeluarkan')
                 ->searchable()
                 ->options(AlasanEnum::class)
                 ->enum(AlasanEnum::class)
@@ -256,7 +268,7 @@ class BantuanRastra extends Model
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
-    public function pengganti_rastra(): HasOne
+    public function penggantiRastra(): HasOne
     {
         return $this->hasOne(PenggantiRastra::class);
     }

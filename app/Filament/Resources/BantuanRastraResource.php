@@ -61,6 +61,7 @@ class BantuanRastraResource extends Resource
                     ->label('No. KK')
                     ->alignCenter()
                     ->searchable()
+                    ->copyable()
                     ->summarize([
                         Tables\Columns\Summarizers\Count::make(),
                     ])
@@ -69,6 +70,7 @@ class BantuanRastraResource extends Resource
                     ->label('N I K')
                     ->alignCenter()
                     ->searchable()
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alamat')
@@ -188,7 +190,7 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->close(),
-                    Tables\Actions\Action::make('pengganti_rastra')
+                    Tables\Actions\Action::make('penggantiRastra')
                         ->label('Ganti KPM Baru')
                         ->icon('heroicon-s-user-plus')
                         ->form([
@@ -240,7 +242,7 @@ class BantuanRastraResource extends Resource
                                     })
                                     ->reactive()
                                     ->searchable(),
-                                Select::make('pengganti_rastra.alasan_dikeluarkan')
+                                Select::make('penggantiRastra.alasan_dikeluarkan')
                                     ->searchable()
                                     ->options(AlasanEnum::class)
                                     ->enum(AlasanEnum::class)
@@ -249,7 +251,7 @@ class BantuanRastraResource extends Resource
                                     ->lazy()
                                     ->required()
                                     ->default(AlasanEnum::PINDAH),
-                                CuratorPicker::make('pengganti_rastra.media_id')
+                                CuratorPicker::make('penggantiRastra.media_id')
                                     ->label('Upload Berita Acara Pengganti')
                                     ->relationship('beritaAcara', 'id')
                                     ->buttonLabel('Tambah File')
@@ -262,14 +264,14 @@ class BantuanRastraResource extends Resource
                         ->action(function ($record, array $data): void {
                             $keluargaDigantiId = $record->id;
 
-                            $record->pengganti_rastra()->updateOrCreate([
+                            $record->penggantiRastra()->updateOrCreate([
                                 'bantuan_rastra_id' => $keluargaDigantiId,
                                 'nik_pengganti' => $data['nik'],
                                 'nokk_pengganti' => $data['nokk'],
                                 'nama_pengganti' => $data['nama_lengkap'],
                                 'alamat_pengganti' => $data['alamat'],
-                                'alasan_dikeluarkan' => $data['pengganti_rastra']['alasan_dikeluarkan'],
-                                'media_id' => $data['pengganti_rastra']['media_id'],
+                                'alasan_dikeluarkan' => $data['penggantiRastra']['alasan_dikeluarkan'],
+                                'media_id' => $data['penggantiRastra']['media_id'],
                             ], [
                                 'bantuan_rastra_id' => $record->id,
                                 'nik_pengganti' => $data['nik'],

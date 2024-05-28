@@ -6,6 +6,7 @@ namespace App\Supports;
 
 use App\Enums\StatusAdminEnum;
 use App\Models\barang;
+use App\Models\BeritaAcara;
 use App\Models\PenyaluranBantuanPpks;
 use App\Models\PenyaluranBantuanRastra;
 use Illuminate\Support\Str;
@@ -21,7 +22,7 @@ class Helpers
         $sep = setting('app.separator') ?? $sep;
         $bulan = convertToRoman(now()->month);
         $tahun = now()->year;
-        $modelClass = ('rastra' === $model) ? PenyaluranBantuanRastra::class : PenyaluranBantuanPpks::class;
+        $modelClass = ('rastra' === $model) ? BeritaAcara::class : PenyaluranBantuanPpks::class;
         $max = $modelClass::max('id') + 1;
         $kodePpks = setting('app.no_ppks', '400.9') . $sep . setting('app.no_ba_ppks') . $sep . $text;
         $kodeAset = Str::padLeft($max, 4, $pad) . $sep . $text;

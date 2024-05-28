@@ -34,6 +34,7 @@ use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -82,12 +83,22 @@ class BantuanPpksResource extends Resource
                             TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
-                                ->default('TIDAK ADA')
-                                ->maxLength(20),
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->minLength(16)
+                                ->maxLength(16),
                             TextInput::make('nik')
                                 ->label('N I K')
                                 ->required()
-                                ->maxLength(20),
+                                ->unique(ignoreRecord: true)
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->minLength(16)
+                                ->maxLength(16),
                             TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
                                 ->required()
@@ -95,15 +106,27 @@ class BantuanPpksResource extends Resource
                             TextInput::make('nama_ibu_kandung')
                                 ->label('Nama Ibu Kandung')
                                 ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->maxLength(255),
                             TextInput::make('tempat_lahir')
                                 ->label('Tempat Lahir')
                                 ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->maxLength(50),
                             DatePicker::make('tgl_lahir')
-                                ->displayFormat('d/M/Y')
+                                ->displayFormat(setting('app.format_tgl'))
                                 ->label('Tgl. Lahir')
-                                ->required(),
+                                ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, DatePicker $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                }),
                             Select::make('jenis_kelamin')
                                 ->enum(JenisKelaminEnum::class)
                                 ->options(JenisKelaminEnum::class)
@@ -121,7 +144,7 @@ class BantuanPpksResource extends Resource
                                 ->relationship('pendidikan_terakhir', 'nama_pendidikan')
                                 ->searchable()
                                 ->required()
-                                ->default(5)
+                                ->default(7)
                                 ->optionsLimit(15)
                                 ->preload(),
                             Select::make('hubungan_keluarga_id')
@@ -134,7 +157,7 @@ class BantuanPpksResource extends Resource
                             Select::make('status_kawin')
                                 ->enum(StatusKawinBpjsEnum::class)
                                 ->options(StatusKawinBpjsEnum::class)
-                                ->default(StatusKawinBpjsEnum::KAWIN)
+                                ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
                                 ->preload(),
                             TextInput::make('penghasilan_rata_rata')
                                 ->prefix('Rp. ')
@@ -157,11 +180,16 @@ class BantuanPpksResource extends Resource
                                 ->schema([
                                     TextInput::make('alamat')
                                         ->required()
+                                        ->live(debounce: 500)
+                                        ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                            $livewire->validateOnly($component->getStatePath());
+                                        })
                                         ->columnSpanFull(),
                                     Select::make('provinsi')
                                         ->required()
                                         ->searchable()
-                                        ->reactive()
+                                        ->live()
+                                        ->native(false)
                                         ->options(Provinsi::pluck('name', 'code'))
                                         ->default(setting('app.kodeprov', config('custom.default.kodeprov')))
                                         ->afterStateUpdated(function (callable $set): void {
@@ -172,7 +200,8 @@ class BantuanPpksResource extends Resource
                                     Select::make('kabupaten')
                                         ->required()
                                         ->searchable()
-                                        ->reactive()
+                                        ->live()
+                                        ->native(false)
                                         ->options(function (Get $get) {
                                             $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
                                             if ( ! $kab) {
@@ -193,7 +222,8 @@ class BantuanPpksResource extends Resource
                                     Select::make('kecamatan')
                                         ->required()
                                         ->searchable()
-                                        ->reactive()
+                                        ->live()
+                                        ->native(false)
                                         ->options(function (Get $get) {
                                             $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
                                             if ( ! $kab) {
@@ -210,6 +240,7 @@ class BantuanPpksResource extends Resource
 
                                     Select::make('kelurahan')
                                         ->required()
+                                        ->native(false)
                                         ->options(function (callable $get) {
                                             return Kelurahan::query()->where(
                                                 'kecamatan_code',
@@ -219,7 +250,7 @@ class BantuanPpksResource extends Resource
                                                 'code',
                                             );
                                         })
-                                        ->reactive()
+                                        ->live()
                                         ->searchable(),
                                 ]),
 
@@ -248,7 +279,7 @@ class BantuanPpksResource extends Resource
                                 ->searchable()
                                 ->native(false)
                                 ->required()
-                                ->default([1])
+                                ->default([14,13])
                                 ->preload(),
 
                             Select::make('tipe_ppks_id')
@@ -278,6 +309,10 @@ class BantuanPpksResource extends Resource
                                 ->native(false)
                                 ->multiple()
                                 ->searchable()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, Select $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->options(function (callable $set, callable $get) {
                                     return KriteriaPpks::where(
                                         'tipe_ppks_id',
@@ -372,9 +407,11 @@ class BantuanPpksResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nik')
                     ->label('N I K')
+                    ->copyable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')

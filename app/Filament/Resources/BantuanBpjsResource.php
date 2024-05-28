@@ -27,6 +27,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -281,6 +282,10 @@ class BantuanBpjsResource extends Resource
                             Forms\Components\TextInput::make('nokk_tmt')
                                 ->label('No. Kartu Keluarga (KK)')
                                 ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->minLength(16)
                                 ->maxLength(16),
                             Forms\Components\TextInput::make('nik_tmt')
@@ -291,6 +296,10 @@ class BantuanBpjsResource extends Resource
                                     column: 'nik',
                                     //                                    modifyRuleUsing: fn(Unique $rule, $record) => dd($rule->where('nik')),
                                 )
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
                                 ->minLength(16)
                                 ->maxLength(16),
                             Forms\Components\TextInput::make('nama_lengkap')
