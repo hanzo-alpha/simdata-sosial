@@ -16,13 +16,14 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Get;
 use Filament\Resources\Pages\Page;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -203,13 +204,12 @@ class BantuanRastra extends Model
                 ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->default(AlasanEnum::PINDAH),
 
-            ToggleButton::make('status_aktif')
+            ToggleButtons::make('status_aktif')
                 ->label('Status Aktif')
-                ->offColor('danger')
-                ->onColor('primary')
-                ->offLabel('Non Aktif')
-                ->onLabel('Aktif')
-                ->default(true),
+                ->enum(StatusAktif::class)
+                ->options(StatusAktif::class)
+                ->default(StatusAktif::AKTIF)
+                ->inline(),
         ];
     }
 
