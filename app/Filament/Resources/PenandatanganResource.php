@@ -83,7 +83,7 @@ class PenandatanganResource extends Resource
         return $table
             ->deferLoading()
             ->poll()
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('jabatan')
             ->columns([
                 Tables\Columns\TextColumn::make('kode_kecamatan')
                     ->label('Kecamatan')
