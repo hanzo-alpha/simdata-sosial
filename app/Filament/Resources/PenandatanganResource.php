@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JabatanEnum;
 use App\Enums\StatusPenandatangan;
 use App\Filament\Resources\PenandatanganResource\Pages;
 use App\Models\Kecamatan;
@@ -38,7 +39,6 @@ class PenandatanganResource extends Resource
                 Select::make('kode_kecamatan')
                     ->options(Kecamatan::where('kabupaten_code', setting('app.kodekab'))->pluck('name', 'code'))
                     ->searchable()
-                    ->autofocus()
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (Set $set): void {
                         $set('kode_instansi', null);
@@ -55,7 +55,13 @@ class PenandatanganResource extends Resource
                     ->required(),
                 TextInput::make('nip')
                     ->required(),
-                TextInput::make('jabatan')
+                ToggleButtons::make('jabatan')
+                    ->enum(JabatanEnum::class)
+                    ->options(JabatanEnum::class)
+//                    ->inline()
+//                    ->grouped()
+                    ->columns(2)
+                    ->gridDirection('row')
                     ->required(),
 
                 ToggleButtons::make('status_penandatangan')
@@ -109,6 +115,7 @@ class PenandatanganResource extends Resource
                 Tables\Columns\TextColumn::make('jabatan')
                     ->sortable()
                     ->toggleable()
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_penandatangan')
                     ->label('Status')
