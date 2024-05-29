@@ -7,6 +7,7 @@ use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
+use App\Models\PesertaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Support\RawJs;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -113,73 +114,11 @@ class BantuanChart extends ApexChartWidget
     {
         return [
             'rastra' => BantuanRastra::count(),
-            'bpjs' => BantuanBpjs::count(),
+            'bpjs' => PesertaBpjs::count(),
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
             'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
         ];
     }
-
-    //    protected function getFooter(): string|View
-    //    {
-    //        return new HtmlString('<p class="text-danger-500">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>');
-    //    }
-
-    //    protected function extraJsOptions(): ?RawJs
-    //    {
-    //        return RawJs::make(
-    //            <<<'JS'
-    //            {
-    //                // xaxis: {
-    //                //     labels: {
-    //                //         formatter: function (val, timestamp, opts) {
-    //                //             return val + ' KPM'
-    //                //         }
-    //                //     }
-    //                // },
-    //                yaxis: {
-    //                    labels: {
-    //                        formatter: function (val, index) {
-    //                            return val + ' KPM'
-    //                        }
-    //                    }
-    //                },
-    //                tooltip: {
-    //                    x: {
-    //                        formatter: function (val) {
-    //                            return val + ' KPM'
-    //                        }
-    //                    }
-    //                },
-    //                plotOptions: {
-    //                  pie: {
-    //                    // customScale: 1,
-    //                    offsetX: 0,
-    //                    offsetY: 0,
-    //                    dataLabels: {
-    //                       offset: -25,
-    //                       minAngleToShowLabel: -25
-    //                    },
-    //                    // donut: {
-    //                    //   labels: {
-    //                    //     show: true,
-    //                    //   }
-    //                    // }
-    //                  }
-    //                },
-    //                // dataLabels: {
-    //                //     enabled: true,
-    //                //     formatter: function (val, opt) {
-    //                //         const name = opt.w.globals.labels[opt.seriesIndex]
-    //                //         return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
-    //                //     },
-    //                //     dropShadow: {
-    //                //         enabled: true
-    //                //     },
-    //                // }
-    //            }
-    //        JS,
-    //        );
-    //    }
 }

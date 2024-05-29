@@ -39,7 +39,7 @@ class BantuanBpjsOverview extends BaseWidget
         $filters = $this->getFilters();
 
         $statistik = $this->getDataOverview($this->getFilters());
-        $overview = [];
+        $overview = $this->getOverview($statistik);
 
         $listKecamatan = Kecamatan::query()
             ->where('kabupaten_code', setting('app.kodekab'))
@@ -110,31 +110,31 @@ class BantuanBpjsOverview extends BaseWidget
     {
         return [
             Stat::make(
-                label: 'KPM BPJS',
+                label: 'Peserta PBI',
                 value: Number::format($data['jamkesda'], 2, 0, 'id') . config('custom.app.stat_prefix'),
             )
-                ->description('Total Seluruh Usulan BPJS')
+                ->description('Total Peserta PBI BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),
             Stat::make(
-                label: 'Usulan BPJS Berhasil',
+                label: 'Peserta PBI BPJS Berhasil',
                 value: Number::format($data['verified'], 2, 2, 'id') . config('custom.app.stat_prefix'),
             )
-                ->description('Jumlah Usulan BPJS Berhasil')
+                ->description('Jumlah Peserta PBI BPJS Berhasil')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),
             Stat::make(
-                label: 'Usulan BPJS Gagal',
+                label: 'Peserta PBI BPJS Gagal',
                 value: Number::format($data['unverified'], 2, 2, 'id') . config('custom.app.stat_prefix'),
             )
-                ->description('Jumlah Usulan BPJS Gagal')
+                ->description('Jumlah Peserta PBI BPJS Gagal')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
             Stat::make(
-                label: 'Usulan BPJS Sedang Proses',
+                label: 'Peserta PBI BPJS Sedang Proses',
                 value: Number::format($data['review'], 2, 2, 'id') . config('custom.app.stat_prefix'),
             )
-                ->description('Jumlah Usulan BPJS Sedang Proses')
+                ->description('Jumlah Peserta PBI BPJS Sedang Proses')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('warning'),
         ];
