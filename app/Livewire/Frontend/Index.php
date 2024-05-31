@@ -8,6 +8,7 @@ use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
+use App\Models\PesertaBpjs;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -27,7 +28,7 @@ class Index extends Component
     {
         return [
             'rastra' => BantuanRastra::count(),
-            'bpjs' => BantuanBpjs::count(),
+            'bpjs' => PesertaBpjs::count(),
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
