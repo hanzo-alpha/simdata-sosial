@@ -1,6 +1,6 @@
 <div>
     <!-- =========== Hero Section End =========== -->
-    <div class="relative bg-gradient-to-t from-slate-500/10 pb-80 pt-36 sm:pb-96">
+    <div class="relative bg-gradient-to-b from-yellow-50/80 pb-80 pt-36 sm:pb-96">
         <div class="container">
             <div class="mx-auto text-center lg:w-11/12">
                 <div>
@@ -14,8 +14,39 @@
                         Dinas Sosial
                     </h1>
                     <p class="text-gray-500 sm:text-lg">
-                        Sistem Informasi Rumah Data Terpadu Dinas Sosial Kabupaten Soppeng
+                        Sistem Informasi Rumah Data Terpadu Dinas Sosial Kabupaten Soppeng.
+                        Dibuat untuk mempermudah Dinas Sosial dalam monitoring data penyebaran bantuan sosial
+                        khususnya dalam ruang lingkup kabupaten soppeng.
                     </p>
+                    <div class="flex flex-wrap justify-center items-center gap-5 mt-5">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <p class="text-sm text-gray-700">Multi User Instansi Kelurahan</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <p class="text-sm text-gray-700">Mencakup 5 Bantuan Sosial</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <p class="text-sm text-gray-700">Penggunaan Mudah dan Cepat</p>
+                        </div>
+                    </div>
                     <div class="mt-12 flex flex-wrap items-center justify-center gap-2">
                         <div class="flex items-center">
                             <img
@@ -24,8 +55,6 @@
                                 class="rounded-md px-4 py-2"
                                 width="100"
                             />
-                            {{-- <input type="text" id="email-input" name="email-input" placeholder="Your Name" --}}
-                            {{-- class="w-full rounded border-gray-300 focus:border-gray-400 focus:ring-0 bg-white py-2 px-4"> --}}
                         </div>
                         <div class="flex items-center">
                             <img
@@ -36,36 +65,6 @@
                             />
                         </div>
                     </div>
-
-                    {{-- <div class="flex flex-wrap justify-center items-center gap-5 mt-5"> --}}
-                    {{-- <div class="flex items-center gap-2"> --}}
-                    {{-- <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" --}}
-                    {{-- fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" --}}
-                    {{-- stroke-linejoin="round"> --}}
-                    {{-- <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path> --}}
-                    {{-- <polyline points="22 4 12 14.01 9 11.01"></polyline> --}}
-                    {{-- </svg> --}}
-                    {{-- <p class="text-sm text-gray-700">Free 14-day Demo</p> --}}
-                    {{-- </div> --}}
-                    {{-- <div class="flex items-center gap-2"> --}}
-                    {{-- <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" --}}
-                    {{-- fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" --}}
-                    {{-- stroke-linejoin="round"> --}}
-                    {{-- <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path> --}}
-                    {{-- <polyline points="22 4 12 14.01 9 11.01"></polyline> --}}
-                    {{-- </svg> --}}
-                    {{-- <p class="text-sm text-gray-700">No credit card needed</p> --}}
-                    {{-- </div> --}}
-                    {{-- <div class="flex items-center gap-2"> --}}
-                    {{-- <svg class="w-5 h-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" --}}
-                    {{-- fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" --}}
-                    {{-- stroke-linejoin="round"> --}}
-                    {{-- <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path> --}}
-                    {{-- <polyline points="22 4 12 14.01 9 11.01"></polyline> --}}
-                    {{-- </svg> --}}
-                    {{-- <p class="text-sm text-gray-700">Free 14-day Demo</p> --}}
-                    {{-- </div> --}}
-                    {{-- </div> --}}
                 </div>
             </div>
         </div>
@@ -129,7 +128,7 @@
                     <h1 class="mb-4 mt-3 text-3xl/tight font-medium">Lihat Data KPM Secara Cepat</h1>
                     <p class="text-gray-500">
                         Menampilkan data grafik Program Bantuan
-                        <span class="text-primary">BPJS, RASTRA, BPNT, PKH, dan PPKS</span>
+                        <span class="text-primary">BPJS, RASTRA, BPNT, PKH, PPKS, dan Angka Kemiskinan</span>
                     </p>
                 </div>
                 <div class="py-16 xl:pb-28 xl:pt-16">
@@ -162,7 +161,8 @@
                             <h1 class="mb-4 mt-6 text-3xl/tight font-medium">Real Time Data Update</h1>
                             <p class="text-gray-500">
                                 Saat ini ada 5 Program Bantuan Sosial yang di tangani oleh Dinas Sosial Kabupaten
-                                Soppeng. Yaitu Program BPJS, RASTRA, BPNT, PKH, dan PPKS
+                                Soppeng. Yaitu Program BPJS, RASTRA, BPNT, PKH, dan PPKS serta Angka Kemiskinan.
+                                Grafik data ditampilkan secara realtime untuk akses informasi secara cepat.
                             </p>
                         </div>
 
@@ -183,49 +183,56 @@
                 </div>
             </div>
         </div>
-
-        <!-- =========== Stats Section Start =========== -->
-        <section class="py-5 xl:py-10">
-            <div class="container" data-aos="fade-up" data-aos-duration="600">
-                <div class="text-center">
+    </section>
+    <!-- =========== Stats Section Start =========== -->
+    <section class="bg-gradient-to-r from-gray-100/70 to-gray-100/50 relative xl:py-24 py-16">
+        <div class="absolute top-0 inset-x-0 hidden sm:block">
+            <img src="{{ asset('frontend/images/shapes/white-wave.svg') }}" alt="svg" class="w-full -scale-x-100">
+        </div>
+        <div class="container relative" data-aos="fade-up" data-aos-duration="600">
+            <div class="text-center">
                     <span class="text-primary bg-primary/10 rounded-full px-3 py-1 text-sm font-medium">
                         Jumlah KPM Program Bantuan
                     </span>
-                    <h2 class="my-5 text-xl font-semibold md:text-3xl">Data Statistik Program Bantuan Sosial</h2>
-                    {{-- <p class="text-slate-500">Saat ini program bantuan pada Dinas Sosial berjumlah 5 Program.</p> --}}
-                </div>
+                <h2 class="my-5 text-xl font-semibold md:text-3xl">Data Statistik Program Bantuan Sosial</h2>
+                {{-- <p class="text-slate-500">Saat ini program bantuan pada Dinas Sosial berjumlah 5 Program.</p> --}}
+            </div>
 
-                <div class="mt-14 grid grid-cols-2 gap-6 py-16 md:grid-cols-3" data-aos="fade-up" wire:poll.keep-alive>
-                    <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpjs'], 0, locale: 'id') }} KPM</h4>
-                        <p class="text-slate-600">Program BPJS</p>
-                    </div>
-                    <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['rastra'], 0, locale: 'id') }} KPM</h4>
-                        <p class="text-slate-600">Program RASTRA</p>
-                    </div>
-                    <div class="text-center">
-                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['pkh'], 0, locale: 'id') }} KPM</h4>
-                        <p class="text-slate-600">Program PKH</p>
-                    </div>
-                    <div class="text-center mt-4">
-                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpnt'], 0, locale: 'id') }} KPM</h4>
-                        <p class="text-slate-600">Program BPNT</p>
-                    </div>
-                    <div class="text-center mt-4">
-                        <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['ppks'], 0, locale: 'id') }} KPM</h4>
-                        <p class="text-slate-600">Program PPKS</p>
-                    </div>
-                    <div class="text-center mt-4">
-                        <h4 class="mb-3 text-5xl">{{ Number::percentage(setting('app.angka_kemiskinan_persen'), 2, locale: 'id')
-                        }}</h4>
-                        <p class="text-slate-600">Angka Kemiskinan</p>
-                    </div>
+            <div class="mt-14 grid grid-cols-2 gap-6 py-16 md:grid-cols-3" data-aos="fade-up" wire:poll.keep-alive>
+                <div class="text-center">
+                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpjs'], 0, locale: 'id') }} Kpm</h4>
+                    <p class="text-slate-600">Program BPJS</p>
+                </div>
+                <div class="text-center">
+                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['rastra'], 0, locale: 'id') }} Kpm</h4>
+                    <p class="text-slate-600">Program RASTRA</p>
+                </div>
+                <div class="text-center">
+                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['pkh'], 0, locale: 'id') }} Kpm</h4>
+                    <p class="text-slate-600">Program PKH</p>
+                </div>
+                <div class="text-center mt-4">
+                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpnt'], 0, locale: 'id') }} Kpm</h4>
+                    <p class="text-slate-600">Program BPNT</p>
+                </div>
+                <div class="text-center mt-4">
+                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['ppks'], 0, locale: 'id') }} Kpm</h4>
+                    <p class="text-slate-600">Program PPKS</p>
+                </div>
+                <div class="text-center mt-4">
+                    <h4 class="mb-3 text-5xl">
+                        {{ Number::percentage(setting('app.angka_kemiskinan_persen'), 2, locale: 'id')}}
+                    </h4>
+                    <p class="text-slate-600">Angka Kemiskinan Kab. Soppeng</p>
                 </div>
             </div>
-        </section>
+        </div>
+        <div class="absolute bottom-0 inset-x-0 hidden sm:block">
+            <img src="{{ asset('frontend/images/shapes/white-wave.svg') }}" alt="svg"
+                 class="w-full scale-x-100 -scale-y-100">
+        </div>
     </section>
-    <!-- =========== feature Section end =========== -->
+    <!-- =========== stats Section end =========== -->
     @push('js')
         {!! $chart->script() !!}
     @endpush
