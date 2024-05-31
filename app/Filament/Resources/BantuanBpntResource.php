@@ -22,6 +22,7 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BantuanBpntResource extends Resource
 {
@@ -250,18 +251,24 @@ class BantuanBpntResource extends Resource
                                 fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
                             );
                     }),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -286,10 +293,16 @@ class BantuanBpntResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         if (auth()->user()->hasRole(['super_admin'])) {
-            return parent::getEloquentQuery();
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
         }
 
         return parent::getEloquentQuery()
-            ->where('kelurahan', auth()->user()->instansi_id);
+            ->where('kelurahan', auth()->user()->instansi_id)
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }
