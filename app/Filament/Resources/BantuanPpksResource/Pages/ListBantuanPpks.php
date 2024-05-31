@@ -62,7 +62,8 @@ final class ListBantuanPpks extends ListRecords
                 ->label('Download CSV')
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
-                ->exporter(BantuanPpksExporter::class),
+                ->exporter(BantuanPpksExporter::class)
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 
             Actions\ImportAction::make()
                 ->label('Upload CSV')
@@ -72,10 +73,12 @@ final class ListBantuanPpks extends ListRecords
                 ->options([
                     'updateExisting' => true,
                 ])
-                ->closeModalByClickingAway(false),
+                ->closeModalByClickingAway(false)
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 
             Actions\CreateAction::make()
-                ->icon('heroicon-o-plus'),
+                ->icon('heroicon-o-plus')
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 
         ];
     }

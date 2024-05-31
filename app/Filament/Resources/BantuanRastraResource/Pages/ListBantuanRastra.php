@@ -63,7 +63,7 @@ class ListBantuanRastra extends ListRecords
                 ->exports([
                     ExportBantuanRastra::make(),
                 ])
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
 
             Actions\ImportAction::make()
                 ->label('Upload CSV')
@@ -79,7 +79,7 @@ class ListBantuanRastra extends ListRecords
 
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
         ];
     }
 
