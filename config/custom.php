@@ -19,7 +19,7 @@ return [
         'favicon' => null,
         'font' => 'Poppins',
         'dark_mode' => true,
-        'logo_height' => '2rem',
+        'logo_height' => '1.7rem',
         'stat_prefix' => ' Kpm',
     ],
     'format_auto' => [
