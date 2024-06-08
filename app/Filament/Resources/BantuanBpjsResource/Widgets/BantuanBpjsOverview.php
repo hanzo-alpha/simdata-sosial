@@ -39,7 +39,7 @@ class BantuanBpjsOverview extends BaseWidget
         $filters = $this->getFilters();
 
         $statistik = $this->getDataOverview($this->getFilters());
-        $overview = $this->getOverview($statistik);
+        $overview = [];
 
         $listKecamatan = Kecamatan::query()
             ->where('kabupaten_code', setting('app.kodekab'))
@@ -65,6 +65,14 @@ class BantuanBpjsOverview extends BaseWidget
             'Total KPM Program BPJS Semua Kecamatan',
             'users',
             'primary',
+        );
+
+        $results['pbi'] = $this->renderStats(
+            PesertaBpjs::count(),
+            'Rekap Data Peserta PBI',
+            'Total KPM Peserta PBI BPJS',
+            'users',
+            'warning',
         );
         if (count($overview) > 0) {
             return array_merge($overview, $results);
