@@ -12,7 +12,7 @@ return new class () extends Migration {
         Schema::create('jenis_bantuan', static function (Blueprint $table): void {
             $table->id();
             $table->string('nama_bantuan');
-            $table->string('alias')->nullable();
+            $table->string('alias', 10)->nullable();
             $table->string('warna')->nullable();
             $table->string('model_name')->nullable();
             $table->string('deskripsi')->nullable();
