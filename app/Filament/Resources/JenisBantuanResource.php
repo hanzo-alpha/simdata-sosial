@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\WarnaEnum;
 use App\Filament\Resources\JenisBantuanResource\Pages;
 use App\Models\JenisBantuan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -24,7 +24,7 @@ final class JenisBantuanResource extends Resource
     protected static ?string $label = 'Jenis Bantuan';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
     protected static ?string $pluralLabel = 'Jenis Bantuan';
-    protected static bool $shouldRegisterNavigation = false;
+    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
     {
@@ -32,15 +32,14 @@ final class JenisBantuanResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nama_bantuan')
                     ->required()
-                    ->maxLength(150),
+                    ->maxLength(150)
+                    ->dehydrateStateUsing(fn($state) => Str::of($state)->prepend('Bantuan ')->title()),
                 Forms\Components\TextInput::make('alias')
-                    ->maxLength(20),
-                Forms\Components\Select::make('warna')
-                    ->options(WarnaEnum::class)
-                    ->preload()
-                    ->lazy(),
+                    ->maxLength(7),
+                Forms\Components\ColorPicker::make('warna'),
                 Forms\Components\TextInput::make('deskripsi')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn($state) => Str::title($state)),
             ]);
     }
 
@@ -50,32 +49,32 @@ final class JenisBantuanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama_bantuan')
                     ->label('Nama Bantuan')
-                    ->description(fn($record) => Str::words($record->deskripsi, 13))
+                    ->description(fn($record) => $record->deskripsi)
                     ->searchable()
                     ->weight(FontWeight::SemiBold)
-                    ->copyable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alias')
                     ->label('Alias')
                     ->badge()
                     ->sortable()
                     ->searchable()
-                    ->color(fn($record) => $record->warna),
+                    ->color(fn($record) => Color::hex($record->warna)),
+                Tables\Columns\ColorColumn::make('warna')
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
 
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                 ]),
             ])
-//            ->bulkActions([
-//                Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
-//                ]),
-//            ])
+            ->bulkActions([
+
+            ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
             ]);

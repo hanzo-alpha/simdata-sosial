@@ -27,7 +27,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
     protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
     protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 2;
     protected int|string|array $columnSpan = 'full';
 
     protected function getFormSchema(): array
@@ -102,6 +102,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
     protected function queryChartArray(array|\Illuminate\Support\Collection $bantuan, $kodekel, array $filters): array
     {
         $results = [];
+
         foreach ($bantuan as $key => $item) {
             $model = match ((int) $item) {
                 1 => BantuanPkh::class,

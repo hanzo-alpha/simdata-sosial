@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->string('nama_bantuan');
             $table->string('alias')->nullable();
             $table->string('warna')->nullable();
+            $table->string('model_name')->nullable();
             $table->string('deskripsi')->nullable();
         });
     }

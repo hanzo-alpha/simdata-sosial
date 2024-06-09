@@ -19,6 +19,7 @@ final class JenisBantuan extends Model
         'nama_bantuan',
         'alias',
         'warna',
+        'model_name',
         'deskripsi',
     ];
 }

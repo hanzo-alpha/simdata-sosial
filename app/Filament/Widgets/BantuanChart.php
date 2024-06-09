@@ -7,11 +7,11 @@ use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
-use App\Models\PesertaBpjs;
+use App\Models\JenisBantuan;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
-use Filament\Support\RawJs;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
+use Str;
 
 class BantuanChart extends ApexChartWidget
 {
@@ -33,7 +33,7 @@ class BantuanChart extends ApexChartWidget
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
     protected static ?int $contentHeight = 400;
     protected static bool $deferLoading = true;
-    protected static ?int $sort = 9;
+    protected static ?int $sort = 4;
 
     protected function getOptions(): array
     {
@@ -51,7 +51,7 @@ class BantuanChart extends ApexChartWidget
                 $this->renderBantuan()['pkh'],
                 $this->renderBantuan()['bpnt'],
                 $this->renderBantuan()['ppks'],
-                $this->renderBantuan()['angka_kemiskinan'],
+                $this->renderBantuan()['kemiskinan'],
             ],
             'labels' => ['RASTRA', 'BPJS', 'PKH', 'BPNT', 'PPKS', 'ANGKA KEMISKINAN'],
             'plotOptions' => [
@@ -106,19 +106,30 @@ class BantuanChart extends ApexChartWidget
                 ],
                 //                'position' => 'bottom',
             ],
-            //            'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE']
+//                        'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE', '#FF00D4']
         ];
     }
 
     protected function renderBantuan(): array
     {
-        return [
-            'rastra' => BantuanRastra::count(),
-            'bpjs' => PesertaBpjs::count(),
-            'pkh' => BantuanPkh::count(),
-            'bpnt' => BantuanBpnt::count(),
-            'ppks' => BantuanPpks::count(),
-            'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
-        ];
+        $results = [];
+
+        $jenisBantuan = JenisBantuan::query()->pluck('alias', 'id');
+
+        foreach ($jenisBantuan as $key => $item) {
+            $model = match ($key) {
+                1 => BantuanPkh::class,
+                2 => BantuanBpnt::class,
+                3 => BantuanBpjs::class,
+                4 => BantuanPpks::class,
+                5 => BantuanRastra::class,
+            };
+
+            $results[Str::lower($item)] = $model::query()->count();
+        }
+
+        $results['kemiskinan'] = (int) setting('app.angka_kemiskinan') ?? 0;
+
+        return $results;
     }
 }
