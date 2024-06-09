@@ -20,7 +20,7 @@ class Settings extends BaseSettings
 
     protected static ?string $navigationGroup = 'Pengaturan';
     protected static ?string $navigationLabel = 'Pengaturan';
-    protected ?string $heading = 'Pengaturan';
+    protected ?string $heading = 'Pengaturan Aplikasi';
 
     public function schema(): array|Closure
     {
@@ -91,18 +91,20 @@ class Settings extends BaseSettings
                                             ->label('Singkatan Dinas'),
                                     ])->columns(3),
 
-                                Section::make('Pendukung')->schema([
-                                    TextInput::make('app.angka_kemiskinan')
-                                        ->label('Angka Kemiskinan'),
-                                    TextInput::make('app.angka_kemiskinan_persen')
-                                        ->label('Angka Kemiskinan (%)'),
-                                    ColorPicker::make('app.warna_kemiskinan')
-                                        ->label('Warna Angka Kemiskinan'),
-                                    DatePicker::make('app.batas_tgl_input')
-                                        ->label('Batas Tanggal Penginputan Data')
-                                        ->date()
-                                        ->displayFormat(setting('app.format_tgl')),
-                                ])->columns(2),
+                                Section::make('Pendukung Aplikasi')
+                                    ->icon('heroicon-o-lifebuoy')
+                                    ->schema([
+                                        TextInput::make('app.angka_kemiskinan')
+                                            ->label('Angka Kemiskinan'),
+                                        TextInput::make('app.angka_kemiskinan_persen')
+                                            ->label('Angka Kemiskinan (%)'),
+                                        ColorPicker::make('app.warna_kemiskinan')
+                                            ->label('Warna Angka Kemiskinan'),
+                                        DatePicker::make('app.batas_tgl_input')
+                                            ->label('Batas Tanggal Penginputan Data')
+                                            ->date()
+                                            ->displayFormat(setting('app.format_tgl')),
+                                    ])->columns(2),
                             ]),
                         ])->columns(2),
                     Tabs\Tab::make('Persuratan & Laporan')
