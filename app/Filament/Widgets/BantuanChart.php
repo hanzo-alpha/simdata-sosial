@@ -2,11 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\BantuanBpjs;
-use App\Models\BantuanBpnt;
-use App\Models\BantuanPkh;
-use App\Models\BantuanPpks;
-use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -45,15 +40,8 @@ class BantuanChart extends ApexChartWidget
                     'show' => false,
                 ],
             ],
-            'series' => [
-                $this->renderBantuan()['rastra'],
-                $this->renderBantuan()['bpjs'],
-                $this->renderBantuan()['pkh'],
-                $this->renderBantuan()['bpnt'],
-                $this->renderBantuan()['ppks'],
-                $this->renderBantuan()['kemiskinan'],
-            ],
-            'labels' => ['RASTRA', 'BPJS', 'PKH', 'BPNT', 'PPKS', 'ANGKA KEMISKINAN'],
+            'series' => $this->renderBantuan()['data'],
+            'labels' => $this->renderBantuan()['labels'],
             'plotOptions' => [
                 'radialBar' => [
                     'startAngle' => -140,
@@ -87,10 +75,10 @@ class BantuanChart extends ApexChartWidget
             'fill' => [
                 'type' => 'gradient',
                 'gradient' => [
-                    'shade' => 'dark',
+                    'shade' => 'light',
                     'type' => 'horizontal',
                     'shadeIntensity' => 0.5,
-                    'gradientToColors' => ['#f59e0b'],
+                    'gradientToColors' => $this->renderBantuan()['colors'],
                     'inverseColors' => true,
                     'opacityFrom' => 1,
                     'opacityTo' => 0.9,
@@ -106,30 +94,39 @@ class BantuanChart extends ApexChartWidget
                 ],
                 //                'position' => 'bottom',
             ],
-//                        'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE', '#FF00D4']
+            'colors' => $this->renderBantuan()['colors'],
         ];
     }
 
-    protected function renderBantuan(): array
+    protected function renderBantuan(bool $withLabel = false): array
     {
         $results = [];
+        $labels = [];
+        $colors = [];
 
-        $jenisBantuan = JenisBantuan::query()->pluck('alias', 'id');
+        $jenisBantuan = JenisBantuan::all();
+        foreach ($jenisBantuan as $item) {
+            $labels[] = $item->alias;
+            $colors[] = $item->warna;
+            if ($withLabel) {
+                $results[Str::lower($item->alias)] = $item->model_name::query()->count();
+            }
 
-        foreach ($jenisBantuan as $key => $item) {
-            $model = match ($key) {
-                1 => BantuanPkh::class,
-                2 => BantuanBpnt::class,
-                3 => BantuanBpjs::class,
-                4 => BantuanPpks::class,
-                5 => BantuanRastra::class,
-            };
-
-            $results[Str::lower($item)] = $model::query()->count();
+            $results[] = $item->model_name::query()->count();
         }
 
-        $results['kemiskinan'] = (int) setting('app.angka_kemiskinan') ?? 0;
+        if ($withLabel) {
+            $results['kemiskinan'] = (int) setting('app.angka_kemiskinan') ?? 0;
+        }
 
-        return $results;
+        $results[] = (int) setting('app.angka_kemiskinan') ?? 0;
+        $labels[] = 'ANGKA KEMISKINAN';
+        $colors[] = '#1aa3b2';
+
+        return [
+            'data' => $results,
+            'labels' => $labels,
+            'colors' => $colors,
+        ];
     }
 }
