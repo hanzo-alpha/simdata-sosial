@@ -108,6 +108,7 @@ class PenandatanganResource extends Resource
                 Tables\Columns\TextColumn::make('nip')
                     ->sortable()
                     ->toggleable()
+                    ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_penandatangan')
                     ->label('Nama Penandatangan')
@@ -123,19 +124,29 @@ class PenandatanganResource extends Resource
                     ->label('Status')
                     ->sortable()
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->alignCenter()
                     ->badge(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('kode_instansi')
+                    ->label('Instansi')
                     ->options(Kelurahan::whereIn(
                         'kecamatan_code',
                         config('custom.kode_kecamatan'),
                     )->pluck('name', 'code'))
                     ->searchable()
                     ->preload(),
+                Tables\Filters\SelectFilter::make('status_penandatangan')
+                    ->label('Status Penandatangan')
+                    ->options(StatusPenandatangan::class)
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('jabatan')
+                    ->options(JabatanEnum::class)
+                    ->searchable()
+                    ->preload(),
             ])
+            ->deferLoading()
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
