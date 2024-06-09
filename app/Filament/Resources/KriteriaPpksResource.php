@@ -53,6 +53,14 @@ class KriteriaPpksResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada kriteria PPKS')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 //                Tables\Columns\TextColumn::make('nama_kriteria'),
                 BadgeableColumn::make('nama_kriteria')

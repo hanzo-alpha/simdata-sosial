@@ -27,18 +27,21 @@ class BarangResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_barang')
+                    ->label('Nama Barang')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('kuantitas')
                     ->numeric()
                     ->default(10),
                 Forms\Components\TextInput::make('jumlah_bulan')
+                    ->label('Jumlah Barang')
                     ->numeric()
                     ->default(3),
                 Forms\Components\TextInput::make('satuan')
                     ->maxLength(255)
                     ->default('Kg'),
                 Forms\Components\TextInput::make('harga_satuan')
+                    ->label('Harga Satuan')
                     ->numeric()
                     ->live(onBlur: true)
                     ->afterStateUpdated(
@@ -46,6 +49,7 @@ class BarangResource extends Resource
                     )
                     ->default(0),
                 Forms\Components\TextInput::make('total_harga')
+                    ->label('Total Harga')
                     ->numeric()
                     ->disabled()
                     ->dehydrated()
@@ -60,22 +64,23 @@ class BarangResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada barang')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah Item Bantuan Rastra')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->label('Nama Barang')
+                    ->formatStateUsing(fn($record) => $record->nama_barang . ' - ' . $record->jumlah_bulan . ' bulan')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jumlah_bulan')
-                    ->label('Jumlah Bulan')
-                    ->numeric()
-                    ->alignCenter()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('kuantitas')
-                    ->numeric()
+                    ->formatStateUsing(fn($record) => $record->kuantitas . ' ' . $record->satuan)
                     ->alignCenter()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('satuan')
-                    ->alignCenter()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('harga_satuan')
                     ->label('Harga Satuan')
                     ->alignRight()

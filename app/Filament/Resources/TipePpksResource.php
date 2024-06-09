@@ -68,6 +68,14 @@ class TipePpksResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada tipe PPKS')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 BadgeableColumn::make('nama_tipe')
                     ->label('Kategori PPKS')

@@ -90,7 +90,15 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'asc')
+            ->defaultSort('created_at')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada pengguna')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->placeholder('No Name.')

@@ -15,15 +15,10 @@ use Filament\Tables\Table;
 final class PendidikanTerakhirResource extends Resource
 {
     protected static ?string $model = PendidikanTerakhir::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-
     protected static ?string $slug = 'pendidikan-terakhir';
-
     protected static ?string $label = 'Pendidikan Terakhir';
-
     protected static ?string $pluralLabel = 'Pendidikan Terakhir';
-
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
     public static function form(Form $form): Form
@@ -41,6 +36,14 @@ final class PendidikanTerakhirResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada pendidikan terakhir')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('nama_pendidikan'),
             ])

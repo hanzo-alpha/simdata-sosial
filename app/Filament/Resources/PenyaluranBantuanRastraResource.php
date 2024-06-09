@@ -38,8 +38,15 @@ class PenyaluranBantuanRastraResource extends Resource
             ->deferLoading()
             ->poll()
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada penyaluran bantuan RASTRA')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
-                //                Tables\Columns\ImageColumn::make('foto_penyerahan'),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->label('Nama KPM')
                     ->searchable()

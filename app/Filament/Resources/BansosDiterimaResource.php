@@ -39,6 +39,14 @@ class BansosDiterimaResource extends Resource
     {
         return $table
             ->defaultSort('nama_bansos')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada Bansos diterima')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('nama_bansos')
                     ->label('Nama BANSOS')

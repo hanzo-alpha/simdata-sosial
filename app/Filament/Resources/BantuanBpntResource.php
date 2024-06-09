@@ -185,6 +185,15 @@ class BantuanBpntResource extends Resource
             ->deferLoading()
             ->poll()
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada bantuan BPNT')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('no_nik')
                     ->label('N I K')

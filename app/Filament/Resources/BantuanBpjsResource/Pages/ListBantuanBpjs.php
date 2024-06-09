@@ -76,7 +76,7 @@ class ListBantuanBpjs extends ListRecords
                     ExportBantuanBpjs::make()
                         ->except(['foto_ktp','dusun','tahun','bulan','created_at', 'updated_at', 'deleted_at']),
                 ])
-                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
+                ->disabled($this->enableInputLimitDate()),
 
             Actions\Action::make('Upload')
                 ->model(BantuanBpjs::class)
@@ -117,7 +117,7 @@ class ListBantuanBpjs extends ListRecords
                 ->icon('heroicon-o-arrow-up-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                ->disabled($this->enableInputLimitDate())
                 ->successRedirectUrl(route('filament.admin.resources.program-bpjs.index'))
                 ->modalWidth('md'),
 

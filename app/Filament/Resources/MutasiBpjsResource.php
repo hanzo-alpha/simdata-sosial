@@ -8,6 +8,7 @@ use App\Enums\AlasanEnum;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
 use App\Models\PesertaBpjs;
+use App\Traits\HasInputDateLimit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -102,6 +103,15 @@ final class MutasiBpjsResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada mutasi BPJS')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah Mutasi BPJS')
+                    ->icon('heroicon-m-plus')
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('peserta.nama_lengkap')
                     ->label('Nama Peserta BPJS')
