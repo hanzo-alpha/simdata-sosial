@@ -58,7 +58,7 @@ final class EditBantuanRastra extends EditRecord
                                         'app.kodekab',
                                         config('custom.default.kodekab'),
                                     ));
-                                if (!$kab) {
+                                if ( ! $kab) {
                                     return Kecamatan::where('kabupaten_code', setting(
                                         'app.kodekab',
                                         config('custom.default.kodekab'),

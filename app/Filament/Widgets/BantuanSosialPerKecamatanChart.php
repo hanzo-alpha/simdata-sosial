@@ -30,7 +30,7 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
     protected static ?string $pollingInterval = '30s';
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
-//    protected int|string|array $columnSpan = 'full';
+    //    protected int|string|array $columnSpan = 'full';
 
     protected function getFormSchema(): array
     {

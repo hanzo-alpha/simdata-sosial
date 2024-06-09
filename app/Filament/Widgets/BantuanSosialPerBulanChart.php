@@ -80,8 +80,8 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
 
     protected function queryChart(string|int $model, $kodekel, array $filters): int|string|array|Builder|Collection
     {
-        $bulan = !empty($filters['bulan']) ? Carbon::parse($filters['bulan'])->month : 0;
-        $kodekel = !empty($kodekel) ? Carbon::parse($kodekel) : today();
+        $bulan = ! empty($filters['bulan']) ? Carbon::parse($filters['bulan'])->month : 0;
+        $kodekel = ! empty($kodekel) ? Carbon::parse($kodekel) : today();
         $model = match ((int) $model) {
             1 => BantuanPkh::class,
             2 => BantuanBpnt::class,
@@ -90,7 +90,7 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
             5 => BantuanRastra::class,
         };
 
-//        dd($bulan, $kodekel);
+        //        dd($bulan, $kodekel);
 
         return $model::query()
             ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
@@ -149,7 +149,7 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
             $results[$jenisBantuan->id][$name] = $this->queryChart($jenisBantuan->id, $code, $filters);
         }
 
-//        dd($results);
+        //        dd($results);
 
         $cTipe = auth()->user()->instansi_id ? 'bar' : $filters['cTipe'];
         $cTipeOpt = (bool) auth()->user()->instansi_id;
