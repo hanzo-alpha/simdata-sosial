@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PesertaBpjsResource\Pages\ManagePesertaBpjs;
+use App\Imports\ImportPesertaBpjs;
 use App\Models\PesertaBpjs;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Maatwebsite\Excel\Facades\Excel;
 
 final class PesertaBpjsResource extends Resource
 {
@@ -35,7 +39,6 @@ final class PesertaBpjsResource extends Resource
                     ->label('Impor')
                     ->hiddenLabel()
                     ->columnSpanFull()
-                    ->preserveFilenames()
                     ->previewable(false)
                     ->directory('upload')
                     ->maxSize(5120)
@@ -76,8 +79,28 @@ final class PesertaBpjsResource extends Resource
             ->emptyStateHeading('Belum ada peserta BPJS')
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Tambah')
-                    ->icon('heroicon-m-plus')
+                    ->label('Unggah Data')
+                    ->modalHeading('Unggah Data Peserta BPJS')
+                    ->modalDescription('Unggah Peserta BPJS ke database')
+                    ->modalSubmitActionLabel('Unggah')
+                    ->modalIcon('heroicon-o-arrow-down-tray')
+                    ->createAnother(false)
+                    ->action(function (array $data): void {
+                        $deleteAll = PesertaBpjs::query()->delete();
+                        if ($deleteAll) {
+                            Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
+                            Notification::make()
+                                ->title('Data Peserta BPJS sedang diimpor secara background')
+                                ->info()
+                                ->sendToDatabase(auth()->user());
+                        }
+                    })
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->modalAlignment(Alignment::Center)
+                    ->closeModalByClickingAway(false)
+                    ->successRedirectUrl(route('filament.admin.resources.peserta-bpjs.index'))
+                    ->modalWidth('lg')
                     ->button(),
             ])
             ->columns([

@@ -10,6 +10,7 @@ use App\Filament\Resources\BantuanPpksResource;
 use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
 use App\Models\TipePpks;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
@@ -19,6 +20,8 @@ use Str;
 
 final class ListBantuanPpks extends ListRecords
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanPpksResource::class;
 
     public function getTabs(): array
@@ -63,7 +66,7 @@ final class ListBantuanPpks extends ListRecords
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->exporter(BantuanPpksExporter::class)
-                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
+                ->disabled($this->enableInputLimitDate()),
 
             Actions\ImportAction::make()
                 ->label('Upload CSV')
@@ -74,11 +77,11 @@ final class ListBantuanPpks extends ListRecords
                     'updateExisting' => true,
                 ])
                 ->closeModalByClickingAway(false)
-                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
+                ->disabled($this->enableInputLimitDate()),
 
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
+                ->disabled($this->enableInputLimitDate()),
 
         ];
     }
