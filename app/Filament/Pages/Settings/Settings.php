@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Settings;
 
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Closure;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -95,6 +96,8 @@ class Settings extends BaseSettings
                                         ->label('Angka Kemiskinan'),
                                     TextInput::make('app.angka_kemiskinan_persen')
                                         ->label('Angka Kemiskinan (%)'),
+                                    ColorPicker::make('app.warna_kemiskinan')
+                                        ->label('Warna Angka Kemiskinan'),
                                     DatePicker::make('app.batas_tgl_input')
                                         ->label('Batas Tanggal Penginputan Data')
                                         ->date()

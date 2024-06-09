@@ -121,7 +121,7 @@ class BantuanChart extends ApexChartWidget
 
         $results[] = (int) setting('app.angka_kemiskinan') ?? 0;
         $labels[] = 'ANGKA KEMISKINAN';
-        $colors[] = '#1aa3b2';
+        $colors[] = setting('app.warna_kemiskinan', '#1aa3b2');
 
         return [
             'data' => $results,
