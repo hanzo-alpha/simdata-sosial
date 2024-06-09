@@ -26,8 +26,9 @@ class BantuanChart extends ApexChartWidget
      * @var string|null
      */
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
-    protected static ?int $contentHeight = 400;
+    protected static ?int $contentHeight = 500;
     protected static bool $deferLoading = true;
+    protected static ?string $pollingInterval = '30s';
     protected static ?int $sort = 4;
 
     protected function getOptions(): array
@@ -35,7 +36,7 @@ class BantuanChart extends ApexChartWidget
         return [
             'chart' => [
                 'type' => 'donut',
-                'height' => 380,
+                'height' => 480,
                 'toolbar' => [
                     'show' => false,
                 ],

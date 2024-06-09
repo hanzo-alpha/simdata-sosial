@@ -27,6 +27,8 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
     protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
     protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
+    protected static bool $deferLoading = true;
+    protected static ?string $pollingInterval = '30s';
     protected static ?int $sort = 2;
     protected int|string|array $columnSpan = 'full';
 
