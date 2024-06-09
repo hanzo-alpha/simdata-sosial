@@ -28,7 +28,7 @@ class ManagePenggantiRastra extends ManageRecords
                     $bantuanRastraId = $data['bantuan_rastra_id'];
                     $bantuanRastra = BantuanRastra::find($bantuanRastraId);
                     $bantuanRastra->status_rastra = StatusRastra::PENGGANTI;
-//                    $bantuanRastra->status_rastra = StatusRastra::PENGGANTI;
+                    //                    $bantuanRastra->status_rastra = StatusRastra::PENGGANTI;
                     $bantuanRastra->save();
 
                     return $model::create($data);
