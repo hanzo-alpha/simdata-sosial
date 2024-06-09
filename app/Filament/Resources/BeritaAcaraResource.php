@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BeritaAcaraResource\Pages;
+use App\Models\BantuanRastra;
 use App\Models\BeritaAcara;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -49,16 +50,19 @@ class BeritaAcaraResource extends Resource
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
                     ->sortable()
+                    ->alignCenter()
                     ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->sortable()
+                    ->alignCenter()
                     ->toggleable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('itemBantuan.nama_barang')
                     ->label('Item Bantuan')
                     ->searchable()
+                    ->alignCenter()
                     ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('penandatangan.nama_penandatangan')
@@ -68,6 +72,15 @@ class BeritaAcaraResource extends Resource
                 Tables\Columns\TextColumn::make('keterangan')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('bantuan_rastra_ids')
+                    ->label('Jumlah KPM')
+                    ->toggleable()
+                    ->copyable()
+                    ->alignCenter()
+                    ->formatStateUsing(function ($state) {
+                        $ids = explode(',', $state);
+                        return BantuanRastra::whereIn('id', $ids)->count() . ' Orang';
+                    }),
                 Tables\Columns\TextColumn::make('upload_ba')
                     ->label('Berita Acara'),
             ])

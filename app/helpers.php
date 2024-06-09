@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 if ( ! function_exists('date_format')) {
     function date_format($date, $format): string
@@ -63,6 +64,13 @@ if ( ! function_exists('getModelList')) {
         }
 
         return $modelList;
+    }
+}
+
+if ( ! function_exists('convertNameBasedOnModelName')) {
+    function convertNameBasedOnModelName(Stringable|string $name): Stringable|string
+    {
+        return Str::of($name)->prepend('Bantuan')->camel()->ucfirst();
     }
 }
 

@@ -2,15 +2,11 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\BantuanBpjs;
-use App\Models\BantuanBpnt;
-use App\Models\BantuanPkh;
-use App\Models\BantuanPpks;
-use App\Models\BantuanRastra;
+use App\Models\JenisBantuan;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
-use Filament\Support\RawJs;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
+use Str;
 
 class BantuanChart extends ApexChartWidget
 {
@@ -30,29 +26,23 @@ class BantuanChart extends ApexChartWidget
      * @var string|null
      */
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
-    protected static ?int $contentHeight = 400;
+    protected static ?int $contentHeight = 500;
     protected static bool $deferLoading = true;
-    protected static ?int $sort = 9;
+    protected static ?string $pollingInterval = '30s';
+    protected static ?int $sort = 4;
 
     protected function getOptions(): array
     {
         return [
             'chart' => [
                 'type' => 'donut',
-                'height' => 380,
+                'height' => 480,
                 'toolbar' => [
                     'show' => false,
                 ],
             ],
-            'series' => [
-                $this->renderBantuan()['rastra'],
-                $this->renderBantuan()['bpjs'],
-                $this->renderBantuan()['pkh'],
-                $this->renderBantuan()['bpnt'],
-                $this->renderBantuan()['ppks'],
-                $this->renderBantuan()['angka_kemiskinan'],
-            ],
-            'labels' => ['RASTRA', 'BPJS', 'PKH', 'BPNT', 'PPKS', 'ANGKA KEMISKINAN'],
+            'series' => $this->renderBantuan()['data'],
+            'labels' => $this->renderBantuan()['labels'],
             'plotOptions' => [
                 'radialBar' => [
                     'startAngle' => -140,
@@ -86,10 +76,10 @@ class BantuanChart extends ApexChartWidget
             'fill' => [
                 'type' => 'gradient',
                 'gradient' => [
-                    'shade' => 'dark',
+                    'shade' => 'light',
                     'type' => 'horizontal',
                     'shadeIntensity' => 0.5,
-                    'gradientToColors' => ['#f59e0b'],
+                    'gradientToColors' => $this->renderBantuan()['colors'],
                     'inverseColors' => true,
                     'opacityFrom' => 1,
                     'opacityTo' => 0.9,
@@ -105,81 +95,39 @@ class BantuanChart extends ApexChartWidget
                 ],
                 //                'position' => 'bottom',
             ],
-            //            'colors' => ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#5653FE']
+            'colors' => $this->renderBantuan()['colors'],
         ];
     }
 
-    protected function renderBantuan(): array
+    protected function renderBantuan(bool $withLabel = false): array
     {
+        $results = [];
+        $labels = [];
+        $colors = [];
+
+        $jenisBantuan = JenisBantuan::all();
+        foreach ($jenisBantuan as $item) {
+            $labels[] = $item->alias;
+            $colors[] = $item->warna;
+            if ($withLabel) {
+                $results[Str::lower($item->alias)] = $item->model_name::query()->count();
+            }
+
+            $results[] = $item->model_name::query()->count();
+        }
+
+        if ($withLabel) {
+            $results['kemiskinan'] = (int) setting('app.angka_kemiskinan') ?? 0;
+        }
+
+        $results[] = (int) setting('app.angka_kemiskinan') ?? 0;
+        $labels[] = 'ANGKA KEMISKINAN';
+        $colors[] = setting('app.warna_kemiskinan', '#1aa3b2');
+
         return [
-            'rastra' => BantuanRastra::count(),
-            'bpjs' => BantuanBpjs::count(),
-            'pkh' => BantuanPkh::count(),
-            'bpnt' => BantuanBpnt::count(),
-            'ppks' => BantuanPpks::count(),
-            'angka_kemiskinan' => (int) setting('app.angka_kemiskinan') ?? 0,
+            'data' => $results,
+            'labels' => $labels,
+            'colors' => $colors,
         ];
     }
-
-    //    protected function getFooter(): string|View
-    //    {
-    //        return new HtmlString('<p class="text-danger-500">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>');
-    //    }
-
-    //    protected function extraJsOptions(): ?RawJs
-    //    {
-    //        return RawJs::make(
-    //            <<<'JS'
-    //            {
-    //                // xaxis: {
-    //                //     labels: {
-    //                //         formatter: function (val, timestamp, opts) {
-    //                //             return val + ' KPM'
-    //                //         }
-    //                //     }
-    //                // },
-    //                yaxis: {
-    //                    labels: {
-    //                        formatter: function (val, index) {
-    //                            return val + ' KPM'
-    //                        }
-    //                    }
-    //                },
-    //                tooltip: {
-    //                    x: {
-    //                        formatter: function (val) {
-    //                            return val + ' KPM'
-    //                        }
-    //                    }
-    //                },
-    //                plotOptions: {
-    //                  pie: {
-    //                    // customScale: 1,
-    //                    offsetX: 0,
-    //                    offsetY: 0,
-    //                    dataLabels: {
-    //                       offset: -25,
-    //                       minAngleToShowLabel: -25
-    //                    },
-    //                    // donut: {
-    //                    //   labels: {
-    //                    //     show: true,
-    //                    //   }
-    //                    // }
-    //                  }
-    //                },
-    //                // dataLabels: {
-    //                //     enabled: true,
-    //                //     formatter: function (val, opt) {
-    //                //         const name = opt.w.globals.labels[opt.seriesIndex]
-    //                //         return [name, opt.w.globals.series[opt.seriesIndex] + ' KPM']
-    //                //     },
-    //                //     dropShadow: {
-    //                //         enabled: true
-    //                //     },
-    //                // }
-    //            }
-    //        JS,
-    //        );
-    //    }
 }

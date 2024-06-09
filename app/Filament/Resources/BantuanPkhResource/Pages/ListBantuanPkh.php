@@ -9,7 +9,6 @@ use App\Filament\Resources\BantuanPkhResource;
 use App\Imports\ImportBantuanPkh;
 use App\Models\BantuanPkh;
 use App\Models\Kelurahan;
-use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -23,8 +22,6 @@ use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 final class ListBantuanPkh extends ListRecords
 {
-    use HasInputDateLimit;
-
     protected static string $resource = BantuanPkhResource::class;
 
     public function getTabs(): array
@@ -66,7 +63,7 @@ final class ListBantuanPkh extends ListRecords
                     ExportBantuanPkh::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
                 ])
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
             Actions\Action::make('unggahData')
                 ->label('Upload XLS')
                 ->modalHeading('Unggah Data Bantuan PKH')
@@ -115,12 +112,13 @@ final class ListBantuanPkh extends ListRecords
                 ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate())
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
                 ->successRedirectUrl(route('filament.admin.resources.program-pkh.index'))
                 ->modalWidth('lg'),
             Actions\CreateAction::make()
                 ->label('Buat Baru')
-                ->icon('heroicon-o-plus'),
+                ->icon('heroicon-o-plus')
+                ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input'))),
         ];
     }
 

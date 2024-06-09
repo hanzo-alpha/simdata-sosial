@@ -97,7 +97,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('30s')
             ->favicon(asset('images/logos/favicon-white.png'))
             ->brandName(config('custom.app.name'))
-            ->brandLogo(asset('images/logos/svg/logo-no-background.svg'))
+            ->brandLogo(asset('images/logos/logo-white.png'))
             ->brandLogoHeight(config('custom.app.logo_height'))
             ->darkModeBrandLogo(asset('images/logos/logo-white.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

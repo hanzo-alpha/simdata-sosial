@@ -16,14 +16,15 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Get;
+use Filament\Resources\Pages\Page;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanRastra extends Model
 {
@@ -35,7 +36,7 @@ class BantuanRastra extends Model
 
     protected $guarded = [];
     protected $with = [
-        'kec','kel',
+        'kec','kel','penggantiRastra',
     ];
 
     protected $casts = [
@@ -68,11 +69,22 @@ class BantuanRastra extends Model
             TextInput::make('nokk')
                 ->label('No. Kartu Keluarga (KK)')
                 ->required()
-                ->maxLength(20),
+                ->live(debounce: 500)
+                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                    $livewire->validateOnly($component->getStatePath());
+                })
+                ->minLength(16)
+                ->maxLength(16),
             TextInput::make('nik')
-                ->label('N I K')
+                ->label('No. Induk Kependudukan (NIK)')
                 ->required()
-                ->maxLength(20),
+                ->unique(ignoreRecord: true)
+                ->live(debounce: 500)
+                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                    $livewire->validateOnly($component->getStatePath());
+                })
+                ->minLength(16)
+                ->maxLength(16),
             TextInput::make('nama_lengkap')
                 ->label('Nama Lengkap')
                 ->required()
@@ -168,7 +180,7 @@ class BantuanRastra extends Model
                 ->live()
                 ->preload(),
 
-            Select::make('pengganti_rastra.keluarga_id')
+            Select::make('penggantiRastra.keluarga_id')
                 ->label('Keluarga Yang Diganti')
                 ->required()
                 ->options(self::query()
@@ -179,7 +191,7 @@ class BantuanRastra extends Model
                 ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->preload(),
 
-            Select::make('pengganti_rastra.alasan_dikeluarkan')
+            Select::make('penggantiRastra.alasan_dikeluarkan')
                 ->searchable()
                 ->options(AlasanEnum::class)
                 ->enum(AlasanEnum::class)
@@ -190,13 +202,12 @@ class BantuanRastra extends Model
                 ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->default(AlasanEnum::PINDAH),
 
-            ToggleButton::make('status_aktif')
+            ToggleButtons::make('status_aktif')
                 ->label('Status Aktif')
-                ->offColor('danger')
-                ->onColor('primary')
-                ->offLabel('Non Aktif')
-                ->onLabel('Aktif')
-                ->default(true),
+                ->enum(StatusAktif::class)
+                ->options(StatusAktif::class)
+                ->default(StatusAktif::AKTIF)
+                ->inline(),
         ];
     }
 
@@ -250,19 +261,14 @@ class BantuanRastra extends Model
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
-    public function alamat(): MorphOne
-    {
-        return $this->morphOne(Alamat::class, 'alamatable');
-    }
-
     public function mediaFoto(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
-    public function pengganti_rastra(): BelongsTo
+    public function penggantiRastra(): HasOne
     {
-        return $this->belongsTo(PenggantiRastra::class);
+        return $this->hasOne(PenggantiRastra::class);
     }
 
     protected static function booted(): void

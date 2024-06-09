@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AlasanEnum;
 use App\Enums\StatusAktif;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
@@ -11,9 +13,11 @@ use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -21,6 +25,7 @@ use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -56,6 +61,7 @@ class BantuanRastraResource extends Resource
                     ->label('No. KK')
                     ->alignCenter()
                     ->searchable()
+                    ->copyable()
                     ->summarize([
                         Tables\Columns\Summarizers\Count::make(),
                     ])
@@ -64,6 +70,7 @@ class BantuanRastraResource extends Resource
                     ->label('N I K')
                     ->alignCenter()
                     ->searchable()
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alamat')
@@ -183,54 +190,119 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->close(),
-                    //                    Tables\Actions\Action::make('Toggle Status Rastra')
-                    //                        ->icon('heroicon-s-arrow-path-rounded-square')
-                    //                        ->form([
-                    //                            //                            Select::make('pengganti_rastra.keluarga_id')
-                    //                            //                                ->label('Keluarga Yang Diganti')
-                    //                            //                                ->required()
-                    //                            //                                ->options(BantuanRastra::query()
-                    //                            //                                    ->where('status_rastra', StatusRastra::BARU)
-                    //                            //                                    ->pluck('nama_lengkap', 'id'))
-                    //                            //                                ->searchable(['nama_lengkap', 'nik', 'nokk'])
-                    //                            //                                ->lazy()
-                    //                            //                                ->preload(),
-                    //                            Select::make('pengganti_rastra.alasan_dikeluarkan')
-                    //                                ->searchable()
-                    //                                ->options(AlasanEnum::class)
-                    //                                ->enum(AlasanEnum::class)
-                    //                                ->native(false)
-                    //                                ->preload()
-                    //                                ->lazy()
-                    //                                ->required()
-                    //                                ->default(AlasanEnum::PINDAH),
-                    //                        ])
-                    //                        ->modalWidth(MaxWidth::Medium)
-                    //                        ->action(function ($record, array $data): void {
-                    //                            PenggantiRastra::create([
-                    //                                'keluarga_yang_diganti_id' => $record->id,
-                    //                                'bantuan_rastra_id' => $data['pengganti_rastra']['keluarga_id'],
-                    //                                'nik_pengganti' => $record->nik,
-                    //                                'nokk_pengganti' => $record->nokk,
-                    //                                'nama_pengganti' => $record->nama_lengkap,
-                    //                                'alamat_pengganti' => $record->alamat,
-                    //                                'alasan_dikeluarkan' => $data['pengganti_rastra']['alasan_dikeluarkan'],
-                    //                            ]);
-                    //
-                    //                            $record->status_rastra = match ($record->status_rastra) {
-                    //                                StatusRastra::BARU => StatusRastra::PENGGANTI,
-                    //                                StatusRastra::PENGGANTI => StatusRastra::BARU,
-                    //                            };
-                    //
-                    //                            $record->save();
-                    //                        })
-                    //                        ->after(function (): void {
-                    //                            Notification::make()
-                    //                                ->success()
-                    //                                ->title('Status Berhasil Diubah')
-                    //                                ->send();
-                    //                        })
-                    //                        ->close(),
+                    Tables\Actions\Action::make('penggantiRastra')
+                        ->label('Ganti KPM Baru')
+                        ->icon('heroicon-s-user-plus')
+                        ->form([
+                            Forms\Components\Grid::make()->schema([
+                                Forms\Components\TextInput::make('nokk')
+                                    ->label('No. KK Pengganti')
+                                    ->maxValue(16)
+                                    ->required(),
+                                Forms\Components\TextInput::make('nik')
+                                    ->label('NIK Pengganti')
+                                    ->required()
+                                    ->maxValue(16)
+                                    ->unique(ignoreRecord: true),
+                                Forms\Components\TextInput::make('nama_lengkap')
+                                    ->label('Nama Pengganti')
+                                    ->required(),
+                                Forms\Components\TextInput::make('alamat')
+                                    ->label('Alamat Pengganti')
+                                    ->nullable(),
+                                Select::make('kecamatan')
+                                    ->required()
+                                    ->searchable()
+                                    ->reactive()
+                                    ->options(function () {
+                                        $kab = Kecamatan::query()
+                                            ->where('kabupaten_code', setting(
+                                                'app.kodekab',
+                                                config('custom.default.kodekab'),
+                                            ));
+                                        if ( ! $kab) {
+                                            return Kecamatan::where('kabupaten_code', setting(
+                                                'app.kodekab',
+                                                config('custom.default.kodekab'),
+                                            ))
+                                                ->pluck('name', 'code');
+                                        }
+
+                                        return $kab->pluck('name', 'code');
+                                    })
+                                    ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+
+                                Select::make('kelurahan')
+                                    ->required()
+                                    ->options(function (callable $get) {
+                                        return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
+                                            'name',
+                                            'code',
+                                        );
+                                    })
+                                    ->reactive()
+                                    ->searchable(),
+                                Select::make('penggantiRastra.alasan_dikeluarkan')
+                                    ->searchable()
+                                    ->options(AlasanEnum::class)
+                                    ->enum(AlasanEnum::class)
+                                    ->native(false)
+                                    ->preload()
+                                    ->lazy()
+                                    ->required()
+                                    ->default(AlasanEnum::PINDAH),
+                                CuratorPicker::make('penggantiRastra.media_id')
+                                    ->label('Upload Berita Acara Pengganti')
+                                    ->relationship('beritaAcara', 'id')
+                                    ->buttonLabel('Tambah File')
+                                    ->required()
+                                    ->rules(['required'])
+                                    ->maxSize(2048),
+                            ])->columns(2),
+                        ])
+                        ->modalWidth(MaxWidth::FourExtraLarge)
+                        ->action(function ($record, array $data): void {
+                            $keluargaDigantiId = $record->id;
+
+                            $record->penggantiRastra()->updateOrCreate([
+                                'bantuan_rastra_id' => $keluargaDigantiId,
+                                'nik_pengganti' => $data['nik'],
+                                'nokk_pengganti' => $data['nokk'],
+                                'nama_pengganti' => $data['nama_lengkap'],
+                                'alamat_pengganti' => $data['alamat'],
+                                'alasan_dikeluarkan' => $data['penggantiRastra']['alasan_dikeluarkan'],
+                                'media_id' => $data['penggantiRastra']['media_id'],
+                            ], [
+                                'bantuan_rastra_id' => $record->id,
+                                'nik_pengganti' => $data['nik'],
+                                'nama_pengganti' => $data['nama_lengkap'],
+                            ]);
+
+                            $record->create([
+                                'nama_lengkap' => $data['nama_lengkap'],
+                                'nik' => $data['nik'],
+                                'nokk' => $data['nokk'],
+                                'alamat' => $data['alamat'],
+                                'kecamatan' => $data['kecamatan'],
+                                'kelurahan' => $data['kelurahan'],
+                                'status_rastra' => StatusRastra::BARU,
+                                'status_dtks' => StatusDtksEnum::DTKS,
+                                'status_verifikasi' => StatusVerifikasiEnum::VERIFIED,
+                                'status_aktif' => StatusAktif::AKTIF,
+                            ]);
+
+                            $record->status_rastra = StatusRastra::PENGGANTI;
+                            $record->status_aktif = StatusAktif::NONAKTIF;
+                            $record->save();
+
+                        })
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Status Berhasil Diubah')
+                                ->send();
+                        })
+                        ->close(),
                 ]),
             ])
             ->bulkActions([

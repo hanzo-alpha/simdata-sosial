@@ -28,8 +28,9 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
 
     protected static ?string $heading = 'Program Bantuan Sosial Per Kecamatan';
     protected static ?string $pollingInterval = '30s';
-    protected static ?int $sort = 2;
-    protected int|string|array $columnSpan = 'full';
+    protected static bool $deferLoading = true;
+    protected static ?int $sort = 3;
+    //    protected int|string|array $columnSpan = 'full';
 
     protected function getFormSchema(): array
     {

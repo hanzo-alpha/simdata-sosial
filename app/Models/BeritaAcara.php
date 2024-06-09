@@ -6,6 +6,7 @@ use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BeritaAcara extends Model
 {
@@ -16,6 +17,7 @@ class BeritaAcara extends Model
     protected $casts = [
         'tgl_ba' => 'date',
         'upload_ba' => 'array',
+        'bantuan_rastra_ids' => 'array',
     ];
 
     protected $with = [
@@ -27,9 +29,9 @@ class BeritaAcara extends Model
         return $this->belongsTo(Penandatangan::class);
     }
 
-    public function bantuan_rastra(): BelongsTo
+    public function bantuanRastra(): HasMany
     {
-        return $this->belongsTo(BantuanRastra::class);
+        return $this->hasMany(BantuanRastra::class);
     }
 
     public function itemBantuan(): BelongsToMany

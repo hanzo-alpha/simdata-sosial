@@ -2,6 +2,7 @@
 
 namespace App\Filament\Imports;
 
+use App\Enums\JabatanEnum;
 use App\Enums\StatusPenandatangan;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -11,6 +12,7 @@ use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Filament\Forms\Components\Checkbox;
+use Str;
 
 class PenandatanganImporter extends Importer
 {
@@ -51,6 +53,14 @@ class PenandatanganImporter extends Importer
                 ->rules(['max:255']),
             ImportColumn::make('jabatan')
                 ->requiredMapping()
+                ->fillRecordUsing(function ($record, string $state): void {
+                    $record->jabatan = match (Str::upper($state)) {
+                        'KEPALA DESA', 'default' => JabatanEnum::KEPALA_DESA,
+                        'SEKRETARIS DESA', 'SEKERTARIS DESA' => JabatanEnum::SEKRETARIS_DESA,
+                        'LURAH' => JabatanEnum::LURAH,
+                        'PJ. KEPALA DESA', 'PJ. KEPDES', 'PJ KEPALA DESA' => JabatanEnum::PEJABAT_SEMENTARA_KEPDES,
+                    };
+                })
                 ->rules(['required', 'max:255']),
             ImportColumn::make('jumlah_kpm')
                 ->requiredMapping()

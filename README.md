@@ -56,6 +56,10 @@ manfaat yang layak untuk mendapatkan bantuan dari pemerintah.
    php artisan shield:generate --all
     ````
 
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within RENO, please send an e-mail to Hanzo Alpha

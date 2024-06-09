@@ -6,10 +6,12 @@ namespace App\Models;
 
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BantuanBpnt extends Model
 {
     use HasWilayah;
+    use SoftDeletes;
 
     protected $table = 'bantuan_bpnt';
 

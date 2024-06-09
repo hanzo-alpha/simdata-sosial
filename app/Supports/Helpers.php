@@ -6,15 +6,14 @@ namespace App\Supports;
 
 use App\Enums\StatusAdminEnum;
 use App\Models\barang;
+use App\Models\BeritaAcara;
 use App\Models\PenyaluranBantuanPpks;
-use App\Models\PenyaluranBantuanRastra;
 use Illuminate\Support\Str;
 
 class Helpers
 {
-    public static function generateNoSuratBeritaAcara($sep = '/', $model = 'rastra'): string
+    public static function generateNoSuratBeritaAcara($model = 'rastra', $sep = '/'): string
     {
-        $model = ('rastra' === $model) ? PenyaluranBantuanRastra::class : PenyaluranBantuanPpks::class;
         $instansi = setting('app.alias_dinas', 'DINSOS');
         $judulNo  = setting('app.judul_no', 'BAST');
         $text = ('rastra' === $model) ? $judulNo . '-RASTRA' : $judulNo;
@@ -22,7 +21,8 @@ class Helpers
         $sep = setting('app.separator') ?? $sep;
         $bulan = convertToRoman(now()->month);
         $tahun = now()->year;
-        $max = $model::max('id') + 1;
+        $modelClass = ('rastra' === $model) ? BeritaAcara::class : PenyaluranBantuanPpks::class;
+        $max = $modelClass::max('id') + 1;
         $kodePpks = setting('app.no_ppks', '400.9') . $sep . setting('app.no_ba_ppks') . $sep . $text;
         $kodeAset = Str::padLeft($max, 4, $pad) . $sep . $text;
 
