@@ -368,6 +368,7 @@ class BantuanRastraResource extends Resource
             ->schema([
                 \Filament\Infolists\Components\Group::make([
                     \Filament\Infolists\Components\Section::make('Informasi Keluarga')
+                        ->icon('heroicon-o-user')
                         ->schema([
                             TextEntry::make('status_dtks')
                                 ->label('Status DTKS')
@@ -394,43 +395,55 @@ class BantuanRastraResource extends Resource
 
                         ])->columns(2),
                     \Filament\Infolists\Components\Section::make('Informasi Alamat')
+                        ->icon('heroicon-o-map')
                         ->schema([
                             TextEntry::make('alamat')
                                 ->label('Alamat')
                                 ->icon('heroicon-o-map-pin')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary')
+                                ->placeholder('Belum ada alamat')
                                 ->columnSpanFull(),
                             TextEntry::make('kec.name')
-                                ->label('Kecamatan'),
+                                ->label('Kecamatan')
+                                ->placeholder('Belum ada kecamatan'),
                             TextEntry::make('kel.name')
-                                ->label('Kelurahan'),
+                                ->label('Kelurahan')
+                                ->placeholder('Belum ada kelurahan'),
                             TextEntry::make('dusun')
-                                ->label('Dusun'),
+                                ->label('Dusun')
+                                ->placeholder('Belum ada dusun'),
                             TextEntry::make('no_rt')
                                 ->label('RT/RW')
+                                ->placeholder('Belum ada RT/RW')
                                 ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw),
                         ])->columns(2),
                 ])->columnSpan(2),
 
                 \Filament\Infolists\Components\Group::make([
-                    \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
+                    \Filament\Infolists\Components\Section::make('Informasi Status Penerima')
+                        ->icon('heroicon-o-lifebuoy')
                         ->schema([
                             TextEntry::make('status_verifikasi')
                                 ->label('Status Verifikasi')
+                                ->placeholder('Belum ada Status Verifikasi')
                                 ->badge(),
                             TextEntry::make('status_rastra')
                                 ->label('Status Rastra')
+                                ->placeholder('Belum ada Status Rastra')
                                 ->badge(),
                             TextEntry::make('status_aktif')
                                 ->label('Status Aktif')
+                                ->placeholder('Belum ada Status Aktif')
                                 ->badge(),
                         ])
                         ->columns(3),
                     \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
+                        ->icon('heroicon-o-photo')
                         ->schema([
                             ImageEntry::make('foto_ktp_kk')
                                 ->hiddenLabel()
+                                ->placeholder('Belum ada Foto KTP / KK')
                                 ->columnSpanFull()
                                 ->alignCenter()
                                 ->extraImgAttributes([

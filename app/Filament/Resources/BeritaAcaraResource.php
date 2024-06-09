@@ -155,7 +155,7 @@ class BeritaAcaraResource extends Resource
                             ->getOptionLabelFromRecordUsing(
                                 fn(
                                     Model $record,
-                                ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan} - {$record->kelurahan?->name}",
+                                ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan->value} - {$record->kelurahan?->name}",
                             )
                             ->allowHtml()
                             ->live(onBlur: true)
