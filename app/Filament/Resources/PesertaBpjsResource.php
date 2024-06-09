@@ -72,6 +72,14 @@ final class PesertaBpjsResource extends Resource
             ->deferLoading()
             ->poll()
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada peserta BPJS')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('nomor_kartu')
                     ->label('Nomor Kartu')

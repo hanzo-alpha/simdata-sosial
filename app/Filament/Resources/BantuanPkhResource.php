@@ -332,6 +332,14 @@ final class BantuanPkhResource extends Resource
             ->poll()
             ->deferLoading()
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada bantuan PKH')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')

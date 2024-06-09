@@ -84,24 +84,27 @@ class PenandatanganResource extends Resource
             ->deferLoading()
             ->poll()
             ->defaultSort('jabatan')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada penandatangan')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('kode_kecamatan')
                     ->label('Kecamatan')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
-//                    ->description(fn($record): string => 'Kec. '.Kecamatan::where('code',
-//                            $record->kode_kecamatan)->first()->name)
                     ->formatStateUsing(fn($state): string => Kecamatan::where('code', $state)->first()?->name ?? '-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kode_instansi')
                     ->label('Instansi')
                     ->sortable()
                     ->toggleable()
-//                    ->description(fn($record): string => 'Kec. '.Kecamatan::where('code',
-//                            $record->kode_kecamatan)->first()->name)
                     ->formatStateUsing(fn($state): string => Kelurahan::where('code', $state)->first()?->name ?? '-')
                     ->searchable(),
-
                 Tables\Columns\TextColumn::make('nip')
                     ->sortable()
                     ->toggleable()
@@ -111,7 +114,6 @@ class PenandatanganResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->searchable(),
-                //                    ->description(fn($record): string => $record->jabatan),
                 Tables\Columns\TextColumn::make('jabatan')
                     ->sortable()
                     ->toggleable()

@@ -60,6 +60,14 @@ class BantuanBpjsResource extends Resource
             ->poll()
             ->deferLoading()
             ->defaultSort('created_at', 'desc')
+            ->emptyStateIcon('heroicon-o-information-circle')
+            ->emptyStateHeading('Belum ada bantuan BPJS')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah')
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->columns([
                 BadgeableColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
