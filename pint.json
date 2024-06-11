@@ -12,7 +12,7 @@
             "spacing": "one"
         },
         "declare_parentheses": true,
-        "declare_strict_types": false,
+        "declare_strict_types": true,
         "explicit_string_variable": true,
         "final_class": false,
         "fully_qualified_strict_types": false,
