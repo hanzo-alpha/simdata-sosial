@@ -41,7 +41,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
@@ -250,65 +249,65 @@ class BantuanBpjsResource extends Resource
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
-//                Tables\Actions\Action::make('mutasi')
-//                    ->label('Mutasi')
-//                    ->icon('heroicon-s-arrows-up-down')
-//                    ->form([
-//                        Forms\Components\Grid::make()->schema([
-//                            Forms\Components\Select::make('mutasi.alasan_mutasi')
-//                                ->options(AlasanEnum::class)
-//                                ->required()
-//                                ->preload()
-//                                ->columnSpanFull()
-//                                ->lazy(),
-//                            Forms\Components\Textarea::make('mutasi.keterangan')
-//                                ->maxLength(65535)
-//                                ->autosize()
-//                                ->dehydrated()
-//                                ->columnSpanFull(),
-//                            ToggleButton::make('mutasi.status_mutasi')
-//                                ->label('Status Peserta')
-//                                ->offColor('danger')
-//                                ->onColor('primary')
-//                                ->offLabel('BATAL MUTASI')
-//                                ->onLabel('DI MUTASI')
-//                                ->columnSpanFull()
-//                                ->default(true),
-//                        ])
-//                            ->inlineLabel(),
-//                    ])
-//                    ->modalWidth(MaxWidth::TwoExtraLarge)
-//                    ->action(function ($record, array $data): void {
-//                        $bantuanBpjsId = $record->id;
-//
-//                        $record->mutasi()->updateOrCreate([
-//                            'bantuan_bpjs_id' => $bantuanBpjsId,
-//                            'nomor_kartu' => $record->nomor_kartu,
-//                            'nik' => $record->nik_tmt,
-//                            'nama_lengkap' => $record->nama_lengkap,
-//                            'alamat_lengkap' => $record->alamat,
-//                            'alasan_mutasi' => $data['mutasi']['alasan_mutasi'],
-//                            'keterangan' => $data['mutasi']['keterangan'],
-//                            'model_name' => BantuanBpjsResource::$model,
-//                            'status_mutasi' => $data['mutasi']['status_mutasi'],
-//                        ], [
-//                            'bantuan_bpjs_id' => $bantuanBpjsId,
-//                            'nik' => $record->nik_tmt,
-//                            'nama_lengkap' => $record->nama_lengkap,
-//                        ]);
-//
-//                        $record->is_mutasi = now();
-//                        $record->status_aktif = StatusAktif::NONAKTIF;
-//                        $record->save();
-//
-//                    })
-//                    ->after(function (): void {
-//                        Notification::make()
-//                            ->success()
-//                            ->title('KPM Berhasil dimutasi')
-//                            ->send();
-//                    })
-//                    ->close(),
+                //                Tables\Actions\Action::make('mutasi')
+                //                    ->label('Mutasi')
+                //                    ->icon('heroicon-s-arrows-up-down')
+                //                    ->form([
+                //                        Forms\Components\Grid::make()->schema([
+                //                            Forms\Components\Select::make('mutasi.alasan_mutasi')
+                //                                ->options(AlasanEnum::class)
+                //                                ->required()
+                //                                ->preload()
+                //                                ->columnSpanFull()
+                //                                ->lazy(),
+                //                            Forms\Components\Textarea::make('mutasi.keterangan')
+                //                                ->maxLength(65535)
+                //                                ->autosize()
+                //                                ->dehydrated()
+                //                                ->columnSpanFull(),
+                //                            ToggleButton::make('mutasi.status_mutasi')
+                //                                ->label('Status Peserta')
+                //                                ->offColor('danger')
+                //                                ->onColor('primary')
+                //                                ->offLabel('BATAL MUTASI')
+                //                                ->onLabel('DI MUTASI')
+                //                                ->columnSpanFull()
+                //                                ->default(true),
+                //                        ])
+                //                            ->inlineLabel(),
+                //                    ])
+                //                    ->modalWidth(MaxWidth::TwoExtraLarge)
+                //                    ->action(function ($record, array $data): void {
+                //                        $bantuanBpjsId = $record->id;
+                //
+                //                        $record->mutasi()->updateOrCreate([
+                //                            'bantuan_bpjs_id' => $bantuanBpjsId,
+                //                            'nomor_kartu' => $record->nomor_kartu,
+                //                            'nik' => $record->nik_tmt,
+                //                            'nama_lengkap' => $record->nama_lengkap,
+                //                            'alamat_lengkap' => $record->alamat,
+                //                            'alasan_mutasi' => $data['mutasi']['alasan_mutasi'],
+                //                            'keterangan' => $data['mutasi']['keterangan'],
+                //                            'model_name' => BantuanBpjsResource::$model,
+                //                            'status_mutasi' => $data['mutasi']['status_mutasi'],
+                //                        ], [
+                //                            'bantuan_bpjs_id' => $bantuanBpjsId,
+                //                            'nik' => $record->nik_tmt,
+                //                            'nama_lengkap' => $record->nama_lengkap,
+                //                        ]);
+                //
+                //                        $record->is_mutasi = now();
+                //                        $record->status_aktif = StatusAktif::NONAKTIF;
+                //                        $record->save();
+                //
+                //                    })
+                //                    ->after(function (): void {
+                //                        Notification::make()
+                //                            ->success()
+                //                            ->title('KPM Berhasil dimutasi')
+                //                            ->send();
+                //                    })
+                //                    ->close(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),

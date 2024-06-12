@@ -61,34 +61,34 @@ final class MutasiBpjsResource extends Resource
                     })
                     ->columnSpanFull(),
 
-//                Forms\Components\Select::make('bantuan_bpjs_id')
-//                    ->label('Nama Penerima')
-//                    ->relationship('bantuanBpjs', 'nama_lengkap')
-//                    ->live(onBlur: true)
-//                    ->required()
-//                    ->optionsLimit(20)
-//                    ->searchable(['nomor_kartu', 'nik_tmt', 'nama_lengkap'])
-//                    ->noSearchResultsMessage('Data Penerima BPJS tidak ditemukan')
-//                    ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
-//                    ->native(false)
-//                    ->getOptionLabelFromRecordUsing(fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: "
-//                        . $record->nik_tmt)
-//                    ->allowHtml()
-//                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
-//                        $peserta = BantuanBpjs::find($state);
-//                        if (isset($peserta) && $peserta->count() > 0) {
-//                            $set('nomor_kartu', $peserta->nomor_kartu);
-//                            $set('nik', $peserta->nik_tmt);
-//                            $set('nama_lengkap', $peserta->nama_lengkap);
-//                            $set('alamat_lengkap', $peserta->alamat);
-//                        } else {
-//                            $set('nomor_kartu', null);
-//                            $set('nik', null);
-//                            $set('nama_lengkap', null);
-//                            $set('alamat_lengkap', null);
-//                        }
-//                    })
-//                    ->columnSpanFull(),
+                //                Forms\Components\Select::make('bantuan_bpjs_id')
+                //                    ->label('Nama Penerima')
+                //                    ->relationship('bantuanBpjs', 'nama_lengkap')
+                //                    ->live(onBlur: true)
+                //                    ->required()
+                //                    ->optionsLimit(20)
+                //                    ->searchable(['nomor_kartu', 'nik_tmt', 'nama_lengkap'])
+                //                    ->noSearchResultsMessage('Data Penerima BPJS tidak ditemukan')
+                //                    ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
+                //                    ->native(false)
+                //                    ->getOptionLabelFromRecordUsing(fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: "
+                //                        . $record->nik_tmt)
+                //                    ->allowHtml()
+                //                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
+                //                        $peserta = BantuanBpjs::find($state);
+                //                        if (isset($peserta) && $peserta->count() > 0) {
+                //                            $set('nomor_kartu', $peserta->nomor_kartu);
+                //                            $set('nik', $peserta->nik_tmt);
+                //                            $set('nama_lengkap', $peserta->nama_lengkap);
+                //                            $set('alamat_lengkap', $peserta->alamat);
+                //                        } else {
+                //                            $set('nomor_kartu', null);
+                //                            $set('nik', null);
+                //                            $set('nama_lengkap', null);
+                //                            $set('alamat_lengkap', null);
+                //                        }
+                //                    })
+                //                    ->columnSpanFull(),
 
                 Forms\Components\TextInput::make('nomor_kartu')
                     ->disabled()

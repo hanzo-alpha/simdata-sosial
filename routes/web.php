@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\PdfController;
 use App\Livewire\Frontend\Index;
 use Illuminate\Support\Facades\Route;

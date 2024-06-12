@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Barang;
 use App\Models\BeritaAcara;
 use Illuminate\Database\Migrations\Migration;
