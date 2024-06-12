@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
+use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
@@ -30,11 +33,13 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -69,6 +74,7 @@ class BantuanBpjsResource extends Resource
                     ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
                     ->button(),
             ])
+            ->recordClasses(fn(Model $record) => null !== $record->is_mutasi ? 'border-s-2 border-orange-600 dark:border-orange-300' : null)
             ->columns([
                 BadgeableColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
@@ -156,14 +162,16 @@ class BantuanBpjsResource extends Resource
                     ->label('Tahun')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status_usulan')
-                    ->label('Status Usulan')
+                    ->label('Status Usulan BPJS')
                     ->sortable()
+                    ->formatStateUsing(fn($record) => $record->status_bpjs->value . ' - ' .
+                        $record->status_usulan->value)
                     ->toggleable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_bpjs')
                     ->label('Status BPJS')
                     ->sortable()
-                    ->toggleable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_aktif')
                     ->label('Status Aktif')
@@ -230,18 +238,100 @@ class BantuanBpjsResource extends Resource
                     ->label('Bulan')
                     ->options(list_bulan())
                     ->searchable(),
+                Tables\Filters\TernaryFilter::make('is_mutasi')
+                    ->label('Mutasi')
+                    ->placeholder('Semua')
+                    ->trueLabel('Hanya Mutasi')
+                    ->falseLabel('Tanpa Mutasi')
+                    ->queries(true: fn($query) => $query->mutasi(), false: fn($query) => $query->notMutasi()),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
+//                Tables\Actions\Action::make('mutasi')
+//                    ->label('Mutasi')
+//                    ->icon('heroicon-s-arrows-up-down')
+//                    ->form([
+//                        Forms\Components\Grid::make()->schema([
+//                            Forms\Components\Select::make('mutasi.alasan_mutasi')
+//                                ->options(AlasanEnum::class)
+//                                ->required()
+//                                ->preload()
+//                                ->columnSpanFull()
+//                                ->lazy(),
+//                            Forms\Components\Textarea::make('mutasi.keterangan')
+//                                ->maxLength(65535)
+//                                ->autosize()
+//                                ->dehydrated()
+//                                ->columnSpanFull(),
+//                            ToggleButton::make('mutasi.status_mutasi')
+//                                ->label('Status Peserta')
+//                                ->offColor('danger')
+//                                ->onColor('primary')
+//                                ->offLabel('BATAL MUTASI')
+//                                ->onLabel('DI MUTASI')
+//                                ->columnSpanFull()
+//                                ->default(true),
+//                        ])
+//                            ->inlineLabel(),
+//                    ])
+//                    ->modalWidth(MaxWidth::TwoExtraLarge)
+//                    ->action(function ($record, array $data): void {
+//                        $bantuanBpjsId = $record->id;
+//
+//                        $record->mutasi()->updateOrCreate([
+//                            'bantuan_bpjs_id' => $bantuanBpjsId,
+//                            'nomor_kartu' => $record->nomor_kartu,
+//                            'nik' => $record->nik_tmt,
+//                            'nama_lengkap' => $record->nama_lengkap,
+//                            'alamat_lengkap' => $record->alamat,
+//                            'alasan_mutasi' => $data['mutasi']['alasan_mutasi'],
+//                            'keterangan' => $data['mutasi']['keterangan'],
+//                            'model_name' => BantuanBpjsResource::$model,
+//                            'status_mutasi' => $data['mutasi']['status_mutasi'],
+//                        ], [
+//                            'bantuan_bpjs_id' => $bantuanBpjsId,
+//                            'nik' => $record->nik_tmt,
+//                            'nama_lengkap' => $record->nama_lengkap,
+//                        ]);
+//
+//                        $record->is_mutasi = now();
+//                        $record->status_aktif = StatusAktif::NONAKTIF;
+//                        $record->save();
+//
+//                    })
+//                    ->after(function (): void {
+//                        Notification::make()
+//                            ->success()
+//                            ->title('KPM Berhasil dimutasi')
+//                            ->send();
+//                    })
+//                    ->close(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
+                    Tables\Actions\Action::make('Toggle Aktif')
+                        ->icon('heroicon-s-arrow-path-rounded-square')
+                        ->action(function ($record): void {
+                            $record->status_aktif = match ($record->status_aktif) {
+                                StatusAktif::AKTIF => StatusAktif::NONAKTIF,
+                                StatusAktif::NONAKTIF => StatusAktif::AKTIF,
+                            };
+
+                            $record->save();
+                        })
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Status Berhasil Diubah')
+                                ->send();
+                        })
+                        ->close(),
                 ]),
             ])
             ->bulkActions([
@@ -303,7 +393,6 @@ class BantuanBpjsResource extends Resource
                                 ->unique(
                                     table: 'peserta_bpjs',
                                     column: 'nik',
-                                    //                                    modifyRuleUsing: fn(Unique $rule, $record) => dd($rule->where('nik')),
                                 )
                                 ->live(debounce: 500)
                                 ->afterStateUpdated(function (Page $livewire, TextInput $component): void {

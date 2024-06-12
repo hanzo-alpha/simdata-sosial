@@ -6,9 +6,9 @@ namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
+use App\Models\BantuanBpjs;
 use App\Models\MutasiBpjs;
 use App\Models\PesertaBpjs;
-use App\Traits\HasInputDateLimit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -43,9 +43,8 @@ final class MutasiBpjsResource extends Resource
                     ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
                     ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
                     ->native(false)
-                    ->getOptionLabelFromRecordUsing(fn(
-                        $record,
-                    ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
+                    ->getOptionLabelFromRecordUsing(fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: "
+                        . $record->nik)->allowHtml()
                     ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
                         $peserta = PesertaBpjs::find($state);
                         if (isset($peserta) && $peserta->count() > 0) {
@@ -61,6 +60,35 @@ final class MutasiBpjsResource extends Resource
                         }
                     })
                     ->columnSpanFull(),
+
+//                Forms\Components\Select::make('bantuan_bpjs_id')
+//                    ->label('Nama Penerima')
+//                    ->relationship('bantuanBpjs', 'nama_lengkap')
+//                    ->live(onBlur: true)
+//                    ->required()
+//                    ->optionsLimit(20)
+//                    ->searchable(['nomor_kartu', 'nik_tmt', 'nama_lengkap'])
+//                    ->noSearchResultsMessage('Data Penerima BPJS tidak ditemukan')
+//                    ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
+//                    ->native(false)
+//                    ->getOptionLabelFromRecordUsing(fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: "
+//                        . $record->nik_tmt)
+//                    ->allowHtml()
+//                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
+//                        $peserta = BantuanBpjs::find($state);
+//                        if (isset($peserta) && $peserta->count() > 0) {
+//                            $set('nomor_kartu', $peserta->nomor_kartu);
+//                            $set('nik', $peserta->nik_tmt);
+//                            $set('nama_lengkap', $peserta->nama_lengkap);
+//                            $set('alamat_lengkap', $peserta->alamat);
+//                        } else {
+//                            $set('nomor_kartu', null);
+//                            $set('nik', null);
+//                            $set('nama_lengkap', null);
+//                            $set('alamat_lengkap', null);
+//                        }
+//                    })
+//                    ->columnSpanFull(),
 
                 Forms\Components\TextInput::make('nomor_kartu')
                     ->disabled()
@@ -114,16 +142,19 @@ final class MutasiBpjsResource extends Resource
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('peserta.nama_lengkap')
-                    ->label('Nama Peserta BPJS')
+                    ->label('NIK')
                     ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nomor_kartu')
-                    ->label('Nomor Kartu')
-                    ->sortable()
+                    ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
                     ->label('NIK')
                     ->sortable()
+                    ->copyable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nomor_kartu')
+                    ->label('Nomor Kartu')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alasan_mutasi')
                     ->label('Alasan Mutasi')

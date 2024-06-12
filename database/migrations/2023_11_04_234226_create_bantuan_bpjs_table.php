@@ -43,6 +43,7 @@ return new class () extends Migration {
             $table->unsignedInteger('tahun')->nullable();
             $table->text('keterangan')->nullable();
             $table->json('foto_ktp')->nullable();
+            $table->timestamp('is_mutasi')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

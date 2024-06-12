@@ -11,7 +11,9 @@ use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Traits\HasWilayah;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class BantuanBpjs extends Model
@@ -35,5 +37,21 @@ final class BantuanBpjs extends Model
         'status_dtks' => StatusDtksEnum::class,
         'foto_ktp' => 'array',
         'alamat' => 'string',
+        'is_mutasi' => 'datetime',
     ];
+
+    public function mutasi(): HasOne
+    {
+        return $this->hasOne(MutasiBpjs::class, 'bantuan_bpjs_id', 'id');
+    }
+
+    public function scopeMutasi(Builder $query): Builder
+    {
+        return $query->whereNotNull('is_mutasi');
+    }
+
+    public function scopeNotMutasi(Builder $query): Builder
+    {
+        return $query->whereNull('is_mutasi');
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\AlasanEnum;
 use App\Enums\StatusAktif;
+use App\Enums\TipeMutasiEnum;
 use App\Models\PesertaBpjs;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,6 +19,7 @@ return new class () extends Migration {
                 ->constrained('peserta_bpjs')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->foreignId('bantuan_bpjs_id')->nullable();
             $table->string('nomor_kartu')->index()->nullable();
             $table->string('nik')->index()->nullable();
             $table->string('nama_lengkap')->index()->nullable();
@@ -25,6 +27,8 @@ return new class () extends Migration {
             $table->text('alamat_lengkap')->nullable();
             $table->text('keterangan')->nullable();
             $table->string('status_mutasi')->default(StatusAktif::NONAKTIF)->nullable();
+            $table->string('tipe_mutasi')->default(TipeMutasiEnum::PESERTA_BPJS)->nullable();
+            $table->string('model_name')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
