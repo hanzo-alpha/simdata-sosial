@@ -11,6 +11,7 @@ use App\Models\PesertaBpjs;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
@@ -33,6 +34,7 @@ class ManageMutasiBpjs extends ManageRecords
 
                     return $data;
                 })
+//                ->modalWidth(MaxWidth::FourExtraLarge)
                 ->closeModalByClickingAway(),
             ExportAction::make()
                 ->label('Ekspor XLS')

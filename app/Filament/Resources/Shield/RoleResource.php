@@ -338,7 +338,7 @@ class RoleResource extends Resource implements HasShieldPermissions
         $options = static::getWidgetOptions();
         $count = count($options);
 
-        return Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.widgets'))
+        return Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.Widgets'))
             ->visible(fn(): bool => (bool) Utils::isWidgetEntityEnabled() && $count > 0)
             ->badge($count)
             ->schema([

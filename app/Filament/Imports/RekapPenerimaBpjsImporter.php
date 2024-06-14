@@ -51,8 +51,7 @@ class RekapPenerimaBpjsImporter extends Importer
                         ->first();
 
                     $record->kelurahan = $kelurahan->code;
-                })
-                ->rules(['required', 'max:10']),
+                }),
             ImportColumn::make('bulan')
                 ->guess(['BULAN', 'PERIODE', 'PERIODE BULAN'])
                 ->requiredMapping()

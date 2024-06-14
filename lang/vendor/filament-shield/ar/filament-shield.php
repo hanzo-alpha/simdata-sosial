@@ -45,7 +45,7 @@ return [
 
     'section' => 'الوحدات',
     'resources' => 'المصادر',
-    'widgets' => 'الملحقات',
+    'Widgets' => 'الملحقات',
     'pages' => 'الصفحات',
     'custom' => 'أذونات مخصصة',
 

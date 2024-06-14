@@ -9,6 +9,7 @@ use App\Filament\Resources\BantuanBpntResource\Widgets\BantuanBpntOverview;
 use App\Filament\Resources\BantuanPkhResource\Widgets\BantuanPkhOverview;
 use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
+use App\Filament\Resources\RekapPenerimaBpjsResource\Widgets\RekapPenerimaBpjsOverview;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Kenepa\MultiWidget\MultiWidget;
@@ -19,7 +20,8 @@ class BantuanOverview extends MultiWidget
     use InteractsWithPageFilters;
 
     public array $widgets = [
-        BantuanBpjsOverview::class,
+//        BantuanBpjsOverview::class,
+        RekapPenerimaBpjsOverview::class,
         BantuanRastraOverview::class,
         BantuanPkhOverview::class,
         BantuanBpntOverview::class,

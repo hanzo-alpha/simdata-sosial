@@ -45,7 +45,7 @@ return [
 
     'section' => 'Entity',
     'resources' => 'Zdroje',
-    'widgets' => 'Widgety',
+    'Widgets' => 'Widgety',
     'pages' => 'Stránky',
     'custom' => 'Vlastní oprávnění',
 

@@ -45,7 +45,7 @@ return [
 
     'section' => 'Thực thể',
     'resources' => 'Tài nguyên',
-    'widgets' => 'Widget',
+    'Widgets' => 'Widget',
     'pages' => 'Trang',
     'custom' => 'Quyền tùy chỉnh',
 

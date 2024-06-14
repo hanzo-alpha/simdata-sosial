@@ -45,7 +45,7 @@ return [
 
     'section' => 'Entitások',
     'resources' => 'Erőforrások',
-    'widgets' => 'Widgetek',
+    'Widgets' => 'Widgetek',
     'pages' => 'Oldalak',
     'custom' => 'Egyedi jogosultságok',
 

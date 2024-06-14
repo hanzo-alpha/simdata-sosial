@@ -23,6 +23,7 @@ return new class () extends Migration {
             $table->string('kelurahan')->nullable();
             $table->unsignedTinyInteger('bulan')->default(now()->month)->nullable();
             $table->unsignedInteger('tahun')->default(now()->year)->nullable();
+            $table->timestamp('is_mutasi')->nullable();
             $table->timestamps();
         });
     }

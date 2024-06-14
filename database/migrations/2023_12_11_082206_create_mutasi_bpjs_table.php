@@ -20,11 +20,7 @@ return new class () extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignId('bantuan_bpjs_id')->nullable();
-            $table->string('nomor_kartu')->index()->nullable();
-            $table->string('nik')->index()->nullable();
-            $table->string('nama_lengkap')->index()->nullable();
             $table->string('alasan_mutasi')->default(AlasanEnum::MAMPU)->nullable();
-            $table->text('alamat_lengkap')->nullable();
             $table->text('keterangan')->nullable();
             $table->string('status_mutasi')->default(StatusAktif::NONAKTIF)->nullable();
             $table->string('tipe_mutasi')->default(TipeMutasiEnum::PESERTA_BPJS)->nullable();

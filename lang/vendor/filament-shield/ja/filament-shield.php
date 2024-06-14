@@ -45,7 +45,7 @@ return [
 
     'section' => 'エンティティ',
     'resources' => 'リソース',
-    'widgets' => 'ウィジェット',
+    'Widgets' => 'ウィジェット',
     'pages' => 'ページ',
     'custom' => 'カスタムパーミッション',
 

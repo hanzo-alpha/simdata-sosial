@@ -24,8 +24,8 @@ enum TipeMutasiEnum: int implements HasColor, HasIcon, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::PESERTA_BPJS => 'success',
-            self::PROGRAM_BPJS => 'danger',
+            self::PESERTA_BPJS => 'primary',
+            self::PROGRAM_BPJS => 'warning',
         };
     }
 

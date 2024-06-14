@@ -22,7 +22,7 @@ if ( ! function_exists('cek_batas_input')) {
 }
 
 if ( ! function_exists('hitung_umur')) {
-    function hitung_umur($date, $format = false): string
+    function hitung_umur($date, $format = false): string|int
     {
         $date = $date instanceof Carbon ? $date->format('Y-m-d') : Carbon::parse($date)->format('Y-m-d');
 

@@ -128,12 +128,12 @@ class RekapPenerimaBpjsResource extends Resource
             ->defaultGroup('kecamatan')
             ->groups([
                 Tables\Grouping\Group::make('kecamatan')
-                    ->label('Kecamatan')
-                    ->titlePrefixedWithLabel(true)
+                    ->label('Kecamatan ')
+                    ->titlePrefixedWithLabel()
                     ->getTitleFromRecordUsing(fn(RekapPenerimaBpjs $record) => ucfirst($record->kec->name)),
                 Tables\Grouping\Group::make('bulan')
                     ->label('Bulan ')
-                    ->titlePrefixedWithLabel(true)
+                    ->titlePrefixedWithLabel()
                     ->getTitleFromRecordUsing(fn(RekapPenerimaBpjs $record) => bulan_to_string($record->bulan)),
             ])
             ->columns([
@@ -170,11 +170,11 @@ class RekapPenerimaBpjsResource extends Resource
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('jumlah')
-                    ->label('Total')
+                    ->label('Jumlah Penerima APBD')
                     ->numeric()
                     ->summarize([
-                        Tables\Columns\Summarizers\Sum::make(),
-                        Tables\Columns\Summarizers\Average::make(),
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->label('Total'),
                     ]),
             ])
             ->filters([

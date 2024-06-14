@@ -14,7 +14,7 @@ return new class () extends Migration {
             $table->string('provinsi', 2)->nullable();
             $table->string('kabupaten', 4)->nullable();
             $table->string('kecamatan', 7);
-            $table->string('kelurahan', 10);
+            $table->string('kelurahan', 20);
             $table->unsignedTinyInteger('bulan')->default(now()->month);
             $table->unsignedInteger('jumlah')->default(0);
             $table->timestamps();

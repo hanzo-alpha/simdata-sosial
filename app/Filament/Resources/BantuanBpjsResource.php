@@ -73,7 +73,7 @@ class BantuanBpjsResource extends Resource
                     ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
                     ->button(),
             ])
-            ->recordClasses(fn(Model $record) => null !== $record->is_mutasi ? 'border-s-2 border-orange-600 dark:border-orange-300' : null)
+//            ->recordClasses(fn(Model $record) => null !== $record->is_mutasi ? 'border-s-2 border-orange-600 dark:border-orange-300 bg-gray-200 dark:bg-white/5' : null)
             ->columns([
                 BadgeableColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')

@@ -49,7 +49,7 @@ return [
 
     'entities' => [
         'pages' => true,
-        'widgets' => true,
+        'Widgets' => true,
         'resources' => true,
         'custom_permissions' => true,
     ],
@@ -65,7 +65,7 @@ return [
             'MyProfilePage',
         ],
 
-        'widgets' => [
+        'Widgets' => [
             'AccountWidget',
             'FilamentInfoWidget',
             //            'BantuanOverview',

@@ -45,7 +45,7 @@ return [
 
     'section' => 'Entitas',
     'resources' => 'Sumber Daya',
-    'widgets' => 'Widget',
+    'Widgets' => 'Widget',
     'pages' => 'Halaman',
     'custom' => 'Izin Kustom',
 
