@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\JenisBantuan;
+use App\Models\RekapPenerimaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
@@ -107,7 +108,7 @@ class BantuanChart extends ApexChartWidget
         $labels = [];
         $colors = [];
 
-        $jenisBantuan = JenisBantuan::all();
+        $jenisBantuan = JenisBantuan::query()->whereNot('id', 3)->get();
         foreach ($jenisBantuan as $item) {
             $labels[] = $item->alias;
             $colors[] = $item->warna;
@@ -120,7 +121,12 @@ class BantuanChart extends ApexChartWidget
 
         if ($withLabel) {
             $results['kemiskinan'] = (int) setting('app.angka_kemiskinan') ?? 0;
+            $results['bpjs'] = (int) RekapPenerimaBpjs::query()->sum('jumlah') ?? 0;
         }
+
+        $results[] = (int) RekapPenerimaBpjs::query()->sum('jumlah');
+        $labels[] = 'BPJS';
+        $colors[] = '#f0d62a';
 
         $results[] = (int) setting('app.angka_kemiskinan') ?? 0;
         $labels[] = 'ANGKA KEMISKINAN';

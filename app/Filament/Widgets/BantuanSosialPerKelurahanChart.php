@@ -12,6 +12,7 @@ use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\RekapPenerimaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -39,7 +40,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         return [
             Select::make('program')
                 ->options(JenisBantuan::query()->pluck('alias', 'id'))
-                ->default(5)
+                ->default(3)
                 ->native(false),
             Select::make('kecamatan')
                 ->options(
@@ -89,17 +90,23 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         $model = match ((int) $model) {
             1 => BantuanPkh::class,
             2 => BantuanBpnt::class,
-            3 => BantuanBpjs::class,
+            3 => RekapPenerimaBpjs::class,
             4 => BantuanPpks::class,
             5 => BantuanRastra::class,
         };
 
-        return $model::query()
+        $query = $model::query()
             ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
             ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
             ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+            ->where('kelurahan', $kodekel);
+
+        if (RekapPenerimaBpjs::class === $model) {
+            return $query->clone()->sum('jumlah');
+        }
+
+        return  $query
             ->when($filters['program'], fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']))
-            ->where('kelurahan', $kodekel)
             ->count();
     }
 
@@ -111,7 +118,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             $model = match ((int) $item) {
                 1 => BantuanPkh::class,
                 2 => BantuanBpnt::class,
-                3 => BantuanBpjs::class,
+                3 => RekapPenerimaBpjs::class,
                 4 => BantuanPpks::class,
                 5 => BantuanRastra::class,
             };
