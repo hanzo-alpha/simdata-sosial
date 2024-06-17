@@ -6,7 +6,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
 use App\Enums\StatusMutasi;
-use App\Enums\TipeMutasiEnum;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
 use Filament\Forms;
@@ -14,6 +13,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 final class MutasiBpjsResource extends Resource
 {
@@ -32,25 +33,11 @@ final class MutasiBpjsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\ToggleButtons::make('tipe_mutasi')
-                    ->label('Tipe Mutasi')
-                    ->options(TipeMutasiEnum::class)
-                    ->inline()
-                    ->columnSpanFull()
-                    ->default(TipeMutasiEnum::PESERTA_BPJS)
-                    ->live()
-                    ->afterStateUpdated(function (Forms\Set $set, $state): mixed {
-                        return match ($state) {
-                            TipeMutasiEnum::PESERTA_BPJS => $set('peserta_bpjs_id', null),
-                            TipeMutasiEnum::PROGRAM_BPJS => $set('bantuan_bpjs_id', null),
-                        };
-                    }),
-
                 Forms\Components\Select::make('peserta_bpjs_id')
                     ->label('Nama Peserta BPJS')
                     ->relationship('peserta', 'nama_lengkap')
-                    ->live(onBlur: true)
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->optionsLimit(20)
                     ->searchable(['nomor_kartu', 'nik', 'nama_lengkap'])
                     ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
@@ -60,27 +47,6 @@ final class MutasiBpjsResource extends Resource
                         fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . $record->nik . ' | No. Kartu : ' . $record->nomor_kartu,
                     )
                     ->allowHtml()
-                    ->visible(fn(Forms\Get $get) => TipeMutasiEnum::PESERTA_BPJS === $get('tipe_mutasi'))
-                    ->columnSpanFull(),
-
-                Forms\Components\Select::make('bantuan_bpjs_id')
-                    ->label('Nama Program BPJS')
-                    ->relationship('bantuanBpjs', 'nama_lengkap')
-                    ->live(onBlur: true)
-                    ->required()
-                    ->optionsLimit(20)
-                    ->searchable(['nomor_kartu', 'nik_tmt', 'nama_lengkap'])
-                    ->noSearchResultsMessage('Data Program BPJS tidak ditemukan')
-                    ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
-                    ->native(false)
-                    ->getOptionLabelFromRecordUsing(
-                        fn(
-                            $record,
-                        ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . $record->nik_tmt . ' | No. Kartu : ' .
-                            $record->nomor_kartu,
-                    )
-                    ->allowHtml()
-                    ->visible(fn(Forms\Get $get) => TipeMutasiEnum::PROGRAM_BPJS === $get('tipe_mutasi'))
                     ->columnSpanFull(),
 
                 Forms\Components\Select::make('alasan_mutasi')
@@ -114,24 +80,11 @@ final class MutasiBpjsResource extends Resource
                     ->button(),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('tipe_mutasi')
-                    ->label('Tipe Mutasi')
-                    ->badge()
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('peserta.nama_lengkap')
                     ->label('Nama Peserta')
                     ->sortable()
                     ->copyable()
-//                    ->hidden(fn($record): bool => $record->tipe_mutasi)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('bantuanBpjs.nama_lengkap')
-                    ->label('Nama Peserta')
-                    ->sortable()
-                    ->copyable()
-//                    ->visible(fn(MutasiBpjs $record): bool => $record->tipe_mutasi)
-                    ->searchable(),
-
                 Tables\Columns\TextColumn::make('alasan_mutasi')
                     ->label('Alasan Mutasi')
                     ->badge()
@@ -142,17 +95,32 @@ final class MutasiBpjsResource extends Resource
                     ->badge()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->label('Keterangan')
+                    ->searchable(),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('status_mutasi')
+                    ->label('Status Mutasi')
+                    ->options(StatusMutasi::class)
+                    ->native(false)
+                    ->preload(),
+                Tables\Filters\TrashedFilter::make(),
             ])
+            ->hiddenFilterIndicators()
+            ->deferLoading()
+//            ->deferFilters()
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -162,5 +130,13 @@ final class MutasiBpjsResource extends Resource
         return [
             'index' => Pages\ManageMutasiBpjs::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

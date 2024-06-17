@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Models\BantuanBpjs;
 use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
@@ -82,6 +81,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             Toggle::make('chartGrid')
                 ->default(false)
                 ->label('Tampilkan Grid'),
+            Toggle::make('cLabel')
+                ->default(false)
+                ->label('Tampilkan Label'),
         ];
     }
 
@@ -192,21 +194,22 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                         'background' => 'transparent',
                         'strokeWidth' => '100%',
                     ],
-                    'dataLabels' => [
-                        'show' => true,
-                        'name' => [
-                            'show' => true,
-                            'offsetY' => -10,
-                            'fontWeight' => 600,
-                            'fontFamily' => 'inherit',
-                        ],
-                        'value' => [
-                            'show' => true,
-                            'fontWeight' => 600,
-                            'fontSize' => '24px',
-                            'fontFamily' => 'inherit',
-                        ],
-                    ],
+//                    'dataLabels' => [
+//                        'show' => true,
+//                        'name' => [
+//                            'show' => true,
+//                            'offsetY' => -10,
+//                            'fontWeight' => 600,
+//                            'fontFamily' => 'inherit',
+//                        ],
+//                        'value' => [
+//                            'show' => true,
+//                            'fontWeight' => 600,
+//                            'fontSize' => '24px',
+//                            'fontFamily' => 'inherit',
+//                            'colors' => '#03A9F4',
+//                        ],
+//                    ],
                 ],
             ],
             'xaxis' => [
@@ -239,9 +242,14 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                     'stops' => [0, 100],
                 ],
             ],
-
             'dataLabels' => [
-                'enabled' => true,
+                'enabled' => (bool) $filters['cLabel'],
+                'distributed' => (bool) $filters['cLabel'],
+                //                'textAnchor' => 'middle',
+                //                'style' => [
+                //                    'fontSize' => '14px',
+                //                    'colors' => '#03A9F4',
+                //                ],
             ],
             'grid' => [
                 'show' => $filters['chartGrid'],
@@ -249,9 +257,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             'tooltip' => [
                 'enabled' => true,
             ],
-            'stroke' => [
-                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
-            ],
+//            'stroke' => [
+//                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
+//            ],
             'colors' => $colors,
         ];
     }
