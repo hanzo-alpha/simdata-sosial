@@ -14,7 +14,6 @@ use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ManageRecords;
-use Filament\Support\Enums\MaxWidth;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
@@ -32,9 +31,11 @@ class ManageMutasiBpjs extends ManageRecords
         if (auth()->user()->hasRole(['super_admin', 'admin_bpjs', 'admin'])) {
             $bantuan = MutasiBpjs::query()->get();
             $bantuan->each(function ($item) use (&$results): void {
-                $results->put('semua', Tab::make()
-                    ->badge(MutasiBpjs::count())
-                    ->icon('heroicon-o-users')
+                $results->put(
+                    'semua',
+                    Tab::make()
+                        ->badge(MutasiBpjs::count())
+                        ->icon('heroicon-o-users'),
                 );
 
                 $results->put(Str::title(AlasanEnum::getSingleLabel($item->alasan_mutasi)), Tab::make()

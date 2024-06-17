@@ -14,6 +14,7 @@ use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
@@ -24,6 +25,7 @@ use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ListBantuanBpjs extends ListRecords
 {
+    use ExposesTableToWidgets;
     use HasInputDateLimit;
 
     protected static string $resource = BantuanBpjsResource::class;
@@ -59,12 +61,12 @@ class ListBantuanBpjs extends ListRecords
 
     }
 
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanBpjsOverview::class,
-    //        ];
-    //    }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BantuanBpjsOverview::class,
+        ];
+    }
 
     protected function getHeaderActions(): array
     {
