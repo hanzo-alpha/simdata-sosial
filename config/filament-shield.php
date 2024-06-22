@@ -49,7 +49,7 @@ return [
 
     'entities' => [
         'pages' => true,
-        'Widgets' => true,
+        'widgets' => true,
         'resources' => true,
         'custom_permissions' => true,
     ],
@@ -65,11 +65,18 @@ return [
             'MyProfilePage',
         ],
 
-        'Widgets' => [
+        'widgets' => [
             'AccountWidget',
             'FilamentInfoWidget',
-            //            'BantuanOverview',
-            //            'BantuanSosialPerKecamatanChart',
+//            'BantuanOverview',
+//            'BantuanSosialPerKecamatanChart',
+//            'BantuanSosialPerKelurahanChart',
+//            'BantuanBpjsPerMonthChart',
+//            'BantuanBpntPerMonthChart',
+//            'BantuanPkhPerMonthChart',
+//            'BantuanBpntPerMonthChart',
+//            'BantuanRastraPerMonthChart',
+//            'LatestUser',
         ],
 
         'resources' => [],

@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\PesertaBpjs;
 use App\Models\User;
+use App\Models\PesertaBpjs;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PesertaBpjsPolicy

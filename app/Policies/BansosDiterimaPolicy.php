@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\BansosDiterima;
 use App\Models\User;
+use App\Models\BansosDiterima;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BansosDiterimaPolicy

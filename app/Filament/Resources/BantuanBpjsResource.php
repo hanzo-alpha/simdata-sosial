@@ -15,6 +15,7 @@ use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Supports\Helpers;
 use Awcodes\FilamentBadgeableColumn\Components\Badge;
 use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Carbon\Carbon;
@@ -748,7 +749,9 @@ class BantuanBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        $admin = Helpers::getAdminRoles();
+
+        if (auth()->user()->hasAnyRole($admin + ['super_admin'])) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

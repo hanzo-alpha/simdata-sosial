@@ -48,7 +48,6 @@ final class PesertaBpjsResource extends Resource
                     ->acceptedFileTypes([
                         'application/vnd.ms-excel',
                         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        'text/csv',
                     ])
                     ->hiddenOn(['edit', 'view']),
 

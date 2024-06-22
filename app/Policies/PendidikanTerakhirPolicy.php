@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\PendidikanTerakhir;
 use App\Models\User;
+use App\Models\PendidikanTerakhir;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PendidikanTerakhirPolicy

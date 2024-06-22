@@ -7,7 +7,10 @@ namespace App\Supports;
 use App\Enums\StatusAdminEnum;
 use App\Models\barang;
 use App\Models\BeritaAcara;
+use App\Models\JenisBantuan;
+use App\Models\Kelurahan;
 use App\Models\PenyaluranBantuanPpks;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Helpers
@@ -15,7 +18,7 @@ class Helpers
     public static function generateNoSuratBeritaAcara($model = 'rastra', $sep = '/'): string
     {
         $instansi = setting('app.alias_dinas', 'DINSOS');
-        $judulNo  = setting('app.judul_no', 'BAST');
+        $judulNo = setting('app.judul_no', 'BAST');
         $text = ('rastra' === $model) ? $judulNo . '-RASTRA' : $judulNo;
         $pad = setting('app.pad') ?? '0';
         $sep = setting('app.separator') ?? $sep;
@@ -46,6 +49,13 @@ class Helpers
             StatusAdminEnum::ADMIN => StatusAdminEnum::ADMIN,
             StatusAdminEnum::OPERATOR => StatusAdminEnum::OPERATOR,
         };
+    }
+
+    public static function getAdminRoles(): array|Collection
+    {
+        return JenisBantuan::query()
+            ->get()
+            ->map(fn($item) => 'admin_' . Str::lower($item->alias))->toArray();
     }
 
     public static function generateNoInvoice($pemisah = null): string
