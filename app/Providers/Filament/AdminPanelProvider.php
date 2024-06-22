@@ -17,6 +17,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -101,7 +102,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName(config('custom.app.name'))
             ->brandLogo(asset('images/reno/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
-            ->darkModeBrandLogo(asset('images/reno/svg/logo-white.svg'))
+            ->darkModeBrandLogo(asset('images/reno/reno-dinsos-high-resolution-logo-white-transparent.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
@@ -144,6 +145,10 @@ class AdminPanelProvider extends PanelProvider
             ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
+            ->renderHook(
+                PanelsRenderHook::FOOTER,
+                fn() => view('footer'),
+            )
             ->resources([
                 config('filament-logger.activity_resource'),
             ])

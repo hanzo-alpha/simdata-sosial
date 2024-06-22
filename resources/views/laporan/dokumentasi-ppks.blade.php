@@ -11,7 +11,7 @@
             <p style="font-size: 12px">
                 <span><strong>Dokumentasi Penyaluran Bantuan Sosial</strong></span>
                 <br />
-                <span><strong>{{ $model->bantuan_ppks->nama_bantuan }} Tahun {{ now()->year }}</strong></span>
+                <span><strong>{{ $model->bantuan_ppks?->nama_bantuan }} Tahun {{ now()->year }}</strong></span>
             </p>
             <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>
             <table class="table">
@@ -19,32 +19,32 @@
                     <tr class="pb-0" style="margin-bottom: 0.1rem">
                         <th width="20%" style="text-align: right">NAMA</th>
                         <th width="10%" style="text-align: right">:</th>
-                        <td>{{ Str::upper($model->bantuan_ppks->nama_lengkap) }}</td>
+                        <td>{{ Str::upper($model->bantuan_ppks?->nama_lengkap) }}</td>
                     </tr>
                     <tr class="pb-0">
                         <th width="20%" style="text-align: right">NIK</th>
                         <th width="10%" style="text-align: right">:</th>
-                        <td>{{ $model->bantuan_ppks->nik }}</td>
+                        <td>{{ $model->bantuan_ppks?->nik }}</td>
                     </tr>
                     <tr class="pb-0">
                         <th width="20%" style="text-align: right">ALAMAT</th>
                         <th width="10%" style="text-align: right">:</th>
-                        <td>{{ Str::upper($model->bantuan_ppks->alamat) }}</td>
+                        <td>{{ Str::upper($model->bantuan_ppks?->alamat) }}</td>
                     </tr>
                     <tr class="pb-0">
                         <th width="20%" style="text-align: right">DESA/KEL</th>
                         <th width="10%" style="text-align: right">:</th>
-                        <td>{{ Str::upper($model->bantuan_ppks->kel->name) }}</td>
+                        <td>{{ Str::upper($model->bantuan_ppks?->kel->name) }}</td>
                     </tr>
                     <tr class="pb-0">
                         <th width="20%" style="text-align: right">KECAMATAN</th>
                         <th width="10%" style="text-align: right">:</th>
-                        <td>{{ Str::upper($model->bantuan_ppks->kec->name) }}</td>
+                        <td>{{ Str::upper($model->bantuan_ppks?->kec->name) }}</td>
                     </tr>
                     <tr class="pb-0">
                         <th width="20%" style="text-align: right">STATUS DTKS</th>
                         <th width="10%" style="text-align: right">:</th>
-                        <td>{{ $model->bantuan_ppks->status_dtks->getLabel() }}</td>
+                        <td>{{ $model->bantuan_ppks?->status_dtks->getLabel() }}</td>
                     </tr>
                 </tbody>
             </table>
