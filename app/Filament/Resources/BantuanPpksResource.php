@@ -22,6 +22,7 @@ use App\Models\Kelurahan;
 use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use App\Models\TipePpks;
+use App\Supports\Helpers;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
@@ -839,7 +840,11 @@ class BantuanPpksResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
+        if (auth()->user()->hasRole($sa)) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

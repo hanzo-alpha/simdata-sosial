@@ -145,10 +145,6 @@ class AdminPanelProvider extends PanelProvider
             ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
-            ->renderHook(
-                PanelsRenderHook::FOOTER,
-                fn() => view('footer'),
-            )
             ->resources([
                 config('filament-logger.activity_resource'),
             ])

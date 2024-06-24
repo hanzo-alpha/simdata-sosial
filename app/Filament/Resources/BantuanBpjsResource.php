@@ -750,8 +750,10 @@ class BantuanBpjsResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
 
-        if (auth()->user()->hasAnyRole($admin + ['super_admin'])) {
+        if (auth()->user()->hasRole($sa)) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
