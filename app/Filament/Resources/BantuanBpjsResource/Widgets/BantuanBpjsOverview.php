@@ -11,7 +11,6 @@ use App\Models\Kecamatan;
 use App\Models\PesertaBpjs;
 use App\Traits\HasGlobalFilters;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
-use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -45,39 +44,39 @@ class BantuanBpjsOverview extends BaseWidget
         $statistik = $this->getDataOverview($this->getFilters());
         $overview = $this->getOverview($statistik);
 
-//        $listKecamatan = Kecamatan::query()
-//            ->where('kabupaten_code', setting('app.kodekab'))
-//            ->pluck('name', 'code');
-//
-//        foreach ($listKecamatan as $code => $name) {
-//            $value = BantuanBpjs::query()
-//                ->select(['created_at', 'kecamatan', 'kelurahan'])
-//                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-//                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
-//                ->where('kecamatan', $code)
-//                ->count();
-//            $label = 'KPM BPJS Kec. ' . $name;
-//            $desc = 'Total BPJS Kec. ' . $name;
-//            $icon = 'user';
-//
-//            $results[] = $this->renderStats($value, $label, $desc, $icon);
-//        }
+        //        $listKecamatan = Kecamatan::query()
+        //            ->where('kabupaten_code', setting('app.kodekab'))
+        //            ->pluck('name', 'code');
+        //
+        //        foreach ($listKecamatan as $code => $name) {
+        //            $value = BantuanBpjs::query()
+        //                ->select(['created_at', 'kecamatan', 'kelurahan'])
+        //                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+        //                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+        //                ->where('kecamatan', $code)
+        //                ->count();
+        //            $label = 'KPM BPJS Kec. ' . $name;
+        //            $desc = 'Total BPJS Kec. ' . $name;
+        //            $icon = 'user';
+        //
+        //            $results[] = $this->renderStats($value, $label, $desc, $icon);
+        //        }
 
-//        $results['all'] = $this->renderStats(
-//            BantuanBpjs::count(),
-//            'Rekap KPM BPJS',
-//            'Total KPM Program BPJS Semua Kecamatan',
-//            'users',
-//            'primary',
-//        );
+        //        $results['all'] = $this->renderStats(
+        //            BantuanBpjs::count(),
+        //            'Rekap KPM BPJS',
+        //            'Total KPM Program BPJS Semua Kecamatan',
+        //            'users',
+        //            'primary',
+        //        );
 
-//        $results['pbi'] = $this->renderStats(
-//            PesertaBpjs::count(),
-//            'Rekap Data Peserta PBI',
-//            'Total KPM Peserta PBI BPJS',
-//            'users',
-//            'warning',
-//        );
+        //        $results['pbi'] = $this->renderStats(
+        //            PesertaBpjs::count(),
+        //            'Rekap Data Peserta PBI',
+        //            'Total KPM Peserta PBI BPJS',
+        //            'users',
+        //            'warning',
+        //        );
         if (count($overview) > 0) {
             return array_merge($overview, $results);
         }

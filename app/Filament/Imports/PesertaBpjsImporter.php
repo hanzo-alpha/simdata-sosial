@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Imports;
 
 use App\Models\PesertaBpjs;
@@ -47,16 +49,6 @@ class PesertaBpjsImporter extends Importer
         ];
     }
 
-    public function resolveRecord(): ?PesertaBpjs
-    {
-        // return PesertaBpjs::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
-        return new PesertaBpjs();
-    }
-
     public static function getCompletedNotificationBody(Import $import): string
     {
         $body = 'Your peserta bpjs import has completed and ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
@@ -66,5 +58,15 @@ class PesertaBpjsImporter extends Importer
         }
 
         return $body;
+    }
+
+    public function resolveRecord(): ?PesertaBpjs
+    {
+        // return PesertaBpjs::firstOrNew([
+        //     // Update existing records, matching them by `$this->data['column_name']`
+        //     'email' => $this->data['email'],
+        // ]);
+
+        return new PesertaBpjs();
     }
 }

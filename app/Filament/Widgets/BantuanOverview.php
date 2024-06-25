@@ -20,7 +20,7 @@ class BantuanOverview extends MultiWidget
     use InteractsWithPageFilters;
 
     public array $widgets = [
-//        BantuanBpjsOverview::class,
+        //        BantuanBpjsOverview::class,
         RekapPenerimaBpjsOverview::class,
         BantuanRastraOverview::class,
         BantuanPkhOverview::class,

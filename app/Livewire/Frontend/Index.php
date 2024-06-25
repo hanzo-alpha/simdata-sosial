@@ -9,7 +9,6 @@ use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
-use App\Models\PesertaBpjs;
 use App\Models\RekapPenerimaBpjs;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

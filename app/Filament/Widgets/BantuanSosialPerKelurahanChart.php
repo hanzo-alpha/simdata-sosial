@@ -194,22 +194,22 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                         'background' => 'transparent',
                         'strokeWidth' => '100%',
                     ],
-//                    'dataLabels' => [
-//                        'show' => true,
-//                        'name' => [
-//                            'show' => true,
-//                            'offsetY' => -10,
-//                            'fontWeight' => 600,
-//                            'fontFamily' => 'inherit',
-//                        ],
-//                        'value' => [
-//                            'show' => true,
-//                            'fontWeight' => 600,
-//                            'fontSize' => '24px',
-//                            'fontFamily' => 'inherit',
-//                            'colors' => '#03A9F4',
-//                        ],
-//                    ],
+                    //                    'dataLabels' => [
+                    //                        'show' => true,
+                    //                        'name' => [
+                    //                            'show' => true,
+                    //                            'offsetY' => -10,
+                    //                            'fontWeight' => 600,
+                    //                            'fontFamily' => 'inherit',
+                    //                        ],
+                    //                        'value' => [
+                    //                            'show' => true,
+                    //                            'fontWeight' => 600,
+                    //                            'fontSize' => '24px',
+                    //                            'fontFamily' => 'inherit',
+                    //                            'colors' => '#03A9F4',
+                    //                        ],
+                    //                    ],
                 ],
             ],
             'xaxis' => [
@@ -257,9 +257,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             'tooltip' => [
                 'enabled' => true,
             ],
-//            'stroke' => [
-//                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
-//            ],
+            //            'stroke' => [
+            //                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
+            //            ],
             'colors' => $colors,
         ];
     }
