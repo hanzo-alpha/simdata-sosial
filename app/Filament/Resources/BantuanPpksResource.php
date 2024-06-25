@@ -9,6 +9,7 @@ use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
+use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
@@ -156,9 +157,9 @@ class BantuanPpksResource extends Resource
                                 ->optionsLimit(15)
                                 ->preload(),
                             Select::make('status_kawin')
-                                ->enum(StatusKawinBpjsEnum::class)
-                                ->options(StatusKawinBpjsEnum::class)
-                                ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
+                                ->enum(StatusKawinUmumEnum::class)
+                                ->options(StatusKawinUmumEnum::class)
+                                ->default(StatusKawinUmumEnum::BELUM_KAWIN)
                                 ->preload(),
                             TextInput::make('penghasilan_rata_rata')
                                 ->prefix('Rp. ')

@@ -29,9 +29,6 @@ return new class () extends Migration {
             $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();
             $table->foreignIdFor(HubunganKeluarga::class)->constrained('hubungan_keluarga')->cascadeOnUpdate();
             $table->foreignIdFor(JenisPekerjaan::class)->constrained('jenis_pekerjaan')->cascadeOnUpdate();
-            $table->foreignIdFor(BansosDiterima::class)
-                ->nullable()
-                ->constrained('bansos_diterima')->cascadeOnUpdate();
             $table->tinyInteger('status_kawin')
                 ->nullable()
                 ->default(1);
@@ -53,6 +50,7 @@ return new class () extends Migration {
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('kriteria_ppks')->nullable();
             $table->integer('penghasilan_rata_rata')->default(0)->nullable();
+            $table->json('bansos_diterima_ids')->nullable();
             $table->json('kategori_tags_ppks')->nullable();
             $table->json('kriteria_tags_ppks')->nullable();
             $table->unsignedInteger('tahun_anggaran')->default(now()->year)->nullable();
