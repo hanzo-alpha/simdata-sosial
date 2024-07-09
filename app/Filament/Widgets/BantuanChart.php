@@ -9,7 +9,6 @@ use App\Models\RekapPenerimaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
-use Str;
 
 class BantuanChart extends ApexChartWidget
 {

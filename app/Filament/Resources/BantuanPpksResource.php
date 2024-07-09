@@ -8,7 +8,6 @@ use App\Enums\JenisAnggaranEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusDtksEnum;
-use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;

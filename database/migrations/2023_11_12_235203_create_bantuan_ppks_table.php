@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Enums\StatusDtksEnum;
-use App\Models\BansosDiterima;
 use App\Models\HubunganKeluarga;
 use App\Models\JenisPekerjaan;
 use App\Models\PendidikanTerakhir;

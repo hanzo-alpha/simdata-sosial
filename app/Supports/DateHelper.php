@@ -100,9 +100,9 @@ final class DateHelper
     {
         $date = is_string($date) ? $date : '';
         list($dd, $mm, $yyyy) = explode('/', $date);
-//        $date = explode('/', $date);
-//        $date = DateHelper::checkdate($date);
-//        $tgl = $date[0];
+        //        $date = explode('/', $date);
+        //        $date = DateHelper::checkdate($date);
+        //        $tgl = $date[0];
 
         return Carbon::createFromDate($yyyy, $mm, $dd)->timezone(config('app.timezone'))->locale('id')->format($format);
 
@@ -112,10 +112,10 @@ final class DateHelper
     {
         $error = false;
 
-//        list($dd, $mm, $yyyy) = explode('/', $date);
-//        if ( ! checkdate((int) $mm, (int) $dd, (int) $yyyy)) {
-//            $error = true;
-//        }
+        //        list($dd, $mm, $yyyy) = explode('/', $date);
+        //        if ( ! checkdate((int) $mm, (int) $dd, (int) $yyyy)) {
+        //            $error = true;
+        //        }
 
         if (preg_match('/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/', $date, $matches)) {
             if ( ! checkdate((int) $matches[2], (int) $matches[1], (int) $matches[3])) {
