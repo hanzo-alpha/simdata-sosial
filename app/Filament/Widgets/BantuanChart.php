@@ -102,7 +102,7 @@ class BantuanChart extends ApexChartWidget
         ];
     }
 
-    protected function renderBantuan(bool $withLabel = false): array
+    protected function renderBantuan(): array
     {
         $results = [];
         $labels = [];
@@ -112,16 +112,7 @@ class BantuanChart extends ApexChartWidget
         foreach ($jenisBantuan as $item) {
             $labels[] = $item->alias;
             $colors[] = $item->warna;
-            if ($withLabel) {
-                $results[Str::lower($item->alias)] = $item->model_name::query()->count();
-            }
-
             $results[] = $item->model_name::query()->count();
-        }
-
-        if ($withLabel) {
-            $results['kemiskinan'] = (int) setting('app.angka_kemiskinan') ?? 0;
-            $results['bpjs'] = (int) RekapPenerimaBpjs::query()->sum('jumlah') ?? 0;
         }
 
         $results[] = (int) RekapPenerimaBpjs::query()->sum('jumlah');
