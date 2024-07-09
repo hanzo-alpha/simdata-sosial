@@ -92,7 +92,7 @@ class BantuanPpksResource extends Resource
                                 ->minLength(16)
                                 ->maxLength(16),
                             TextInput::make('nik')
-                                ->label('N I K')
+                                ->label('No. Induk Kependudukan (NIK)')
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->live(debounce: 500)
@@ -417,7 +417,7 @@ class BantuanPpksResource extends Resource
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('nik')
-                    ->label('N I K')
+                    ->label('NIK')
                     ->copyable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nokk')

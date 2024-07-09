@@ -90,11 +90,4 @@ final class ListBantuanPpks extends ListRecords
     {
         return $query->fastPaginate($this->getTableRecordsPerPage());
     }
-
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanPpksOverview::class,
-    //        ];
-    //    }
 }

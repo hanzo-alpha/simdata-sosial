@@ -15,6 +15,7 @@ use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use App\Supports\DateHelper;
 use Filament\Actions\Imports\ImportColumn;
@@ -147,7 +148,7 @@ class BantuanPpksImporter extends Importer
                 ->guess(['KECAMATAN', 'KEC'])
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $kecamatan = Kecamatan::query()
-//                        ->whereIn('kabupaten_code', ['7308', '7312', '7371', '7604', '9171'])
+                        ->whereIn('kabupaten_code', ['7308', '7312', '7371', '7604', '9171'])
                         ->where('name', 'like', '%' . Str::upper($state) . '%')
                         ->first()?->code;
                     $record->kecamatan = $kecamatan ?? null;
@@ -166,10 +167,11 @@ class BantuanPpksImporter extends Importer
             ImportColumn::make('bansos_diterima_ids')
                 ->guess(['BANSOS DITERIMA', 'BANTUAN YANG PERNAH DITERIMA'])
                 ->requiredMapping()
-                ->array()
                 ->fillRecordUsing(function ($record, $state): void {
-                    //                    $bansos = BansosDiterima::where('nama_bansos', 'like', '%' . Str::upper($state) . '%')?->first();
-                    $record->bansos_diterima_ids = collect($state)->toArray();
+                    $bansos = BansosDiterima::query()
+                        ->where('nama_bansos', 'like', '%' . Str::upper($state) . '%')
+                        ->first();
+                    $record->bansos_diterima_ids = collect($bansos?->id)->toArray();
                 }),
             ImportColumn::make('tahun_anggaran')
                 ->guess(['TAHUN', 'TAHUN ANGGARAN'])
@@ -181,33 +183,18 @@ class BantuanPpksImporter extends Importer
                 ->guess(['Kategori PPKS', 'PPKS'])
                 ->requiredMapping()
                 ->relationship(resolveUsing: 'nama_tipe'),
-            //            ImportColumn::make('kriteria_ppks')
-            //                ->requiredMapping()
-            //                ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
-            //                    $kriteriaIds = collect();
-            //                    $kriteria = KriteriaPpks::query()
-            //                        ->where('nama_kriteria', 'like', '%' . $state . '%')
-            //                        ->first();
-            //                    $kriteriaIds->push($kriteria->id);
-            //                    $record->kriteria_ppks[] = json_encode($kriteriaIds->toArray());
-            //                }),
-            //            ImportColumn::make('kategori_tags_ppks')
-            //                ->guess(['KATEGORI TAGS PPKS', 'KRITERIA TAGS'])
-            //                ->fillRecordUsing(function ($record, $state): void {
-            //                    $record->kategori_tags_ppks = [$state];
-            //                })
-            //                ->requiredMapping(),
-            //            ImportColumn::make('kriteria_tags_ppks')
-            //                ->guess(['KRITERIA TAGS PPKS', 'KRITERIA TAGS'])
-            //                ->fillRecordUsing(function ($record, $state): void {
-            //                    $record->kriteria_tags_ppks = [$state];
-            //                })
-            //                ->requiredMapping(),
+            ImportColumn::make('kriteria_tags_ppks')
+                ->guess(['KRITERIA TAGS PPKS', 'KRITERIA TAGS', 'KRITERIA PPKS'])
+                ->fillRecordUsing(function ($record, $state): void {
+                    $record->kriteria_tags_ppks = [$state];
+                })
+                ->requiredMapping(),
             ImportColumn::make('status_rumah_tinggal')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
-                    $record->status_rumah_tinggal = (1 === (int) $state) ? StatusRumahEnum::MILIK_SENDIRI :
-                        StatusRumahEnum::MENUMPANG;
+                    $record->status_rumah_tinggal = (1 === (int) $state)
+                        ? StatusRumahEnum::MILIK_SENDIRI
+                        : StatusRumahEnum::MENUMPANG;
                 }),
             ImportColumn::make('status_kondisi_rumah')
                 ->requiredMapping()
