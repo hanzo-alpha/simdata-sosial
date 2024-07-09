@@ -13,6 +13,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
+use Filament\Support\RawJs;
 use Outerweb\FilamentSettings\Filament\Pages\Settings as BaseSettings;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
@@ -99,6 +100,7 @@ class Settings extends BaseSettings
                                         TextInput::make('app.angka_kemiskinan')
                                             ->label('Angka Kemiskinan'),
                                         TextInput::make('app.angka_kemiskinan_persen')
+                                            ->mask('9.99')
                                             ->label('Angka Kemiskinan (%)'),
                                         ColorPicker::make('app.warna_kemiskinan')
                                             ->label('Warna Angka Kemiskinan'),
@@ -123,8 +125,7 @@ class Settings extends BaseSettings
                                             ->label('Kop Instansi')
                                             ->default('DINAS SOSIAL'),
                                         TextInput::make('ba.kop_website')
-                                            ->label('Kop Website')
-                                            ->default('Website : https://dinsos.@soppengkab.go.id/, Email : dinsos01.soppeng@gmail.com'),
+                                            ->label('Kop Website'),
                                         TextInput::make('ba.kop_jalan')
                                             ->label('Kop Jalan')
                                             ->default('Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng'),
@@ -140,17 +141,13 @@ class Settings extends BaseSettings
                                     ->icon('heroicon-o-user')
                                     ->schema([
                                         TextInput::make('persuratan.nama_kepala_dinas')
-                                            ->label('Nama Kepala Dinas')
-                                            ->default('Hansen'),
+                                            ->label('Nama Kepala Dinas'),
                                         TextInput::make('persuratan.nip_kepala_dinas')
-                                            ->label('NIP Kepala Dinas')
-                                            ->default('Hansen'),
+                                            ->label('NIP Kepala Dinas'),
                                         TextInput::make('persuratan.jabatan')
-                                            ->label('Jabatan Kepala Dinas')
-                                            ->default('Hansen'),
+                                            ->label('Jabatan Kepala Dinas'),
                                         TextInput::make('persuratan.pangkat')
-                                            ->label('Pangkat Kepala Dinas')
-                                            ->default('Hansen'),
+                                            ->label('Pangkat Kepala Dinas'),
                                     ])->columns(2),
                             ]),
                             Group::make([
@@ -158,17 +155,13 @@ class Settings extends BaseSettings
                                     ->icon('heroicon-o-user')
                                     ->schema([
                                         TextInput::make('persuratan.nama_pps')
-                                            ->label('Nama Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Nama Pejabat'),
                                         TextInput::make('persuratan.nip_pps')
-                                            ->label('Nip Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Nip Pejabat'),
                                         TextInput::make('persuratan.jabatan_pps')
-                                            ->label('Jabatan Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Jabatan Pejabat'),
                                         TextInput::make('persuratan.pangkat_pps')
-                                            ->label('Pangkat Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Pangkat Pejabat'),
                                         TextInput::make('persuratan.instansi_pps')
                                             ->label('Instansi Pejabat')
                                             ->default('DINAS SOSIAL KAB. SOPPENG'),
@@ -177,17 +170,13 @@ class Settings extends BaseSettings
                                     ->icon('heroicon-o-user')
                                     ->schema([
                                         TextInput::make('persuratan.nama_ppk')
-                                            ->label('Nama Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Nama Pejabat'),
                                         TextInput::make('persuratan.nip_ppk')
-                                            ->label('Nip Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Nip Pejabat'),
                                         TextInput::make('persuratan.jabatan_ppk')
-                                            ->label('Jabatan Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Jabatan Pejabat'),
                                         TextInput::make('persuratan.pangkat_ppk')
-                                            ->label('Pangkat Pejabat')
-                                            ->default('Hansen'),
+                                            ->label('Pangkat Pejabat'),
                                         TextInput::make('persuratan.instansi_ppk')
                                             ->label('Instansi Pejabat')
                                             ->default('DINAS SOSIAL KAB. SOPPENG'),

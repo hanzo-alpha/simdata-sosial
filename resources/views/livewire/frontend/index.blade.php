@@ -221,7 +221,7 @@
                 </div>
                 <div class="text-center mt-4">
                     <h4 class="mb-3 text-5xl">
-                        {{ Number::percentage((int) setting('app.angka_kemiskinan_persen'), 2, locale: 'id')}}
+                        {{ Number::percentage((float) setting('app.angka_kemiskinan_persen'), 2, locale: 'id')}}
                     </h4>
                     <p class="text-slate-600">Angka Kemiskinan Kab. Soppeng</p>
                 </div>
