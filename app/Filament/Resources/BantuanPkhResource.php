@@ -23,6 +23,7 @@ use Filament\Forms\Get;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -68,10 +69,22 @@ final class BantuanPkhResource extends Resource
                                 ->options(StatusDtksEnum::class),
                             TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
-                                ->required(),
+                                ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->minLength(16)
+                                ->maxLength(16),
                             TextInput::make('nik_ktp')
                                 ->label('No. Induk Keluarga (NIK)')
-                                ->required(),
+                                ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->minLength(16)
+                                ->maxLength(16),
                             TextInput::make('nama_penerima')
                                 ->label('Nama Penerima')
                                 ->required(),
@@ -351,11 +364,13 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik_ktp')
                     ->label('N I K')
                     ->copyable()
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kode_wilayah')
                     ->label('Kode Wilayah')

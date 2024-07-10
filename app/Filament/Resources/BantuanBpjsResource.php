@@ -91,12 +91,14 @@ class BantuanBpjsResource extends Resource
                     ->label('N I K')
                     ->toggleable()
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk_tmt')
                     ->label('No. KK')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->copyable()
                     ->searchable(),
                 BadgeableColumn::make('tempat_lahir')

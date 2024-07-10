@@ -43,6 +43,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -418,15 +419,17 @@ class BantuanPpksResource extends Resource
                 Tables\Columns\TextColumn::make('nik')
                     ->label('NIK')
                     ->copyable()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12)),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->copyable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
-                    ->description(fn($record) => $record->nokk)
+                    ->description(fn($record) => Str::mask($record->nik, '*', 2, 12))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
                     ->label('Tempat Lahir')

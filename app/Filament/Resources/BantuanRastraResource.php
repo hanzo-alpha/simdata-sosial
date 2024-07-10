@@ -34,6 +34,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class BantuanRastraResource extends Resource
@@ -66,13 +67,14 @@ class BantuanRastraResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
-                    ->description(fn($record) => $record->nik)
+                    ->description(fn($record) => Str::mask($record->nik, '*', 2, 12))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->alignCenter()
                     ->searchable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->copyable()
                     ->summarize([
                         Tables\Columns\Summarizers\Count::make(),
@@ -84,6 +86,7 @@ class BantuanRastraResource extends Resource
                     ->searchable()
                     ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')

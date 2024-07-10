@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PenyaluranBantuanRastraResource extends Resource
@@ -57,11 +58,13 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->label('No. KK KPM')
                     ->searchable()
                     ->alignCenter()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nik')
                     ->label('NIK KPM')
                     ->searchable()
                     ->alignCenter()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tgl_penyerahan')
                     ->label('Penyerahan')
