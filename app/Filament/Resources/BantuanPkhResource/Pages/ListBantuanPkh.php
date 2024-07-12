@@ -29,6 +29,10 @@ final class ListBantuanPkh extends ListRecords
 
     public function getTabs(): array
     {
+        if (null !== auth()->user()->instansi_id) {
+            return [];
+        }
+
         $results = collect();
         $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
         $bantuan->each(function ($item, $key) use (&$results): void {

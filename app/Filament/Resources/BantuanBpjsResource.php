@@ -431,35 +431,39 @@ class BantuanBpjsResource extends Resource
                             Select::make('kecamatan')
                                 ->required()
                                 ->searchable()
-                                ->reactive()
+                                ->live()
+                                ->native(false)
                                 ->options(function () {
-                                    $kab = Kecamatan::query()->where(
-                                        'kabupaten_code',
-                                        setting('app.kodekab', config('custom.default.kodekab')),
-                                    );
-                                    if ( ! $kab) {
-                                        return Kecamatan::where(
-                                            'kabupaten_code',
-                                            setting('app.kodekab', config('custom.default.kodekab')),
-                                        )
-                                            ->pluck('name', 'code');
-                                    }
+//                                    $kel = null;
+//                                    if (null !== auth()->user()->instansi_id) {
+//                                        $kel = Kelurahan::query()
+//                                            ->where('code', auth()->user()->instansi_id)
+//                                            ->pluck('kecamatan_code')->toArray();
+//                                    }
 
-                                    return $kab->pluck('name', 'code');
+                                    $kab = Kecamatan::query()
+//                                        ->when($kel, fn(Builder $query) => $query->where('code', $kel[0]))
+                                        ->where(
+                                            'kabupaten_code',
+                                            setting('app.kodekab', setting('app.kodekab')),
+                                        );
+
+                                    return $kab->clone()->pluck('name', 'code');
                                 })
                                 ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                             Select::make('kelurahan')
                                 ->required()
                                 ->options(function (callable $get) {
-                                    return Kelurahan::query()->where(
-                                        'kecamatan_code',
-                                        $get('kecamatan'),
-                                    )?->pluck(
-                                        'name',
-                                        'code',
-                                    );
+                                    return Kelurahan::query()
+                                        ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
+                                            'code',
+                                            auth()->user()->instansi_id,
+                                        ))
+                                        ->where('kecamatan_code', $get('kecamatan'))
+                                        ->pluck('name', 'code');
                                 })
+                                ->native(false)
                                 ->reactive()
                                 ->searchable(),
 

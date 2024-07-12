@@ -244,7 +244,15 @@ class BantuanPpksResource extends Resource
                                         ->required()
                                         ->native(false)
                                         ->options(function (callable $get) {
-                                            return Kelurahan::query()->where(
+                                            return Kelurahan::query()
+                                                ->when(
+                                                    auth()->user()->instansi_id,
+                                                    fn(Builder $query) => $query->where(
+                                                        'code',
+                                                        auth()->user()->instansi_id,
+                                                    ),
+                                                )
+                                                ->where(
                                                 'kecamatan_code',
                                                 $get('kecamatan'),
                                             )?->pluck(

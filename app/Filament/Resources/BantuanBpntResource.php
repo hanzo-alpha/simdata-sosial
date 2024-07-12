@@ -102,7 +102,8 @@ class BantuanBpntResource extends Resource
                         Select::make('kecamatan')
                             ->nullable()
                             ->searchable()
-                            ->reactive()
+                            ->live()
+                            ->native(false)
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
                                 if ( ! $kab) {
@@ -120,15 +121,17 @@ class BantuanBpntResource extends Resource
                         Select::make('kelurahan')
                             ->nullable()
                             ->options(function (callable $get) {
-                                $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if ( ! $kel) {
-                                    return Kelurahan::where('kecamatan_code', '731211')
-                                        ->pluck('name', 'code');
-                                }
+                                $kel = Kelurahan::query()
+                                    ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
+                                        'code',
+                                        auth()->user()->instansi_id,
+                                    ))
+                                    ->where('kecamatan_code', $get('kecamatan'));
 
-                                return $kel->pluck('name', 'code');
+                                return $kel->clone()->pluck('name', 'code');
                             })
-                            ->reactive()
+                            ->live()
+                            ->native(false)
                             ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
                             ->afterStateUpdated(function (callable $set, $state): void {
