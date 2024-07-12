@@ -253,12 +253,12 @@ class BantuanPpksResource extends Resource
                                                     ),
                                                 )
                                                 ->where(
-                                                'kecamatan_code',
-                                                $get('kecamatan'),
-                                            )?->pluck(
-                                                'name',
-                                                'code',
-                                            );
+                                                    'kecamatan_code',
+                                                    $get('kecamatan'),
+                                                )?->pluck(
+                                                    'name',
+                                                    'code',
+                                                );
                                         })
                                         ->live()
                                         ->searchable(),

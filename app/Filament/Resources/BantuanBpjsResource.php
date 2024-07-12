@@ -434,12 +434,12 @@ class BantuanBpjsResource extends Resource
                                 ->live()
                                 ->native(false)
                                 ->options(function () {
-//                                    $kel = null;
-//                                    if (null !== auth()->user()->instansi_id) {
-//                                        $kel = Kelurahan::query()
-//                                            ->where('code', auth()->user()->instansi_id)
-//                                            ->pluck('kecamatan_code')->toArray();
-//                                    }
+                                    //                                    $kel = null;
+                                    //                                    if (null !== auth()->user()->instansi_id) {
+                                    //                                        $kel = Kelurahan::query()
+                                    //                                            ->where('code', auth()->user()->instansi_id)
+                                    //                                            ->pluck('kecamatan_code')->toArray();
+                                    //                                    }
 
                                     $kab = Kecamatan::query()
 //                                        ->when($kel, fn(Builder $query) => $query->where('code', $kel[0]))
