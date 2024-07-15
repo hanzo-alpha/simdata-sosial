@@ -8,6 +8,7 @@ use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
@@ -375,6 +376,10 @@ class BantuanBpjsResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
         return $form
             ->schema([
                 Forms\Components\Group::make([
@@ -514,18 +519,25 @@ class BantuanBpjsResource extends Resource
                                 ->live()
                                 ->preload(),
 
+                            Forms\Components\Select::make('status_dtks')
+                                ->label('Status DTKS')
+                                ->enum(StatusDtksEnum::class)
+                                ->options(StatusDtksEnum::class)
+                                ->default(StatusDtksEnum::DTKS)
+                                ->live()
+                                ->preload(),
+
                             Forms\Components\Select::make('status_usulan')
                                 ->label('Status Pengembalian Usulan Dari BPJS')
                                 ->enum(StatusUsulanEnum::class)
                                 ->options(StatusUsulanEnum::class)
                                 ->default(StatusUsulanEnum::ONPROGRESS)
                                 ->lazy()
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->visible(auth()->user()?->hasRole($sa))
                                 ->preload(),
 
                             Forms\Components\Textarea::make('keterangan')
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->visible(auth()->user()?->hasRole($sa))
                                 ->autosize(),
 
                             FileUpload::make('foto_ktp')
@@ -565,7 +577,7 @@ class BantuanBpjsResource extends Resource
                                 ->onColor(StatusAktif::AKTIF->getColor())
                                 ->offLabel(StatusAktif::NONAKTIF->getLabel())
                                 ->onLabel(StatusAktif::AKTIF->getLabel())
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->visible(auth()->user()?->hasRole($sa))
                                 ->default(0),
                         ]),
                 ])->columns(1),
