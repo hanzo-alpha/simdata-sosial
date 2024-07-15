@@ -230,24 +230,26 @@ class BantuanRastra extends Model
                 ->dehydrated(),
             FileUpload::make('foto_ktp_kk')
                 ->label('Unggah Foto KTP / KK')
-                ->getUploadedFileNameForStorageUsing(
-                    fn(
-                        TemporaryUploadedFile $file,
-                    ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                )
-                ->preserveFilenames()
+                ->image()
+                ->imageEditor()
                 ->reorderable()
-                ->appendFiles()
+                ->disk('public')
                 ->openable()
+                ->downloadable()
+                ->imageEditor()
+                ->imageEditorAspectRatios([
+                    null,
+                    '16:9',
+                    '4:3',
+                    '1:1',
+                ])
                 ->unique(ignoreRecord: true)
                 ->helperText('maks. 2MB')
-                ->maxFiles(3)
+                ->maxFiles(1)
                 ->maxSize(2048)
                 ->columnSpanFull()
                 ->imagePreviewHeight('250')
-                ->previewable(false)
-                ->image(),
+                ->previewable(true),
 
             CuratorPicker::make('media_id')
                 ->label('Upload Berita Acara')
