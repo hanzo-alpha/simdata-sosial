@@ -519,13 +519,13 @@ class BantuanBpjsResource extends Resource
                                 ->live()
                                 ->preload(),
 
-//                            Forms\Components\Select::make('status_dtks')
-//                                ->label('Status DTKS')
-//                                ->enum(StatusDtksEnum::class)
-//                                ->options(StatusDtksEnum::class)
-//                                ->default(StatusDtksEnum::DTKS)
-//                                ->live()
-//                                ->preload(),
+                            //                            Forms\Components\Select::make('status_dtks')
+                            //                                ->label('Status DTKS')
+                            //                                ->enum(StatusDtksEnum::class)
+                            //                                ->options(StatusDtksEnum::class)
+                            //                                ->default(StatusDtksEnum::DTKS)
+                            //                                ->live()
+                            //                                ->preload(),
 
                             Forms\Components\Select::make('status_usulan')
                                 ->label('Status Pengembalian Usulan Dari BPJS')
