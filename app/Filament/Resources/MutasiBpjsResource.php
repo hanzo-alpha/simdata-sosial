@@ -8,6 +8,7 @@ use App\Enums\AlasanEnum;
 use App\Enums\StatusMutasi;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
+use App\Supports\Helpers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -134,7 +135,21 @@ final class MutasiBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
+        if (auth()->user()->hasRole($sa)) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
         return parent::getEloquentQuery()
+            ->whereHas('peserta', function (Builder $query): void {
+                $query->where('kelurahan', auth()->user()->instansi_id);
+            })
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
