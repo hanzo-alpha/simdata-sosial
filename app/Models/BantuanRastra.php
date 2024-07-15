@@ -271,11 +271,6 @@ class BantuanRastra extends Model
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
-    public function mediaFoto(): BelongsTo
-    {
-        return $this->belongsTo(Media::class, 'media_id', 'id');
-    }
-
     public function penggantiRastra(): HasOne
     {
         return $this->hasOne(PenggantiRastra::class);

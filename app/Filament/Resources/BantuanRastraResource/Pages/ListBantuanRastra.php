@@ -91,4 +91,9 @@ class ListBantuanRastra extends ListRecords
     {
         return $query->fastPaginate($this->getTableRecordsPerPage());
     }
+
+    protected function getTableQuery(): Builder
+    {
+        return parent::getTableQuery()->with(['beritaAcara', 'attachments']);
+    }
 }

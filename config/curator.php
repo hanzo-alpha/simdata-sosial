@@ -27,6 +27,10 @@ return [
         'png',
         'avif',
     ],
+    'tabs' => [
+        'display_curation' => false,
+        'display_upload_new' => true,
+    ],
     'curation_presets' => [
         Awcodes\Curator\Curations\ThumbnailPreset::class,
     ],
@@ -35,6 +39,7 @@ return [
     'glide' => [
         'server' => Awcodes\Curator\Glide\DefaultServerFactory::class,
         'fallbacks' => [],
+        'route_path' => 'uploads',
     ],
     'image_crop_aspect_ratio' => null,
     'image_resize_mode' => null,
@@ -54,7 +59,7 @@ return [
         'navigation_count_badge' => false,
         'resource' => Awcodes\Curator\Resources\MediaResource::class,
     ],
-    'should_preserve_filenames' => true,
+    'should_preserve_filenames' => false,
     'should_register_navigation' => true,
     'visibility' => 'public',
 ];
