@@ -357,6 +357,10 @@ class BantuanRastraResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
         return $form
             ->schema([
                 Group::make()->schema([
@@ -371,8 +375,7 @@ class BantuanRastraResource extends Resource
                         ->schema(BantuanRastra::getStatusForm()),
 
                     Forms\Components\Section::make('Verifikasi')
-                        ->schema(BantuanRastra::getUploadForm())
-                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin'])),
+                        ->schema(BantuanRastra::getUploadForm()),
                 ])->columnSpan(1),
             ])->columns(3);
     }
