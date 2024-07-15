@@ -135,21 +135,7 @@ final class MutasiBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $admin = Helpers::getAdminRoles();
-        $sadmin = ['super_admin'];
-        $sa = array_merge($sadmin, $admin);
-
-        if (auth()->user()->hasRole($sa)) {
-            return parent::getEloquentQuery()
-                ->withoutGlobalScopes([
-                    SoftDeletingScope::class,
-                ]);
-        }
-
         return parent::getEloquentQuery()
-            ->whereHas('peserta', function (Builder $query): void {
-                $query->where('kelurahan', auth()->user()->instansi_id);
-            })
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
