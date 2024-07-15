@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\ServerFactory\ImagickServerFactory;
 use Awcodes\Curator\PathGenerators\UserPathGenerator;
 
 return [
@@ -37,7 +38,8 @@ return [
     'directory' => 'media',
     'disk' => env('FILAMENT_FILESYSTEM_DISK', 'public'),
     'glide' => [
-        'server' => Awcodes\Curator\Glide\DefaultServerFactory::class,
+//        'server' => Awcodes\Curator\Glide\DefaultServerFactory::class,
+        'server' => ImagickServerFactory::class,
         'fallbacks' => [],
         'route_path' => 'uploads',
     ],

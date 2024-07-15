@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
-        if( ! Schema::hasTable('media')) {
+        if ( ! Schema::hasTable('media')) {
             Schema::create(app(config('curator.model'))->getTable(), function (Blueprint $table): void {
                 $table->id();
                 $table->string('disk')->default('public');
