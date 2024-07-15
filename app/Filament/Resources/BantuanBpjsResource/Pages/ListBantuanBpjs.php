@@ -78,6 +78,7 @@ class ListBantuanBpjs extends ListRecords
             ExportAction::make()
                 ->label('Download')
                 ->color('success')
+                ->authorize('download')
                 ->exports([
                     ExportBantuanBpjs::make()
                         ->except(['foto_ktp','dusun','tahun','bulan','created_at', 'updated_at', 'deleted_at']),
@@ -86,6 +87,7 @@ class ListBantuanBpjs extends ListRecords
 
             Actions\Action::make('Upload')
                 ->model(BantuanBpjs::class)
+                ->authorize('upload')
                 ->label('Upload')
                 ->modalHeading('Unggah Bantuan BPJS')
                 ->modalDescription('Unggah Bantuan BPJS ke database')

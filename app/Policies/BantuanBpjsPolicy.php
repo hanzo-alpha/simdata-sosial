@@ -52,6 +52,16 @@ class BantuanBpjsPolicy
         return $user->can('delete_bantuan::bpjs');
     }
 
+    public function download(User $user): bool
+    {
+        return $user->can('download_bantuan::bpjs');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_bantuan::bpjs');
+    }
+
     /**
      * Determine whether the user can bulk delete.
      */
