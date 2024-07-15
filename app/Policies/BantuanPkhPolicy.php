@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\BantuanPkh;
 use App\Models\User;
+use App\Models\BantuanPkh;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BantuanPkhPolicy
@@ -106,5 +104,15 @@ class BantuanPkhPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_bantuan::pkh');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_bantuan::pkh');
     }
 }

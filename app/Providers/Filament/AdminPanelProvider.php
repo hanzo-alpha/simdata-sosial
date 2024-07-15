@@ -26,6 +26,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Kenepa\Banner\BannerPlugin;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
@@ -94,6 +95,13 @@ class AdminPanelProvider extends PanelProvider
                         Settings::class,
                     ]),
                 FilamentProgressbarPlugin::make(),
+                BannerPlugin::make()
+                    ->persistsBannersInDatabase()
+                    ->title('Pengaturan Pengumuman')
+                    ->subheading('Atur Pengumuman anda')
+                    ->navigationGroup('Pengaturan')
+                    ->navigationLabel('Pengumuman')
+                    ->bannerManagerAccessPermission('page_BannerManagerPage'),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')

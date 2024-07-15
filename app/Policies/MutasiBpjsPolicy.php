@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\MutasiBpjs;
 use App\Models\User;
+use App\Models\MutasiBpjs;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MutasiBpjsPolicy
@@ -106,5 +104,15 @@ class MutasiBpjsPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_mutasi::bpjs');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_mutasi::bpjs');
     }
 }

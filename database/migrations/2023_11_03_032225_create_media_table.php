@@ -28,6 +28,7 @@ return new class () extends Migration {
                 $table->text('caption')->nullable();
                 $table->text('exif')->nullable();
                 $table->longText('curations')->nullable();
+                $table->char('kelurahan', 10)->nullable();
                 $table->timestamps();
             });
         }

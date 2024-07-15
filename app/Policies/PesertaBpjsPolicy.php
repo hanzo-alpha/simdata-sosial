@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\PesertaBpjs;
 use App\Models\User;
+use App\Models\PesertaBpjs;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PesertaBpjsPolicy
@@ -106,5 +104,15 @@ class PesertaBpjsPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_peserta::bpjs');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_peserta::bpjs');
     }
 }

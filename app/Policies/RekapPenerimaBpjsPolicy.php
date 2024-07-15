@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
-use App\Models\RekapPenerimaBpjs;
 use App\Models\User;
+use App\Models\RekapPenerimaBpjs;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RekapPenerimaBpjsPolicy
@@ -106,5 +104,20 @@ class RekapPenerimaBpjsPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_rekap::penerima::bpjs');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_rekap::penerima::bpjs');
+    }
+
+    public function changeStatusRekap(User $user): bool
+    {
+        return $user->can('change_status_rekap::penerima::bpjs');
     }
 }

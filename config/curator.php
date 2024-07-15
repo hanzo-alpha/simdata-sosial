@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Awcodes\Curator\PathGenerators\UserPathGenerator;
+
 return [
     'accepted_file_types' => [
         'image/jpeg',
@@ -42,7 +44,7 @@ return [
     'max_size' => 5000,
     'model' => Awcodes\Curator\Models\Media::class,
     'min_size' => 0,
-    'path_generator' => null,
+    'path_generator' => UserPathGenerator::class,
     'resources' => [
         'label' => 'Media',
         'plural_label' => 'Media',

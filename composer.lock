@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bdbd9aa4a9e155265d22081c2f663dd",
+    "content-hash": "c922ea0d6997a753c66c817929b75774",
     "packages": [
         {
             "name": "akaunting/laravel-apexcharts",
@@ -3838,6 +3838,86 @@
                 "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.4.2"
             },
             "time": "2024-06-09T18:50:11+00:00"
+        },
+        {
+            "name": "kenepa/banner",
+            "version": "0.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenepa/banner.git",
+                "reference": "15e38362bcb9e4702bc29d70c9672e292c48c3e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenepa/banner/zipball/15e38362bcb9e4702bc29d70c9672e292c48c3e1",
+                "reference": "15e38362bcb9e4702bc29d70c9672e292c48c3e1",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.1",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "tightenco/duster": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kenepa\\Banner\\BannerServiceProvider"
+                    ],
+                    "aliases": {
+                        "Banner": "BannerManager"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kenepa\\Banner\\": "src/",
+                    "Kenepa\\Banner\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jehizkia",
+                    "email": "Jehizkia@users.noreply.github.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Displays a informative banner to users",
+            "homepage": "https://github.com/kenepa/banner",
+            "keywords": [
+                "Kenepa",
+                "banner",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/kenepa/banner/issues",
+                "source": "https://github.com/kenepa/banner"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kenepa",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-07-11T16:31:13+00:00"
         },
         {
             "name": "kenepa/multi-widget",
