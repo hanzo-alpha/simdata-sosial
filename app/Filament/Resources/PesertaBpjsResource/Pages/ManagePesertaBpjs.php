@@ -42,11 +42,17 @@ class ManagePesertaBpjs extends ManageRecords
                     $deleteAll = PesertaBpjs::query()->delete();
                     if ($deleteAll) {
                         Excel::queueImport(new ImportPesertaBpjs(), $data['attachment'], 'public');
-                        Notification::make()
-                            ->title('Data Peserta BPJS sedang diimpor secara background')
-                            ->info()
-                            ->sendToDatabase(auth()->user());
                     }
+                    Notification::make()
+                        ->title('Data Peserta BPJS sedang diimpor secara background')
+                        ->info()
+                        ->sendToDatabase(auth()->user());
+                })
+                ->successNotification(function (): void {
+                    Notification::make()
+                        ->title('Data Peserta BPJS berhasil diunggah')
+                        ->success()
+                        ->sendToDatabase(auth()->user());
                 })
                 ->icon('heroicon-o-arrow-down-tray')
                 ->disabled($this->enableInputLimitDate())

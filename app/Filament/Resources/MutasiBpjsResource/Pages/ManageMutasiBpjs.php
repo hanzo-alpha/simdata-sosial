@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\MutasiBpjsResource\Pages;
 
-use App\Enums\AlasanEnum;
+use App\Enums\AlasanBpjsEnum;
 use App\Enums\TipeMutasiEnum;
 use App\Exports\ExportMutasiBpjs;
 use App\Filament\Resources\MutasiBpjsResource;
@@ -38,10 +38,10 @@ class ManageMutasiBpjs extends ManageRecords
                         ->icon('heroicon-o-users'),
                 );
 
-                $results->put(Str::title(AlasanEnum::getSingleLabel($item->alasan_mutasi)), Tab::make()
-                    ->icon(AlasanEnum::getSingleIcon($item->alasan_mutasi))
+                $results->put(Str::title(AlasanBpjsEnum::getSingleLabel($item->alasan_mutasi)), Tab::make()
+                    ->icon(AlasanBpjsEnum::getSingleIcon($item->alasan_mutasi))
                     ->badge(MutasiBpjs::query()->where('alasan_mutasi', $item->alasan_mutasi)->count())
-                    ->badgeColor(AlasanEnum::getSingleColor($item->alasan_mutasi))
+                    ->badgeColor(AlasanBpjsEnum::getSingleColor($item->alasan_mutasi))
                     ->modifyQueryUsing(
                         fn(Builder $query) => $query->where('alasan_mutasi', $item->alasan_mutasi),
                     ));

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\AlasanEnum;
+use App\Enums\AlasanBpjsEnum;
 use App\Enums\StatusMutasi;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
@@ -50,7 +50,9 @@ final class MutasiBpjsResource extends Resource
                     ->columnSpanFull(),
 
                 Forms\Components\Select::make('alasan_mutasi')
-                    ->options(AlasanEnum::class)
+                    ->enum(AlasanBpjsEnum::class)
+                    ->options(AlasanBpjsEnum::class)
+                    ->native(false)
                     ->required()
                     ->preload()
                     ->lazy(),

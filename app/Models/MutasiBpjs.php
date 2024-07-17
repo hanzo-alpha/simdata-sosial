@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\AlasanBpjsEnum;
 use App\Enums\AlasanEnum;
 use App\Enums\StatusMutasi;
 use App\Enums\TipeMutasiEnum;
@@ -23,7 +24,7 @@ final class MutasiBpjs extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'alasan_mutasi' => AlasanEnum::class,
+        'alasan_mutasi' => AlasanBpjsEnum::class,
         'status_mutasi' => StatusMutasi::class,
         'tipe_mutasi' => TipeMutasiEnum::class,
     ];
