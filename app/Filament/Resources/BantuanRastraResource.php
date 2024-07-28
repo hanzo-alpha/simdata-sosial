@@ -357,11 +357,7 @@ class BantuanRastraResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $admin = Helpers::getAdminRoles();
-        $sadmin = ['super_admin'];
-        $sa = array_merge($sadmin, $admin);
-
-        return $form
+       return $form
             ->schema([
                 Group::make()->schema([
                     Section::make('Data Keluarga')

@@ -2,13 +2,25 @@
 
 declare(strict_types=1);
 
+use App\Supports\Helpers;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 if ( ! function_exists('date_format')) {
     function date_format($date, $format): string
     {
         return Carbon::createFromFormat('Y-m-d', $date)->format($format);
+    }
+}
+
+if ( ! function_exists('superadmin_admin_roles')) {
+    function superadmin_admin_roles(): array|Collection
+    {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+
+        return array_merge($sadmin, $admin);
     }
 }
 

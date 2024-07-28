@@ -40,7 +40,8 @@ return [
             'force_delete',
             'download',
             'upload',
-            'change_status',
+            'verification',
+            'verify_status',
         ],
 
         'page' => 'page',

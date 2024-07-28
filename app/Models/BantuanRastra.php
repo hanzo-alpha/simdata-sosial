@@ -104,7 +104,8 @@ class BantuanRastra extends Model
                     Select::make('kecamatan')
                         ->required()
                         ->searchable()
-                        ->reactive()
+                        ->live(onBlur: true)
+                        ->native(false)
                         ->options(function () {
                             $kab = Kecamatan::query()
                                 ->where('kabupaten_code', setting(
@@ -137,7 +138,8 @@ class BantuanRastra extends Model
                                 ->where('kecamatan_code', $get('kecamatan'))
                                 ?->pluck('name', 'code');
                         })
-                        ->reactive()
+                        ->live(onBlur: true)
+                        ->native(false)
                         ->searchable(),
                 ]),
 
@@ -177,7 +179,7 @@ class BantuanRastra extends Model
                 ->options(StatusVerifikasiEnum::class)
                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                 ->preload()
-                ->visible(fn() => auth()->user()?->hasRole(['super_admin', 'admin'])),
+                ->visible(fn() => auth()->user()?->hasRole(superadmin_admin_roles())),
 
             Select::make('status_rastra')
                 ->label('Status Rastra')
