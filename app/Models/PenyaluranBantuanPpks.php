@@ -31,6 +31,8 @@ class PenyaluranBantuanPpks extends Model
         ];
     }
 
+    protected $with = ['bantuan_ppks'];
+
     public static function getComputedLocation(): string
     {
         return 'location';

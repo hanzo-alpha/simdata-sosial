@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 final class PenggantiRastraResource extends Resource
@@ -178,5 +179,15 @@ final class PenggantiRastraResource extends Resource
         return [
             'index' => Pages\ManagePenggantiRastra::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery();
+        //            ->where('kelurahan', auth()->user()->instansi_id;
     }
 }

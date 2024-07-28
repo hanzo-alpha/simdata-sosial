@@ -548,11 +548,7 @@ final class BantuanPkhResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $admin = Helpers::getAdminRoles();
-        $sadmin = ['super_admin'];
-        $sa = array_merge($sadmin, $admin);
-
-        if (auth()->user()->hasRole($sa)) {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

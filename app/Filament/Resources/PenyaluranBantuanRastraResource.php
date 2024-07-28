@@ -8,6 +8,7 @@ use App\Enums\StatusAktif;
 use App\Enums\StatusPenyaluran;
 use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
+use App\Models\Kelurahan;
 use App\Models\PenyaluranBantuanRastra;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
@@ -20,6 +21,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class PenyaluranBantuanRastraResource extends Resource
@@ -83,6 +85,28 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
+                Tables\Filters\Filter::make('filter_kel')
+                    ->label('Kelurahan')
+                    ->form([
+                        Forms\Components\Select::make('kel')
+                            ->label('Kelurahan')
+                            ->native(false)
+                            ->options(Kelurahan::query()
+                                ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                ->pluck('name', 'code'))
+                            ->searchable()
+                            ->preload(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->with('bantuan_rastra')->when(
+                            $data['kel'],
+                            fn(Builder $query, $data) => $query->whereRelation(
+                                'bantuan_rastra',
+                                'kelurahan',
+                                $data,
+                            ),
+                        );
+                    }),
 
             ])
             ->actions([
@@ -262,5 +286,21 @@ class PenyaluranBantuanRastraResource extends Resource
             'create' => Pages\CreatePenyaluranBantuanRastra::route('/create'),
             'edit' => Pages\EditPenyaluranBantuanRastra::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
+        return parent::getEloquentQuery()
+            ->whereHas('bantuan_rastra', fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }
