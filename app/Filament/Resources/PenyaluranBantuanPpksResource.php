@@ -211,7 +211,7 @@ class PenyaluranBantuanPpksResource extends Resource
                     ->badge(),
             ])
             ->filters([
-
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('pdf')

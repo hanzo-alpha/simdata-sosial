@@ -107,6 +107,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ),
                         );
                     }),
+                Tables\Filters\TrashedFilter::make(),
 
             ])
             ->actions([

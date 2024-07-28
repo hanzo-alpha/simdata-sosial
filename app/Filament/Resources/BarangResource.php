@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BarangResource extends Resource
 {
@@ -116,7 +117,11 @@ class BarangResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('kode_kelurahan')
+                    ->label('Kelurahan')
+                    ->options(Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->pluck('name', 'code'))
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -134,5 +139,15 @@ class BarangResource extends Resource
         return [
             'index' => Pages\ManageBarangs::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery()
+            ->where('kelurahan', auth()->user()->instansi_id);
     }
 }

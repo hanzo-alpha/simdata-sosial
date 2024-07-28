@@ -87,7 +87,14 @@ class BeritaAcaraResource extends Resource
                     ->label('Berita Acara'),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('kelurahan')
+                    ->label('Kelurahan')
+                    ->options(Kelurahan::query()->whereIn(
+                        'kecamatan_code',
+                        config('custom.kode_kecamatan'),
+                    )->pluck('name', 'code'))
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\Action::make('cetak')
