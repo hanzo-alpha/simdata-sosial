@@ -88,7 +88,7 @@ class PenyaluranBantuanRastraResource extends Resource
                 Tables\Filters\Filter::make('filter_kel')
                     ->label('Kelurahan')
                     ->form([
-                        Forms\Components\Select::make('kel')
+                        Forms\Components\Select::make('kelurahan')
                             ->label('Kelurahan')
                             ->native(false)
                             ->options(Kelurahan::query()
@@ -99,7 +99,7 @@ class PenyaluranBantuanRastraResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->with('bantuan_rastra')->when(
-                            $data['kel'],
+                            $data['kelurahan'],
                             fn(Builder $query, $data) => $query->whereRelation(
                                 'bantuan_rastra',
                                 'kelurahan',

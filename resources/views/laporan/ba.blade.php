@@ -140,24 +140,26 @@
             <tr>
                 @php $i = 1; @endphp
                 @foreach ($record->itemBantuan as $item)
-                    <td class="text-center">
-                        {{ $i++ }}
-                    </td>
-                    <td class="text-center">
-                        {{ $item->nama_barang }}
-                    </td>
-                    <td class="text-center">
-                        {{ $item->kuantitas }}
-                    </td>
-                    <td class="text-center">
-                        {{ $item->satuan }}
-                    </td>
-                    <td class="text-right">
-                        {{Number::format($item->harga_satuan, 0, locale: 'id') }}
-                    </td>
-                    <td class="text-right">
-                        {{ Number::format($item->total_harga, 0, locale: 'id') }}
-                    </td>
+                    @if($item->kode_kelurahan === $record->kelurahan)
+                        <td class="text-center">
+                            {{ $i++ }}
+                        </td>
+                        <td class="text-center">
+                            {{ $item->nama_barang }}
+                        </td>
+                        <td class="text-center">
+                            {{ $item->kuantitas }}
+                        </td>
+                        <td class="text-center">
+                            {{ $item->satuan }}
+                        </td>
+                        <td class="text-right">
+                            {{Number::format($item->harga_satuan, 0, locale: 'id') }}
+                        </td>
+                        <td class="text-right">
+                            {{ Number::format($item->total_harga, 0, locale: 'id') }}
+                        </td>
+                    @endif
                 @endforeach
             </tr>
             <tr>
@@ -169,7 +171,9 @@
             </tr>
             <tr>
                 <td colspan="5" class="text-center">
-                    Terbilang : {{ Str::ucfirst(Number::spell($record->itemBantuan()->sum('total_harga'), 'id')) }}
+                    Terbilang : {{ Str::ucfirst(Number::spell($record->itemBantuan()->where('kode_kelurahan',
+                    $record->kelurahan)->sum('total_harga'), 'id')
+                    ) }}
                     rupiah
                 </td>
                 <td></td>
@@ -179,7 +183,7 @@
 
         <p>
             Demikian Berita Acara Penyerahan Hasil Pekerjaan ini dibuat dalam rangkap secukupnya untuk dipergunakan
-            sebagiamana mestinya.
+            sebagaimana mestinya.
         </p>
         <br />
 
@@ -282,8 +286,8 @@
             <tbody>
             @php
                 $penerima = BantuanRastra::where('kecamatan',$record->kecamatan)->where('kelurahan',$record->kelurahan)->get();
-                $jumlahBeras = ($record->itemBantuan()->get()->sum('kuantitas') / $penerima->count()) /
-                $record->itemBantuan()->get()->sum('jumlah_bulan') ;
+                $jumlahBeras = ($record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->get()->sum
+                ('kuantitas') / $penerima->count()) / $record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->get()->sum('jumlah_bulan') ;
                 $i = 1;
             @endphp
             @forelse($penerima as $kpm)
@@ -293,9 +297,9 @@
                     <td class="text-center">{{ $kpm->nokk }}</td>
                     <td class="text-center">{{ $kpm->nik }}</td>
                     <td class="text-center">{{ $kpm->kel()?->first()?->name }}</td>
-                    <td class="text-right">{{ $jumlahBeras }} Kg</td>
+                    <td class="text-right">{{ \Illuminate\Support\Number::format($jumlahBeras, 2, locale: 'id') }} Kg</td>
                     <td class="text-right"></td>
-                    <td class="text-center">{{ 'Selama ' . $record->itemBantuan()->first()->jumlah_bulan . ' bulan'}}</td>
+                    <td class="text-center">{{ 'Selama ' . $record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->first()->jumlah_bulan . ' bulan'}}</td>
                 </tr>
             @empty
                 <tr>
@@ -304,7 +308,7 @@
             @endforelse
             <tr>
                 <td colspan="5" class="pl-0 text-right">Total Jumlah Beras</td>
-                <td class="pr-0 text-right">{{ $record->itemBantuan()->get()->sum('kuantitas') }} Kg</td>
+                <td class="pr-0 text-right">{{ $record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->get()->sum('kuantitas') }} Kg</td>
                 <td class="pr-0 text-right"></td>
                 <td class="pr-0 text-right"></td>
             </tr>

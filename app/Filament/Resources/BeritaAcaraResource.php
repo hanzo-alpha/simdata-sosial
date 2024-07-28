@@ -167,7 +167,9 @@ class BeritaAcaraResource extends Resource
                         Select::make('kecamatan')
                             ->required()
                             ->searchable()
-                            ->reactive()
+                            ->live(onBlur: true)
+                            ->noSearchResultsMessage('Kecamatan tidak ditemukan')
+                            ->searchPrompt('Cari Kecamatan')
                             ->options(function () {
                                 $kab = Kecamatan::query()->where(
                                     'kabupaten_code',
@@ -187,6 +189,8 @@ class BeritaAcaraResource extends Resource
 
                         Select::make('kelurahan')
                             ->required()
+                            ->noSearchResultsMessage('Kelurahan tidak ditemukan')
+                            ->searchPrompt('Cari Kelurahan')
                             ->options(function (callable $get) {
                                 return Kelurahan::query()->where(
                                     'kecamatan_code',
@@ -196,16 +200,24 @@ class BeritaAcaraResource extends Resource
                                     'code',
                                 );
                             })
-                            ->reactive()
-                            ->searchable(),
+                            ->searchable()
+                            ->live(onBlur: true),
                         Forms\Components\Select::make('barang_id')
                             ->label('Item Bantuan')
-                            ->helperText(str('**Item** bantuan pada laporan.')->inlineMarkdown()->toHtmlString())
-                            ->relationship('itemBantuan', 'nama_barang')
+//                            ->helperText(str('**Item Bantuan**')->inlineMarkdown()->toHtmlString())
+                            ->relationship(
+                                name: 'itemBantuan',
+                                titleAttribute: 'nama_barang',
+                            )
                             ->native(false)
                             ->preload()
+                            ->getOptionLabelFromRecordUsing(
+                                fn(
+                                    Model $record,
+                                ) => "<strong>{$record->nama_barang}</strong> - {$record->kel?->name}",
+                            )
+                            ->allowHtml()
                             ->searchable()
-                            ->default(1)
                             ->noSearchResultsMessage('Item tidak ditemukan')
                             ->searchPrompt('Cari Item Bantuan')
                             ->required(),

@@ -25,6 +25,7 @@ class ManageBarangs extends ManageRecords
                     $data['kode_barang'] ??= Helpers::generateKodeBarang();
                     return $data;
                 })
+                ->closeModalByClickingAway(false)
                 ->disabled($this->enableInputLimitDate()),
         ];
     }

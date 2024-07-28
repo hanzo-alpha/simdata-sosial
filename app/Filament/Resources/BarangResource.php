@@ -6,11 +6,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BarangResource\Pages;
 use App\Models\Barang;
+use App\Models\Kelurahan;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class BarangResource extends Resource
 {
@@ -28,15 +31,30 @@ class BarangResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('kode_kelurahan')
+                    ->required()
+                    ->options(Kelurahan::query()
+                        ->when(
+                            auth()->user()->instansi_id,
+                            fn(Builder $query) => $query->where(
+                                'code',
+                                auth()->user()->instansi_id,
+                            ),
+                        )
+                        ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                        ?->pluck('name', 'code'))
+                    ->native(false)
+                    ->searchable(),
                 Forms\Components\TextInput::make('nama_barang')
                     ->label('Nama Barang')
+                    ->default('Beras Premium')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('kuantitas')
                     ->numeric()
-                    ->default(10),
+                    ->default(600),
                 Forms\Components\TextInput::make('jumlah_bulan')
-                    ->label('Jumlah Barang')
+                    ->label('Jumlah Bulan')
                     ->numeric()
                     ->default(3),
                 Forms\Components\TextInput::make('satuan')
@@ -46,10 +64,10 @@ class BarangResource extends Resource
                     ->label('Harga Satuan')
                     ->numeric()
                     ->live(onBlur: true)
+                    ->default(0)
                     ->afterStateUpdated(
                         fn(Forms\Get $get, Forms\Set $set, $state) => $set('total_harga', $get('kuantitas') * $state),
-                    )
-                    ->default(0),
+                    ),
                 Forms\Components\TextInput::make('total_harga')
                     ->label('Total Harga')
                     ->numeric()
@@ -75,6 +93,9 @@ class BarangResource extends Resource
                     ->button(),
             ])
             ->columns([
+                Tables\Columns\TextColumn::make('kel.name')
+                    ->label('Kelurahan')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nama_barang')
                     ->label('Nama Barang')
                     ->formatStateUsing(fn($record) => $record->nama_barang . ' - ' . $record->jumlah_bulan . ' bulan')
