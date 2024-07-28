@@ -12,8 +12,8 @@
                 <span><strong>Dokumentasi Penyaluran Bantuan Sosial</strong></span>
                 <br />
                 <span><strong>Beras Sejahtera Tahun {{ now()->year }}</strong></span>
-            </p>
-            <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>
+            </p><br><br>
+{{--            <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>--}}
             <table class="table">
                 <tbody>
                     <tr class="pb-0" style="margin-bottom: 0.1rem">

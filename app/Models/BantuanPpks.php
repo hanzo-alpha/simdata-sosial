@@ -59,6 +59,7 @@ class BantuanPpks extends Model
         'kriteria_ppks' => 'json',
         'kriteria_tags_ppks' => 'json',
         'kategori_tags_ppks' => 'json',
+        'bansos_diterima_ids' => 'array',
     ];
 
     public function tipe_ppks(): BelongsTo

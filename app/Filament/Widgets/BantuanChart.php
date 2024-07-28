@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Widgets;
 
 use App\Models\JenisBantuan;
+use App\Models\RekapPenerimaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
-use Str;
 
 class BantuanChart extends ApexChartWidget
 {
@@ -99,26 +101,22 @@ class BantuanChart extends ApexChartWidget
         ];
     }
 
-    protected function renderBantuan(bool $withLabel = false): array
+    protected function renderBantuan(): array
     {
         $results = [];
         $labels = [];
         $colors = [];
 
-        $jenisBantuan = JenisBantuan::all();
+        $jenisBantuan = JenisBantuan::query()->whereNot('id', 3)->get();
         foreach ($jenisBantuan as $item) {
             $labels[] = $item->alias;
             $colors[] = $item->warna;
-            if ($withLabel) {
-                $results[Str::lower($item->alias)] = $item->model_name::query()->count();
-            }
-
             $results[] = $item->model_name::query()->count();
         }
 
-        if ($withLabel) {
-            $results['kemiskinan'] = (int) setting('app.angka_kemiskinan') ?? 0;
-        }
+        $results[] = (int) RekapPenerimaBpjs::query()->sum('jumlah');
+        $labels[] = 'BPJS';
+        $colors[] = '#f0d62a';
 
         $results[] = (int) setting('app.angka_kemiskinan') ?? 0;
         $labels[] = 'ANGKA KEMISKINAN';

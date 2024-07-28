@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\AlasanEnum;
@@ -13,6 +15,7 @@ use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Supports\Helpers;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
@@ -31,6 +34,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class BantuanRastraResource extends Resource
@@ -63,13 +67,14 @@ class BantuanRastraResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
-                    ->description(fn($record) => $record->nik)
+                    ->description(fn($record) => Str::mask($record->nik, '*', 2, 12))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->alignCenter()
                     ->searchable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->copyable()
                     ->summarize([
                         Tables\Columns\Summarizers\Count::make(),
@@ -81,6 +86,7 @@ class BantuanRastraResource extends Resource
                     ->searchable()
                     ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
@@ -351,7 +357,7 @@ class BantuanRastraResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
+       return $form
             ->schema([
                 Group::make()->schema([
                     Section::make('Data Keluarga')
@@ -365,8 +371,7 @@ class BantuanRastraResource extends Resource
                         ->schema(BantuanRastra::getStatusForm()),
 
                     Forms\Components\Section::make('Verifikasi')
-                        ->schema(BantuanRastra::getUploadForm())
-                        ->visible(auth()->user()?->hasRole(['admin', 'super_admin'])),
+                        ->schema(BantuanRastra::getUploadForm()),
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -497,7 +502,11 @@ class BantuanRastraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
+        if (auth()->user()->hasRole($sa)) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

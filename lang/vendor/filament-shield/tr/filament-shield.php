@@ -45,7 +45,7 @@ return [
 
     'section' => 'Varlıklar',
     'resources' => 'Kaynaklar',
-    'widgets' => 'Araçlar',
+    'Widgets' => 'Araçlar',
     'pages' => 'Sayfalar',
     'custom' => 'Özel İzinler',
 

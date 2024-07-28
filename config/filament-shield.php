@@ -40,7 +40,8 @@ return [
             'force_delete',
             'download',
             'upload',
-            'change_status',
+            'verification',
+            'verify_status',
         ],
 
         'page' => 'page',
@@ -70,6 +71,13 @@ return [
             'FilamentInfoWidget',
             //            'BantuanOverview',
             //            'BantuanSosialPerKecamatanChart',
+            //            'BantuanSosialPerKelurahanChart',
+            //            'BantuanBpjsPerMonthChart',
+            //            'BantuanBpntPerMonthChart',
+            //            'BantuanPkhPerMonthChart',
+            //            'BantuanBpntPerMonthChart',
+            //            'BantuanRastraPerMonthChart',
+            //            'LatestUser',
         ],
 
         'resources' => [],

@@ -14,6 +14,7 @@ use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\Alignment;
@@ -24,12 +25,17 @@ use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
 
 class ListBantuanBpjs extends ListRecords
 {
+    use ExposesTableToWidgets;
     use HasInputDateLimit;
 
     protected static string $resource = BantuanBpjsResource::class;
 
     public function getTabs(): array
     {
+        if (null !== auth()->user()->instansi_id) {
+            return [];
+        }
+
         $results = collect();
 
         $bantuan = Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->get();
@@ -59,12 +65,12 @@ class ListBantuanBpjs extends ListRecords
 
     }
 
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanBpjsOverview::class,
-    //        ];
-    //    }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BantuanBpjsOverview::class,
+        ];
+    }
 
     protected function getHeaderActions(): array
     {
@@ -72,6 +78,7 @@ class ListBantuanBpjs extends ListRecords
             ExportAction::make()
                 ->label('Download')
                 ->color('success')
+                ->authorize('download')
                 ->exports([
                     ExportBantuanBpjs::make()
                         ->except(['foto_ktp','dusun','tahun','bulan','created_at', 'updated_at', 'deleted_at']),
@@ -80,6 +87,7 @@ class ListBantuanBpjs extends ListRecords
 
             Actions\Action::make('Upload')
                 ->model(BantuanBpjs::class)
+                ->authorize('upload')
                 ->label('Upload')
                 ->modalHeading('Unggah Bantuan BPJS')
                 ->modalDescription('Unggah Bantuan BPJS ke database')

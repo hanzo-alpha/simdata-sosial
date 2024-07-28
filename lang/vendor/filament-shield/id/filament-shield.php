@@ -45,7 +45,7 @@ return [
 
     'section' => 'Entitas',
     'resources' => 'Sumber Daya',
-    'widgets' => 'Widget',
+    'Widgets' => 'Widget',
     'pages' => 'Halaman',
     'custom' => 'Izin Kustom',
 
@@ -78,6 +78,9 @@ return [
         'restore_any' => 'Susun Ulang Apa Saja',
         'verify' => 'Verifikasi',
         'change_status' => 'Ubah Status',
+        'verification' => 'Verifikasi',
+        'verify_status' => 'Status Verifikasi',
+        'verification_status' => 'Status Verifikasi',
         'download' => 'Download',
         'upload' => 'Upload',
         'page_MyProfilePage' => 'Profil',

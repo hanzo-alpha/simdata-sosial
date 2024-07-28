@@ -45,7 +45,7 @@ return [
 
     'section' => 'Entități',
     'resources' => 'Resurse',
-    'widgets' => 'Widget-uri',
+    'Widgets' => 'Widget-uri',
     'pages' => 'Pagini',
     'custom' => 'Permisiuni personalizate',
 

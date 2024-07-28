@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\AlasanEnum;
@@ -24,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class BantuanRastra extends Model
 {
@@ -103,7 +104,8 @@ class BantuanRastra extends Model
                     Select::make('kecamatan')
                         ->required()
                         ->searchable()
-                        ->reactive()
+                        ->live(onBlur: true)
+                        ->native(false)
                         ->options(function () {
                             $kab = Kecamatan::query()
                                 ->where('kabupaten_code', setting(
@@ -125,12 +127,19 @@ class BantuanRastra extends Model
                     Select::make('kelurahan')
                         ->required()
                         ->options(function (callable $get) {
-                            return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
-                                'name',
-                                'code',
-                            );
+                            return Kelurahan::query()
+                                ->when(
+                                    auth()->user()->instansi_id,
+                                    fn(Builder $query) => $query->where(
+                                        'code',
+                                        auth()->user()->instansi_id,
+                                    ),
+                                )
+                                ->where('kecamatan_code', $get('kecamatan'))
+                                ?->pluck('name', 'code');
                         })
-                        ->reactive()
+                        ->live(onBlur: true)
+                        ->native(false)
                         ->searchable(),
                 ]),
 
@@ -170,7 +179,7 @@ class BantuanRastra extends Model
                 ->options(StatusVerifikasiEnum::class)
                 ->default(StatusVerifikasiEnum::UNVERIFIED)
                 ->preload()
-                ->visible(fn() => auth()->user()?->hasRole(['super_admin', 'admin'])),
+                ->visible(fn() => auth()->user()?->hasRole(superadmin_admin_roles())),
 
             Select::make('status_rastra')
                 ->label('Status Rastra')
@@ -222,24 +231,26 @@ class BantuanRastra extends Model
                 ->dehydrated(),
             FileUpload::make('foto_ktp_kk')
                 ->label('Unggah Foto KTP / KK')
-                ->getUploadedFileNameForStorageUsing(
-                    fn(
-                        TemporaryUploadedFile $file,
-                    ): string => (string) str($file->getClientOriginalName())
-                        ->prepend(date('d-m-Y-H-i-s') . '-'),
-                )
-                ->preserveFilenames()
+                ->image()
+                ->imageEditor()
                 ->reorderable()
-                ->appendFiles()
+                ->disk('public')
                 ->openable()
+                ->downloadable()
+                ->imageEditor()
+                ->imageEditorAspectRatios([
+                    null,
+                    '16:9',
+                    '4:3',
+                    '1:1',
+                ])
                 ->unique(ignoreRecord: true)
                 ->helperText('maks. 2MB')
-                ->maxFiles(3)
+                ->maxFiles(1)
                 ->maxSize(2048)
                 ->columnSpanFull()
                 ->imagePreviewHeight('250')
-                ->previewable(false)
-                ->image(),
+                ->previewable(true),
 
             CuratorPicker::make('media_id')
                 ->label('Upload Berita Acara')
@@ -257,11 +268,6 @@ class BantuanRastra extends Model
     }
 
     public function attachments(): BelongsTo
-    {
-        return $this->belongsTo(Media::class, 'media_id', 'id');
-    }
-
-    public function mediaFoto(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }

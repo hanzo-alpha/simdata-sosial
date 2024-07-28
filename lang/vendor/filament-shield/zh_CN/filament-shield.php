@@ -45,7 +45,7 @@ return [
 
     'section' => '实体',
     'resources' => '资源',
-    'widgets' => '小组件',
+    'Widgets' => '小组件',
     'pages' => '页面',
     'custom' => '自定义',
 

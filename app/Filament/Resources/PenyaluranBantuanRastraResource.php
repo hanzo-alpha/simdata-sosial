@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Enums\StatusAktif;
@@ -18,7 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Illuminate\Support\Str;
 
 class PenyaluranBantuanRastraResource extends Resource
 {
@@ -55,11 +57,13 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->label('No. KK KPM')
                     ->searchable()
                     ->alignCenter()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nik')
                     ->label('NIK KPM')
                     ->searchable()
                     ->alignCenter()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tgl_penyerahan')
                     ->label('Penyerahan')
@@ -218,13 +222,6 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->disk('public')
                             ->directory('penyaluran')
                             ->required()
-                            ->getUploadedFileNameForStorageUsing(
-                                fn(
-                                    TemporaryUploadedFile $file,
-                                ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
-                            )
-                            ->preserveFilenames()
                             ->multiple()
                             ->reorderable()
                             ->appendFiles()

@@ -13,10 +13,12 @@ use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 final class PenggantiRastraResource extends Resource
 {
@@ -62,10 +64,22 @@ final class PenggantiRastraResource extends Resource
                     ->required(),
                 TextInput::make('nokk_pengganti')
                     ->label('No. KK Pengganti')
-                    ->required(),
+                    ->required()
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                        $livewire->validateOnly($component->getStatePath());
+                    })
+                    ->minLength(16)
+                    ->maxLength(16),
                 TextInput::make('nik_pengganti')
                     ->label('NIK Pengganti')
-                    ->required(),
+                    ->required()
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                        $livewire->validateOnly($component->getStatePath());
+                    })
+                    ->minLength(16)
+                    ->maxLength(16),
                 TextInput::make('nama_pengganti')
                     ->label('Nama Pengganti')
                     ->required(),
@@ -110,7 +124,8 @@ final class PenggantiRastraResource extends Resource
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->nokk_pengganti)
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
+                    ->description(fn($record) => Str::mask($record->nokk_pengganti, '*', 2, 12))
                     ->label('NIK & NO. KK Baru'),
                 Tables\Columns\TextColumn::make('nama_pengganti')
                     ->searchable()
@@ -120,7 +135,8 @@ final class PenggantiRastraResource extends Resource
                 Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->bantuan_rastra?->nik)
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
+                    ->description(fn($record) => Str::mask($record->bantuan_rastra?->nik, '*', 2, 12))
                     ->label('NIK & NO.KK Lama'),
                 Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
                     ->searchable()

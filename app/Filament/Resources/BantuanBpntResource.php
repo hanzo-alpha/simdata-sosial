@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BantuanBpntResource\Pages;
@@ -9,6 +11,7 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
+use App\Supports\Helpers;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -17,12 +20,14 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class BantuanBpntResource extends Resource
 {
@@ -51,8 +56,14 @@ class BantuanBpntResource extends Resource
             ->schema([
                 Section::make('Data Penerima Manfaat BPNT')->schema([
                     TextInput::make('no_nik')
-                        ->label('N I K')
-                        ->required(),
+                        ->label('No. Induk Kependudukan (NIK)')
+                        ->required()
+                        ->live(debounce: 500)
+                        ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                            $livewire->validateOnly($component->getStatePath());
+                        })
+                        ->minLength(16)
+                        ->maxLength(16),
                     TextInput::make('nama_penerima')
                         ->label('Nama Penerima')
                         ->required(),
@@ -91,7 +102,8 @@ class BantuanBpntResource extends Resource
                         Select::make('kecamatan')
                             ->nullable()
                             ->searchable()
-                            ->reactive()
+                            ->live()
+                            ->native(false)
                             ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
                                 if ( ! $kab) {
@@ -109,15 +121,17 @@ class BantuanBpntResource extends Resource
                         Select::make('kelurahan')
                             ->nullable()
                             ->options(function (callable $get) {
-                                $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                if ( ! $kel) {
-                                    return Kelurahan::where('kecamatan_code', '731211')
-                                        ->pluck('name', 'code');
-                                }
+                                $kel = Kelurahan::query()
+                                    ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
+                                        'code',
+                                        auth()->user()->instansi_id,
+                                    ))
+                                    ->where('kecamatan_code', $get('kecamatan'));
 
-                                return $kel->pluck('name', 'code');
+                                return $kel->clone()->pluck('name', 'code');
                             })
-                            ->reactive()
+                            ->live()
+                            ->native(false)
                             ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
                             ->afterStateUpdated(function (callable $set, $state): void {
@@ -199,6 +213,7 @@ class BantuanBpntResource extends Resource
                     ->label('N I K')
                     ->sortable()
                     ->toggleable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_penerima')
                     ->label('Nama Penerima')
@@ -301,7 +316,11 @@ class BantuanBpntResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
+        if (auth()->user()->hasRole($sa)) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

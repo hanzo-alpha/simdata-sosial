@@ -14,6 +14,40 @@ enum AlasanEnum: string implements HasColor, HasIcon, HasLabel
     case MENINGGAL = 'MENINGGAL';
     case GANDA = 'GANDA';
     case MAMPU = 'MAMPU';
+    case DOUBLE_BANSOS = 'DOUBLE BANSOS';
+
+    public static function getSingleLabel($value): ?string
+    {
+        return match ($value) {
+            self::PINDAH => 'PINDAH',
+            self::MENINGGAL => 'MENINGGAL',
+            self::GANDA => 'DATA GANDA',
+            self::MAMPU => 'SUDAH MAMPU',
+            self::DOUBLE_BANSOS => 'DOUBLE BANSOS',
+        };
+    }
+
+    public static function getSingleIcon($value): ?string
+    {
+        return match ($value) {
+            self::PINDAH => 'heroicon-o-arrow-path-rounded-square',
+            self::MENINGGAL => 'heroicon-o-user-minus',
+            self::GANDA => 'heroicon-o-server-stack',
+            self::MAMPU => 'heroicon-o-check-circle',
+            self::DOUBLE_BANSOS => 'heroicon-o-check',
+        };
+    }
+
+    public static function getSingleColor($value): ?string
+    {
+        return match ($value) {
+            self::PINDAH => 'info',
+            self::MENINGGAL => 'warning',
+            self::GANDA => 'danger',
+            self::MAMPU => 'success',
+            self::DOUBLE_BANSOS => 'gray',
+        };
+    }
 
     public function getLabel(): ?string
     {
@@ -22,6 +56,7 @@ enum AlasanEnum: string implements HasColor, HasIcon, HasLabel
             self::MENINGGAL => 'MENINGGAL',
             self::GANDA => 'DATA GANDA',
             self::MAMPU => 'SUDAH MAMPU',
+            self::DOUBLE_BANSOS => 'DOUBLE BANSOS',
         };
     }
 
@@ -32,6 +67,7 @@ enum AlasanEnum: string implements HasColor, HasIcon, HasLabel
             self::MENINGGAL => 'warning',
             self::GANDA => 'danger',
             self::MAMPU => 'success',
+            self::DOUBLE_BANSOS => 'gray',
         };
     }
 
@@ -42,6 +78,8 @@ enum AlasanEnum: string implements HasColor, HasIcon, HasLabel
             self::MENINGGAL => 'heroicon-o-user-minus',
             self::GANDA => 'heroicon-o-server-stack',
             self::MAMPU => 'heroicon-o-check-circle',
+            self::DOUBLE_BANSOS => 'heroicon-o-check',
         };
     }
+
 }

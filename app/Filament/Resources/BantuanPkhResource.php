@@ -13,6 +13,7 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
+use App\Supports\Helpers;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -22,6 +23,7 @@ use Filament\Forms\Get;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -67,10 +69,22 @@ final class BantuanPkhResource extends Resource
                                 ->options(StatusDtksEnum::class),
                             TextInput::make('nokk')
                                 ->label('No. Kartu Keluarga (KK)')
-                                ->required(),
+                                ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->minLength(16)
+                                ->maxLength(16),
                             TextInput::make('nik_ktp')
                                 ->label('No. Induk Keluarga (NIK)')
-                                ->required(),
+                                ->required()
+                                ->live(debounce: 500)
+                                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                    $livewire->validateOnly($component->getStatePath());
+                                })
+                                ->minLength(16)
+                                ->maxLength(16),
                             TextInput::make('nama_penerima')
                                 ->label('Nama Penerima')
                                 ->required(),
@@ -125,13 +139,14 @@ final class BantuanPkhResource extends Resource
                                 Select::make('kelurahan')
                                     ->nullable()
                                     ->options(function (callable $get) {
-                                        $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                                        if ( ! $kel) {
-                                            return Kelurahan::where('kecamatan_code', '731211')
-                                                ->pluck('name', 'code');
-                                        }
+                                        $kel = Kelurahan::query()
+                                            ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
+                                                'code',
+                                                auth()->user()->instansi_id,
+                                            ))
+                                            ->where('kecamatan_code', $get('kecamatan'));
 
-                                        return $kel->pluck('name', 'code');
+                                        return $kel->clone()->pluck('name', 'code');
                                     })
                                     ->reactive()
                                     ->searchable()
@@ -350,11 +365,13 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik_ktp')
                     ->label('N I K')
                     ->copyable()
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kode_wilayah')
                     ->label('Kode Wilayah')
@@ -531,7 +548,11 @@ final class BantuanPkhResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
+        if (auth()->user()->hasRole($sa)) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

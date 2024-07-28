@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Imports;
 
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\PesertaBpjs as PesertaJamkesda;
 use App\Models\User;
 use Filament\Notifications\Notification;
@@ -47,17 +50,30 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
      */
     public function model(array $row): Model|PesertaJamkesda|null
     {
+        $kab = Kabupaten::query()
+            ->where('name', $row['kabupaten'])
+            ->where('provinsi_code', setting('app.kodeprov'))
+            ->first();
+        $kec = Kecamatan::query()
+            ->where('name', $row['kecamatan'])
+            ->where('kabupaten_code', setting('app.kodekab'))
+            ->first();
+        $kel = Kelurahan::query()
+            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+            ->where('name', $row['kelurahan'])
+            ->first();
+
         return new PesertaJamkesda([
             'nomor_kartu' => $row['no_kartu'] ?? '-',
             'nik' => $row['nik'] ?? '-',
             'nama_lengkap' => $row['nama'] ?? '-',
             'alamat' => $row['alamat'] ?? '-',
-            'no_rt' => null,
-            'no_rw' => null,
-            'kabupaten' => null,
-            'kecamatan' => null,
-            'kelurahan' => null,
-            'dusun' => null,
+            'no_rt' => $row['rt'] ?? null,
+            'no_rw' => $row['rw'] ?? null,
+            'kabupaten' => $kab->code ?? $row['kabupaten'] ?? null,
+            'kecamatan' => $kec->code ?? $row['kecamatan'] ?? null,
+            'kelurahan' => $kel->code ?? $row['kelurahan'] ?? null,
+            'dusun' => $row['desa'] ?? null,
         ]);
     }
 

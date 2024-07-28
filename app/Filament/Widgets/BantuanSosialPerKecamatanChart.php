@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Models\BantuanBpjs;
 use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
 use App\Models\Kecamatan;
+use App\Models\RekapPenerimaBpjs;
 use App\Traits\HasGlobalFilters;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Forms\Components\Toggle;
@@ -54,15 +54,20 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
         $model = match ((int) $model) {
             1 => BantuanPkh::class,
             2 => BantuanBpnt::class,
-            3 => BantuanBpjs::class,
+            3 => RekapPenerimaBpjs::class,
             4 => BantuanPpks::class,
             5 => BantuanRastra::class,
         };
 
-        return $model::query()
+        $query = $model::query()
             ->select(['created_at', 'kecamatan', 'kelurahan'])
-            ->where('kecamatan', $kodekec)
-            ->count();
+            ->where('kecamatan', $kodekec);
+
+        if(RekapPenerimaBpjs::class === $model) {
+            return $query->clone()->sum('jumlah');
+        }
+
+        return $query->count();
     }
 
     protected function getOptions(): array

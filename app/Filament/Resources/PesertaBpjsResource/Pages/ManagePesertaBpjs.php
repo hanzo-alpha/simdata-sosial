@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\PesertaBpjsResource\Pages;
 
 use App\Filament\Resources\PesertaBpjsResource;
@@ -31,15 +33,26 @@ class ManagePesertaBpjs extends ManageRecords
                 ->modalDescription('Unggah Peserta BPJS ke database')
                 ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-down-tray')
+                ->mutateFormDataUsing(function (array $data) {
+                    $data['bulan'] ??= now()->month;
+                    $data['tahun'] ??= now()->year;
+                    return $data;
+                })
                 ->action(function (array $data): void {
                     $deleteAll = PesertaBpjs::query()->delete();
                     if ($deleteAll) {
-                        Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
-                        Notification::make()
-                            ->title('Data Peserta BPJS sedang diimpor secara background')
-                            ->info()
-                            ->sendToDatabase(auth()->user());
+                        Excel::queueImport(new ImportPesertaBpjs(), $data['attachment'], 'public');
                     }
+                    Notification::make()
+                        ->title('Data Peserta BPJS sedang diimpor secara background')
+                        ->info()
+                        ->sendToDatabase(auth()->user());
+                })
+                ->successNotification(function (): void {
+                    Notification::make()
+                        ->title('Data Peserta BPJS berhasil diunggah')
+                        ->success()
+                        ->sendToDatabase(auth()->user());
                 })
                 ->icon('heroicon-o-arrow-down-tray')
                 ->disabled($this->enableInputLimitDate())

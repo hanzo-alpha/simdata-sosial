@@ -10,6 +10,7 @@ export default {
         './vendor/awcodes/filament-badgeable-column/resources/**/*.blade.php',
         './vendor/awcodes/filament-curator/resources/**/*.blade.php',
         './vendor/andrewdwallo/filament-selectify/resources/views/**/*.blade.php',
+        './vendor/kenepa/banner/resources/**/*.php',
         // './vendor/awcodes/overlook/resources/**/*.blade.php',
     ],
 };

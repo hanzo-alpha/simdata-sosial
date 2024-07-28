@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Widgets;
 
-use App\Models\BantuanBpjs;
 use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
@@ -10,6 +11,7 @@ use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\RekapPenerimaBpjs;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -37,7 +39,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         return [
             Select::make('program')
                 ->options(JenisBantuan::query()->pluck('alias', 'id'))
-                ->default(5)
+                ->default(3)
                 ->native(false),
             Select::make('kecamatan')
                 ->options(
@@ -79,6 +81,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             Toggle::make('chartGrid')
                 ->default(false)
                 ->label('Tampilkan Grid'),
+            Toggle::make('cLabel')
+                ->default(false)
+                ->label('Tampilkan Label'),
         ];
     }
 
@@ -87,17 +92,23 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         $model = match ((int) $model) {
             1 => BantuanPkh::class,
             2 => BantuanBpnt::class,
-            3 => BantuanBpjs::class,
+            3 => RekapPenerimaBpjs::class,
             4 => BantuanPpks::class,
             5 => BantuanRastra::class,
         };
 
-        return $model::query()
+        $query = $model::query()
             ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
             ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
             ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+            ->where('kelurahan', $kodekel);
+
+        if (RekapPenerimaBpjs::class === $model) {
+            return $query->clone()->sum('jumlah');
+        }
+
+        return  $query
             ->when($filters['program'], fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']))
-            ->where('kelurahan', $kodekel)
             ->count();
     }
 
@@ -109,7 +120,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             $model = match ((int) $item) {
                 1 => BantuanPkh::class,
                 2 => BantuanBpnt::class,
-                3 => BantuanBpjs::class,
+                3 => RekapPenerimaBpjs::class,
                 4 => BantuanPpks::class,
                 5 => BantuanRastra::class,
             };
@@ -183,21 +194,22 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                         'background' => 'transparent',
                         'strokeWidth' => '100%',
                     ],
-                    'dataLabels' => [
-                        'show' => true,
-                        'name' => [
-                            'show' => true,
-                            'offsetY' => -10,
-                            'fontWeight' => 600,
-                            'fontFamily' => 'inherit',
-                        ],
-                        'value' => [
-                            'show' => true,
-                            'fontWeight' => 600,
-                            'fontSize' => '24px',
-                            'fontFamily' => 'inherit',
-                        ],
-                    ],
+                    //                    'dataLabels' => [
+                    //                        'show' => true,
+                    //                        'name' => [
+                    //                            'show' => true,
+                    //                            'offsetY' => -10,
+                    //                            'fontWeight' => 600,
+                    //                            'fontFamily' => 'inherit',
+                    //                        ],
+                    //                        'value' => [
+                    //                            'show' => true,
+                    //                            'fontWeight' => 600,
+                    //                            'fontSize' => '24px',
+                    //                            'fontFamily' => 'inherit',
+                    //                            'colors' => '#03A9F4',
+                    //                        ],
+                    //                    ],
                 ],
             ],
             'xaxis' => [
@@ -230,9 +242,14 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
                     'stops' => [0, 100],
                 ],
             ],
-
             'dataLabels' => [
-                'enabled' => true,
+                'enabled' => (bool) $filters['cLabel'],
+                'distributed' => (bool) $filters['cLabel'],
+                //                'textAnchor' => 'middle',
+                //                'style' => [
+                //                    'fontSize' => '14px',
+                //                    'colors' => '#03A9F4',
+                //                ],
             ],
             'grid' => [
                 'show' => $filters['chartGrid'],
@@ -240,9 +257,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             'tooltip' => [
                 'enabled' => true,
             ],
-            'stroke' => [
-                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
-            ],
+            //            'stroke' => [
+            //                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
+            //            ],
             'colors' => $colors,
         ];
     }

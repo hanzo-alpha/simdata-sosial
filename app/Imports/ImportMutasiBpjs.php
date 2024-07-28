@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Imports;
 
+use App\Enums\AlasanBpjsEnum;
 use App\Models\MutasiBpjs as UsulanMutasiBpjs;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -38,7 +39,12 @@ final class ImportMutasiBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, Wi
             'nik_tmt' => $row['nik'],
             'jenis_kelamin' => $row['jenis_kelamin'],
             'nomor_kartu' => $row['nomor_kartu'],
-            'alasan_mutasi' => $row['alasan_mutasi'],
+            'alasan_mutasi' => match ($row['alasan_mutasi']) {
+                AlasanBpjsEnum::MAMPU => AlasanBpjsEnum::MAMPU,
+                AlasanBpjsEnum::MENINGGAL => AlasanBpjsEnum::MENINGGAL,
+                AlasanBpjsEnum::GANDA => AlasanBpjsEnum::GANDA,
+                AlasanBpjsEnum::PINDAH => AlasanBpjsEnum::PINDAH,
+            },
             'alamat' => $row['alamat'],
             'keterangan' => $row['keterangan'],
         ]);

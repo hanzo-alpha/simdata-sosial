@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
@@ -24,6 +26,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Kenepa\Banner\BannerPlugin;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
@@ -92,14 +95,21 @@ class AdminPanelProvider extends PanelProvider
                         Settings::class,
                     ]),
                 FilamentProgressbarPlugin::make(),
+                BannerPlugin::make()
+                    ->persistsBannersInDatabase()
+                    ->title('Pengaturan Pengumuman')
+                    ->subheading('Atur Pengumuman anda')
+                    ->navigationGroup('Pengaturan')
+                    ->navigationLabel('Pengumuman')
+                    ->bannerManagerAccessPermission('page_BannerManagerPage'),
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
-            ->favicon(asset('images/logos/favicon-white.png'))
+            ->favicon(asset('images/reno/reno-dinsos-favicon-white.png'))
             ->brandName(config('custom.app.name'))
-            ->brandLogo(asset('images/logos/logo-white.png'))
+            ->brandLogo(asset('images/reno/svg/logo-no-background.svg'))
             ->brandLogoHeight(config('custom.app.logo_height'))
-            ->darkModeBrandLogo(asset('images/logos/logo-white.png'))
+            ->darkModeBrandLogo(asset('images/reno/reno-dinsos-high-resolution-logo-white-transparent.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')

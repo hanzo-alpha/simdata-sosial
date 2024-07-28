@@ -45,7 +45,7 @@ return [
 
     'section' => 'Entidades',
     'resources' => 'Recursos',
-    'widgets' => 'Widgets',
+    'Widgets' => 'Widgets',
     'pages' => 'Páginas',
     'custom' => 'Permisos personalizados',
 

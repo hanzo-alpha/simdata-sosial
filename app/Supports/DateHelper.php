@@ -96,14 +96,36 @@ final class DateHelper
 
     }
 
-    public static function convertTglFromString($date): string
+    public static function convertTglFromString($date, $format = 'Y-m-d'): string
     {
         $date = is_string($date) ? $date : '';
-        $date = explode(' ', $date);
-        $tgl = $date[0];
+        list($dd, $mm, $yyyy) = explode('/', $date);
+        //        $date = explode('/', $date);
+        //        $date = DateHelper::checkdate($date);
+        //        $tgl = $date[0];
 
-        return Carbon::parse($tgl)->timezone(config('app.timezone'))->locale('id')->format('d/m/Y');
+        return Carbon::createFromDate($yyyy, $mm, $dd)->timezone(config('app.timezone'))->locale('id')->format($format);
 
+    }
+
+    public static function checkdate($date): bool
+    {
+        $error = false;
+
+        //        list($dd, $mm, $yyyy) = explode('/', $date);
+        //        if ( ! checkdate((int) $mm, (int) $dd, (int) $yyyy)) {
+        //            $error = true;
+        //        }
+
+        if (preg_match('/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/', $date, $matches)) {
+            if ( ! checkdate((int) $matches[2], (int) $matches[1], (int) $matches[3])) {
+                $error = true;
+            }
+        } else {
+            $error = true;
+        }
+
+        return $error;
     }
 
     public static function namaHari($tanggal = ''): string

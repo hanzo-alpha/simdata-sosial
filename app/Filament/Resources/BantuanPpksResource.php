@@ -8,7 +8,7 @@ use App\Enums\JenisAnggaranEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusDtksEnum;
-use App\Enums\StatusKawinBpjsEnum;
+use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
 use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
@@ -22,6 +22,7 @@ use App\Models\Kelurahan;
 use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use App\Models\TipePpks;
+use App\Supports\Helpers;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
@@ -42,6 +43,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -90,7 +92,7 @@ class BantuanPpksResource extends Resource
                                 ->minLength(16)
                                 ->maxLength(16),
                             TextInput::make('nik')
-                                ->label('N I K')
+                                ->label('No. Induk Kependudukan (NIK)')
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->live(debounce: 500)
@@ -155,9 +157,9 @@ class BantuanPpksResource extends Resource
                                 ->optionsLimit(15)
                                 ->preload(),
                             Select::make('status_kawin')
-                                ->enum(StatusKawinBpjsEnum::class)
-                                ->options(StatusKawinBpjsEnum::class)
-                                ->default(StatusKawinBpjsEnum::BELUM_KAWIN)
+                                ->enum(StatusKawinUmumEnum::class)
+                                ->options(StatusKawinUmumEnum::class)
+                                ->default(StatusKawinUmumEnum::BELUM_KAWIN)
                                 ->preload(),
                             TextInput::make('penghasilan_rata_rata')
                                 ->prefix('Rp. ')
@@ -242,13 +244,21 @@ class BantuanPpksResource extends Resource
                                         ->required()
                                         ->native(false)
                                         ->options(function (callable $get) {
-                                            return Kelurahan::query()->where(
-                                                'kecamatan_code',
-                                                $get('kecamatan'),
-                                            )?->pluck(
-                                                'name',
-                                                'code',
-                                            );
+                                            return Kelurahan::query()
+                                                ->when(
+                                                    auth()->user()->instansi_id,
+                                                    fn(Builder $query) => $query->where(
+                                                        'code',
+                                                        auth()->user()->instansi_id,
+                                                    ),
+                                                )
+                                                ->where(
+                                                    'kecamatan_code',
+                                                    $get('kecamatan'),
+                                                )?->pluck(
+                                                    'name',
+                                                    'code',
+                                                );
                                         })
                                         ->live()
                                         ->searchable(),
@@ -415,17 +425,19 @@ class BantuanPpksResource extends Resource
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('nik')
-                    ->label('N I K')
+                    ->label('NIK')
                     ->copyable()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12)),
                 Tables\Columns\TextColumn::make('nokk')
                     ->label('No. KK')
                     ->copyable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
-                    ->description(fn($record) => $record->nokk)
+                    ->description(fn($record) => Str::mask($record->nik, '*', 2, 12))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat_lahir')
                     ->label('Tempat Lahir')
@@ -839,7 +851,11 @@ class BantuanPpksResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
+        if (auth()->user()->hasRole($sa)) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

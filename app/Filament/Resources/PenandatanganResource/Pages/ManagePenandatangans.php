@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\PenandatanganResource\Pages;
 
 use App\Filament\Imports\PenandatanganImporter;

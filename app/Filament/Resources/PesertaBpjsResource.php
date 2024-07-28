@@ -9,12 +9,15 @@ use App\Imports\ImportPesertaBpjs;
 use App\Models\PesertaBpjs;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 final class PesertaBpjsResource extends Resource
@@ -48,17 +51,26 @@ final class PesertaBpjsResource extends Resource
                     ->acceptedFileTypes([
                         'application/vnd.ms-excel',
                         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                        'text/csv',
                     ])
                     ->hiddenOn(['edit', 'view']),
 
                 Forms\Components\TextInput::make('nomor_kartu')
                     ->required()
-                    ->maxLength(255)
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                        $livewire->validateOnly($component->getStatePath());
+                    })
+                    ->minLength(14)
+                    ->maxLength(14)
                     ->visibleOn(['edit', 'view']),
                 Forms\Components\TextInput::make('nik')
                     ->required()
-                    ->maxLength(255)
+                    ->live(debounce: 500)
+                    ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                        $livewire->validateOnly($component->getStatePath());
+                    })
+                    ->minLength(16)
+                    ->maxLength(16)
                     ->visibleOn(['edit', 'view']),
                 Forms\Components\TextInput::make('nama_lengkap')
                     ->maxLength(255)
@@ -107,11 +119,12 @@ final class PesertaBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('nomor_kartu')
                     ->label('Nomor Kartu')
                     ->searchable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 4, 5))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik')
-                    ->label('N I K')
+                    ->label('No. Induk Kependudukan (NIK)')
                     ->searchable()
-//                    ->summarize(Tables\Columns\Summarizers\Count::make())
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')

@@ -26,6 +26,10 @@ final class ListBantuanPpks extends ListRecords
 
     public function getTabs(): array
     {
+        if (null !== auth()->user()->instansi_id) {
+            return [];
+        }
+
         $results = collect();
         if (auth()->user()->hasRole(['super_admin', 'admin_ppks', 'admin'])) {
             $bantuan = TipePpks::query()->select('id', 'nama_tipe')->get();
@@ -90,11 +94,4 @@ final class ListBantuanPpks extends ListRecords
     {
         return $query->fastPaginate($this->getTableRecordsPerPage());
     }
-
-    //    protected function getHeaderWidgets(): array
-    //    {
-    //        return [
-    //            BantuanPpksOverview::class,
-    //        ];
-    //    }
 }

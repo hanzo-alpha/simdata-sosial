@@ -8,7 +8,7 @@
         <meta content="reno" name="dinsos" />
         @livewireStyles
         <!-- Theme favicon -->
-        <link rel="shortcut icon" href="{{ asset('logo-white.png') }}" />
+        <link rel="shortcut icon" href="{{ asset('images/reno/reno-dinsos-favicon-color.png') }}" />
 
         <!--Swiper slider css-->
         <link href="{{ asset('frontend/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
@@ -32,9 +32,9 @@
                 <nav class="flex items-center">
                     <!-- Navbar Brand Logo -->
                     <a href="{{ route('frontend') }}">
-                        <img src="{{ asset('images/logos/logo-color.png') }}" class="logo-dark h-10" alt="Logo Dark" />
+                        <img src="{{ asset('images/reno/svg/logo-no-background.svg') }}" class="logo-dark h-10" alt="Logo Dark" />
                         <img
-                            src="{{ asset('images/logos/logo-color.png') }}"
+                            src="{{ asset('images/reno/svg/logo-no-background.svg') }}"
                             class="logo-light h-10"
                             alt="Logo Light"
                         />
@@ -93,7 +93,7 @@
                 <!-- Mobile Menu Topbar Logo (Header) -->
                 <div class="flex items-center justify-between p-6">
                     <a href="{{ route('frontend') }}">
-                        <img src="{{ asset('images/logos/logo-color.png') }}" class="h-8" alt="Logo" />
+                        <img src="{{ asset('images/reno/svg/logo-no-background.svg') }}" class="h-8" alt="Logo" />
                     </a>
 
                     <button data-fc-dismiss class="flex items-center px-2">
@@ -173,7 +173,7 @@
                         </li>
                     </ul>
                     <a href="{{ route('frontend') }}">
-                        <img src="{{ asset('images/logos/logo-color.png') }}" class="mx-auto h-8" alt="logo brand" />
+                        <img src="{{ asset('images/reno/svg/logo-no-background.svg') }}" class="mx-auto h-8" alt="logo brand" />
                     </a>
                 </div>
             </div>

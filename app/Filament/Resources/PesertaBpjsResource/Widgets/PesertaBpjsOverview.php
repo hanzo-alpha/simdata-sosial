@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\PesertaBpjsResource\Widgets;
 
 use App\Filament\Resources\PesertaBpjsResource\Pages\ManagePesertaBpjs;
@@ -27,7 +29,7 @@ class PesertaBpjsOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM BPJS',
-                value: Number::abbreviate($this->getPageTableQuery()->count(), 2),
+                value: Number::format($this->getPageTableQuery()->count(), 0),
             )
                 ->description('Total Seluruh KPM Peserta BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')

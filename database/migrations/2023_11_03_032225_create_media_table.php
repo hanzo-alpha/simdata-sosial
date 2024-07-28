@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
-        if( ! Schema::hasTable('media')) {
+        if ( ! Schema::hasTable('media')) {
             Schema::create(app(config('curator.model'))->getTable(), function (Blueprint $table): void {
                 $table->id();
                 $table->string('disk')->default('public');
@@ -26,6 +28,7 @@ return new class () extends Migration {
                 $table->text('caption')->nullable();
                 $table->text('exif')->nullable();
                 $table->longText('curations')->nullable();
+                $table->char('kelurahan', 10)->nullable();
                 $table->timestamps();
             });
         }

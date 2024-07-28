@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\BansosDiterima;
 use App\Models\BantuanPpks;
 use Illuminate\Database\Migrations\Migration;

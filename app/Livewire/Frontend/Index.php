@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Frontend;
 
 use Akaunting\Apexcharts\Chart;
@@ -7,7 +9,7 @@ use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
-use App\Models\PesertaBpjs;
+use App\Models\RekapPenerimaBpjs;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -27,7 +29,7 @@ class Index extends Component
     {
         return [
             'rastra' => BantuanRastra::count(),
-            'bpjs' => PesertaBpjs::count(),
+            'bpjs' => (int) RekapPenerimaBpjs::sum('jumlah'),
             'pkh' => BantuanPkh::count(),
             'bpnt' => BantuanBpnt::count(),
             'ppks' => BantuanPpks::count(),
@@ -44,11 +46,11 @@ class Index extends Component
             ->setLegendFontSize('18')
             ->setLegendPosition('bottom')
             ->setLabels([
-                'BPJS', 'RASTRA', 'PKH', 'BPNT', 'PPKS', 'Angka Kemiskinan',
+                'RASTRA', 'BPJS', 'PKH', 'BPNT', 'PPKS', 'Angka Kemiskinan',
             ])
             ->setDataset('Jumlah KPM Per Program Bantuan', 'donut', [
-                $bantuan['bpjs'],
                 $bantuan['rastra'],
+                $bantuan['bpjs'],
                 $bantuan['pkh'],
                 $bantuan['bpnt'],
                 $bantuan['ppks'],

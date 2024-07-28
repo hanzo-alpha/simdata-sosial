@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
+use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
+use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
@@ -12,6 +16,7 @@ use App\Filament\Resources\BantuanBpjsResource\Widgets\BantuanBpjsOverview;
 use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Supports\Helpers;
 use Awcodes\FilamentBadgeableColumn\Components\Badge;
 use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Carbon\Carbon;
@@ -30,13 +35,14 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Validation\Rules\Unique;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
@@ -69,6 +75,7 @@ class BantuanBpjsResource extends Resource
                     ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
                     ->button(),
             ])
+//            ->recordClasses(fn(Model $record) => null !== $record->is_mutasi ? 'border-s-2 border-orange-600 dark:border-orange-300 bg-gray-200 dark:bg-white/5' : null)
             ->columns([
                 BadgeableColumn::make('nama_lengkap')
                     ->label('Nama Lengkap')
@@ -85,12 +92,14 @@ class BantuanBpjsResource extends Resource
                     ->label('N I K')
                     ->toggleable()
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nokk_tmt')
                     ->label('No. KK')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
+                    ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
                     ->copyable()
                     ->searchable(),
                 BadgeableColumn::make('tempat_lahir')
@@ -156,14 +165,16 @@ class BantuanBpjsResource extends Resource
                     ->label('Tahun')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status_usulan')
-                    ->label('Status Usulan')
+                    ->label('Status Usulan BPJS')
                     ->sortable()
+                    ->formatStateUsing(fn($record) => $record->status_bpjs->value . ' - ' .
+                        $record->status_usulan->value)
                     ->toggleable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_bpjs')
                     ->label('Status BPJS')
                     ->sortable()
-                    ->toggleable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_aktif')
                     ->label('Status Aktif')
@@ -230,18 +241,100 @@ class BantuanBpjsResource extends Resource
                     ->label('Bulan')
                     ->options(list_bulan())
                     ->searchable(),
+                Tables\Filters\TernaryFilter::make('is_mutasi')
+                    ->label('Mutasi')
+                    ->placeholder('Semua')
+                    ->trueLabel('Hanya Mutasi')
+                    ->falseLabel('Tanpa Mutasi')
+                    ->queries(true: fn($query) => $query->mutasi(), false: fn($query) => $query->notMutasi()),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
+                //                Tables\Actions\Action::make('mutasi')
+                //                    ->label('Mutasi')
+                //                    ->icon('heroicon-s-arrows-up-down')
+                //                    ->form([
+                //                        Forms\Components\Grid::make()->schema([
+                //                            Forms\Components\Select::make('mutasi.alasan_mutasi')
+                //                                ->options(AlasanEnum::class)
+                //                                ->required()
+                //                                ->preload()
+                //                                ->columnSpanFull()
+                //                                ->lazy(),
+                //                            Forms\Components\Textarea::make('mutasi.keterangan')
+                //                                ->maxLength(65535)
+                //                                ->autosize()
+                //                                ->dehydrated()
+                //                                ->columnSpanFull(),
+                //                            ToggleButton::make('mutasi.status_mutasi')
+                //                                ->label('Status Peserta')
+                //                                ->offColor('danger')
+                //                                ->onColor('primary')
+                //                                ->offLabel('BATAL MUTASI')
+                //                                ->onLabel('DI MUTASI')
+                //                                ->columnSpanFull()
+                //                                ->default(true),
+                //                        ])
+                //                            ->inlineLabel(),
+                //                    ])
+                //                    ->modalWidth(MaxWidth::TwoExtraLarge)
+                //                    ->action(function ($record, array $data): void {
+                //                        $bantuanBpjsId = $record->id;
+                //
+                //                        $record->mutasi()->updateOrCreate([
+                //                            'bantuan_bpjs_id' => $bantuanBpjsId,
+                //                            'nomor_kartu' => $record->nomor_kartu,
+                //                            'nik' => $record->nik_tmt,
+                //                            'nama_lengkap' => $record->nama_lengkap,
+                //                            'alamat_lengkap' => $record->alamat,
+                //                            'alasan_mutasi' => $data['mutasi']['alasan_mutasi'],
+                //                            'keterangan' => $data['mutasi']['keterangan'],
+                //                            'model_name' => BantuanBpjsResource::$model,
+                //                            'status_mutasi' => $data['mutasi']['status_mutasi'],
+                //                        ], [
+                //                            'bantuan_bpjs_id' => $bantuanBpjsId,
+                //                            'nik' => $record->nik_tmt,
+                //                            'nama_lengkap' => $record->nama_lengkap,
+                //                        ]);
+                //
+                //                        $record->is_mutasi = now();
+                //                        $record->status_aktif = StatusAktif::NONAKTIF;
+                //                        $record->save();
+                //
+                //                    })
+                //                    ->after(function (): void {
+                //                        Notification::make()
+                //                            ->success()
+                //                            ->title('KPM Berhasil dimutasi')
+                //                            ->send();
+                //                    })
+                //                    ->close(),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
+                    Tables\Actions\Action::make('Toggle Aktif')
+                        ->icon('heroicon-s-arrow-path-rounded-square')
+                        ->action(function ($record): void {
+                            $record->status_aktif = match ($record->status_aktif) {
+                                StatusAktif::AKTIF => StatusAktif::NONAKTIF,
+                                StatusAktif::NONAKTIF => StatusAktif::AKTIF,
+                            };
+
+                            $record->save();
+                        })
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Status Berhasil Diubah')
+                                ->send();
+                        })
+                        ->close(),
                 ]),
             ])
             ->bulkActions([
@@ -283,6 +376,10 @@ class BantuanBpjsResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
         return $form
             ->schema([
                 Forms\Components\Group::make([
@@ -303,7 +400,6 @@ class BantuanBpjsResource extends Resource
                                 ->unique(
                                     table: 'peserta_bpjs',
                                     column: 'nik',
-                                    //                                    modifyRuleUsing: fn(Unique $rule, $record) => dd($rule->where('nik')),
                                 )
                                 ->live(debounce: 500)
                                 ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
@@ -340,35 +436,39 @@ class BantuanBpjsResource extends Resource
                             Select::make('kecamatan')
                                 ->required()
                                 ->searchable()
-                                ->reactive()
+                                ->live()
+                                ->native(false)
                                 ->options(function () {
-                                    $kab = Kecamatan::query()->where(
-                                        'kabupaten_code',
-                                        setting('app.kodekab', config('custom.default.kodekab')),
-                                    );
-                                    if ( ! $kab) {
-                                        return Kecamatan::where(
-                                            'kabupaten_code',
-                                            setting('app.kodekab', config('custom.default.kodekab')),
-                                        )
-                                            ->pluck('name', 'code');
-                                    }
+                                    //                                    $kel = null;
+                                    //                                    if (null !== auth()->user()->instansi_id) {
+                                    //                                        $kel = Kelurahan::query()
+                                    //                                            ->where('code', auth()->user()->instansi_id)
+                                    //                                            ->pluck('kecamatan_code')->toArray();
+                                    //                                    }
 
-                                    return $kab->pluck('name', 'code');
+                                    $kab = Kecamatan::query()
+//                                        ->when($kel, fn(Builder $query) => $query->where('code', $kel[0]))
+                                        ->where(
+                                            'kabupaten_code',
+                                            setting('app.kodekab', setting('app.kodekab')),
+                                        );
+
+                                    return $kab->clone()->pluck('name', 'code');
                                 })
                                 ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                             Select::make('kelurahan')
                                 ->required()
                                 ->options(function (callable $get) {
-                                    return Kelurahan::query()->where(
-                                        'kecamatan_code',
-                                        $get('kecamatan'),
-                                    )?->pluck(
-                                        'name',
-                                        'code',
-                                    );
+                                    return Kelurahan::query()
+                                        ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
+                                            'code',
+                                            auth()->user()->instansi_id,
+                                        ))
+                                        ->where('kecamatan_code', $get('kecamatan'))
+                                        ->pluck('name', 'code');
                                 })
+                                ->native(false)
                                 ->reactive()
                                 ->searchable(),
 
@@ -419,18 +519,25 @@ class BantuanBpjsResource extends Resource
                                 ->live()
                                 ->preload(),
 
+                            //                            Forms\Components\Select::make('status_dtks')
+                            //                                ->label('Status DTKS')
+                            //                                ->enum(StatusDtksEnum::class)
+                            //                                ->options(StatusDtksEnum::class)
+                            //                                ->default(StatusDtksEnum::DTKS)
+                            //                                ->live()
+                            //                                ->preload(),
+
                             Forms\Components\Select::make('status_usulan')
                                 ->label('Status Pengembalian Usulan Dari BPJS')
                                 ->enum(StatusUsulanEnum::class)
                                 ->options(StatusUsulanEnum::class)
                                 ->default(StatusUsulanEnum::ONPROGRESS)
                                 ->lazy()
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->visible(auth()->user()?->hasRole($sa))
                                 ->preload(),
 
                             Forms\Components\Textarea::make('keterangan')
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->visible(auth()->user()?->hasRole($sa))
                                 ->autosize(),
 
                             FileUpload::make('foto_ktp')
@@ -470,7 +577,7 @@ class BantuanBpjsResource extends Resource
                                 ->onColor(StatusAktif::AKTIF->getColor())
                                 ->offLabel(StatusAktif::NONAKTIF->getLabel())
                                 ->onLabel(StatusAktif::AKTIF->getLabel())
-                                ->visible(auth()->user()?->hasRole(['admin', 'super_admin']))
+                                ->visible(auth()->user()?->hasRole($sa))
                                 ->default(0),
                         ]),
                 ])->columns(1),
@@ -660,7 +767,11 @@ class BantuanBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        $admin = Helpers::getAdminRoles();
+        $sadmin = ['super_admin'];
+        $sa = array_merge($sadmin, $admin);
+
+        if (auth()->user()->hasRole($sa)) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

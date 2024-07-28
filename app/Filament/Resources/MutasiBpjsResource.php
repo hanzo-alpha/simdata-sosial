@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\AlasanEnum;
+use App\Enums\AlasanBpjsEnum;
+use App\Enums\StatusMutasi;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
-use App\Models\PesertaBpjs;
-use App\Traits\HasInputDateLimit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Wallo\FilamentSelectify\Components\ToggleButton;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 final class MutasiBpjsResource extends Resource
 {
@@ -36,66 +36,35 @@ final class MutasiBpjsResource extends Resource
                 Forms\Components\Select::make('peserta_bpjs_id')
                     ->label('Nama Peserta BPJS')
                     ->relationship('peserta', 'nama_lengkap')
-                    ->live(onBlur: true)
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->optionsLimit(20)
                     ->searchable(['nomor_kartu', 'nik', 'nama_lengkap'])
                     ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
                     ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
                     ->native(false)
-                    ->getOptionLabelFromRecordUsing(fn(
-                        $record,
-                    ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . (string) ($record->nik))->allowHtml()
-                    ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state): void {
-                        $peserta = PesertaBpjs::find($state);
-                        if (isset($peserta) && $peserta->count() > 0) {
-                            $set('nomor_kartu', $peserta->nomor_kartu);
-                            $set('nik', $peserta->nik);
-                            $set('nama_lengkap', $peserta->nama_lengkap);
-                            $set('alamat_lengkap', $peserta->alamat);
-                        } else {
-                            $set('nomor_kartu', null);
-                            $set('nik', null);
-                            $set('nama_lengkap', null);
-                            $set('alamat_lengkap', null);
-                        }
-                    })
+                    ->getOptionLabelFromRecordUsing(
+                        fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . $record->nik . ' | No. Kartu : ' . $record->nomor_kartu,
+                    )
+                    ->allowHtml()
                     ->columnSpanFull(),
 
-                Forms\Components\TextInput::make('nomor_kartu')
-                    ->disabled()
-                    ->dehydrated()
-                    ->maxLength(13),
-                Forms\Components\TextInput::make('nik')
-                    ->disabled()
-                    ->dehydrated()
-                    ->maxLength(16),
-                Forms\Components\TextInput::make('nama_lengkap')
-                    ->disabled()
-                    ->dehydrated()
-                    ->maxLength(150),
-                Forms\Components\Textarea::make('alamat_lengkap')
-                    ->disabled()
-                    ->dehydrated()
-                    ->maxLength(65535)
-                    ->autosize(),
-                Forms\Components\Textarea::make('keterangan')
-                    ->maxLength(65535)
-                    ->autosize()
-                    ->dehydrated()
-                    ->columnSpanFull(),
                 Forms\Components\Select::make('alasan_mutasi')
-                    ->options(AlasanEnum::class)
+                    ->enum(AlasanBpjsEnum::class)
+                    ->options(AlasanBpjsEnum::class)
+                    ->native(false)
                     ->required()
                     ->preload()
                     ->lazy(),
-                ToggleButton::make('status_mutasi')
+
+                Forms\Components\TextInput::make('keterangan')
+                    ->dehydrated(),
+
+                Forms\Components\ToggleButtons::make('status_mutasi')
                     ->label('Status Peserta')
-                    ->offColor('danger')
-                    ->onColor('primary')
-                    ->offLabel('BATAL MUTASI')
-                    ->onLabel('DI MUTASI')
-                    ->default(true),
+                    ->options(StatusMutasi::class)
+                    ->inline()
+                    ->default(StatusMutasi::MUTASI),
             ]);
     }
 
@@ -114,16 +83,9 @@ final class MutasiBpjsResource extends Resource
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('peserta.nama_lengkap')
-                    ->label('Nama Peserta BPJS')
+                    ->label('Nama Peserta')
                     ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nomor_kartu')
-                    ->label('Nomor Kartu')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nik')
-                    ->label('NIK')
-                    ->sortable()
+                    ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alasan_mutasi')
                     ->label('Alasan Mutasi')
@@ -135,17 +97,32 @@ final class MutasiBpjsResource extends Resource
                     ->badge()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->label('Keterangan')
+                    ->searchable(),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('status_mutasi')
+                    ->label('Status Mutasi')
+                    ->options(StatusMutasi::class)
+                    ->native(false)
+                    ->preload(),
+                Tables\Filters\TrashedFilter::make(),
             ])
+            ->hiddenFilterIndicators()
+            ->deferLoading()
+//            ->deferFilters()
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -155,5 +132,13 @@ final class MutasiBpjsResource extends Resource
         return [
             'index' => Pages\ManageMutasiBpjs::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

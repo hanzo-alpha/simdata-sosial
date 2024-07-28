@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Imports;
 
+use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinUmumEnum;
 use App\Enums\StatusKondisiRumahEnum;
@@ -13,6 +16,7 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
+use App\Supports\DateHelper;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
@@ -37,12 +41,10 @@ class BantuanPpksImporter extends Importer
                 ->guess(['NIK', 'N I K', 'nik', 'No.NIK'])
                 ->fillRecordUsing(function ($record, $state): void {
                     $record->nik = $state ?? '-';
-                })
-                ->rules(['required']),
+                }),
             ImportColumn::make('nama_lengkap')
                 ->requiredMapping()
-                ->guess(['Nama Lengkap', 'NAMA', 'NAMA LENGKAP'])
-                ->rules(['required', 'max:255']),
+                ->guess(['Nama Lengkap', 'NAMA', 'NAMA LENGKAP']),
             ImportColumn::make('nama_ibu_kandung')
                 ->requiredMapping()
                 ->ignoreBlankState()
@@ -60,17 +62,25 @@ class BantuanPpksImporter extends Importer
             ImportColumn::make('tgl_lahir')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
-                    $record->tgl_lahir = now()
+                    if (null !== $state) {
+                        $record->tgl_lahir = DateHelper::convertTglFromString($state);
+                    }
+
+                    $random = now()
                         ->subDays(random_int(0, 180))
                         ->subYears(random_int(10, 50))->format('Y-m-d');
+
+                    $record->tgl_lahir = $random;
                 })
                 ->guess(['Tgl Lahir', 'TGL LAHIR', 'Tanggal Lahir']),
             ImportColumn::make('jenis_kelamin')
-                ->guess(['JENIS KELAMIN (1=LAKI, 2=PEREMPUAN)'])
+                ->guess(['JENIS KELAMIN (1=LAKI, 2=PEREMPUAN)', 'JENIS KELAMIN'])
                 ->requiredMapping()
-                ->ignoreBlankState()
                 ->fillRecordUsing(function ($record, $state): void {
-                    $record->jenis_kelamin = (int) $state;
+                    $record->jenis_kelamin = match ((int) $state) {
+                        1, 0 => JenisKelaminEnum::LAKI,
+                        2 => JenisKelaminEnum::PEREMPUAN,
+                    };
                 }),
             ImportColumn::make('jenis_pekerjaan')
                 ->requiredMapping()
@@ -85,28 +95,27 @@ class BantuanPpksImporter extends Importer
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $record->status_kawin = match ((int) $state) {
-                        1, '1' => StatusKawinUmumEnum::KAWIN_TERCATAT,
-                        2, '2' => StatusKawinUmumEnum::KAWIN_BELUM_TERCATAT,
-                        5, '5' => StatusKawinUmumEnum::CERAI_MATI,
-                        4, '4' => StatusKawinUmumEnum::CERAI_HIDUP,
-                        6, '6' => StatusKawinUmumEnum::CERAI_BELUM_TERCATAT,
-                        3, '3' => StatusKawinUmumEnum::BELUM_KAWIN,
+                        1, 0 => StatusKawinUmumEnum::KAWIN_TERCATAT,
+                        2 => StatusKawinUmumEnum::KAWIN_BELUM_TERCATAT,
+                        3 => StatusKawinUmumEnum::BELUM_KAWIN,
+                        4 => StatusKawinUmumEnum::CERAI_HIDUP,
+                        5 => StatusKawinUmumEnum::CERAI_MATI,
+                        6 => StatusKawinUmumEnum::CERAI_BELUM_TERCATAT,
                     };
                 }),
             ImportColumn::make('penghasilan_rata_rata')
                 ->guess(['PENGHASILAN RATA-RATA'])
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
-                    $record->penghasilan_rata_rata = (0 !== $state) ? $state : 0;
+                    $record->penghasilan_rata_rata = (int) $state ?? 0;
                 }),
             ImportColumn::make('nama_bantuan')
                 ->requiredMapping()
-                ->guess(['NAMA BANTUAN'])
-                ->rules(['max:255']),
+                ->guess(['NAMA BANTUAN']),
             ImportColumn::make('jumlah_bantuan')
                 ->requiredMapping()
                 ->guess(['JUMLAH BANTUAN'])
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
-                    $record->jumlah_bantuan = $state ?? 0;
+                    $record->jumlah_bantuan = (int) $state ?? 0;
                 }),
             ImportColumn::make('alamat')
                 ->requiredMapping()
@@ -119,7 +128,7 @@ class BantuanPpksImporter extends Importer
                     $provinsi = Provinsi::query()
                         ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
                         ->first()?->code;
-                    $record->provinsi = $provinsi;
+                    $record->provinsi = $provinsi ?? '73';
                 })
                 ->rules(['max:255']),
             ImportColumn::make('kabupaten')
@@ -130,7 +139,7 @@ class BantuanPpksImporter extends Importer
                         ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
                         ->first()?->code;
 
-                    $record->kabupaten = $kabupaten;
+                    $record->kabupaten = $kabupaten ?? '7312';
                 })
                 ->rules(['max:255']),
             ImportColumn::make('kecamatan')
@@ -151,15 +160,17 @@ class BantuanPpksImporter extends Importer
                     $kelurahan = Kelurahan::query()
                         ->where('name', 'like', '%' . Str::ucfirst($state) . '%')
                         ->first()?->code;
-                    $record->kelurahan = $kelurahan;
+                    $record->kelurahan = $kelurahan ?? null;
                 })
                 ->rules(['max:255']),
-            ImportColumn::make('kriteria_ppks')
+            ImportColumn::make('bansos_diterima_ids')
                 ->guess(['BANSOS DITERIMA', 'BANTUAN YANG PERNAH DITERIMA'])
                 ->requiredMapping()
                 ->fillRecordUsing(function ($record, $state): void {
-                    $bansos = BansosDiterima::where('nama_bansos', 'like', '%' . Str::upper($state) . '%')->first();
-                    $record->kriteria_ppks = [$bansos->nama_bansos];
+                    $bansos = BansosDiterima::query()
+                        ->where('nama_bansos', 'like', '%' . Str::upper($state) . '%')
+                        ->first();
+                    $record->bansos_diterima_ids = collect($bansos?->id)->toArray();
                 }),
             ImportColumn::make('tahun_anggaran')
                 ->guess(['TAHUN', 'TAHUN ANGGARAN'])
@@ -171,24 +182,8 @@ class BantuanPpksImporter extends Importer
                 ->guess(['Kategori PPKS', 'PPKS'])
                 ->requiredMapping()
                 ->relationship(resolveUsing: 'nama_tipe'),
-            //            ImportColumn::make('kriteria_ppks')
-            //                ->requiredMapping()
-            //                ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
-            //                    $kriteriaIds = collect();
-            //                    $kriteria = KriteriaPpks::query()
-            //                        ->where('nama_kriteria', 'like', '%' . $state . '%')
-            //                        ->first();
-            //                    $kriteriaIds->push($kriteria->id);
-            //                    $record->kriteria_ppks[] = json_encode($kriteriaIds->toArray());
-            //                }),
-            ImportColumn::make('kategori_tags_ppks')
-                ->guess(['KATEGORI TAGS PPKS', 'KRITERIA TAGS'])
-                ->fillRecordUsing(function ($record, $state): void {
-                    $record->kategori_tags_ppks = [$state];
-                })
-                ->requiredMapping(),
             ImportColumn::make('kriteria_tags_ppks')
-                ->guess(['KRITERIA TAGS PPKS', 'KRITERIA TAGS'])
+                ->guess(['KRITERIA TAGS PPKS', 'KRITERIA TAGS', 'KRITERIA PPKS'])
                 ->fillRecordUsing(function ($record, $state): void {
                     $record->kriteria_tags_ppks = [$state];
                 })
@@ -196,22 +191,23 @@ class BantuanPpksImporter extends Importer
             ImportColumn::make('status_rumah_tinggal')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
-                    $record->status_rumah_tinggal = (1 === (int) $state) ? StatusRumahEnum::MILIK_SENDIRI :
-                        StatusRumahEnum::MENUMPANG;
+                    $record->status_rumah_tinggal = (1 === (int) $state)
+                        ? StatusRumahEnum::MILIK_SENDIRI
+                        : StatusRumahEnum::MENUMPANG;
                 }),
             ImportColumn::make('status_kondisi_rumah')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $record->status_kondisi_rumah = match ((int) $state) {
-                        1, '1' => StatusKondisiRumahEnum::BAIK,
-                        3, '3' => StatusKondisiRumahEnum::RUSAK,
-                        4, '4' => StatusKondisiRumahEnum::RUSAK_BERAT,
-                        2, '2' => StatusKondisiRumahEnum::SEDANG,
+                        1, 0 => StatusKondisiRumahEnum::BAIK,
+                        2 => StatusKondisiRumahEnum::SEDANG,
+                        3 => StatusKondisiRumahEnum::RUSAK,
+                        4 => StatusKondisiRumahEnum::RUSAK_BERAT,
                     };
                 }),
             ImportColumn::make('status_verifikasi')
                 ->requiredMapping()
-                ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
+                ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $record->status_verifikasi = match ($state) {
                         'TERVERIFIKASI' => StatusVerifikasiEnum::VERIFIED,
                         'BELUM DIVERIFIKASI', 'default' => StatusVerifikasiEnum::UNVERIFIED,
@@ -222,7 +218,7 @@ class BantuanPpksImporter extends Importer
             ImportColumn::make('status_dtks')
                 ->requiredMapping()
                 ->guess(['DTKS', 'STATUS DTKS'])
-                ->fillRecordUsing(function (BantuanPpks $record, string $state): void {
+                ->fillRecordUsing(function (BantuanPpks $record, $state): void {
                     $record->status_dtks = Str::of($state)->contains('TERDAFTAR') ? StatusDtksEnum::DTKS : StatusDtksEnum::NON_DTKS;
                 })
                 ->label('STATUS DTKS'),

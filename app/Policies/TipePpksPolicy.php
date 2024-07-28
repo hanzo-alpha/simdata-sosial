@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\TipePpks;
 use App\Models\User;
+use App\Models\TipePpks;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TipePpksPolicy
