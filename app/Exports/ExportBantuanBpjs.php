@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Exports;
 
 use App\Enums\StatusAktif;
+use App\Enums\StatusBpjsEnum;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use pxlrbt\FilamentExcel\Columns\Column;
@@ -16,7 +17,7 @@ class ExportBantuanBpjs extends ExcelExport
     public function setUp(): void
     {
         $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-download');
+        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . Str::of($filename)->lower()->kebab() . '-download');
         $this->askForWriterType();
         $this->withColumns([
             Column::make('id')->heading('NO'),
@@ -48,7 +49,12 @@ class ExportBantuanBpjs extends ExcelExport
                 ->formatStateUsing(fn($state) => (StatusAktif::AKTIF === $state) ? StatusAktif::AKTIF->getLabel() :
                     StatusAktif::NONAKTIF->getLabel()),
             Column::make('status_usulan')->heading('STATUS USULAN'),
-            Column::make('status_bpjs')->heading('STATUS BPJS'),
+            Column::make('status_bpjs')->heading('STATUS BPJS')
+                ->formatStateUsing(fn($state) => match ($state) {
+                    StatusBpjsEnum::BARU, 'default' => StatusBpjsEnum::BARU,
+                    StatusBpjsEnum::PENGAKTIFAN => StatusBpjsEnum::PENGAKTIFAN,
+                    StatusBpjsEnum::PENGALIHAN => StatusBpjsEnum::PENGALIHAN,
+                }),
             Column::make('keterangan')->heading('KETERANGAN'),
             Column::make('foto_ktp')->heading('FOTO KTP'),
         ]);

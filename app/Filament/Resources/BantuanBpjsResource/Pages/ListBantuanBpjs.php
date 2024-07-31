@@ -114,13 +114,13 @@ class ListBantuanBpjs extends ListRecords
                     $import = new ImportBantuanBpjs();
                     $import->import($data['attachment'], 'public');
                 })
-                ->after(function (): void {
-                    Notification::make()
-                        ->title('Bantuan BPJS Berhasil di impor')
-                        ->success()
-                        ->send()
-                        ->sendToDatabase(auth()->user());
-                })
+//                ->after(function (): void {
+//                    Notification::make()
+//                        ->title('Data Bantuan BPJS sedang di impor secara background. Silakan lanjutkan kegiatan anda sambil menunggu impor selesai')
+//                        ->info()
+//                        ->send()
+//                        ->sendToDatabase(auth()->user());
+//                })
                 ->icon('heroicon-o-arrow-up-tray')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
