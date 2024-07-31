@@ -84,8 +84,9 @@ class ImportBantuanBpjs implements
         };
 
         $bulan = (isset($row['periode_bulan']) && 0 !== $row['periode_bulan']) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;
+        $rowStatus = $row['status_usulan'] ?: $row['status_tl'];
 
-        $statusUsulan = Str::of($row['status_tl'])->matchAll('/[a-zA-Z]+/');
+        $statusUsulan = Str::of($rowStatus)->matchAll('/[a-zA-Z]+/');
 
         $usulan = match ($statusUsulan[0]) {
             'BERHASIL' => StatusUsulanEnum::BERHASIL,
@@ -117,9 +118,9 @@ class ImportBantuanBpjs implements
             'kecamatan' => $kecamatan ?? $row['kecamatan'],
             'kelurahan' => $kelurahan ?? $row['kelurahan'],
             'status_aktif' => $aktif,
-            'status_bpjs' => $row['status_aktif'] ?? StatusBpjsEnum::NONAKTIF,
+            'status_bpjs' => $row['status_aktif'] ?? StatusBpjsEnum::PENGAKTIFAN,
             'status_usulan' => $usulan,
-            'keterangan' => $row['keterangan'] ?? $row['status_tl'],
+            'keterangan' => $row['keterangan'] ?? $rowStatus,
             'bulan' => $bulan,
             'tahun' => $row['tahun'] ?? now()->year,
         ]);
