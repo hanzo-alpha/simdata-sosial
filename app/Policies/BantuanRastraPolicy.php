@@ -55,7 +55,7 @@ class BantuanRastraPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_bantuan::rastra');
     }
 
     /**
@@ -71,7 +71,7 @@ class BantuanRastraPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_bantuan::rastra');
     }
 
     /**
@@ -87,7 +87,7 @@ class BantuanRastraPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_bantuan::rastra');
     }
 
     /**
@@ -104,5 +104,26 @@ class BantuanRastraPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_bantuan::rastra');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_bantuan::rastra');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_bantuan::rastra');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_bantuan::rastra');
     }
 }

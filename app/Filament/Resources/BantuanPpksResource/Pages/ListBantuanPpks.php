@@ -77,6 +77,7 @@ final class ListBantuanPpks extends ListRecords
                 ->color('warning')
                 ->icon('heroicon-o-arrow-up-tray')
                 ->importer(BantuanPpksImporter::class)
+                ->authorize('upload')
                 ->options([
                     'updateExisting' => true,
                 ])

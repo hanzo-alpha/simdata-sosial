@@ -73,6 +73,7 @@ class ListBantuanRastra extends ListRecords
                 ->label('Upload CSV')
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('warning')
+                ->authorize('upload')
                 ->importer(BantuanRastraImporter::class)
                 ->options([
                     'updateExisting' => true,

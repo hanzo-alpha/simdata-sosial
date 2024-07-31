@@ -98,6 +98,7 @@ class RolePolicy
         return $user->can('{{ Replicate }}');
     }
 
+
     /**
      * Determine whether the user can reorder.
      */

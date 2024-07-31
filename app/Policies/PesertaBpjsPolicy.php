@@ -55,7 +55,7 @@ class PesertaBpjsPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_peserta::bpjs');
     }
 
     /**
@@ -71,7 +71,7 @@ class PesertaBpjsPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_peserta::bpjs');
     }
 
     /**
@@ -87,7 +87,7 @@ class PesertaBpjsPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_peserta::bpjs');
     }
 
     /**
@@ -104,5 +104,26 @@ class PesertaBpjsPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_peserta::bpjs');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_peserta::bpjs');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_peserta::bpjs');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_peserta::bpjs');
     }
 }

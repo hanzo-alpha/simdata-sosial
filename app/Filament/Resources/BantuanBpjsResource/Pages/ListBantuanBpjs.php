@@ -78,7 +78,6 @@ class ListBantuanBpjs extends ListRecords
             ExportAction::make()
                 ->label('Download')
                 ->color('success')
-                ->authorize('download')
                 ->exports([
                     ExportBantuanBpjs::make()
                         ->except(['foto_ktp','dusun','tahun','bulan','created_at', 'updated_at', 'deleted_at']),

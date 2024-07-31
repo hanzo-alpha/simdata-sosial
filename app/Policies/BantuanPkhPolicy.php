@@ -55,7 +55,7 @@ class BantuanPkhPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_bantuan::pkh');
     }
 
     /**
@@ -71,7 +71,7 @@ class BantuanPkhPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_bantuan::pkh');
     }
 
     /**
@@ -87,7 +87,7 @@ class BantuanPkhPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_bantuan::pkh');
     }
 
     /**
@@ -104,5 +104,26 @@ class BantuanPkhPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_bantuan::pkh');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_bantuan::pkh');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_bantuan::pkh');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_bantuan::pkh');
     }
 }
