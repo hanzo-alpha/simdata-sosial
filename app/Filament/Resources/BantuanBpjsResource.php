@@ -183,11 +183,7 @@ class BantuanBpjsResource extends Resource
                     ->badge(),
                 Tables\Columns\ImageColumn::make('foto_ktp')
                     ->label('Foto KTP')
-                    ->circular()
-                    ->stacked()
-                    ->wrap()
-                    ->limit(3)
-                    ->limitedRemainingText()
+                    ->square()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('keterangan')
                     ->searchable(),
@@ -731,8 +727,7 @@ class BantuanBpjsResource extends Resource
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->alignCenter()
-                                ->limit(2)
-                                ->height(300)
+                                ->height(500)
                                 ->extraImgAttributes([
                                     'alt' => 'foto ktp',
                                     'loading' => 'lazy',
