@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\CustomLogin;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
@@ -43,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->path('dashboard')
             ->databaseTransactions()
-            ->login()
+            ->login(CustomLogin::class)
             ->passwordReset()
             ->maxContentWidth(MaxWidth::Full)
             ->colors([
@@ -58,29 +59,12 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(
-                        shouldRegisterUserMenu: true,
-                        shouldRegisterNavigation: false,
                         hasAvatars: false,
                         slug: 'profil',
                     )
                     ->enableTwoFactorAuthentication(),
                 SpotlightPlugin::make(),
-                FilamentShieldPlugin::make()
-                    ->gridColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'lg' => 3,
-                    ])
-                    ->sectionColumnSpan(1)
-                    ->checkboxListColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'lg' => 4,
-                    ])
-                    ->resourceCheckboxListColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                    ]),
+                FilamentShieldPlugin::make(),
                 CuratorPlugin::make()
                     ->label('Media')
                     ->pluralLabel('Media')
