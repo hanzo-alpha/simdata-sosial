@@ -57,6 +57,13 @@ final class MutasiBpjsResource extends Resource
                     ->preload()
                     ->lazy(),
 
+                Forms\Components\Select::make('periode_bulan')
+                    ->options(list_bulan())
+                    ->native(false)
+                    ->required()
+                    ->preload()
+                    ->lazy(),
+
                 Forms\Components\TextInput::make('keterangan')
                     ->dehydrated(),
 
@@ -89,6 +96,12 @@ final class MutasiBpjsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alasan_mutasi')
                     ->label('Alasan Mutasi')
+                    ->badge()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('periode_bulan')
+                    ->label('Periode Bulan')
+                    ->formatStateUsing(fn($state) => bulan_to_string($state))
                     ->badge()
                     ->sortable()
                     ->searchable(),

@@ -4,33 +4,75 @@ declare(strict_types=1);
 
 namespace App\Imports;
 
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Models\PesertaBpjs as PesertaJamkesda;
 use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithUpserts;
+use Maatwebsite\Excel\Events\AfterChunk;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Validators\Failure;
+use Str;
 use Throwable;
 
-class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
+class ImportPesertaBpjs implements
+    ShouldQueue,
+    SkipsEmptyRows,
+    SkipsOnError,
+    SkipsOnFailure,
+    ToModel,
+    WithBatchInserts,
+    WithChunkReading,
+    WithHeadingRow,
+    WithUpserts,
+    WithEvents
 {
     use Importable;
+    use RegistersEventListeners;
     use SkipsErrors;
     use SkipsFailures;
+
+    public static function beforeImport(BeforeImport $event): void
+    {
+        Notification::make('Mulai Mengimpor')
+            ->title('Data Peserta Bpjs sedang di impor ke database.')
+            ->info()
+            ->sendToDatabase(auth()->user());
+    }
+
+    public static function afterImport(AfterImport $event): void
+    {
+        Notification::make('Impor Berhasil')
+            ->title('Data Peserta BPJS Berhasil di impor')
+            ->success()
+            ->sendToDatabase(auth()->user());
+    }
+
+    public static function afterChunk(AfterChunk $event): void
+    {
+        Notification::make('Impor Berhasil')
+            ->title('Data Peserta BPJS Berhasil di impor')
+            ->success()
+            ->sendToDatabase(auth()->user());
+    }
 
     public function registerEvents(): array
     {
@@ -39,40 +81,23 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
                 Notification::make()
                     ->title('Gagal Impor Peserta BPJS')
                     ->danger()
-                    ->send()
                     ->sendToDatabase(auth()->user());
             },
         ];
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Model|\App\Models\MutasiBpjs|null
-     */
     public function model(array $row): Model|PesertaJamkesda|null
     {
-        $kab = Kabupaten::query()
-            ->where('name', $row['kabupaten'])
-            ->where('provinsi_code', setting('app.kodeprov'))
-            ->first();
-        $kec = Kecamatan::query()
-            ->where('name', $row['kecamatan'])
-            ->where('kabupaten_code', setting('app.kodekab'))
-            ->first();
-        $kel = Kelurahan::query()
-            ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-            ->where('name', $row['kelurahan'])
-            ->first();
-
         return new PesertaJamkesda([
             'nomor_kartu' => $row['no_kartu'] ?? '-',
-            'nik' => $row['nik'] ?? '-',
+            'nik' => Str::replaceFirst("'", "", $row['nik']) ?? '-',
             'nama_lengkap' => $row['nama'] ?? '-',
             'alamat' => $row['alamat'] ?? '-',
             'no_rt' => $row['rt'] ?? null,
             'no_rw' => $row['rw'] ?? null,
-            'kabupaten' => $kab->code ?? $row['kabupaten'] ?? null,
-            'kecamatan' => $kec->code ?? $row['kecamatan'] ?? null,
-            'kelurahan' => $kel->code ?? $row['kelurahan'] ?? null,
+            'kabupaten' => $row['kabupaten'] ?? null,
+            'kecamatan' => $row['kecamatan'] ?? null,
+            'kelurahan' => $row['kelurahan'] ?? null,
             'dusun' => $row['desa'] ?? null,
         ]);
     }
@@ -81,6 +106,11 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
     public function onError(Throwable $e): void
     {
         Log::error($e);
+        Notification::make('Error Impor')
+            ->title('Terjadi kesalahan saat mengimpor. Import Di batalkan')
+            ->body($e)
+            ->danger()
+            ->sendToDatabase(auth()->user());
     }
 
     public function onFailure(Failure ...$failures): void
@@ -90,9 +120,10 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
             $errmsg = $failure->errors()[0];
             $values = $failure->values();
 
-            Notification::make('Terjadi Kesalahan Impor')
+            Notification::make('Failure Import')
                 ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-                ->body('NIK : ' . $values['nik'] ?? '-' . ' | Nama : ' . $values['nama_lengkap'] ?? '-')
+                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . '
+             | Nama : ' . $values['nama_lengkap'] ?? '-')
                 ->danger()
                 ->sendToDatabase(auth()->user())
                 ->broadcast(User::where('is_admin', 1)->get());
@@ -101,14 +132,29 @@ class ImportPesertaBpjs implements ShouldQueue, SkipsEmptyRows, ToModel, WithBat
         }
     }
 
+    public function rules(): array
+    {
+        return [
+            'nik' => Rule::unique('peserta_bpjs', 'nik'),
+
+            // Above is alias for as it always validates in batches
+            '*.nik' => Rule::unique('peserta_bpjs', 'nik'),
+        ];
+    }
+
+    public function uniqueBy(): array
+    {
+        return ['nik'];
+    }
+
 
     public function batchSize(): int
     {
-        return 3000;
+        return 2000;
     }
 
     public function chunkSize(): int
     {
-        return 3000;
+        return 2000;
     }
 }

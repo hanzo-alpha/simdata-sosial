@@ -14,6 +14,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ManagePesertaBpjs extends ManageRecords
@@ -39,16 +40,14 @@ class ManagePesertaBpjs extends ManageRecords
                     return $data;
                 })
                 ->action(function (array $data): void {
-                    $deleteAll = PesertaBpjs::query()->delete();
-                    if ($deleteAll) {
-                        Excel::queueImport(new ImportPesertaBpjs(), $data['attachment'], 'public');
-                    }
+                    PesertaBpjs::query()->forceDelete();
                     Notification::make()
                         ->title('Data Peserta BPJS sedang diimpor secara background')
                         ->info()
                         ->sendToDatabase(auth()->user());
+                    Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
                 })
-                ->successNotification(function (): void {
+                ->after(function (): void {
                     Notification::make()
                         ->title('Data Peserta BPJS berhasil diunggah')
                         ->success()

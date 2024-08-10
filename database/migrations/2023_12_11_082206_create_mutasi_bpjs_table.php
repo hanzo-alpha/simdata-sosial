@@ -22,6 +22,7 @@ return new class () extends Migration {
             $table->foreignId('bantuan_bpjs_id')->nullable();
             $table->string('alasan_mutasi')->default(AlasanEnum::MAMPU)->nullable();
             $table->text('keterangan')->nullable();
+            $table->char('periode_bulan', 2)->default(now()->month)->nullable();
             $table->string('status_mutasi')->default(StatusAktif::NONAKTIF)->nullable();
             $table->string('tipe_mutasi')->default(TipeMutasiEnum::PESERTA_BPJS)->nullable();
             $table->string('model_name')->nullable();

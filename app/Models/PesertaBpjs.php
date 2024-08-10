@@ -32,4 +32,15 @@ final class PesertaBpjs extends Model
     {
         return $this->hasMany(MutasiBpjs::class);
     }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+        self::deleting(function (PesertaBpjs $pesertaBpjs): void {
+            $pesertaBpjs->mutasiBpjs()->each(function ($mutasi): void {
+                $mutasi->truncate();
+            });
+            $pesertaBpjs->mutasi()->truncate();
+        });
+    }
 }
