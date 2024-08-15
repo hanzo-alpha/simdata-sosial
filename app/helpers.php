@@ -14,6 +14,13 @@ if ( ! function_exists('date_format')) {
     }
 }
 
+if ( ! function_exists('replace_nama_file_excel')) {
+    function replace_nama_file_excel($namafile): string
+    {
+        return str_replace(['/', "\\", ':', '*', '?', '«', '<', '>', '|'], '-', $namafile);
+    }
+}
+
 if ( ! function_exists('superadmin_admin_roles')) {
     function superadmin_admin_roles(): array|Collection
     {
