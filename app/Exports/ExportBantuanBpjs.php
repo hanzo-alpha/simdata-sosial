@@ -16,8 +16,7 @@ class ExportBantuanBpjs extends ExcelExport
 {
     public function setUp(): void
     {
-        $this->withFilename(fn($resource) => date('Ymdhis') . '_' . Str::of(replace_nama_file_excel
-            ($resource::getLabel()))
+        $this->withFilename(fn($resource) => date('Ymdhis') . '-' . Str::of(replace_nama_file_excel($resource::getLabel()))
             ->lower()->kebab());
         $this->askForWriterType();
         $this->withColumns([
