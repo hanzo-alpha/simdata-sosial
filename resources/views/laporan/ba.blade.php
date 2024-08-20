@@ -1,5 +1,7 @@
 @php
-    use App\Models\BantuanRastra;use App\Supports\Helpers;
+    use App\Models\BantuanRastra;
+    use App\Supports\Helpers;
+    use App\Supports\DateHelper;
 @endphp
 
 <x-layouts.print>
@@ -258,7 +260,7 @@
             Lampiran Berita Acara Nomor : {{ $record->nomor_ba }}
         </p>
         <p style="font-size: 12px; text-align: left">
-            Tanggal : {{ $record->tgl_ba->format('d M Y') }}
+            Tanggal : {{ DateHelper::tanggal($record->tgl_ba->toString()) }}
         </p><br><br>
         <div class="text-center">
             <p style="font-size: 12px">
@@ -286,8 +288,9 @@
             <tbody>
             @php
                 $penerima = BantuanRastra::where('kecamatan',$record->kecamatan)->where('kelurahan',$record->kelurahan)->get();
-                $jumlahBeras = ($record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->get()->sum
-                ('kuantitas') / $penerima->count()) / $record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->get()->sum('jumlah_bulan') ;
+                $qty = $record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->get()->sum('kuantitas');
+                $bulan = $record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->get()->sum('jumlah_bulan') ;
+                $jumlahBeras = ($qty / $penerima->count());
                 $i = 1;
             @endphp
             @forelse($penerima as $kpm)

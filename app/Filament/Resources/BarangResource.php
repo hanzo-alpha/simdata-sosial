@@ -7,6 +7,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BarangResource\Pages;
 use App\Models\Barang;
 use App\Models\Kelurahan;
+use Awcodes\FilamentBadgeableColumn\Components\Badge;
+use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -14,7 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
 
 class BarangResource extends Resource
 {
@@ -33,6 +35,7 @@ class BarangResource extends Resource
         return $form
             ->schema([
                 Select::make('kode_kelurahan')
+                    ->label('Kelurahan')
                     ->required()
                     ->options(Kelurahan::query()
                         ->when(
@@ -76,8 +79,7 @@ class BarangResource extends Resource
                     ->dehydrated()
                     ->default(0),
                 Forms\Components\Textarea::make('keterangan')
-                    ->nullable()
-                    ->columnSpanFull(),
+                    ->nullable(),
             ]);
     }
 
@@ -97,10 +99,13 @@ class BarangResource extends Resource
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nama_barang')
-                    ->label('Nama Barang')
-                    ->formatStateUsing(fn($record) => $record->nama_barang . ' - ' . $record->jumlah_bulan . ' bulan')
-                    ->searchable(),
+                BadgeableColumn::make('nama_barang')
+                    ->searchable()
+                    ->suffixBadges([
+                        Badge::make('jumlah_bulan')
+                            ->label(fn(Model $record) => $record->jumlah_bulan . ' bulan')
+                            ->color('info'),
+                    ]),
                 Tables\Columns\TextColumn::make('kuantitas')
                     ->formatStateUsing(fn($record) => $record->kuantitas . ' ' . $record->satuan)
                     ->alignCenter()
