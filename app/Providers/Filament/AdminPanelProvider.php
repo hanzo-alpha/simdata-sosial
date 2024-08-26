@@ -88,7 +88,6 @@ class AdminPanelProvider extends PanelProvider
                     ->bannerManagerAccessPermission('page_BannerManagerPage'),
             ])
             ->databaseNotifications()
-            ->databaseNotificationsPolling('30s')
             ->favicon(asset('images/reno/reno-dinsos-favicon-white.png'))
             ->brandName(config('custom.app.name'))
             ->brandLogo(asset('images/reno/svg/logo-no-background.svg'))
