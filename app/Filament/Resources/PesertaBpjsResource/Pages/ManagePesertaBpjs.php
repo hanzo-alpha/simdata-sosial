@@ -14,7 +14,6 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Support\Enums\Alignment;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ManagePesertaBpjs extends ManageRecords

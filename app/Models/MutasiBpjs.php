@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\AlasanBpjsEnum;
-use App\Enums\AlasanEnum;
 use App\Enums\StatusMutasi;
 use App\Enums\TipeMutasiEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

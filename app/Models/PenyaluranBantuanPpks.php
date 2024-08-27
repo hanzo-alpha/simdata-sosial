@@ -23,6 +23,8 @@ class PenyaluranBantuanPpks extends Model
         'location',
     ];
 
+    protected $with = ['bantuan_ppks'];
+
     public static function getLatLngAttributes(): array
     {
         return [
@@ -30,8 +32,6 @@ class PenyaluranBantuanPpks extends Model
             'lng' => 'lng',
         ];
     }
-
-    protected $with = ['bantuan_ppks'];
 
     public static function getComputedLocation(): string
     {

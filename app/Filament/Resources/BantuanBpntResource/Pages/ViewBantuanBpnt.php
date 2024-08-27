@@ -19,7 +19,7 @@ class ViewBantuanBpnt extends ViewRecord
     {
         return [
             Actions\EditAction::make()
-                ->disabled($this->enableInputLimitDate('bpnt'))
+                ->disabled($this->enableInputLimitDate('bpnt')),
         ];
     }
 }
