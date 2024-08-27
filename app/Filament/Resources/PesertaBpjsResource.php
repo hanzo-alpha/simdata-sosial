@@ -109,7 +109,7 @@ final class PesertaBpjsResource extends Resource
                         }
                     })
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
                     ->modalAlignment(Alignment::Center)
                     ->closeModalByClickingAway(false)
                     ->successRedirectUrl(route('filament.admin.resources.peserta-bpjs.index'))

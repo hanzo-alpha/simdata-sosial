@@ -72,7 +72,7 @@ class BantuanBpjsResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
                     ->button(),
             ])
 //            ->recordClasses(fn(Model $record) => null !== $record->is_mutasi ? 'border-s-2 border-orange-600 dark:border-orange-300 bg-gray-200 dark:bg-white/5' : null)

@@ -65,11 +65,11 @@ class ManageRekapPenerimaBpjs extends ManageRecords
                 ])
                 ->maxRows(5000)
                 ->chunkSize(100)
-                ->disabled($this->enableInputLimitDate())
+                ->disabled($this->enableInputLimitDate('bpjs'))
                 ->closeModalByClickingAway(false),
 
             Actions\CreateAction::make()
-                ->disabled($this->enableInputLimitDate())
+                ->disabled($this->enableInputLimitDate('bpjs'))
                 ->mutateFormDataUsing(function (array $data) {
                     $data['provinsi'] = setting('app.kodeprov', '73');
                     $data['kabupaten'] = setting('app.kodekab', '7312');

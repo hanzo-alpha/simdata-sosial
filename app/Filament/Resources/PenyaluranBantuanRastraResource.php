@@ -10,6 +10,7 @@ use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\Kelurahan;
 use App\Models\PenyaluranBantuanRastra;
+use App\Traits\HasInputDateLimit;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
@@ -26,6 +27,8 @@ use Illuminate\Support\Str;
 
 class PenyaluranBantuanRastraResource extends Resource
 {
+    use HasInputDateLimit;
+
     protected static ?string $model = PenyaluranBantuanRastra::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
@@ -48,6 +51,7 @@ class PenyaluranBantuanRastraResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
+                    ->disabled(fn() => cek_batas_input(setting('app.batas_tgl_input_rastra')))
                     ->button(),
             ])
             ->columns([

@@ -179,6 +179,7 @@ class PenyaluranBantuanPpksResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
+                    ->disabled(fn() => cek_batas_input(setting('app.batas_tgl_input_ppks')))
                     ->button(),
             ])
             ->columns([

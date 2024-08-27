@@ -12,6 +12,7 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\BantuanRastraResource;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Traits\HasInputDateLimit;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Actions;
 use Filament\Forms\Components\Grid;
@@ -23,6 +24,8 @@ use Filament\Support\Enums\MaxWidth;
 
 final class ViewBantuanRastra extends ViewRecord
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanRastraResource::class;
 
     protected function getHeaderActions(): array
@@ -33,6 +36,7 @@ final class ViewBantuanRastra extends ViewRecord
                 ->label('Ganti KPM Baru')
                 ->icon('heroicon-s-arrow-path-rounded-square')
                 ->color('success')
+                ->disabled($this->enableInputLimitDate('rastra'))
                 ->form([
                     Grid::make()->schema([
                         TextInput::make('nokk')

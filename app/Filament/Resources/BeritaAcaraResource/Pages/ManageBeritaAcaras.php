@@ -63,7 +63,7 @@ class ManageBeritaAcaras extends ManageRecords
                     return $model::create($data);
                 })
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('rastra')),
         ];
     }
 }

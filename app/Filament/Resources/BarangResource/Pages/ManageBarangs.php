@@ -63,7 +63,6 @@ class ManageBarangs extends ManageRecords
                         ->send();
                 })
                 ->visible(fn() => auth()->user()->hasRole(superadmin_admin_roles()))
-                ->disabled($this->enableInputLimitDate())
                 ->icon('heroicon-o-document-duplicate'),
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
@@ -71,8 +70,7 @@ class ManageBarangs extends ManageRecords
                     $data['kode_barang'] ??= Helpers::generateKodeBarang();
                     return $data;
                 })
-                ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate()),
+                ->closeModalByClickingAway(false),
         ];
     }
 }

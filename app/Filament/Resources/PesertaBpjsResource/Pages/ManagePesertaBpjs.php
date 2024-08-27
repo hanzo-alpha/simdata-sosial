@@ -54,7 +54,7 @@ class ManagePesertaBpjs extends ManageRecords
                         ->sendToDatabase(auth()->user());
                 })
                 ->icon('heroicon-o-arrow-down-tray')
-                ->disabled($this->enableInputLimitDate())
+                ->disabled($this->enableInputLimitDate('bpjs'))
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.peserta-bpjs.index'))

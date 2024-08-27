@@ -70,7 +70,7 @@ final class ListBantuanPpks extends ListRecords
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->exporter(BantuanPpksExporter::class)
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('ppks')),
 
             Actions\ImportAction::make()
                 ->label('Upload CSV')
@@ -82,11 +82,11 @@ final class ListBantuanPpks extends ListRecords
                     'updateExisting' => true,
                 ])
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('ppks')),
 
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('ppks')),
 
         ];
     }

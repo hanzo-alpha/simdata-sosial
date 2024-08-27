@@ -70,7 +70,7 @@ final class ListBantuanPkh extends ListRecords
                     ExportBantuanPkh::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
                 ])
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('pkh')),
             Actions\Action::make('unggahData')
                 ->label('Upload XLS')
                 ->modalHeading('Unggah Data Bantuan PKH')
@@ -119,13 +119,13 @@ final class ListBantuanPkh extends ListRecords
                 ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate())
+                ->disabled($this->enableInputLimitDate('pkh'))
                 ->successRedirectUrl(route('filament.admin.resources.program-pkh.index'))
                 ->modalWidth('lg'),
             Actions\CreateAction::make()
                 ->label('Buat Baru')
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('pkh')),
         ];
     }
 

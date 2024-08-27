@@ -22,7 +22,7 @@ class ListPenyaluranBantuanPpks extends ListRecords
         return [
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('ppks')),
         ];
     }
 

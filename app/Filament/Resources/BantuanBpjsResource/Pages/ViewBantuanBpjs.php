@@ -19,7 +19,7 @@ class ViewBantuanBpjs extends ViewRecord
     {
         return [
             Actions\EditAction::make()
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('bpjs')),
         ];
     }
 }

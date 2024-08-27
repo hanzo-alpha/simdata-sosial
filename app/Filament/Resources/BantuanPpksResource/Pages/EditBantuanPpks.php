@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Resources\BantuanPpksResource\Pages;
 
 use App\Filament\Resources\BantuanPpksResource;
+use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 final class EditBantuanPpks extends EditRecord
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanPpksResource::class;
 
     protected function getHeaderActions(): array

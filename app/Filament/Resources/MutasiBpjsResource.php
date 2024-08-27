@@ -8,6 +8,7 @@ use App\Enums\AlasanBpjsEnum;
 use App\Enums\StatusMutasi;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
+use App\Traits\HasInputDateLimit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 final class MutasiBpjsResource extends Resource
 {
+    use HasInputDateLimit;
+
     protected static ?string $model = MutasiBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -85,7 +88,7 @@ final class MutasiBpjsResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah Mutasi BPJS')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
                     ->button(),
             ])
             ->columns([

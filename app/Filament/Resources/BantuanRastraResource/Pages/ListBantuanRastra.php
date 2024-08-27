@@ -67,7 +67,7 @@ class ListBantuanRastra extends ListRecords
                 ->exports([
                     ExportBantuanRastra::make(),
                 ])
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('rastra')),
 
             Actions\ImportAction::make()
                 ->label('Upload CSV')
@@ -80,11 +80,11 @@ class ListBantuanRastra extends ListRecords
                 ])
                 ->maxRows(5000)
                 ->chunkSize(100)
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('rastra')),
 
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('rastra')),
         ];
     }
 
