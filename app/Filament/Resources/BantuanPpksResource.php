@@ -22,7 +22,6 @@ use App\Models\Kelurahan;
 use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use App\Models\TipePpks;
-use App\Supports\Helpers;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
@@ -42,6 +41,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -170,9 +170,30 @@ class BantuanPpksResource extends Resource
                                 ->default(0)
                                 ->numeric(),
 
+                            Forms\Components\Select::make('barang_id')
+                                ->label('Item Bantuan')
+//                            ->helperText(str('**Item Bantuan**')->inlineMarkdown()->toHtmlString())
+                                ->relationship(
+                                    name: 'barang',
+                                    titleAttribute: 'nama_barang',
+                                    modifyQueryUsing: fn(Builder $query) => $query->where('jenis_bantuan_id', 4),
+                                )
+                                ->native(false)
+                                ->preload()
+                                ->getOptionLabelFromRecordUsing(
+                                    fn(
+                                        Model $record,
+                                    ) => "<strong>{$record->nama_barang}</strong> - {$record->kel?->name}",
+                                )
+                                ->allowHtml()
+                                ->searchable()
+                                ->noSearchResultsMessage('Item tidak ditemukan')
+                                ->searchPrompt('Cari Item Bantuan')
+                                ->required(),
+
                             TextInput::make('nama_bantuan')
-                                ->default('-')
-                                ->columnSpanFull(),
+                                ->label('Nama Bantuan')
+                                ->default('-'),
 
                         ])->columns(2),
 

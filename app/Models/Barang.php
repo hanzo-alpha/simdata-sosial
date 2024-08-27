@@ -25,4 +25,9 @@ class Barang extends Model
     {
         return $this->belongsTo(Kelurahan::class, 'kode_kelurahan', 'code');
     }
+
+    public function jenisBantuan(): BelongsTo
+    {
+        return $this->belongsTo(JenisBantuan::class);
+    }
 }

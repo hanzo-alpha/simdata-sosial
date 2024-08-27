@@ -14,6 +14,98 @@ if ( ! function_exists('date_format')) {
     }
 }
 
+if ( ! function_exists('tanggal_ke_kalimat')) {
+    function tanggal_ke_kalimat($tanggal): string
+    {
+        // Validasi input
+        if ( ! preg_match('/^\d{4}-\d{2}-\d{2}$/', $tanggal)) {
+            return 'Format tanggal tidak valid!';
+        }
+
+        // Pecah tanggal menjadi bagian tahun, bulan, dan hari
+        list($tahun, $bulan, $hari) = explode('-', $tanggal);
+
+        // Konversi bulan ke dalam format teks
+        $bulan_kalimat = match ($bulan) {
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember',
+            default => '',
+        };
+
+        //        dd((int) $hari, (int) $bulan, (int) $tahun);
+
+        // Konversi hari ke dalam format teks
+        $hari_kalimat = terbilang((int) $hari);
+
+        // Konversi tahun ke dalam format teks
+        $tahun_kalimat = terbilang((int) $tahun);
+
+        // Gabungkan bagian-bagian tanggal menjadi kalimat
+        return $hari_kalimat . ' ' . $bulan_kalimat . ' Tahun ' . $tahun_kalimat;
+    }
+}
+
+if ( ! function_exists('terbilang')) {
+    function terbilang($angka): string
+    {
+        // Validasi input
+        if ( ! is_numeric($angka)) {
+            return 'Masukan harus berupa angka!';
+        }
+
+        if ($angka < 0 || $angka > 999999999999999) {
+            return 'Angka harus di antara 0 dan 999.999.999.999.999!';
+        }
+
+        // Sanitasi input
+        $angka = abs($angka); //mengubah angka agar menjadi bernilai positif
+        $angka = floor($angka); //mengubah angka agar menjadi bilangan bulat
+
+        $angka_huruf = [
+            '', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh', 'Sebelas',
+        ];
+
+        if ($angka < 12) {
+            return $angka_huruf[$angka];
+        }
+        if ($angka < 20) {
+            return terbilang($angka - 10) . ' Belas';
+        }
+        if ($angka < 100) {
+            return terbilang($angka / 10) . ' Puluh ' . terbilang($angka % 10);
+        }
+        if ($angka < 200) {
+            return 'Seratus ' . terbilang($angka - 100);
+        }
+        if ($angka < 1000) {
+            return terbilang($angka / 100) . ' Ratus ' . terbilang($angka % 100);
+        }
+        if ($angka < 2000) {
+            return 'Seribu ' . terbilang($angka - 1000);
+        }
+        if ($angka < 1000000) {
+            return terbilang($angka / 1000) . ' Ribu ' . terbilang($angka % 1000);
+        }
+        if ($angka < 1000000000) {
+            return terbilang($angka / 1000000) . ' Juta ' . terbilang($angka % 1000000);
+        }
+        if ($angka < 1000000000000) {
+            return terbilang($angka / 1000000000) . ' Miliar ' . terbilang($angka % 1000000000);
+        }
+        return terbilang($angka / 1000000000000) . ' Triliun ' . terbilang($angka % 1000000000000);
+    }
+}
+
 if ( ! function_exists('replace_nama_file_excel')) {
     function replace_nama_file_excel($namafile): string
     {

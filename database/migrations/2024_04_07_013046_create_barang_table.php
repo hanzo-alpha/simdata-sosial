@@ -21,6 +21,7 @@ return new class () extends Migration {
             $table->unsignedDouble('harga_satuan')->nullable()->default(0);
             $table->unsignedDouble('total_harga')->nullable()->default(0);
             $table->text('keterangan');
+            $table->unsignedBigInteger('jenis_bantuan_id')->index()->nullable();
             $table->timestamps();
         });
     }

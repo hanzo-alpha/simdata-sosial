@@ -25,9 +25,9 @@ return new class () extends Migration {
             $table->string('notelp', 18);
             $table->string('nama_ibu_kandung');
             $table->unsignedBigInteger('jenis_bantuan_id')->default(4)->nullable();
-            $table->foreignIdFor(PendidikanTerakhir::class)->constrained('pendidikan_terakhir')->cascadeOnUpdate();
-            $table->foreignIdFor(HubunganKeluarga::class)->constrained('hubungan_keluarga')->cascadeOnUpdate();
-            $table->foreignIdFor(JenisPekerjaan::class)->constrained('jenis_pekerjaan')->cascadeOnUpdate();
+            $table->foreignIdFor(PendidikanTerakhir::class)->index()->constrained('pendidikan_terakhir')->cascadeOnUpdate();
+            $table->foreignIdFor(HubunganKeluarga::class)->index()->constrained('hubungan_keluarga')->cascadeOnUpdate();
+            $table->foreignIdFor(JenisPekerjaan::class)->index()->constrained('jenis_pekerjaan')->cascadeOnUpdate();
             $table->tinyInteger('status_kawin')
                 ->nullable()
                 ->default(1);
@@ -42,10 +42,11 @@ return new class () extends Migration {
             $table->string('no_rw')->nullable();
             $table->json('bukti_foto')->nullable();
             $table->foreignIdFor(Media::class)
+                ->index()
                 ->nullable()
                 ->constrained('media')
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(TipePpks::class)->constrained('tipe_ppks')
+            $table->foreignIdFor(TipePpks::class)->index()->constrained('tipe_ppks')
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('kriteria_ppks')->nullable();
             $table->integer('penghasilan_rata_rata')->default(0)->nullable();
@@ -55,6 +56,7 @@ return new class () extends Migration {
             $table->unsignedInteger('tahun_anggaran')->default(now()->year)->nullable();
             $table->string('jenis_anggaran', 10)->default('APBD')->nullable();
             $table->unsignedInteger('jumlah_bantuan')->default(4)->nullable();
+            $table->unsignedBigInteger('barang_id')->index()->nullable();
             $table->string('nama_bantuan')->nullable();
             $table->unsignedtinyInteger('status_rumah_tinggal')->nullable();
             $table->string('status_kondisi_rumah')->nullable();

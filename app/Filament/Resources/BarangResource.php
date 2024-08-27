@@ -13,6 +13,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,6 +35,12 @@ class BarangResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('jenis_bantuan_id')
+                    ->relationship('jenisBantuan', 'alias')
+                    ->native(false)
+                    ->preload()
+                    ->required()
+                    ->default(5),
                 Select::make('kode_kelurahan')
                     ->label('Kelurahan')
                     ->required()
@@ -79,7 +86,8 @@ class BarangResource extends Resource
                     ->dehydrated()
                     ->default(0),
                 Forms\Components\Textarea::make('keterangan')
-                    ->nullable(),
+                    ->nullable()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -96,6 +104,12 @@ class BarangResource extends Resource
                     ->button(),
             ])
             ->columns([
+                Tables\Columns\TextColumn::make('jenisBantuan.alias')
+                    ->label('Jenis Bantuan')
+                    ->badge()
+                    ->color(fn($record) => Color::hex($record->jenisBantuan->warna))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan')
                     ->searchable(),
