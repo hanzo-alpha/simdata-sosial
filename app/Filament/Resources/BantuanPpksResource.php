@@ -172,7 +172,6 @@ class BantuanPpksResource extends Resource
 
                             Forms\Components\Select::make('barang_id')
                                 ->label('Item Bantuan')
-//                            ->helperText(str('**Item Bantuan**')->inlineMarkdown()->toHtmlString())
                                 ->relationship(
                                     name: 'barang',
                                     titleAttribute: 'nama_barang',
@@ -329,11 +328,6 @@ class BantuanPpksResource extends Resource
                                 ->relationship(
                                     name: 'kriteriaPpks',
                                     titleAttribute: 'nama_kriteria',
-                                    //                                    modifyQueryUsing: function (Builder $query, Get $get): void {
-                                    //                                        $query->when($get('tipe_ppks_id'), function (Builder $query) use ($get): void {
-                                    //                                            $query->where('tipe_ppks_id', $get('tipe_ppks_id'));
-                                    //                                        });
-                                    //                                    },
                                     ignoreRecord: true,
                                 )
                                 ->required()

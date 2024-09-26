@@ -39,6 +39,7 @@ class PenandatanganResource extends Resource
         return $form
             ->schema([
                 Select::make('kode_kecamatan')
+                    ->label('Kecamatan')
                     ->options(Kecamatan::where('kabupaten_code', setting('app.kodekab'))->pluck('name', 'code'))
                     ->searchable()
                     ->live(onBlur: true)
@@ -47,6 +48,7 @@ class PenandatanganResource extends Resource
                     })
                     ->required(),
                 Select::make('kode_instansi')
+                    ->label('Kelurahan')
                     ->options(function (Get $get) {
                         $kelurahan = Kelurahan::where('kecamatan_code', $get('kode_kecamatan'))->pluck('name', 'code');
                         return $kelurahan ?? [];
