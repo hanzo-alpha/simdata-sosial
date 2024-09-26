@@ -1,5 +1,5 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
-@import "../../classic.css";
+/*@import "../../classic.css";*/
 @import '/vendor/awcodes/filament-table-repeater/resources/css/plugin.css';
 @import '/node_modules/cropperjs/dist/cropper.css';
 @import '/vendor/awcodes/filament-curator/resources/css/plugin.css';
@@ -7,3 +7,15 @@
 @import '/vendor/kenepa/banner/resources/css/index.css';
 
 @config 'tailwind.config.js';
+
+.fi-sidebar-nav {
+    border-right: 1px solid #e4e4e5;
+}
+
+/*.fi-sidebar-header {*/
+/*    background-color: #121827;*/
+/*}*/
+
+.dark .fi-sidebar-nav {
+    border-right: 1px solid #121827;
+}
