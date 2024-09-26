@@ -94,8 +94,12 @@ class BeritaAcaraResource extends Resource
                         config('custom.kode_kecamatan'),
                     )->pluck('name', 'code'))
                     ->searchable()
+                    ->multiple()
                     ->preload(),
             ])
+            ->deferFilters()
+            ->deferLoading()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\Action::make('cetak')
                     ->label('Cetak Berita Acara')
@@ -211,7 +215,6 @@ class BeritaAcaraResource extends Resource
                             ->live(onBlur: true),
                         Forms\Components\Select::make('barang_id')
                             ->label('Item Bantuan')
-//                            ->helperText(str('**Item Bantuan**')->inlineMarkdown()->toHtmlString())
                             ->relationship(
                                 name: 'itemBantuan',
                                 titleAttribute: 'nama_barang',
