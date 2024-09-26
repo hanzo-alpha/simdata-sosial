@@ -88,7 +88,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Pengaturan')
                     ->navigationLabel('Pengumuman')
                     ->bannerManagerAccessPermission('page_BannerManagerPage'),
-//                GlobalSearchModalPlugin::make(),
+                //                GlobalSearchModalPlugin::make(),
             ])
             ->databaseNotifications()
             ->favicon(asset('images/reno/reno-dinsos-favicon-white.png'))

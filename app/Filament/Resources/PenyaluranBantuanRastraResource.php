@@ -156,7 +156,8 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->required()
                             ->relationship('bantuan_rastra', 'nama_lengkap', modifyQueryUsing: fn(
                                 Builder $query,
-                            ) => $query->where('status_aktif', '=', StatusAktif::AKTIF))
+                            ) => $query->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
+                                ->where('status_aktif', '=', StatusAktif::AKTIF))
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
@@ -261,6 +262,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->directory('penyaluran')
                             ->required()
                             ->multiple()
+                            ->imageEditor()
                             ->reorderable()
                             ->appendFiles()
                             ->openable()

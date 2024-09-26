@@ -184,11 +184,19 @@
                 color: #6b7280;
             }
 
+            .img-foto {
+                max-width: 200px;
+            }
+
             .img-border {
-                margin: 0 auto;
                 align-content: center;
                 align-items: center;
-                border: 2px solid #555;
+                /*border: 2px solid #555;*/
+                /*width: 800px;*/
+                /*height: 500px;*/
+                padding: 5px;
+                margin: 5px auto 5px;
+                max-width: inherit;
             }
 
             .page-break {
