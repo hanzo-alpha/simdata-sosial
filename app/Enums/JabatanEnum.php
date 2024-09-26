@@ -13,6 +13,7 @@ enum JabatanEnum: string implements HasColor, HasLabel
     case SEKRETARIS_DESA = 'SEKRETARIS DESA';
     case LURAH = 'LURAH';
     case PEJABAT_SEMENTARA_KEPDES = 'PJ. KEPALA DESA';
+    case PLT_LURAH = 'PLT LURAH';
 
     public function getLabel(): ?string
     {
@@ -21,6 +22,7 @@ enum JabatanEnum: string implements HasColor, HasLabel
             self::SEKRETARIS_DESA => 'SEKRETARIS DESA',
             self::LURAH => 'LURAH',
             self::PEJABAT_SEMENTARA_KEPDES => 'PJ. KEPALA DESA',
+            self::PLT_LURAH => 'PLT LURAH',
         };
     }
 
@@ -31,6 +33,7 @@ enum JabatanEnum: string implements HasColor, HasLabel
             self::SEKRETARIS_DESA => 'warning',
             self::LURAH => 'danger',
             self::PEJABAT_SEMENTARA_KEPDES => 'success',
+            self::PLT_LURAH => 'primary',
         };
     }
 
