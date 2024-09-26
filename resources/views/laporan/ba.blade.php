@@ -281,8 +281,8 @@
                 <th scope="col" class="text-center">Nama Lengkap</th>
                 <th scope="col" class="text-center">KK</th>
                 <th scope="col" class="text-center">NIK</th>
-                <th scope="col" class="text-center">Desa/Kelurahan</th>
-                <th scope="col" class="text-center">Jumlah Beras</th>
+                <th scope="col" class="text-center">Desa/Kel.</th>
+                <th scope="col" class="text-center">Jumlah</th>
                 <th scope="col" class="text-center">Tanda Tangan/Cap Jempol</th>
                 <th scope="col" class="text-center">Keterangan</th>
             </tr>
@@ -302,9 +302,13 @@
                     <td class="text-center">{{ $kpm->nokk }}</td>
                     <td class="text-center">{{ $kpm->nik }}</td>
                     <td class="text-center">{{ $kpm->kel()?->first()?->name }}</td>
-                    <td class="text-right">{{ \Illuminate\Support\Number::format($jumlahBeras, 2, locale: 'id') }} Kg</td>
+                    <td class="text-right">
+                        {{ \Illuminate\Support\Number::format($jumlahBeras,2, locale: 'id') }} Kg
+                    </td>
                     <td class="text-right"></td>
-                    <td class="text-center">{{ 'Selama ' . $record->itemBantuan()->where('kode_kelurahan', $record->kelurahan)->first()->jumlah_bulan . ' bulan'}}</td>
+                    <td class="text-center" style="width: 10px;">{{ 'Selama ' . $record->itemBantuan()->where
+                    ('kode_kelurahan',
+                    $record->kelurahan)->first()->jumlah_bulan . ' bulan'}}</td>
                 </tr>
             @empty
                 <tr>
@@ -375,8 +379,6 @@
         </p>
         <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
         <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
-        <br>
-        <br>
         <br>
         <br>
     @endsection
