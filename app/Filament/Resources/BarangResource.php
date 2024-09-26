@@ -167,7 +167,7 @@ class BarangResource extends Resource
             $query = parent::getEloquentQuery();
 
             foreach (Helpers::getAdminBantuan() as $role => $jenis) {
-                if(auth()->user()->roles()->first()->name === $role) {
+                if (auth()->user()->roles()->first()->name === $role) {
                     $query->where('jenis_bantuan_id', $jenis);
                 }
             }

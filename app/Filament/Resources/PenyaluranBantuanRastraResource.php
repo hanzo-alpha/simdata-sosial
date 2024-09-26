@@ -233,7 +233,7 @@ class PenyaluranBantuanRastraResource extends Resource
 
                         TextInput::make('keterangan')
                             ->nullable()
-                            ->columnSpanFull()
+                            ->columnSpanFull(),
 
                     ])->columns(2),
                 ])->columnSpan(2),
