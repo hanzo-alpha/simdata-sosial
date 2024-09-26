@@ -39,6 +39,11 @@ class PenyaluranBantuanRastraResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['bantuan_rastra.nama_lengkap', 'bantuan_rastra.nokk', 'bantuan_rastra.nik'];
+    }
+
     public static function table(Table $table): Table
     {
         return $table

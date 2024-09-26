@@ -19,6 +19,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\Platform;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -130,8 +131,14 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ], isPersistent: true)
-            ->globalSearchKeyBindings(['ctrl+alt+s'])
-            ->globalSearchFieldKeyBindingSuffix()
+//            ->globalSearchKeyBindings(['ctrl+alt+s'])
+//            ->globalSearchFieldKeyBindingSuffix()
+            ->globalSearchFieldSuffix(fn(): ?string => match (Platform::detect()) {
+                Platform::Windows => 'CTRL+ALT+S',
+                Platform::Linux,
+                Platform::Mac => '⌘K',
+                default => null,
+            })
             ->authMiddleware([
                 Authenticate::class,
             ], isPersistent: true)

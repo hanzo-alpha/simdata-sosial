@@ -61,6 +61,11 @@ class BantuanPpksResource extends Resource
     protected static ?int $navigationSort = 5;
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nokk', 'nik', 'nama_lengkap', 'kel.name', 'kec.name', 'kab.name'];
+    }
+
     public static function getWidgets(): array
     {
         return [
@@ -836,10 +841,6 @@ class BantuanPpksResource extends Resource
             ])->columns(3);
     }
 
-    //    public static function getNavigationBadge(): ?string
-    //    {
-    //        return static::$model::where('status_aktif', StatusAktif::AKTIF)->count();
-    //    }
 
     public static function getGlobalSearchEloquentQuery(): Builder
     {
@@ -849,9 +850,7 @@ class BantuanPpksResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //            KriteriaRelationManager::class
-        ];
+        return [];
     }
 
     public static function getPages(): array

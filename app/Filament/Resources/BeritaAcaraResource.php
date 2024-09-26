@@ -33,6 +33,7 @@ class BeritaAcaraResource extends Resource
     protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 8;
+    protected static ?string $recordTitleAttribute = 'judul_ba';
 
     public static function table(Table $table): Table
     {

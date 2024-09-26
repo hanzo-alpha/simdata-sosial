@@ -26,6 +26,7 @@ class KriteriaPpksResource extends Resource
     protected static ?string $navigationLabel = 'Kriteria PPKS';
     protected static ?string $navigationParentItem = 'Tipe PPKS';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static ?string $recordTitleAttribute = 'nama_kriteria';
 
     public static function form(Form $form): Form
     {

@@ -31,6 +31,7 @@ final class MutasiBpjsResource extends Resource
     protected static ?string $navigationParentItem = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     public static function form(Form $form): Form
     {

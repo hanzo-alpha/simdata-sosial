@@ -36,6 +36,7 @@ class PenyaluranBantuanPpksResource extends Resource
     protected static ?string $navigationParentItem = 'Program PPKS';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 8;
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     public static function form(Form $form): Form
     {
