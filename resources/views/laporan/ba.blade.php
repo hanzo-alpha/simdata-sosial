@@ -212,9 +212,11 @@
                     <br />
                     <br />
                     <br />
+                    <br />
                     <b>{{ setting('persuratan.nama_pps') }}</b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
+                    <br />
                     <br />
                     <br />
                     <br />
@@ -236,13 +238,13 @@
         <br />
         <br />
         <br />
+        <br />
         <p class="text-center">
             <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
         </p>
         <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
         <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
-        <br>
-        <br>
+
         <br>
         <br>
         <div class="page-break"></div>
@@ -294,7 +296,7 @@
                 $i = 1;
             @endphp
             @forelse($penerima as $kpm)
-                <tr style="height: 40px;">
+                <tr>
                     <td class="text-center">{{ $i++ }}</td>
                     <td class="text-left">{{ $kpm->nama_lengkap }}</td>
                     <td class="text-center">{{ $kpm->nokk }}</td>
@@ -341,9 +343,11 @@
                     <br />
                     <br />
                     <br />
+                    <br />
                     <b>{{ setting('persuratan.nama_pps') }}</b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
+                    <br />
                     <br />
                     <br />
                     <br />
@@ -362,6 +366,7 @@
         <p class="text-center">
             <b>{{ setting('persuratan.jabatan') }}</b>
         </p>
+        <br />
         <br />
         <br />
         <br />

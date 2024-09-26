@@ -4,8 +4,6 @@
         <title>Cetak Dokumen</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        {{-- @vite(['resources/css/app.css']) --}}
-
         <style type="text/css" media="screen">
             html {
                 font-family: sans-serif;
@@ -111,6 +109,7 @@
                 border-bottom: 2px solid #dee2e6;
                 border-left: 2px solid #dee2e6;
                 border-right: 2px solid #dee2e6;
+                padding: 0.7rem;
             }
 
             .table thead th {
