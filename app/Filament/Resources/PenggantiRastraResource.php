@@ -32,6 +32,7 @@ final class PenggantiRastraResource extends Resource
     protected static ?string $navigationLabel = 'Pengganti RASTRA';
     protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     protected static ?int $navigationSort = 6;
 

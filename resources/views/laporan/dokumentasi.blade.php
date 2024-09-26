@@ -13,7 +13,6 @@
                 <br />
                 <span><strong>Beras Sejahtera Tahun {{ now()->year }}</strong></span>
             </p><br><br>
-{{--            <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>--}}
             <table class="table">
                 <tbody>
                     <tr class="pb-0" style="margin-bottom: 0.1rem">
@@ -52,45 +51,49 @@
             <div class="text-center" style="padding-top: 20px">
                 @if ($model->count() > 0)
                     @forelse ($model->foto_penyerahan as $foto)
-                        <div
-                            style="width: 400px; height: 500px; padding: 5px; margin-bottom: 5px; margin-top: 10px"
-                            class="img-border"
-                        >
-                            <img style="width: 300px" src="{{ asset('storage/' . $foto) }}" alt="foto" />
-                            <div class="m-0" style="font-size: 10px">
-                                <p style="margin-top: 30px">
-                                    Penyaluran pada titik koordinat indonesia : {{ $model->lat }}
-                                </p>
-                                <p>
-                                    {{
-                                        $model->lng .
-                                            ', ' .
-                                            $model->keterangan
-                                    }}
-                                </p>
-                                <p>{{ 'Watansoppeng, ' . $model->created_at->format('d/m/Y') }}</p>
-                                <p style="margin-top: 10px">
-                                    {{
-                                        $model->created_at->format('d/m/Y H:i:s') . ' WITA'
-                                    }}
-                                </p>
-                            </div>
+                        <div class="img-border" >
+                            @if(config('app.env') === 'local')
+                                <img class="img-foto" src="./storage/{{ $foto }}" alt="foto" />
+                            @else
+                                <img class="img-foto" src="{{ asset('storage/' . $foto) }}" alt="foto" />
+                            @endif
                         </div>
                     @empty
                         <span></span>
                     @endforelse
+                        <div class="m-0" style="font-size: 12px">
+                            <p style="margin-top: 30px">
+                                Penyaluran pada titik koordinat indonesia : lat. {{ $model->lat }}
+                            </p>
+                            <p>
+                                long. {{ $model->lng . ', ' . $model->keterangan }}
+                            </p>
+                            <p>{{ 'Watansoppeng, ' . $model->created_at->format('d/m/Y') }}</p>
+                            <p style="margin-top: 10px">
+                                {{ $model->created_at->format('d/m/Y H:i:s') . ' WITA' }}
+                            </p>
+                        </div>
                 @endif
             </div>
-            <br />
+           <div class="page-break"></div>
 
             <div class="">
                 @isset($model->bantuan_rastra->foto_ktp_kk)
                     <div class="">
-                        <img
-                            style="width: 600px"
-                            src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
-                            alt="foto"
-                        />
+                        @if(config('app.env') === 'local')
+                            <img
+                                style="width: 600px"
+                                src="./storage/{{ $model->bantuan_rastra->foto_ktp_kk }}"
+                                alt="foto"
+                            />
+                        @else
+                            <img
+                                style="width: 600px"
+                                src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
+                                alt="foto"
+                            />
+                        @endif
+
                     </div>
                 @endif
             </div>

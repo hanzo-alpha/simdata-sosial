@@ -33,6 +33,12 @@ class UserResource extends Resource
     protected static ?string $label = 'Pengguna';
     protected static ?string $pluralLabel = 'Pengguna';
     protected static ?string $navigationGroup = 'Pengaturan';
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email', 'instansi.name'];
+    }
 
     public static function form(Form $form): Form
     {

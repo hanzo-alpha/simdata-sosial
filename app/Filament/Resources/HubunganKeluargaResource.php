@@ -26,6 +26,8 @@ final class HubunganKeluargaResource extends Resource
 
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
 
+    protected static ?string $recordTitleAttribute = 'nama_hubungan';
+
     public static function form(Form $form): Form
     {
         return $form

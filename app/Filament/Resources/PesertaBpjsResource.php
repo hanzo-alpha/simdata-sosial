@@ -32,6 +32,7 @@ final class PesertaBpjsResource extends Resource
     protected static ?string $navigationLabel = 'Peserta BPJS';
     protected static ?string $navigationParentItem = 'Program BPJS';
     protected static ?string $navigationGroup = 'Program Sosial';
+    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     protected static ?int $navigationSort = 8;
 

@@ -33,12 +33,14 @@ class PenandatanganResource extends Resource
     protected static ?string $navigationLabel = 'Penandatangan';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
     //    protected static bool $isScopedToTenant = false;
+    protected static ?string $recordTitleAttribute = 'nama_penandatangan';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('kode_kecamatan')
+                    ->label('Kecamatan')
                     ->options(Kecamatan::where('kabupaten_code', setting('app.kodekab'))->pluck('name', 'code'))
                     ->searchable()
                     ->live(onBlur: true)
@@ -47,6 +49,7 @@ class PenandatanganResource extends Resource
                     })
                     ->required(),
                 Select::make('kode_instansi')
+                    ->label('Kelurahan')
                     ->options(function (Get $get) {
                         $kelurahan = Kelurahan::where('kecamatan_code', $get('kode_kecamatan'))->pluck('name', 'code');
                         return $kelurahan ?? [];

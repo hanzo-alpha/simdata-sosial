@@ -20,6 +20,7 @@ final class PendidikanTerakhirResource extends Resource
     protected static ?string $label = 'Pendidikan Terakhir';
     protected static ?string $pluralLabel = 'Pendidikan Terakhir';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static ?string $recordTitleAttribute = 'nama_pendidikan';
 
     public static function form(Form $form): Form
     {

@@ -36,6 +36,11 @@ class RekapPenerimaBpjsResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['prov.name', 'kab.name', 'kec.name', 'kel.name'];
+    }
+
     public static function form(Form $form): Form
     {
         return $form

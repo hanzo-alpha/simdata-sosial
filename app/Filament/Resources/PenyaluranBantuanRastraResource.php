@@ -39,6 +39,11 @@ class PenyaluranBantuanRastraResource extends Resource
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 7;
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['bantuan_rastra.nama_lengkap', 'bantuan_rastra.nokk', 'bantuan_rastra.nik'];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -151,7 +156,8 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->required()
                             ->relationship('bantuan_rastra', 'nama_lengkap', modifyQueryUsing: fn(
                                 Builder $query,
-                            ) => $query->where('status_aktif', '=', StatusAktif::AKTIF))
+                            ) => $query->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
+                                ->where('status_aktif', '=', StatusAktif::AKTIF))
                             ->native(false)
                             ->searchable(['nama_lengkap', 'nik', 'nokk'])
                             ->noSearchResultsMessage('Data KPM Rastra tidak ditemukan')
@@ -233,7 +239,7 @@ class PenyaluranBantuanRastraResource extends Resource
 
                         TextInput::make('keterangan')
                             ->nullable()
-                            ->columnSpanFull()
+                            ->columnSpanFull(),
 
                     ])->columns(2),
                 ])->columnSpan(2),
@@ -256,6 +262,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->directory('penyaluran')
                             ->required()
                             ->multiple()
+                            ->imageEditor()
                             ->reorderable()
                             ->appendFiles()
                             ->openable()

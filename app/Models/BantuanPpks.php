@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class BantuanPpks extends Model
@@ -72,7 +73,7 @@ class BantuanPpks extends Model
         return $this->belongsToMany(BansosDiterima::class, 'bantuan_ppks_bansos_diterima')->withTimestamps();
     }
 
-    public function kriteria(): \Staudenmeir\EloquentHasManyDeep\HasManyDeep
+    public function kriteria(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations($this->tipe_ppks(), (new TipePpks())->kriteria_ppks());
     }

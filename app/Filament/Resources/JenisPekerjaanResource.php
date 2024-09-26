@@ -20,6 +20,7 @@ final class JenisPekerjaanResource extends Resource
     protected static ?string $label = 'Jenis Pekerjaan';
     protected static ?string $pluralLabel = 'Jenis Pekerjaan';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static ?string $recordTitleAttribute = 'nama_pekerjaan';
 
     public static function form(Form $form): Form
     {

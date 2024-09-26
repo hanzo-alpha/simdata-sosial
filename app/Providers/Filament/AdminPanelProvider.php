@@ -9,6 +9,7 @@ use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +19,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\Platform;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -86,6 +88,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Pengaturan')
                     ->navigationLabel('Pengumuman')
                     ->bannerManagerAccessPermission('page_BannerManagerPage'),
+                //                GlobalSearchModalPlugin::make(),
             ])
             ->databaseNotifications()
             ->favicon(asset('images/reno/reno-dinsos-favicon-white.png'))
@@ -128,8 +131,14 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ], isPersistent: true)
-            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
-            ->globalSearchFieldKeyBindingSuffix()
+//            ->globalSearchKeyBindings(['ctrl+alt+s'])
+//            ->globalSearchFieldKeyBindingSuffix()
+            ->globalSearchFieldSuffix(fn(): ?string => match (Platform::detect()) {
+                Platform::Windows => 'CTRL+ALT+S',
+                Platform::Linux,
+                Platform::Mac => '⌘K',
+                default => null,
+            })
             ->authMiddleware([
                 Authenticate::class,
             ], isPersistent: true)

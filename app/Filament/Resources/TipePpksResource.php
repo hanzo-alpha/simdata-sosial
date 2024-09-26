@@ -27,6 +27,12 @@ class TipePpksResource extends Resource
     protected static ?string $pluralLabel = 'Tipe PPKS';
     protected static ?string $navigationLabel = 'Tipe PPKS';
     protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static ?string $recordTitleAttribute = 'nama_tipe';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nama_tipe', 'alias', 'kriteria_ppks.nama_kriteria'];
+    }
 
     public static function form(Form $form): Form
     {
