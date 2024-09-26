@@ -65,13 +65,10 @@
                                     {{
                                         $model->lng .
                                             ', ' .
-                                            $model->bantuan_rastra->kel->name .
-                                            ' KEC. ' .
-                                            $model->bantuan_rastra->kec->name .
-                                            ' KAB. SOPPENG, '
+                                            $model->keterangan
                                     }}
                                 </p>
-                                <p>{{ 'SULAWESI SELATAN, ' . $model->created_at->format('d/m/Y') }}</p>
+                                <p>{{ 'Watansoppeng, ' . $model->created_at->format('d/m/Y') }}</p>
                                 <p style="margin-top: 10px">
                                     {{
                                         $model->created_at->format('d/m/Y H:i:s') . ' WITA'

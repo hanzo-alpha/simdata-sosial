@@ -231,6 +231,10 @@ class PenyaluranBantuanRastraResource extends Resource
                             })
                             ->lazy(),
 
+                        TextInput::make('keterangan')
+                            ->nullable()
+                            ->columnSpanFull()
+
                     ])->columns(2),
                 ])->columnSpan(2),
                 Forms\Components\Group::make()->schema([

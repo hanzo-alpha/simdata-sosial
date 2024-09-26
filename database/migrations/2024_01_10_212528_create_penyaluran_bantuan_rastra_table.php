@@ -29,6 +29,7 @@ return new class () extends Migration {
             $table->string('lng')->nullable();
             $table->string('status_penyaluran')->nullable()->default(StatusPenyaluran::BELUM_TERSALURKAN);
             $table->foreignIdFor(Penandatangan::class)->nullable()->index();
+            $table->string('keterangan')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
