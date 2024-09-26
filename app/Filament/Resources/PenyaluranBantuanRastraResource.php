@@ -8,7 +8,9 @@ use App\Enums\StatusAktif;
 use App\Enums\StatusPenyaluran;
 use App\Filament\Resources\PenyaluranBantuanRastraResource\Pages;
 use App\Models\BantuanRastra;
+use App\Models\Kelurahan;
 use App\Models\PenyaluranBantuanRastra;
+use App\Traits\HasInputDateLimit;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
@@ -20,10 +22,13 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class PenyaluranBantuanRastraResource extends Resource
 {
+    use HasInputDateLimit;
+
     protected static ?string $model = PenyaluranBantuanRastra::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
@@ -46,6 +51,7 @@ class PenyaluranBantuanRastraResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
+                    ->disabled(fn() => cek_batas_input(setting('app.batas_tgl_input_rastra')))
                     ->button(),
             ])
             ->columns([
@@ -83,6 +89,29 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->badge(),
             ])
             ->filters([
+                Tables\Filters\Filter::make('filter_kel')
+                    ->label('Kelurahan')
+                    ->form([
+                        Forms\Components\Select::make('kelurahan')
+                            ->label('Kelurahan')
+                            ->native(false)
+                            ->options(Kelurahan::query()
+                                ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                ->pluck('name', 'code'))
+                            ->searchable()
+                            ->preload(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->with('bantuan_rastra')->when(
+                            $data['kelurahan'],
+                            fn(Builder $query, $data) => $query->whereRelation(
+                                'bantuan_rastra',
+                                'kelurahan',
+                                $data,
+                            ),
+                        );
+                    }),
+                Tables\Filters\TrashedFilter::make(),
 
             ])
             ->actions([
@@ -202,6 +231,10 @@ class PenyaluranBantuanRastraResource extends Resource
                             })
                             ->lazy(),
 
+                        TextInput::make('keterangan')
+                            ->nullable()
+                            ->columnSpanFull()
+
                     ])->columns(2),
                 ])->columnSpan(2),
                 Forms\Components\Group::make()->schema([
@@ -262,5 +295,21 @@ class PenyaluranBantuanRastraResource extends Resource
             'create' => Pages\CreatePenyaluranBantuanRastra::route('/create'),
             'edit' => Pages\EditPenyaluranBantuanRastra::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
+        return parent::getEloquentQuery()
+            ->whereHas('bantuan_rastra', fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

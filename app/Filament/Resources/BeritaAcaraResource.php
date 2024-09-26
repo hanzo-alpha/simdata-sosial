@@ -87,8 +87,19 @@ class BeritaAcaraResource extends Resource
                     ->label('Berita Acara'),
             ])
             ->filters([
-
+                Tables\Filters\SelectFilter::make('kelurahan')
+                    ->label('Kelurahan')
+                    ->options(Kelurahan::query()->whereIn(
+                        'kecamatan_code',
+                        config('custom.kode_kecamatan'),
+                    )->pluck('name', 'code'))
+                    ->searchable()
+                    ->multiple()
+                    ->preload(),
             ])
+            ->deferFilters()
+            ->deferLoading()
+            ->hiddenFilterIndicators()
             ->actions([
                 Tables\Actions\Action::make('cetak')
                     ->label('Cetak Berita Acara')
@@ -167,7 +178,9 @@ class BeritaAcaraResource extends Resource
                         Select::make('kecamatan')
                             ->required()
                             ->searchable()
-                            ->reactive()
+                            ->live(onBlur: true)
+                            ->noSearchResultsMessage('Kecamatan tidak ditemukan')
+                            ->searchPrompt('Cari Kecamatan')
                             ->options(function () {
                                 $kab = Kecamatan::query()->where(
                                     'kabupaten_code',
@@ -187,6 +200,8 @@ class BeritaAcaraResource extends Resource
 
                         Select::make('kelurahan')
                             ->required()
+                            ->noSearchResultsMessage('Kelurahan tidak ditemukan')
+                            ->searchPrompt('Cari Kelurahan')
                             ->options(function (callable $get) {
                                 return Kelurahan::query()->where(
                                     'kecamatan_code',
@@ -196,16 +211,23 @@ class BeritaAcaraResource extends Resource
                                     'code',
                                 );
                             })
-                            ->reactive()
-                            ->searchable(),
+                            ->searchable()
+                            ->live(onBlur: true),
                         Forms\Components\Select::make('barang_id')
                             ->label('Item Bantuan')
-                            ->helperText(str('**Item** bantuan pada laporan.')->inlineMarkdown()->toHtmlString())
-                            ->relationship('itemBantuan', 'nama_barang')
+                            ->relationship(
+                                name: 'itemBantuan',
+                                titleAttribute: 'nama_barang',
+                            )
                             ->native(false)
                             ->preload()
+                            ->getOptionLabelFromRecordUsing(
+                                fn(
+                                    Model $record,
+                                ) => "<strong>{$record->nama_barang}</strong> - {$record->kel?->name}",
+                            )
+                            ->allowHtml()
                             ->searchable()
-                            ->default(1)
                             ->noSearchResultsMessage('Item tidak ditemukan')
                             ->searchPrompt('Cari Item Bantuan')
                             ->required(),
@@ -227,7 +249,7 @@ class BeritaAcaraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery();
         }
 

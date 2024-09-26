@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\User;
-use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Spatie\Permission\Models\Role;
 
 class RolePolicy
 {
@@ -97,6 +99,7 @@ class RolePolicy
     {
         return $user->can('{{ Replicate }}');
     }
+
 
     /**
      * Determine whether the user can reorder.

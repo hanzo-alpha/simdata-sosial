@@ -2,7 +2,6 @@
     use App\Models\BantuanRastra;use App\Supports\DateHelper;use App\Supports\Helpers;use Carbon\Carbon;
     $nomorBa = Helpers::generateNoSuratBeritaAcara(model: 'ppks');
     $tglBa = Carbon::today()->locale(config('app.locale'));
-    $judul = 'Berita Acara S';
 @endphp
 
 <x-layouts.print>
@@ -25,50 +24,49 @@
         </div>
         <br />
         <br />
-        <br />
         <p style="font-size: 12px">
             Pada hari ini {{ $tglBa->dayName ?? now()->dayName }} Tanggal
-            {{ $tglBa->day ?? now()->day }} {{ $tglBa->monthName ?? now()->monthName }}
-            {{ $tglBa->year ?? now()->year }} Bertempat di Desa/Kelurahan {{ $record->kel->name }} Dilakukan
-            serah terima barang Bantuan Sosial {{ $record->tipe_ppks->nama_tipe }}
-        </p>
+            {{ tanggal_ke_kalimat($tglBa->format('Y-m-d') ?? now()->format('Y-m-d')) }}  Bertempat di Desa/Kelurahan {{
+            $record->kel->name }} Dilakukan
+            serah terima Alat Bantu berupa {{ Str::title($record->nama_bantuan) ?? 'Kursi Roda' }} kepada para {{
+            \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }}.
+        </p><br />
         <p style="font-size: 12px">Yang bertanda tangan dibawah ini :</p>
-        <table class="table">
+        <table style="font-size: 12px" class="table">
             <tbody>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Nama</th>
+                <th width="20%" style="text-align: left">1. Nama</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td width="87%" style="text-align: left">{{ setting('persuratan.nama_ppk') }}</td>
+                <td width="87%" style="text-align: left"><b>{{ setting('persuratan.nama_kepala_dinas') }}</b></td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">NIP</th>
+                <th width="20%" style="text-align: left">2. NIP</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ setting('persuratan.nip_ppk') }}</td>
+                <td>{{ setting('persuratan.nip_kepala_dinas') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Jabatan</th>
+                <th width="20%" style="text-align: left">3. Jabatan</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ setting('persuratan.jabatan_ppk') }}</td>
+                <td>{{ setting('persuratan.jabatan') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Instansi</th>
+                <th width="20%" style="text-align: left">4. Instansi</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td>{{ setting('persuratan.instansi_ppk') }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
                 <td colspan="4">
-                    Selanjutnya disebut
-                    <b>PIHAK PERTAMA</b>
+                    <span style="font-size: 12px">Selanjutnya disebut <b>PIHAK KESATU</b></span>
                 </td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Nama</th>
+                <th width="20%" style="text-align: left">1. Nama</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td width="87%" style="text-align: left">
                     {{ $record->nama_lengkap }}
@@ -76,21 +74,21 @@
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">NIK</th>
+                <th width="20%" style="text-align: left">2. NIK</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td>{{ $record->nik }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Jabatan</th>
+                <th width="20%" style="text-align: left">3. Alamat</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td>
-                    Penerima Bantuan
+                    {{ $record->alamat }}
                 </td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
-                <th width="20%" style="text-align: right">Instansi</th>
+                <th width="20%" style="text-align: left">4. Desa/Kelurahan</th>
                 <th width="10%" style="text-align: right">:</th>
                 <td>{{ 'Kec. ' . $record->kec->name . ', Kel. ' .$record->kel->name }}</td>
             </tr>
@@ -109,33 +107,31 @@
             </tr>
             </tbody>
         </table>
-        <p>Untuk kewenangan masing masing dengan ini Para Pihak menyatakan dengan sebenarnya bahwa :</p>
-        <p>
+        <p style="font-size: 12px">Untuk kewenangan masing masing dengan ini Para Pihak menyatakan dengan sebenarnya bahwa :</p>
+        <p style="font-size: 12px">
             a.
-            <b>PIHAK PERTAMA</b>
-            menyerahkan Barang Bantuan Sosial {{ $record->tipe_ppks->nama_tipe }} Tahun {{ today()->year }} kepada
+            <b>PIHAK KESATU</b>
+            menyerahkan Alat Bantu berupa {{ Str::title($record->nama_bantuan) ?? 'Kursi Roda' }} kepada para {{
+            \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }} Tahun {{ today()->year }} kepada
             <b>PIHAK KEDUA</b>
-            sebagaimana
-            <b>PIHAK KEDUA</b>
-            menerima Barang dari
-            <b>PIHAK PERTAMA</b>
+            sebagaimana <b>PIHAK KEDUA</b> menerima {{ \Illuminate\Support\Str::title($record->bansos_diterima?->first()?->nama_bansos) ?? 'Alat Bantu' }} dari
+            <b>PIHAK KESATU</b>.
         </p>
-        <br />
-        <p>
+        <p style="font-size: 12px">
             b. Jenis, spesifikasi, kriteria, dan jumlah barang / jasa yang diserahterimakan
             sebagai berikut :
         </p>
         <br />
-        <br />
-        <br />
 
-        <table class="table-items table">
+        <table style="font-size: 12px" class="table-items table">
             <thead>
             <tr>
                 <th scope="col" class="text-center">No.</th>
                 <th scope="col" class="text-center">Uraian Jenis Barang/Jasa Lainnya</th>
-                <th scope="col" class="text-center">Bansos Pernah Diterima</th>
-                <th scope="col" class="text-center">Jumlah Bantuan</th>
+                <th scope="col" class="text-center">Satuan</th>
+                <th scope="col" class="text-center">Kuantitas</th>
+                <th scope="col" class="text-right">Harga Satuan (Rp)</th>
+                <th scope="col" class="text-right">Jumlah Harga (Rp)</th>
             </tr>
             </thead>
             <tbody>
@@ -144,56 +140,86 @@
                     {{ 1 }}
                 </td>
                 <td class="text-center">
-                    {{ $record->nama_bantuan . ' - ' . $record->tipe_ppks->nama_tipe }}
+                    {{ $record->barang?->nama_barang ?? $record->nama_bantuan }}
                 </td>
                 <td class="text-center">
-                    {{ $record->bansos_diterima()->implode('nama_bansos', ', ') }}
+                    {{ $record->barang->satuan }}
                 </td>
                 <td class="text-center">
-                    {{ $record->jumlah_bantuan }}
+                    {{ $record->barang->kuantitas }}
+                </td>
+                <td class="text-right">
+                    {{ Number::format($record->barang->harga_satuan, 0, locale: 'id') }}
+                </td>
+                <td class="text-right">
+                    {{ Number::format($record->barang->total_harga, 0, locale: 'id') }}
                 </td>
             </tr>
             <tr>
-                <td colspan="3" class="pl-0 text-right"><strong>Total Bantuan</strong></td>
-                <td class="text-center">
-                    <strong>{{ Number::format($record->jumlah_bantuan, 0, locale: 'id') }}</strong>
+                <td colspan="5" class="pl-0 text-right"><strong>Total Harga (Rp)</strong></td>
+                <td class="text-right">
+                    <strong>{{ Number::format($record->barang->total_harga, 0, locale: 'id') }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" class="text-center">
+                    <b>Terbilang : {{ Str::ucfirst(Number::spell($record->barang->total_harga, 'id')) }} rupiah</b>
                 </td>
             </tr>
             </tbody>
-        </table>
+        </table><br />
 
-        <p>
+        <p style="font-size: 12px">
             Demikian Berita Acara Penyerahan Hasil Pekerjaan ini dibuat dalam rangkap secukupnya untuk dipergunakan
             sebagiamana mestinya.
         </p>
         <br />
+        <br />
 
-        <table class="table">
+        <table style="font-size: 12px" class="table">
             <tbody>
             <tr>
-                <td width="60%"></td>
-                <td class="text-center">
-                    {{ $record->kel->name }}, {{ now()->dayName }}, {{ now()->day }} {{ now()->monthName }}
-                    {{ $tglBa->year }}
+                <td style="padding: 0.1rem" class="text-center">
+                    <b>PIHAK KESATU</b>
                 </td>
-                <br />
-            </tr>
-            <tr>
-                <td class="text-center">
-                    <b>PIHAK PERTAMA</b>
+                <td style="padding: 0.1rem" class="text-center">
+                    <b>MENGETAHUI</b>
                 </td>
-                <td class="text-center">
+                <td style="padding: 0.1rem" class="text-center">
                     <b>PIHAK KEDUA</b>
                 </td>
             </tr>
             <tr>
+                <td class="text-center">
+                    {{ setting('persuratan.instansi_pps') }}
+                </td>
+                <td class="text-center">
+                    KEPALA DESA/KELURAHAN
+                </td>
+                <td class="text-center">
+                    PENERIMA MANFAAT
+                </td>
+            </tr>
+            <tr>
                 <td class="text-center" style="text-decoration: underline">
                     <br />
                     <br />
                     <br />
-                    <b>{{ setting('persuratan.nama_ppk') }}</b>
+                    <br />
+                    <br />
+                    <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
+                </td>
+                <td class="text-center" style="border-bottom:1px solid black">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <span></span>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
+                    <br />
+                    <br />
                     <br />
                     <br />
                     <br />
@@ -201,146 +227,17 @@
                 </td>
             </tr>
             <tr>
-                <td class="text-center">Nip. {{ setting('persuratan.nip_ppk') ?? '-' }}</td>
-                <td class="text-center">Penerima Bantuan</td>
-            </tr>
-            </tbody>
-        </table>
-        <br>
-        <br>
-        <p class="text-center">
-            <b>MENGETAHUI</b>
-        </p>
-        <p class="text-center">
-            <b>{{ setting('persuratan.jabatan') }}</b>
-        </p>
-        <br />
-        <br />
-        <br />
-        <p class="text-center">
-            <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
-        </p>
-        <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
-        <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="page-break"></div>
-
-        {{-- Lampiran BAST --}}
-        @if(setting('ba.kop_layout'))
-            @include('laporan.partials.kop')
-            <div class="text-center">
-        @else
-            <div class="text-center">
-            @include('laporan.partials.kop-center')
-        @endif
-        <hr>
-        <p style="font-size: 12px; text-align: left">
-            Lampiran Berita Acara Nomor : {{ $nomorBa }}
-        </p>
-        <p style="font-size: 12px; text-align: left">
-            Tanggal : {{ DateHelper::tanggal() }}
-        </p><br><br>
-        <div class="text-center">
-            <p style="font-size: 12px">
-                <span style="text-decoration-line: underline">
-                    <strong>
-                        {{ Str::upper('DAFTAR PENERIMA MANFAAT BANTUAN SOSIAL '
-                            . $record->tipe_ppks->nama_tipe . ' TAHUN ANGGARAN ')
-                            . now()->year
-                        }}
-                    </strong>
-                </span>
-            </p>
-        </div><br>
-
-        <table class="table-items table">
-            <thead>
-            <tr style="height: 50px;">
-                {{--                <th scope="col" class="border-0 pl-0">No.</th>--}}
-                <th scope="col" class="text-center">Nama Penerima</th>
-{{--                <th scope="col" class="text-center">KK</th>--}}
-                <th scope="col" class="text-center">NIK</th>
-                <th scope="col" class="text-center">Desa/Kelurahan</th>
-                <th scope="col" class="text-center">Jumlah</th>
-                <th scope="col" class="text-center">Tanda Tangan/Cap Jempol</th>
-                <th scope="col" class="text-center">Keterangan</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                {{--                <td class="text-center">{{ $i++ }}</td>--}}
-                <td class="text-center">{{ $record->nama_lengkap }}</td>
-{{--                <td class="text-center">{{ $record->nokk }}</td>--}}
-                <td class="text-center">{{ $record->nik }}</td>
-                <td class="text-center">{{ $record->kel()?->first()?->name }}</td>
-                <td class="text-center">{{ $record->jumlah_bantuan }}</td>
-                <td class="text-right"></td>
-                <td class="text-right"></td>
-            </tr>
-            <tr>
-                <td colspan="5" class="pl-0 text-right"><strong>Total Jumlah Bantuan</strong></td>
-                <td class="text-right"><strong>{{ $record->jumlah_bantuan }}</strong></td>
-            </tr>
-            </tbody>
-        </table>
-
-        <table class="table">
-            <tbody>
-            <tr>
-                <td width="60%"></td>
-                <td class="text-center">
-                    {{ $record->kel->name }}, {{ DateHelper::hariTanggal() }}
+                <td class="text-center pl-0">
+                    <b>Nip. {{ setting('persuratan.nip_kepala_dinas') }}</b>
                 </td>
-                <br />
-            </tr>
-            <tr>
-                <td class="text-center">
-                    <b>PIHAK PERTAMA</b>
-                </td>
-                <td class="text-center">
-                    <b>PIHAK KEDUA</b>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center" style="text-decoration: underline">
-                    <br />
-                    <br />
-                    <br />
-                    <b>{{ setting('persuratan.nama_ppk') }}</b>
+                <td class="text-center pl-0">
+                    <b></b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
-                    <br />
-                    <br />
-                    <br />
-                    <b>{{ $record->nama_lengkap }}</b>
+                    <b></b>
                 </td>
-            </tr>
-            <tr>
-                <td class="text-center">Nip. {{ setting('persuratan.nik_ppk') }}</td>
-                <td class="text-center">Penerima</td>
             </tr>
             </tbody>
         </table>
-        <p class="text-center">
-            <b>MENGETAHUI</b>
-        </p>
-        <p class="text-center">
-            <b>{{ setting('persuratan.jabatan') }}</b>
-        </p>
-        <br />
-        <br />
-        <br />
-        <p class="text-center">
-            <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
-        </p>
-        <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
-        <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
-        <br>
-        <br>
-        <br>
-        <br>
     @endsection
 </x-layouts.print>

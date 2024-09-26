@@ -13,6 +13,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('kode_barang')->nullable();
             $table->string('nama_barang');
+            $table->char('kode_kelurahan', 10)->nullable();
             $table->unsignedInteger('jumlah_kpm')->nullable()->default(0);
             $table->unsignedInteger('kuantitas')->nullable()->default(0);
             $table->unsignedInteger('jumlah_bulan')->nullable()->default(1);
@@ -20,6 +21,7 @@ return new class () extends Migration {
             $table->unsignedDouble('harga_satuan')->nullable()->default(0);
             $table->unsignedDouble('total_harga')->nullable()->default(0);
             $table->text('keterangan');
+            $table->unsignedBigInteger('jenis_bantuan_id')->index()->nullable();
             $table->timestamps();
         });
     }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Imports;
 
+use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
+use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Models\BantuanBpjs as DataBantuanBpjs;
 use App\Models\Kecamatan;
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -25,9 +28,13 @@ use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Events\AfterChunk;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Validators\Failure;
 use Str;
@@ -43,11 +50,37 @@ class ImportBantuanBpjs implements
     WithChunkReading,
     WithHeadingRow,
     WithUpserts,
-    WithValidation
+    WithValidation,
+    WithEvents
 {
     use Importable;
+    use RegistersEventListeners;
     use SkipsErrors;
     use SkipsFailures;
+
+    public static function beforeImport(BeforeImport $event): void
+    {
+        Notification::make('Mulai Mengimpor')
+            ->title('Data Bantuan Bpjs sedang di impor ke database.')
+            ->info()
+            ->sendToDatabase(auth()->user());
+    }
+
+    public static function afterImport(AfterImport $event): void
+    {
+        Notification::make('Impor Berhasil')
+            ->title('Data Bantuan BPJS Berhasil di impor')
+            ->success()
+            ->sendToDatabase(auth()->user());
+    }
+
+    public static function afterChunk(AfterChunk $event): void
+    {
+        Notification::make('Impor Berhasil')
+            ->title('Data Bantuan BPJS Berhasil di impor')
+            ->success()
+            ->sendToDatabase(auth()->user());
+    }
 
     public function registerEvents(): array
     {
@@ -56,9 +89,20 @@ class ImportBantuanBpjs implements
                 Notification::make('Import Failed')
                     ->title('Gagal mengimpor usulan BPJS')
                     ->danger()
-                    ->send()
                     ->sendToDatabase(auth()->user());
             },
+            //            AfterImport::class => function (AfterImport $event): void {
+            //                Notification::make('Impor Berhasil')
+            //                    ->title('Data Bantuan BPJS Berhasil di impor')
+            //                    ->success()
+            //                    ->sendToDatabase(auth()->user());
+            //            },
+            //            BeforeImport::class => function (BeforeImport $event): void {
+            //                Notification::make('Mulai Mengimpor')
+            //                    ->title('Data Bantuan Bpjs sedang di impor ke database.')
+            //                    ->info()
+            //                    ->sendToDatabase(auth()->user());
+            //            },
         ];
     }
 
@@ -78,14 +122,14 @@ class ImportBantuanBpjs implements
             ->first()?->code;
 
         $jenkel = match ($row['jenis_kelamin']) {
-            'L' => 1,
-            'P' => 2,
-            default => null,
+            'P', 2 => JenisKelaminEnum::PEREMPUAN,
+            default => JenisKelaminEnum::LAKI,
         };
 
         $bulan = (isset($row['periode_bulan']) && 0 !== $row['periode_bulan']) ? (int) bulan_to_integer($row['periode_bulan']) : now()->month;
+        $rowStatus = $row['status_usulan'] ?: $row['status_tl'];
 
-        $statusUsulan = Str::of($row['status_tl'])->matchAll('/[a-zA-Z]+/');
+        $statusUsulan = Str::of($rowStatus)->matchAll('/[a-zA-Z]+/');
 
         $usulan = match ($statusUsulan[0]) {
             'BERHASIL' => StatusUsulanEnum::BERHASIL,
@@ -96,6 +140,19 @@ class ImportBantuanBpjs implements
         $aktif = match ($statusUsulan[0]) {
             'BERHASIL' => StatusAktif::AKTIF,
             default => StatusAktif::NONAKTIF,
+        };
+
+        $statusNikah = match ($row['status_nikah']) {
+            StatusKawinBpjsEnum::KAWIN->getLabel() => StatusKawinBpjsEnum::KAWIN,
+            StatusKawinBpjsEnum::BELUM_KAWIN->getLabel() => StatusKawinBpjsEnum::BELUM_KAWIN,
+            StatusKawinBpjsEnum::JANDA->getLabel() => StatusKawinBpjsEnum::JANDA,
+            StatusKawinBpjsEnum::DUDA->getLabel() => StatusKawinBpjsEnum::DUDA,
+        };
+
+        $statusBpjs = match ($row['status_bpjs']) {
+            default => StatusBpjsEnum::PENGAKTIFAN,
+            StatusBpjsEnum::PENGALIHAN->getLabel() => StatusBpjsEnum::PENGALIHAN,
+            StatusBpjsEnum::BARU->getLabel() => StatusBpjsEnum::BARU,
         };
 
         return new DataBantuanBpjs([
@@ -109,7 +166,7 @@ class ImportBantuanBpjs implements
                 ->subYears(random_int(10, 50))->format('Y-m-d'),
             'tgl_lahir_tmp' => $row['tgl_lahir'] ?? null,
             'jenis_kelamin' => $jenkel ?? 1,
-            'status_nikah' => $row['status_nikah'] ?? 1,
+            'status_nikah' => $statusNikah ?? 1,
             'alamat' => $row['alamat_tempat_tinggal'] ?? '-',
             'nort' => $row['rt'] ?? '001',
             'norw' => $row['rw'] ?? '002',
@@ -117,9 +174,9 @@ class ImportBantuanBpjs implements
             'kecamatan' => $kecamatan ?? $row['kecamatan'],
             'kelurahan' => $kelurahan ?? $row['kelurahan'],
             'status_aktif' => $aktif,
-            'status_bpjs' => $row['status_aktif'] ?? StatusBpjsEnum::NONAKTIF,
+            'status_bpjs' => $statusBpjs,
             'status_usulan' => $usulan,
-            'keterangan' => $row['keterangan'] ?? $row['status_tl'],
+            'keterangan' => $row['keterangan'] ?? $rowStatus,
             'bulan' => $bulan,
             'tahun' => $row['tahun'] ?? now()->year,
         ]);
@@ -160,7 +217,8 @@ class ImportBantuanBpjs implements
 
             //            Notification::make('Failure Import')
             //                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-            //                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . ' | Nama : ' . $values['nama_lengkap'] ?? '-')
+            //                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . '
+            // | Nama : ' . $values['nama_lengkap'] ?? '-')
             //                ->danger()
             //                ->sendToDatabase(auth()->user())
             //                ->broadcast(User::where('is_admin', 1)->get());

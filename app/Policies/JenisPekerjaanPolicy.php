@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\JenisPekerjaan;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class JenisPekerjaanPolicy
@@ -55,7 +57,7 @@ class JenisPekerjaanPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_jenis::pekerjaan');
     }
 
     /**
@@ -71,7 +73,7 @@ class JenisPekerjaanPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_jenis::pekerjaan');
     }
 
     /**
@@ -87,7 +89,7 @@ class JenisPekerjaanPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_jenis::pekerjaan');
     }
 
     /**
@@ -104,5 +106,26 @@ class JenisPekerjaanPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_jenis::pekerjaan');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_jenis::pekerjaan');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_jenis::pekerjaan');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_jenis::pekerjaan');
     }
 }

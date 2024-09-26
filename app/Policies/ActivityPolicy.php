@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\User;
-use Spatie\Activitylog\Models\Activity;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Spatie\Activitylog\Models\Activity;
 
 class ActivityPolicy
 {
@@ -55,7 +57,7 @@ class ActivityPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_activity');
     }
 
     /**
@@ -71,7 +73,7 @@ class ActivityPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_activity');
     }
 
     /**
@@ -87,7 +89,7 @@ class ActivityPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_activity');
     }
 
     /**

@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ServerFactory;
 
 use Awcodes\Curator\Glide\Contracts\ServerFactory;
-use League\Glide\Server;
 use League\Glide\Responses\SymfonyResponseFactory;
+use League\Glide\Server;
 use League\Glide\ServerFactory as GlideServerFactory;
 
 class ImagickServerFactory implements ServerFactory
 {
-
     public function getFactory(): GlideServerFactory|Server
     {
         return GlideServerFactory::create([

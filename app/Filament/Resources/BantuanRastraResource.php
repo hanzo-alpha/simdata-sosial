@@ -15,7 +15,6 @@ use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use App\Supports\Helpers;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
@@ -61,7 +60,7 @@ class BantuanRastraResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_rastra')))
                     ->button(),
             ])
             ->columns([
@@ -357,7 +356,7 @@ class BantuanRastraResource extends Resource
 
     public static function form(Form $form): Form
     {
-       return $form
+        return $form
             ->schema([
                 Group::make()->schema([
                     Section::make('Data Keluarga')
@@ -502,11 +501,7 @@ class BantuanRastraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $admin = Helpers::getAdminRoles();
-        $sadmin = ['super_admin'];
-        $sa = array_merge($sadmin, $admin);
-
-        if (auth()->user()->hasRole($sa)) {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\RekapPenerimaBpjs;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RekapPenerimaBpjsPolicy
@@ -55,7 +57,7 @@ class RekapPenerimaBpjsPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_rekap::penerima::bpjs');
     }
 
     /**
@@ -71,7 +73,7 @@ class RekapPenerimaBpjsPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_rekap::penerima::bpjs');
     }
 
     /**
@@ -87,7 +89,7 @@ class RekapPenerimaBpjsPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_rekap::penerima::bpjs');
     }
 
     /**
@@ -104,5 +106,26 @@ class RekapPenerimaBpjsPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_rekap::penerima::bpjs');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_rekap::penerima::bpjs');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_rekap::penerima::bpjs');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_rekap::penerima::bpjs');
     }
 }

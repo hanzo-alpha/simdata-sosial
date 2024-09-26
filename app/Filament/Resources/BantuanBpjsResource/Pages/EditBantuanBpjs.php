@@ -19,9 +19,9 @@ class EditBantuanBpjs extends EditRecord
     {
         return [
             Actions\ViewAction::make()
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('bpjs')),
             Actions\DeleteAction::make()
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('bpjs')),
         ];
     }
 }

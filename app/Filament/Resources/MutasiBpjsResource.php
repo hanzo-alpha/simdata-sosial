@@ -8,6 +8,7 @@ use App\Enums\AlasanBpjsEnum;
 use App\Enums\StatusMutasi;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
+use App\Traits\HasInputDateLimit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 final class MutasiBpjsResource extends Resource
 {
+    use HasInputDateLimit;
+
     protected static ?string $model = MutasiBpjs::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -57,6 +60,13 @@ final class MutasiBpjsResource extends Resource
                     ->preload()
                     ->lazy(),
 
+                Forms\Components\Select::make('periode_bulan')
+                    ->options(list_bulan())
+                    ->native(false)
+                    ->required()
+                    ->preload()
+                    ->lazy(),
+
                 Forms\Components\TextInput::make('keterangan')
                     ->dehydrated(),
 
@@ -78,7 +88,7 @@ final class MutasiBpjsResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah Mutasi BPJS')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
                     ->button(),
             ])
             ->columns([
@@ -89,6 +99,12 @@ final class MutasiBpjsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alasan_mutasi')
                     ->label('Alasan Mutasi')
+                    ->badge()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('periode_bulan')
+                    ->label('Periode Bulan')
+                    ->formatStateUsing(fn($state) => bulan_to_string($state))
                     ->badge()
                     ->sortable()
                     ->searchable(),
@@ -136,7 +152,15 @@ final class MutasiBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
         return parent::getEloquentQuery()
+//            ->where('kelurahan', auth()->user()->instansi_id)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

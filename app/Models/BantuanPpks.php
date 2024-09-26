@@ -97,4 +97,9 @@ class BantuanPpks extends Model
     {
         return $this->belongsTo(Media::class);
     }
+
+    public function barang(): BelongsTo
+    {
+        return $this->belongsTo(Barang::class);
+    }
 }

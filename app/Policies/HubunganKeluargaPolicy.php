@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\HubunganKeluarga;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class HubunganKeluargaPolicy
@@ -55,7 +57,7 @@ class HubunganKeluargaPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_hubungan::keluarga');
     }
 
     /**
@@ -71,7 +73,7 @@ class HubunganKeluargaPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_hubungan::keluarga');
     }
 
     /**
@@ -87,7 +89,7 @@ class HubunganKeluargaPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_hubungan::keluarga');
     }
 
     /**
@@ -104,5 +106,26 @@ class HubunganKeluargaPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_hubungan::keluarga');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_hubungan::keluarga');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_hubungan::keluarga');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_hubungan::keluarga');
     }
 }

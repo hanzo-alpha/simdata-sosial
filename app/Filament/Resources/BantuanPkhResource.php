@@ -13,7 +13,6 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use App\Supports\Helpers;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -353,7 +352,7 @@ final class BantuanPkhResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_pkh')))
                     ->button(),
             ])
             ->columns([
@@ -548,11 +547,7 @@ final class BantuanPkhResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $admin = Helpers::getAdminRoles();
-        $sadmin = ['super_admin'];
-        $sa = array_merge($sadmin, $admin);
-
-        if (auth()->user()->hasRole($sa)) {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

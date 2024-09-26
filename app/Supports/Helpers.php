@@ -57,6 +57,19 @@ class Helpers
             ->map(fn($item) => 'admin_' . Str::lower($item->alias))->toArray();
     }
 
+    public static function getAdminBantuan(): array|Collection
+    {
+        $result = [];
+        $jenisBantuan = JenisBantuan::query()->get();
+
+        foreach ($jenisBantuan as $item) {
+            $label = 'admin_' . Str::lower($item->alias);
+            $result[$label] = $item->id;
+        }
+
+        return $result;
+    }
+
     public static function generateNoInvoice($pemisah = null): string
     {
         $query = Barang::query();

@@ -72,7 +72,7 @@ class BantuanBpjsResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
                     ->button(),
             ])
 //            ->recordClasses(fn(Model $record) => null !== $record->is_mutasi ? 'border-s-2 border-orange-600 dark:border-orange-300 bg-gray-200 dark:bg-white/5' : null)
@@ -183,11 +183,7 @@ class BantuanBpjsResource extends Resource
                     ->badge(),
                 Tables\Columns\ImageColumn::make('foto_ktp')
                     ->label('Foto KTP')
-                    ->circular()
-                    ->stacked()
-                    ->wrap()
-                    ->limit(3)
-                    ->limitedRemainingText()
+                    ->square()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('keterangan')
                     ->searchable(),
@@ -731,8 +727,7 @@ class BantuanBpjsResource extends Resource
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->alignCenter()
-                                ->limit(2)
-                                ->height(300)
+                                ->height(500)
                                 ->extraImgAttributes([
                                     'alt' => 'foto ktp',
                                     'loading' => 'lazy',
@@ -767,11 +762,7 @@ class BantuanBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $admin = Helpers::getAdminRoles();
-        $sadmin = ['super_admin'];
-        $sa = array_merge($sadmin, $admin);
-
-        if (auth()->user()->hasRole($sa)) {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery()
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,

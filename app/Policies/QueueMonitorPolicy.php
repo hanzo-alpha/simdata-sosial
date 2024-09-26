@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -55,7 +57,7 @@ class QueueMonitorPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_queue::monitor');
     }
 
     /**
@@ -71,7 +73,7 @@ class QueueMonitorPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_queue::monitor');
     }
 
     /**
@@ -87,7 +89,7 @@ class QueueMonitorPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_queue::monitor');
     }
 
     /**
@@ -97,6 +99,7 @@ class QueueMonitorPolicy
     {
         return $user->can('{{ Replicate }}');
     }
+
 
     /**
      * Determine whether the user can reorder.

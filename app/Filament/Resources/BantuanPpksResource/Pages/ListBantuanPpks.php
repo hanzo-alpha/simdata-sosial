@@ -70,22 +70,23 @@ final class ListBantuanPpks extends ListRecords
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->exporter(BantuanPpksExporter::class)
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('ppks')),
 
             Actions\ImportAction::make()
                 ->label('Upload CSV')
                 ->color('warning')
                 ->icon('heroicon-o-arrow-up-tray')
                 ->importer(BantuanPpksImporter::class)
+                ->authorize('upload')
                 ->options([
                     'updateExisting' => true,
                 ])
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('ppks')),
 
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('ppks')),
 
         ];
     }

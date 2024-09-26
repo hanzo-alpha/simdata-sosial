@@ -12,6 +12,7 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Filament\Resources\BantuanRastraResource;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Traits\HasInputDateLimit;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Actions;
 use Filament\Forms\Components\Grid;
@@ -23,6 +24,8 @@ use Filament\Support\Enums\MaxWidth;
 
 final class EditBantuanRastra extends EditRecord
 {
+    use HasInputDateLimit;
+
     protected static string $resource = BantuanRastraResource::class;
 
     protected function getHeaderActions(): array
@@ -140,6 +143,7 @@ final class EditBantuanRastra extends EditRecord
                         ->title('Status Berhasil Diubah')
                         ->send();
                 })
+                ->disabled($this->enableInputLimitDate('rastra'))
                 ->close(),
             Actions\ViewAction::make()->icon('heroicon-m-eye'),
             Actions\DeleteAction::make()->icon('heroicon-m-trash'),

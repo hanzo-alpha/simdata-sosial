@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\PenggantiRastra;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PenggantiRastraPolicy
@@ -55,7 +57,7 @@ class PenggantiRastraPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_pengganti::rastra');
     }
 
     /**
@@ -71,7 +73,7 @@ class PenggantiRastraPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_pengganti::rastra');
     }
 
     /**
@@ -87,7 +89,7 @@ class PenggantiRastraPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_pengganti::rastra');
     }
 
     /**
@@ -104,5 +106,26 @@ class PenggantiRastraPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_pengganti::rastra');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_pengganti::rastra');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_pengganti::rastra');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_pengganti::rastra');
     }
 }

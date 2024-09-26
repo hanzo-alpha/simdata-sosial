@@ -8,6 +8,7 @@ use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Closure;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -107,6 +108,21 @@ class Settings extends BaseSettings
                                             ->label('Batas Tanggal Penginputan Data')
                                             ->date()
                                             ->displayFormat(setting('app.format_tgl')),
+                                        Grid::make()->schema([
+                                            DatePicker::make('app.batas_tgl_input_bpjs')
+                                                ->label('Batas Tanggal Input Data BPJS')
+                                                ->date()
+                                                ->displayFormat(setting('app.format_tgl')),
+                                            DatePicker::make('app.batas_tgl_input_rastra')
+                                                ->label('Batas Tanggal Input Data RASTRA')
+                                                ->date()
+                                                ->displayFormat(setting('app.format_tgl')),
+                                            DatePicker::make('app.batas_tgl_input_ppks')
+                                                ->label('Batas Tanggal Input Data PPKS')
+                                                ->date()
+                                                ->displayFormat(setting('app.format_tgl')),
+                                        ])->columns(3),
+
                                     ])->columns(2),
                             ]),
                         ])->columns(2),

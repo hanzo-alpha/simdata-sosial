@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\BantuanBpnt;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BantuanBpntPolicy
@@ -55,7 +57,7 @@ class BantuanBpntPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_bantuan::bpnt');
     }
 
     /**
@@ -71,7 +73,7 @@ class BantuanBpntPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_bantuan::bpnt');
     }
 
     /**
@@ -87,7 +89,7 @@ class BantuanBpntPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_bantuan::bpnt');
     }
 
     /**
@@ -98,11 +100,32 @@ class BantuanBpntPolicy
         return $user->can('{{ Replicate }}');
     }
 
+
     /**
      * Determine whether the user can reorder.
      */
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_bantuan::bpnt');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_bantuan::bpnt');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_bantuan::bpnt');
+    }
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_bantuan::bpnt');
     }
 }

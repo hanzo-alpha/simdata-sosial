@@ -66,10 +66,10 @@ class ListBantuanBpnts extends ListRecords
                 ->color('success')
                 ->label('Upload CSV')
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('bpnt')),
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate()),
+                ->disabled($this->enableInputLimitDate('bpnt')),
         ];
     }
 

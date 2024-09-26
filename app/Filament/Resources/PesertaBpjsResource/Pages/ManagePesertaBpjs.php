@@ -39,23 +39,21 @@ class ManagePesertaBpjs extends ManageRecords
                     return $data;
                 })
                 ->action(function (array $data): void {
-                    $deleteAll = PesertaBpjs::query()->delete();
-                    if ($deleteAll) {
-                        Excel::queueImport(new ImportPesertaBpjs(), $data['attachment'], 'public');
-                    }
+                    PesertaBpjs::query()->forceDelete();
                     Notification::make()
                         ->title('Data Peserta BPJS sedang diimpor secara background')
                         ->info()
                         ->sendToDatabase(auth()->user());
+                    Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
                 })
-                ->successNotification(function (): void {
+                ->after(function (): void {
                     Notification::make()
                         ->title('Data Peserta BPJS berhasil diunggah')
                         ->success()
                         ->sendToDatabase(auth()->user());
                 })
                 ->icon('heroicon-o-arrow-down-tray')
-                ->disabled($this->enableInputLimitDate())
+                ->disabled($this->enableInputLimitDate('bpjs'))
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
                 ->successRedirectUrl(route('filament.admin.resources.peserta-bpjs.index'))

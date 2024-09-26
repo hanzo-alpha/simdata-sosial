@@ -20,7 +20,9 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PenyaluranBantuanPpksResource extends Resource
@@ -177,6 +179,7 @@ class PenyaluranBantuanPpksResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
+                    ->disabled(fn() => cek_batas_input(setting('app.batas_tgl_input_ppks')))
                     ->button(),
             ])
             ->columns([
@@ -209,7 +212,7 @@ class PenyaluranBantuanPpksResource extends Resource
                     ->badge(),
             ])
             ->filters([
-
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('pdf')
@@ -244,5 +247,21 @@ class PenyaluranBantuanPpksResource extends Resource
             'create' => Pages\CreatePenyaluranBantuanPpks::route('/create'),
             'edit' => Pages\EditPenyaluranBantuanPpks::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+            return parent::getEloquentQuery()
+                ->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                ]);
+        }
+
+        return parent::getEloquentQuery()
+            ->whereHas('bantuan_ppks', fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

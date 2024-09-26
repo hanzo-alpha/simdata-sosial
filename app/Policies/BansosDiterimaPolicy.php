@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\BansosDiterima;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BansosDiterimaPolicy
@@ -55,7 +57,7 @@ class BansosDiterimaPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('{{ DeleteAny }}');
+        return $user->can('delete_any_bansos::diterima');
     }
 
     /**
@@ -71,7 +73,7 @@ class BansosDiterimaPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_bansos::diterima');
     }
 
     /**
@@ -87,7 +89,7 @@ class BansosDiterimaPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_bansos::diterima');
     }
 
     /**
@@ -104,5 +106,26 @@ class BansosDiterimaPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+    public function download(User $user): bool
+    {
+        return $user->can('download_bansos::diterima');
+    }
+
+    public function upload(User $user): bool
+    {
+        return $user->can('upload_bansos::diterima');
+    }
+
+    public function verifyStatus(User $user): bool
+    {
+        return $user->can('verify_status_bansos::diterima');
+    }
+
+
+    public function verification(User $user): bool
+    {
+        return $user->can('verification_bansos::diterima');
     }
 }

@@ -57,13 +57,12 @@ class PenandatanganResource extends Resource
                     ->required(),
                 TextInput::make('nip')
                     ->required(),
-                ToggleButtons::make('jabatan')
+                Select::make('jabatan')
                     ->enum(JabatanEnum::class)
                     ->options(JabatanEnum::class)
-//                    ->inline()
-//                    ->grouped()
-                    ->columns(2)
-                    ->gridDirection('row')
+                    ->searchable()
+                    ->native(false)
+                    ->preload()
                     ->required(),
 
                 ToggleButtons::make('status_penandatangan')
@@ -75,6 +74,8 @@ class PenandatanganResource extends Resource
 
                 SignaturePad::make('signature')
                     ->label('Tanda Tangan')
+                    ->hidden()
+                    ->dehydrated()
                     ->columnSpanFull()
                     ->hideDownloadButtons(),
             ]);
@@ -169,7 +170,7 @@ class PenandatanganResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery();
         }
 

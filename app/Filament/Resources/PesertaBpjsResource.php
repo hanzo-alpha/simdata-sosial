@@ -17,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -108,7 +109,7 @@ final class PesertaBpjsResource extends Resource
                         }
                     })
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
                     ->modalAlignment(Alignment::Center)
                     ->closeModalByClickingAway(false)
                     ->successRedirectUrl(route('filament.admin.resources.peserta-bpjs.index'))
@@ -157,5 +158,15 @@ final class PesertaBpjsResource extends Resource
         return [
             'index' => ManagePesertaBpjs::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery();
+        //            ->where('kelurahan', auth()->user()->instansi_id);
     }
 }

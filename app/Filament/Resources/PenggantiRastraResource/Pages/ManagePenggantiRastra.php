@@ -33,7 +33,7 @@ class ManagePenggantiRastra extends ManageRecords
 
                     return $model::create($data);
                 })
-                ->disabled($this->enableInputLimitDate())
+                ->disabled($this->enableInputLimitDate('rastra'))
                 ->closeModalByClickingAway(false),
         ];
     }
