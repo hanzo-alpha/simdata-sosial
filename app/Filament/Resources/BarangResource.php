@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BarangResource\Pages;
 use App\Models\Barang;
 use App\Models\Kelurahan;
+use App\Supports\Helpers;
 use Awcodes\FilamentBadgeableColumn\Components\Badge;
 use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
 use Filament\Forms;
@@ -163,7 +164,15 @@ class BarangResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery();
+            $query = parent::getEloquentQuery();
+
+            foreach (Helpers::getAdminBantuan() as $role => $jenis) {
+                if(auth()->user()->roles()->first()->name === $role) {
+                    $query->where('jenis_bantuan_id', $jenis);
+                }
+            }
+
+            return $query;
         }
 
         return parent::getEloquentQuery()
