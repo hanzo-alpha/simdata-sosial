@@ -185,7 +185,7 @@
             }
 
             .img-foto {
-                max-width: 200px;
+                max-width: 350px;
             }
 
             .img-border {
