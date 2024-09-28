@@ -24,7 +24,6 @@
         </div>
         <br />
         <br />
-        <br />
         <p style="font-size: 12px">
             Pada hari ini {{ $record->tgl_ba->dayName ?? now()->dayName }} tanggal
             {{ $record->tgl_ba->day ?? now()->day }} {{ $record->tgl_ba->monthName ?? now()->monthName }}
@@ -181,7 +180,7 @@
                 <td></td>
             </tr>
             </tbody>
-        </table><br>
+        </table>
 
         <p>
             Demikian Berita Acara Penyerahan Hasil Pekerjaan ini dibuat dalam rangkap secukupnya untuk dipergunakan
@@ -194,8 +193,7 @@
             <tr>
                 <td width="60%"></td>
                 <td class="text-center">
-                    {{ $record->kel->name }}, {{ now()->dayName }}, {{ now()->day }} {{ now()->monthName }}
-                    {{ now()->year }}
+                    {{ $record->kel->name }}, {{ DateHelper::tanggal($record->tgl_ba->toString()) }}
                 </td>
                 <br />
             </tr>
@@ -212,11 +210,9 @@
                     <br />
                     <br />
                     <br />
-                    <br />
                     <b>{{ setting('persuratan.nama_pps') }}</b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
-                    <br />
                     <br />
                     <br />
                     <br />
@@ -238,13 +234,11 @@
         <br />
         <br />
         <br />
-        <br />
         <p class="text-center">
             <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
         </p>
         <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
         <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
-
         <br>
         <br>
         <div class="page-break"></div>
@@ -263,7 +257,7 @@
         </p>
         <p style="font-size: 12px; text-align: left">
             Tanggal : {{ DateHelper::tanggal($record->tgl_ba->toString()) }}
-        </p><br><br>
+        </p><br>
         <div class="text-center">
             <p style="font-size: 12px">
                 <span style="text-decoration-line: underline">
@@ -329,8 +323,7 @@
             <tr>
                 <td width="60%"></td>
                 <td class="text-center">
-                    {{ $record->kel->name }}, {{ now()->dayName }}, {{ now()->day }} {{ now()->monthName }}
-                    {{ now()->year }}
+                    {{ $record->kel->name }}, {{ DateHelper::tanggal($record->tgl_ba->toString()) }}
                 </td>
                 <br />
             </tr>
@@ -347,11 +340,9 @@
                     <br />
                     <br />
                     <br />
-                    <br />
                     <b>{{ setting('persuratan.nama_pps') }}</b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
-                    <br />
                     <br />
                     <br />
                     <br />
@@ -373,13 +364,14 @@
         <br />
         <br />
         <br />
-        <br />
         <p class="text-center">
             <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
         </p>
         <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
         <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
-        <br>
-        <br>
+        <br><br>
+        <p style="text-align: left;">
+            <em>* Terakhir diubah pada  {{ DateHelper::hariTanggalJam($record->updated_at->toString()) }}</em>
+        </p>
     @endsection
 </x-layouts.print>

@@ -16,7 +16,6 @@ class PdfController extends Controller
         $model = $request->get('m')::find($request->get('id'));
         $pdf = PDF::loadView('laporan.dokumentasi', compact('model'));
         $pdf->setOption([
-            'dpi' => 96,
             'defaultFont' => 'sans-serif',
             'defaultPaperSize' => 'a4',
         ]);

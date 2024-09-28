@@ -109,7 +109,7 @@
                 border-bottom: 2px solid #dee2e6;
                 border-left: 2px solid #dee2e6;
                 border-right: 2px solid #dee2e6;
-                padding: 0.7rem;
+                padding: 0.6rem;
             }
 
             .table thead th {
