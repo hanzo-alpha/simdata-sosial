@@ -111,7 +111,8 @@
         <p>
             a.
             <b>PIHAK PERTAMA</b>
-            menyerahkan Barang Bantuan Sosial Pangan Beras Sejahtera Tahun 2023 kepada
+            menyerahkan Barang Bantuan Sosial Pangan Beras Sejahtera Tahun {{ $record->tgl_ba->year ?? today()->year }}
+            kepada
             <b>PIHAK KEDUA</b>
             sebagaimana
             <b>PIHAK KEDUA</b>

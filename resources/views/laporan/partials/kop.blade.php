@@ -1,17 +1,10 @@
 <table class="table border-0" style="padding-bottom: 0;margin-bottom: 0;padding-top: 0">
     <tbody>
     <th class="text-center" rowspan="3">
-        @if(config('app.env') === 'local')
-            <img style="align-items: center; align-content: center;"
-                 src="images/logos/logo-soppeng2.png"
-                 alt="logo"
-                 height="70" />
-        @else
-            <img style="align-items: center; align-content: center;"
-                 src="{{ asset('images/logos/logo-soppeng2.png') }}"
-                 alt="logo"
-                 height="70" />
-        @endif
+        <img style="align-items: center; align-content: center;"
+             src="images/logos/logo-soppeng2.png"
+             alt="logo"
+             height="70" />
 
     </th>
     <th class="text-center">
