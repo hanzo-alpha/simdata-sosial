@@ -204,6 +204,33 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->close(),
+                    Tables\Actions\Action::make('Ubah Status Verifikasi')
+                        ->icon('heroicon-s-check-badge')
+                        ->form([
+                            Section::make()->schema([
+                                Forms\Components\ToggleButtons::make('status_verifikasi')
+                                    ->options(StatusVerifikasiEnum::class)
+                                    ->enum(StatusVerifikasiEnum::class)
+                                    ->label('Status Verifikasi')
+                                    ->hiddenLabel()
+                                    ->default(StatusVerifikasiEnum::UNVERIFIED)
+                                    ->inline()
+                                    ->required(),
+                            ]),
+                        ])
+                        ->action(function ($record, array $data): void {
+                            $record->status_verifikasi = $data['status_verifikasi'];
+
+                            $record->save();
+                        })
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Status Berhasil Diubah')
+                                ->send();
+                        })
+                        ->modalWidth(MaxWidth::FitContent)
+                        ->close(),
                     Tables\Actions\Action::make('penggantiRastra')
                         ->label('Ganti KPM Baru')
                         ->icon('heroicon-s-user-plus')
@@ -348,6 +375,37 @@ class BantuanRastraResource extends Resource
                                 ->title('Status Berhasil Diubah')
                                 ->send();
                         })
+                        ->closeModalByClickingAway()
+                        ->deselectRecordsAfterCompletion(),
+                    Tables\Actions\BulkAction::make('ubah_status_verifikasi')
+                        ->label('Ubah Status Verifikasi')
+                        ->icon('heroicon-o-check-badge')
+                        ->form([
+                            Section::make()->schema([
+                                Forms\Components\ToggleButtons::make('status_verifikasi')
+                                    ->options(StatusVerifikasiEnum::class)
+                                    ->enum(StatusVerifikasiEnum::class)
+                                    ->label('Status Verifikasi')
+                                    ->hiddenLabel()
+                                    ->default(StatusVerifikasiEnum::UNVERIFIED)
+                                    ->inline()
+                                    ->required(),
+                            ]),
+                        ])
+                        ->action(function ($records, array $data): void {
+                            $records->each(function ($records) use ($data): void {
+                                $records->status_verifikasi = $data['status_verifikasi'];
+
+                                $records->save();
+                            });
+                        })
+                        ->after(function (): void {
+                            Notification::make()
+                                ->success()
+                                ->title('Status Berhasil Diubah')
+                                ->send();
+                        })
+                        ->modalWidth(MaxWidth::FitContent)
                         ->closeModalByClickingAway()
                         ->deselectRecordsAfterCompletion(),
                 ]),
