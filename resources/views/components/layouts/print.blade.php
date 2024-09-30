@@ -92,9 +92,15 @@
             }
 
             .table {
+                /*table-layout: fixed;*/
                 width: 100%;
                 margin-bottom: 0.6rem;
                 color: #212529;
+            }
+
+            ol li {
+                padding: 5px;
+                margin-left: -24px;
             }
 
             .table th,
@@ -166,13 +172,8 @@
                 line-height: 1.1;
             }
 
-            .party-header {
-                font-size: 1.5rem;
-                font-weight: 400;
-            }
-
             .total-amount {
-                font-size: 12px;
+                font-size: 11px;
                 font-weight: 700;
             }
 

@@ -4,11 +4,11 @@
         <img style="align-items: center; align-content: center;"
              src="images/logos/logo-soppeng2.png"
              alt="logo"
-             height="70" />
+             height="90" />
 
     </th>
     <th class="text-center">
-        <h2 style="margin-bottom: 0">
+        <h2 style="margin-bottom: 0; padding: 0">
             <strong>{{ setting('ba.kop_title') }}</strong>
         </h2>
     </th>
