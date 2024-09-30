@@ -371,8 +371,5 @@
         <p class="text-center">Pangkat. {{ setting('persuratan.pangkat') }}</p>
         <p class="text-center">Nip. {{ setting('persuratan.nip_kepala_dinas') }}</p>
         <br><br>
-        <p style="text-align: left;">
-            <em>* Terakhir diubah pada  {{ DateHelper::hariTanggalJam($record->updated_at->toString()) }}</em>
-        </p>
     @endsection
 </x-layouts.print>
