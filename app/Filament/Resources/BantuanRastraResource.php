@@ -509,16 +509,37 @@ class BantuanRastraResource extends Resource
                                 ->badge(),
                         ])
                         ->columns(3),
-                    \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto')
+                    \Filament\Infolists\Components\Section::make('Informasi Penyaluran Bantuan')
+                        ->icon('heroicon-o-lifebuoy')
+                        ->schema([
+                            TextEntry::make('penyaluran.status_penyaluran')
+                                ->label('Status Penyaluran')
+                                ->placeholder('Belum ada penyaluran'),
+                            TextEntry::make('penyaluran.tgl_penyerahan')
+                                ->dateTime('l, d M Y H:i:s')
+                                ->label('Tgl. Penyerahan')
+                                ->placeholder('Belum ada penyaluran'),
+                        ])
+                        ->columns(2),
+                    \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto KTP & Penyaluran')
                         ->icon('heroicon-o-photo')
                         ->schema([
                             ImageEntry::make('foto_ktp_kk')
-                                ->hiddenLabel()
+                                ->label('Foto KTP/KK')
                                 ->placeholder('Belum ada Foto KTP / KK')
                                 ->columnSpanFull()
                                 ->alignCenter()
                                 ->extraImgAttributes([
                                     'alt' => 'foto ktp kk',
+                                    'loading' => 'lazy',
+                                ]),
+                            ImageEntry::make('penyaluran.foto_penyerahan')
+                                ->label('Foto Penyaluran')
+                                ->columnSpanFull()
+                                ->placeholder('Belum ada Foto Penyaluran')
+                                ->alignCenter()
+                                ->extraImgAttributes([
+                                    'alt' => 'foto penyaluran',
                                     'loading' => 'lazy',
                                 ]),
                         ])->columns(1),

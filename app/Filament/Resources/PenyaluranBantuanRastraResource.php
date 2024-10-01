@@ -247,9 +247,8 @@ class PenyaluranBantuanRastraResource extends Resource
                     Forms\Components\Section::make()->schema([
                         Forms\Components\DateTimePicker::make('tgl_penyerahan')
                             ->label('Tgl. Penyerahan')
-                            ->disabled()
-                            ->default(now())
-                            ->dehydrated(),
+                            ->displayFormat('d/M/Y H:i:s')
+                            ->default(now()),
                         Forms\Components\Select::make('status_penyaluran')
                             ->label('Status Penyaluran Bantuan')
                             ->options(StatusPenyaluran::class)
