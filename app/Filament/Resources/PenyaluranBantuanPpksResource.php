@@ -36,7 +36,6 @@ class PenyaluranBantuanPpksResource extends Resource
     protected static ?string $navigationParentItem = 'Program PPKS';
     protected static ?string $navigationGroup = 'Program Sosial';
     protected static ?int $navigationSort = 8;
-    protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     public static function form(Form $form): Form
     {
@@ -132,9 +131,7 @@ class PenyaluranBantuanPpksResource extends Resource
                     Section::make()->schema([
                         DateTimePicker::make('tgl_penyerahan')
                             ->label('Tgl. Penyerahan')
-                            ->disabled()
-                            ->default(now())
-                            ->dehydrated(),
+                            ->default(now()),
                         Select::make('status_penyaluran')
                             ->label('Status Penyaluran Bantuan')
                             ->options(StatusPenyaluran::class)
@@ -143,27 +140,19 @@ class PenyaluranBantuanPpksResource extends Resource
                         FileUpload::make('foto_penyerahan')
                             ->label('Foto Penyerahan')
                             ->disk('public')
-                            ->directory('penyaluran')
+                            ->directory('penyaluran-ppks')
                             ->required()
-                            ->getUploadedFileNameForStorageUsing(
-                                fn(
-                                    TemporaryUploadedFile $file,
-                                ): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(date('YmdHis') . '-'),
-                            )
-                            ->preserveFilenames()
                             ->multiple()
-                            ->reorderable()
-                            ->appendFiles()
                             ->openable()
                             ->unique(ignoreRecord: true)
                             ->helperText('maks. 2MB')
-                            ->maxFiles(3)
+                            ->maxFiles(2)
                             ->maxSize(2048)
                             ->columnSpanFull()
                             ->imagePreviewHeight('250')
                             ->previewable(true)
-                            ->image(),
+                            ->image()
+                            ->imageEditor(),
                     ]),
                 ])->columnSpan(1),
 

@@ -90,7 +90,7 @@
                 <th width="5%" style="text-align: left"></th>
                 <th width="20%" style="text-align: left">4. Desa/Kelurahan</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ \Illuminate\Support\Str::upper($record->kec->name) . ', ' . \Illuminate\Support\Str::upper($record->kel->name) }}</td>
+                <td>{{ \Illuminate\Support\Str::upper($record->kel->name) }}</td>
             </tr>
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
@@ -207,13 +207,13 @@
                     <br />
                     <b>{{ setting('persuratan.nama_kepala_dinas') }}</b>
                 </td>
-                <td class="text-center" style="border-bottom:1px solid black">
+                <td class="text-center" style="text-decoration: underline">
                     <br />
                     <br />
                     <br />
                     <br />
                     <br />
-                    <span></span>
+                    <b>{{ $record->penandatangan?->nama_penandatangan ?? 'Belum ada penandatangan'}}</b>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
                     <br />
@@ -226,13 +226,13 @@
             </tr>
             <tr>
                 <td class="text-center pl-0">
-                    <b>Nip. {{ setting('persuratan.nip_kepala_dinas') }}</b>
+                    <span>Nip. {{ setting('persuratan.nip_kepala_dinas') }}</span>
                 </td>
                 <td class="text-center pl-0">
-                    <b></b>
+                    <span>Nip. {{ $record->penandatangan?->nip ?? '-'}}</span>
                 </td>
                 <td class="text-center" style="text-decoration: underline">
-                    <b></b>
+{{--                    <b>Nik. {{ $record->nik }}</b>--}}
                 </td>
             </tr>
             </tbody>
