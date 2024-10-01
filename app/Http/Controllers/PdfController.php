@@ -16,7 +16,6 @@ class PdfController extends Controller
         $model = $request->get('m')::find($request->get('id'));
         $pdf = PDF::loadView('laporan.dokumentasi', compact('model'));
         $pdf->setOption([
-            'dpi' => 96,
             'defaultFont' => 'sans-serif',
             'defaultPaperSize' => 'a4',
         ]);
@@ -46,7 +45,7 @@ class PdfController extends Controller
             'defaultPaperSize' => 'a4',
         ]);
 
-        return $pdf->stream('berita-acara-serah-terima-barang.pdf');
+        return $pdf->stream('bast-rastra.pdf');
     }
 
     public function cetakBeritaAcaraPpks(Request $request): Response
@@ -61,6 +60,6 @@ class PdfController extends Controller
             'defaultPaperSize' => 'a4',
         ]);
 
-        return $pdf->stream('berita-acara-serah-terima-barang.pdf');
+        return $pdf->stream('bast-ppks.pdf');
     }
 }

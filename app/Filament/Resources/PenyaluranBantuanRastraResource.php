@@ -247,9 +247,8 @@ class PenyaluranBantuanRastraResource extends Resource
                     Forms\Components\Section::make()->schema([
                         Forms\Components\DateTimePicker::make('tgl_penyerahan')
                             ->label('Tgl. Penyerahan')
-                            ->disabled()
-                            ->default(now())
-                            ->dehydrated(),
+                            ->displayFormat('d/M/Y H:i:s')
+                            ->default(now()),
                         Forms\Components\Select::make('status_penyaluran')
                             ->label('Status Penyaluran Bantuan')
                             ->options(StatusPenyaluran::class)
@@ -260,20 +259,17 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->label('Foto Penyerahan')
                             ->disk('public')
                             ->directory('penyaluran')
+                            ->image()
                             ->required()
+                            ->imagePreviewHeight('250')
                             ->multiple()
                             ->imageEditor()
-                            ->reorderable()
-                            ->appendFiles()
                             ->openable()
-                            ->unique(ignoreRecord: true)
                             ->helperText('maks. 10MB')
-                            ->maxFiles(3)
+                            ->maxFiles(2)
                             ->maxSize(10240)
                             ->columnSpanFull()
-                            ->imagePreviewHeight('250')
-                            ->previewable(true)
-                            ->image(),
+                            ->previewable(true),
 
                         CuratorPicker::make('media_id')
                             ->label('Upload Berita Acara')

@@ -26,10 +26,9 @@ class BarangResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
     protected static ?string $slug = 'item-bantuan';
-    protected static ?string $label = 'Item Bantuan Rastra';
-    protected static ?string $pluralLabel = 'Item Bantuan Rastra';
-    protected static ?string $navigationParentItem = 'Program Rastra';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static ?string $label = 'Item Bantuan';
+    protected static ?string $pluralLabel = 'Item Bantuan';
+    protected static ?string $navigationGroup = 'Dashboard Bantuan';
     protected static ?int $navigationSort = 9;
     protected static ?string $recordTitleAttribute = 'nama_barang';
 
@@ -101,7 +100,7 @@ class BarangResource extends Resource
             ->emptyStateHeading('Belum ada barang')
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Tambah Item Bantuan Rastra')
+                    ->label('Tambah Item Bantuan')
                     ->icon('heroicon-m-plus')
                     ->button(),
             ])

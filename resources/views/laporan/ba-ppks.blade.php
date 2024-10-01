@@ -26,10 +26,10 @@
         <br />
         <p style="font-size: 12px">
             Pada hari ini {{ $tglBa->dayName ?? now()->dayName }} Tanggal
-            {{ tanggal_ke_kalimat($tglBa->format('Y-m-d') ?? now()->format('Y-m-d')) }}  Bertempat di Desa/Kelurahan {{
-            $record->kel->name }} Dilakukan
-            serah terima Alat Bantu berupa {{ Str::title($record->nama_bantuan) ?? 'Kursi Roda' }} kepada para {{
-            \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }}.
+            {{ tanggal_ke_kalimat($tglBa->format('Y-m-d') ?? now()->format('Y-m-d')) }}  Bertempat di Desa/Kelurahan
+            <b>{{ \Illuminate\Support\Str::upper($record->kel->name) }}</b> Dilakukan serah terima Alat Bantu berupa
+            {{ Str::title($record->barang?->nama_barang) ?? $record->nama_bantuan }} kepada para
+            {{ \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }}.
         </p><br />
         <p style="font-size: 12px">Yang bertanda tangan dibawah ini :</p>
         <table style="font-size: 12px" class="table">
@@ -90,14 +90,8 @@
                 <th width="5%" style="text-align: left"></th>
                 <th width="20%" style="text-align: left">4. Desa/Kelurahan</th>
                 <th width="10%" style="text-align: right">:</th>
-                <td>{{ 'Kec. ' . $record->kec->name . ', Kel. ' .$record->kel->name }}</td>
+                <td>{{ \Illuminate\Support\Str::upper($record->kec->name) . ', ' . \Illuminate\Support\Str::upper($record->kel->name) }}</td>
             </tr>
-{{--            <tr class="pb-0">--}}
-{{--                <th width="5%" style="text-align: left"></th>--}}
-{{--                <th width="20%" style="text-align: right">Bansos Yang Pernah Diterima</th>--}}
-{{--                <th width="10%" style="text-align: right">:</th>--}}
-{{--                <td>{{ $record->bansos_diterima()->implode('nama_bansos', ', ') }}</td>--}}
-{{--            </tr>--}}
             <tr class="pb-0">
                 <th width="5%" style="text-align: left"></th>
                 <td colspan="4">
@@ -108,19 +102,22 @@
             </tbody>
         </table>
         <p style="font-size: 12px">Untuk kewenangan masing masing dengan ini Para Pihak menyatakan dengan sebenarnya bahwa :</p>
-        <p style="font-size: 12px">
-            a.
-            <b>PIHAK KESATU</b>
-            menyerahkan Alat Bantu berupa {{ Str::title($record->nama_bantuan) ?? 'Kursi Roda' }} kepada para {{
-            \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }} Tahun {{ today()->year }} kepada
-            <b>PIHAK KEDUA</b>
-            sebagaimana <b>PIHAK KEDUA</b> menerima {{ \Illuminate\Support\Str::title($record->bansos_diterima?->first()?->nama_bansos) ?? 'Alat Bantu' }} dari
-            <b>PIHAK KESATU</b>.
-        </p>
-        <p style="font-size: 12px">
-            b. Jenis, spesifikasi, kriteria, dan jumlah barang / jasa yang diserahterimakan
-            sebagai berikut :
-        </p>
+        <ol type="a" style="font-size: 12px;">
+            <li>
+                <b>PIHAK KESATU</b>
+                menyerahkan Alat Bantu berupa {{ Str::title($record->barang?->nama_barang) ?? $record->nama_bantuan }} kepada para
+                Penyandang Disabilitas
+{{--                {{ \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }}--}}
+                Tahun {{ today()->year }} kepada
+                <b>PIHAK KEDUA</b>
+                sebagaimana <b>PIHAK KEDUA</b>
+                menerima Alat Bantu dari
+                <b>PIHAK KESATU</b>.
+            </li>
+            <li>
+                Jenis, spesifikasi, kriteria, dan jumlah barang / jasa yang diserahterimakan sebagai berikut :
+            </li>
+        </ol>
         <br />
 
         <table style="font-size: 12px" class="table-items table">
@@ -143,27 +140,28 @@
                     {{ $record->barang?->nama_barang ?? $record->nama_bantuan }}
                 </td>
                 <td class="text-center">
-                    {{ $record->barang->satuan }}
+                    {{ $record->barang?->satuan ?? 'Unit' }}
                 </td>
                 <td class="text-center">
-                    {{ $record->barang->kuantitas }}
+                    {{ $record->barang?->kuantitas ?? 1 }}
                 </td>
                 <td class="text-right">
-                    {{ Number::format($record->barang->harga_satuan, 0, locale: 'id') }}
+                    {{ Number::format($record->barang?->harga_satuan ?? 0, 0, locale: 'id') }}
                 </td>
                 <td class="text-right">
-                    {{ Number::format($record->barang->total_harga, 0, locale: 'id') }}
+                    {{ Number::format($record->barang?->total_harga ?? 0, 0, locale: 'id') }}
                 </td>
             </tr>
             <tr>
                 <td colspan="5" class="pl-0 text-right"><strong>Total Harga (Rp)</strong></td>
                 <td class="text-right">
-                    <strong>{{ Number::format($record->barang->total_harga, 0, locale: 'id') }}</strong>
+                    <strong>{{ Number::format($record->barang?->total_harga ?? 0, 0, locale: 'id') }}</strong>
                 </td>
             </tr>
             <tr>
                 <td colspan="6" class="text-center">
-                    <b>Terbilang : {{ Str::ucfirst(Number::spell($record->barang->total_harga, 'id')) }} rupiah</b>
+                    <b>Terbilang : {{ Str::ucfirst(Number::spell($record->barang?->total_harga ?? 0, 'id')) }}
+                        rupiah</b>
                 </td>
             </tr>
             </tbody>
@@ -171,7 +169,7 @@
 
         <p style="font-size: 12px">
             Demikian Berita Acara Penyerahan Hasil Pekerjaan ini dibuat dalam rangkap secukupnya untuk dipergunakan
-            sebagiamana mestinya.
+            sebagaimana mestinya.
         </p>
         <br />
         <br />

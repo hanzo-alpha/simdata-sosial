@@ -204,13 +204,8 @@ class BeritaAcaraResource extends Resource
                             ->noSearchResultsMessage('Kelurahan tidak ditemukan')
                             ->searchPrompt('Cari Kelurahan')
                             ->options(function (callable $get) {
-                                return Kelurahan::query()->where(
-                                    'kecamatan_code',
-                                    $get('kecamatan'),
-                                )?->pluck(
-                                    'name',
-                                    'code',
-                                );
+                                return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))
+                                    ?->pluck('name', 'code', );
                             })
                             ->searchable()
                             ->live(onBlur: true),
@@ -223,9 +218,7 @@ class BeritaAcaraResource extends Resource
                             ->native(false)
                             ->preload()
                             ->getOptionLabelFromRecordUsing(
-                                fn(
-                                    Model $record,
-                                ) => "<strong>{$record->nama_barang}</strong> - {$record->kel?->name}",
+                                fn(Model $record) => "<strong>{$record->nama_barang}</strong> - {$record->kel?->name}",
                             )
                             ->allowHtml()
                             ->searchable()

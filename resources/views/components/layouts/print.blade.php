@@ -92,9 +92,15 @@
             }
 
             .table {
+                /*table-layout: fixed;*/
                 width: 100%;
                 margin-bottom: 0.6rem;
                 color: #212529;
+            }
+
+            ol li {
+                padding: 5px;
+                margin-left: -24px;
             }
 
             .table th,
@@ -109,7 +115,7 @@
                 border-bottom: 2px solid #dee2e6;
                 border-left: 2px solid #dee2e6;
                 border-right: 2px solid #dee2e6;
-                padding: 0.7rem;
+                padding: 0.6rem;
             }
 
             .table thead th {
@@ -166,13 +172,8 @@
                 line-height: 1.1;
             }
 
-            .party-header {
-                font-size: 1.5rem;
-                font-weight: 400;
-            }
-
             .total-amount {
-                font-size: 12px;
+                font-size: 11px;
                 font-weight: 700;
             }
 
@@ -185,7 +186,7 @@
             }
 
             .img-foto {
-                max-width: 200px;
+                max-width: 350px;
             }
 
             .img-border {

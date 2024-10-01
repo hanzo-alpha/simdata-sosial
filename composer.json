@@ -16,7 +16,7 @@
         "awcodes/filament-table-repeater": "^3.0",
         "awcodes/shout": "^2.0",
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
-        "barryvdh/laravel-dompdf": "2.0.1",
+        "barryvdh/laravel-dompdf": "3.0.0",
         "bezhansalleh/filament-shield": "^3.0",
         "charrafimed/global-search-modal": "^3.3",
         "cheesegrits/filament-google-maps": "^3.0",

@@ -52,48 +52,32 @@
                 @if ($model->count() > 0)
                     @forelse ($model->foto_penyerahan as $foto)
                         <div class="img-border" >
-                            @if(config('app.env') === 'local')
-                                <img class="img-foto" src="./storage/{{ $foto }}" alt="foto" />
-                            @else
-                                <img class="img-foto" src="{{ asset('storage/' . $foto) }}" alt="foto" />
-                            @endif
+                            <img class="img-foto" src="./storage/{{ $foto }}" alt="foto" />
                         </div>
                     @empty
                         <span></span>
                     @endforelse
-                        <div class="m-0" style="font-size: 12px">
+                        <div class="m-0" style="font-size: 12px;padding-bottom: 30px;">
                             <p style="margin-top: 30px">
                                 Penyaluran pada titik koordinat indonesia : lat. {{ $model->lat }}
                             </p>
                             <p>
                                 long. {{ $model->lng . ', ' . $model->keterangan }}
                             </p>
-                            <p>{{ 'Watansoppeng, ' . $model->created_at->format('d/m/Y') }}</p>
-                            <p style="margin-top: 10px">
-                                {{ $model->created_at->format('d/m/Y H:i:s') . ' WITA' }}
-                            </p>
+                            <p>{{ 'Watansoppeng, ' . $model->created_at->format('d/m/Y H:i:s') . ' WITA' }}</p>
                         </div>
                 @endif
             </div>
-           <div class="page-break"></div>
+{{--           <div class="page-break"></div>--}}
 
             <div class="">
                 @isset($model->bantuan_rastra->foto_ktp_kk)
-                    <div class="">
-                        @if(config('app.env') === 'local')
-                            <img
-                                style="width: 600px"
-                                src="./storage/{{ $model->bantuan_rastra->foto_ktp_kk }}"
-                                alt="foto"
-                            />
-                        @else
-                            <img
-                                style="width: 600px"
-                                src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
-                                alt="foto"
-                            />
-                        @endif
-
+                    <div>
+                        <img
+                            style="width: 600px"
+                            src="./storage/{{ $model->bantuan_rastra->foto_ktp_kk }}"
+                            alt="foto"
+                        />
                     </div>
                 @endif
             </div>
