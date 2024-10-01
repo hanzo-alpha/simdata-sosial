@@ -45,7 +45,7 @@ class PdfController extends Controller
             'defaultPaperSize' => 'a4',
         ]);
 
-        return $pdf->stream('berita-acara-serah-terima-barang.pdf');
+        return $pdf->stream('bast-rastra.pdf');
     }
 
     public function cetakBeritaAcaraPpks(Request $request): Response
@@ -60,6 +60,6 @@ class PdfController extends Controller
             'defaultPaperSize' => 'a4',
         ]);
 
-        return $pdf->stream('berita-acara-serah-terima-barang.pdf');
+        return $pdf->stream('bast-ppks.pdf');
     }
 }
