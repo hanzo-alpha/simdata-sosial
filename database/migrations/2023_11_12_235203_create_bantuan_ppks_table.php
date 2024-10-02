@@ -68,6 +68,7 @@ return new class () extends Migration {
                 ->nullable()
                 ->default(0);
             $table->text('keterangan')->nullable();
+            $table->foreignId('penandatangan_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

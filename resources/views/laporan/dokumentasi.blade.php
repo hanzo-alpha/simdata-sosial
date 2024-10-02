@@ -64,7 +64,7 @@
                             <p>
                                 long. {{ $model->lng . ', ' . $model->keterangan }}
                             </p>
-                            <p>{{ 'Watansoppeng, ' . $model->created_at->format('d/m/Y H:i:s') . ' WITA' }}</p>
+                            <p>{{ 'Watansoppeng, ' . $model->tgl_penyerahan->format('d/m/Y H:i:s') . ' WITA' }}</p>
                         </div>
                 @endif
             </div>

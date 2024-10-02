@@ -11,9 +11,11 @@
             <p style="font-size: 12px">
                 <span><strong>Dokumentasi Penyaluran Bantuan Sosial</strong></span>
                 <br />
-                <span><strong>{{ $model->bantuan_ppks?->nama_bantuan }} Tahun {{ now()->year }}</strong></span>
-            </p>
-            <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>
+                <span><strong>{{ 'Penyandang Disabilitas' ?? $model->bantuan_ppks?->nama_bantuan }} Tahun {{ now()
+                ->year
+                }}</strong></span>
+            </p><br />
+{{--            <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>--}}
             <table class="table">
                 <tbody>
                     <tr class="pb-0" style="margin-bottom: 0.1rem">
@@ -52,49 +54,47 @@
             <div class="text-center" style="padding-top: 20px">
                 @if ($model->count() > 0)
                     @forelse ($model->foto_penyerahan as $foto)
-                        <div
-                            style="width: 400px; height: 500px; padding: 5px; margin-bottom: 5px; margin-top: 10px"
-                            class="img-border"
-                        >
-                            <img style="width: 300px" src="{{ asset('storage/' . $foto) }}" alt="foto" />
-                            <div class="m-0" style="font-size: 10px">
-                                <p style="margin-top: 30px">
-                                    Penyaluran pada titik koordinat indonesia : {{ $model->lat }}
-                                </p>
-                                <p>
-                                    {{
-                                        $model->lng .
-                                            ', ' .
-                                            $model->bantuan_ppks->kel->name .
-                                            ' KEC. ' .
-                                            $model->bantuan_ppks->kec->name .
-                                            ' KAB. SOPPENG, '
-                                    }}
-                                </p>
-                                <p>{{ 'SULAWESI SELATAN, ' . $model->created_at->format('d/m/Y') }}</p>
-                                <p style="margin-top: 10px">
-                                    {{
-                                        $model->created_at->format('d/m/Y H:i:s') . ' WITA'
-                                    }}
-                                </p>
-                            </div>
+                        <div class="img-border">
+                            <img class="img-foto" src="./storage/{{ $foto }}" alt="foto" />
                         </div>
                     @empty
-
+                    <div></div>
                     @endforelse
+                        <div class="m-0" style="font-size: 10px">
+                            <p style="margin-top: 30px">
+                                Penyaluran pada titik koordinat indonesia : {{ $model->lat }}
+                            </p>
+                            <p>
+                                {{
+                                    $model->lng .
+                                        ', ' .
+                                        $model->bantuan_ppks->kel->name .
+                                        ' Kec. ' .
+                                        $model->bantuan_ppks->kec->name .
+                                        ' KAB. SOPPENG '
+                                }}
+                            </p>
+                            <p>
+                                {{
+                                    $model->created_at->format('d/m/Y H:i:s') . ' WITA'
+                                }}
+                            </p>
+                        </div>
                 @endif
             </div>
             <br />
 
-            <div class="">
+            <div >
                 @isset($model->bantuan_ppks->bukti_foto)
-                    <div class="">
-                        <img
-                            style="width: 600px"
-                            src="{{ asset('storage/' . $model->bantuan_ppks->bukti_foto) }}"
-                            alt="foto"
-                        />
-                    </div>
+                    @foreach($model->bantuan_ppks->bukti_foto as $foto)
+                        <div>
+                            <img
+                                style="width: 600px"
+                                src="./storage/{{ $foto }}"
+                                alt="foto"
+                            />
+                        </div>
+                    @endforeach
                 @endif
             </div>
         </div>

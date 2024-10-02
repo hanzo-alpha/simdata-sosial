@@ -391,7 +391,28 @@ class BantuanPpksResource extends Resource
                                     ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
+                            Select::make('penandatangan_id')
+                                ->relationship(
+                                    name: 'penandatangan',
+                                    titleAttribute: 'nama_penandatangan',
+                                    modifyQueryUsing: fn(Builder $query) => $query->with(['kecamatan', 'kelurahan']),
+                                )
+                                ->native(false)
+                                ->noSearchResultsMessage('Penandatangan tidak ditemukan')
+                                ->searchPrompt('Cari Penandatangan')
+                                ->getOptionLabelFromRecordUsing(
+                                    fn(
+                                        Model $record,
+                                    ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan->value} - {$record->kelurahan?->name}",
+                                )
+                                ->allowHtml()
+                                ->live(onBlur: true)
+                                ->preload()
+                                ->searchable()
+                                ->required(),
+
                             Forms\Components\Textarea::make('keterangan')
+                                ->nullable()
                                 ->autosize(),
 
                             Forms\Components\FileUpload::make('bukti_foto')

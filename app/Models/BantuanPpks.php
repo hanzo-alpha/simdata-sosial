@@ -37,6 +37,7 @@ class BantuanPpks extends Model
     protected $with = [
         'tipe_ppks',
         'bansos_diterima',
+        'kab', 'kec', 'kel'
     ];
 
     protected $casts = [
@@ -97,6 +98,11 @@ class BantuanPpks extends Model
     public function beritaAcara(): BelongsTo
     {
         return $this->belongsTo(Media::class);
+    }
+
+    public function penandatangan(): BelongsTo
+    {
+        return $this->belongsTo(Penandatangan::class);
     }
 
     public function barang(): BelongsTo

@@ -197,6 +197,7 @@ class BantuanRastraResource extends Resource
 
                             $record->save();
                         })
+                        ->visible(fn() => auth()->user()?->hasRole(superadmin_admin_roles()))
                         ->after(function (): void {
                             Notification::make()
                                 ->success()
@@ -218,6 +219,8 @@ class BantuanRastraResource extends Resource
                                     ->required(),
                             ]),
                         ])
+                        ->visible(fn() => auth()->user()?->hasRole(superadmin_admin_roles()))
+                        ->authorize('verify_status_bantuan::rastra')
                         ->action(function ($record, array $data): void {
                             $record->status_verifikasi = $data['status_verifikasi'];
 
