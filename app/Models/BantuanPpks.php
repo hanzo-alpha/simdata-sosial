@@ -37,7 +37,7 @@ class BantuanPpks extends Model
     protected $with = [
         'tipe_ppks',
         'bansos_diterima',
-        'kab', 'kec', 'kel'
+        'kab', 'kec', 'kel',
     ];
 
     protected $casts = [
