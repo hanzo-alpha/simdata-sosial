@@ -10,4 +10,14 @@ use Filament\Resources\Pages\CreateRecord;
 final class CreatePenyaluranBantuanRastra extends CreateRecord
 {
     protected static string $resource = PenyaluranBantuanRastraResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Data Penyaluran Rastra berhasil disimpan';
+    }
 }
