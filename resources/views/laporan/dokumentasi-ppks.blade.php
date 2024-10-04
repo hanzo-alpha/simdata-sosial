@@ -76,7 +76,7 @@
                             </p>
                             <p>
                                 {{
-                                    $model->created_at->format('d/m/Y H:i:s') . ' WITA'
+                                    $model->tgl_penyerahan->format('d/m/Y H:i:s') . ' WITA'
                                 }}
                             </p>
                         </div>

@@ -69,6 +69,7 @@ return new class () extends Migration {
                 ->default(0);
             $table->text('keterangan')->nullable();
             $table->foreignId('penandatangan_id')->nullable();
+            $table->dateTime('tgl_ba')->default(now())->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

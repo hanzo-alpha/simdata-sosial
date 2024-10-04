@@ -19,6 +19,7 @@ use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -57,6 +58,7 @@ class BantuanPpks extends Model
         'nama_bantuan' => 'string',
         'keterangan' => 'string',
         'tgl_lahir' => 'date',
+        'tgl_ba' => 'datetime',
         'tahun_anggaran' => 'integer',
         'kriteria_ppks' => 'json',
         'kriteria_tags_ppks' => 'json',
@@ -103,6 +105,11 @@ class BantuanPpks extends Model
     public function penandatangan(): BelongsTo
     {
         return $this->belongsTo(Penandatangan::class);
+    }
+
+    public function penyaluran(): HasOne
+    {
+        return $this->hasOne(PenyaluranBantuanPpks::class);
     }
 
     public function barang(): BelongsTo
