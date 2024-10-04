@@ -808,6 +808,17 @@ class BantuanPpksResource extends Resource
                                 ]),
                         ])->columns(3),
 
+                    \Filament\Infolists\Components\Section::make('Penyaluran Bantuan')
+                        ->icon('heroicon-o-photo')
+                        ->schema([
+                            TextEntry::make('penyaluran.status_penyaluran')
+                                ->label('Status Penyaluran')
+                                ->badge(),
+                            TextEntry::make('penyaluran.tgl_penyerahan')
+                                ->label('Tgl. Penyerahan')
+                                ->date('d F Y'),
+                        ])->columns(2),
+
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->icon('heroicon-o-document-text')
                         ->schema([
