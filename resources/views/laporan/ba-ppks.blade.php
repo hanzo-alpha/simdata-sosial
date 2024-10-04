@@ -1,7 +1,7 @@
 @php
     use App\Models\BantuanRastra;use App\Supports\DateHelper;use App\Supports\Helpers;use Carbon\Carbon;
     $nomorBa = Helpers::generateNoSuratBeritaAcara(model: 'ppks');
-    $tglBa = Carbon::today()->locale(config('app.locale'));
+    $tglBa = $record->tgl_ba ?? now();
 @endphp
 
 <x-layouts.print>

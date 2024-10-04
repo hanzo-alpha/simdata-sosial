@@ -138,13 +138,6 @@ class PenyaluranBantuanRastraResource extends Resource
             ]);
     }
 
-    //    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
-    //    {
-    //        return parent::getEloquentQuery()->whereHas('bantuan_rastra', function ($builder) {
-    //            $builder->where('status_aktif', '=', StatusAktif::AKTIF);
-    //        });
-    //    }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -274,7 +267,7 @@ class PenyaluranBantuanRastraResource extends Resource
                         CuratorPicker::make('media_id')
                             ->label('Upload Berita Acara')
                             ->buttonLabel('Tambah File')
-                            ->relationship('beritaAcara', 'id')
+                            ->relationship('beritaAcara', 'pretty_name')
                             ->nullable()
                             ->preserveFilenames()
                             ->columnSpanFull(),
@@ -304,12 +297,14 @@ class PenyaluranBantuanRastraResource extends Resource
     {
         if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery()
+                ->with(['beritaAcara'])
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]);
         }
 
         return parent::getEloquentQuery()
+            ->with(['beritaAcara'])
             ->whereHas('bantuan_rastra', fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,

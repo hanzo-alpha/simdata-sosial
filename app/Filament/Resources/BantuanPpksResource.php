@@ -305,6 +305,33 @@ class BantuanPpksResource extends Resource
                 ])->columnSpan(['lg' => 2]),
 
                 Forms\Components\Group::make()->schema([
+                    Section::make('Berita Acara')
+                        ->schema([
+                            Forms\Components\DateTimePicker::make('tgl_ba')
+                                ->label('Tgl. Berita Acara')
+                                ->displayFormat('d/M/Y H:i:s')
+                                ->nullable()
+                                ->default(now()),
+                            Select::make('penandatangan_id')
+                                ->relationship(
+                                    name: 'penandatangan',
+                                    titleAttribute: 'nama_penandatangan',
+                                    modifyQueryUsing: fn(Builder $query) => $query->with(['kecamatan', 'kelurahan']),
+                                )
+                                ->native(false)
+                                ->noSearchResultsMessage('Penandatangan tidak ditemukan')
+                                ->searchPrompt('Cari Penandatangan')
+                                ->getOptionLabelFromRecordUsing(
+                                    fn(
+                                        Model $record,
+                                    ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan->value} - {$record->kelurahan?->name}",
+                                )
+                                ->allowHtml()
+                                ->live(onBlur: true)
+                                ->preload()
+                                ->searchable()
+                                ->required(),
+                        ]),
                     Section::make('Status PPKS/PMKS')
                         ->schema([
                             Select::make('bansos_diterima')
@@ -314,7 +341,7 @@ class BantuanPpksResource extends Resource
                                 ->searchable()
                                 ->native(false)
                                 ->required()
-                                ->default([14,13])
+                                ->default([14, 13])
                                 ->preload(),
 
                             Select::make('tipe_ppks_id')
@@ -390,26 +417,6 @@ class BantuanPpksResource extends Resource
                                 ->visible(fn() => auth()->user()
                                     ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
-
-                            Select::make('penandatangan_id')
-                                ->relationship(
-                                    name: 'penandatangan',
-                                    titleAttribute: 'nama_penandatangan',
-                                    modifyQueryUsing: fn(Builder $query) => $query->with(['kecamatan', 'kelurahan']),
-                                )
-                                ->native(false)
-                                ->noSearchResultsMessage('Penandatangan tidak ditemukan')
-                                ->searchPrompt('Cari Penandatangan')
-                                ->getOptionLabelFromRecordUsing(
-                                    fn(
-                                        Model $record,
-                                    ) => "<strong>{$record->nama_penandatangan}</strong><br>{$record->jabatan->value} - {$record->kelurahan?->name}",
-                                )
-                                ->allowHtml()
-                                ->live(onBlur: true)
-                                ->preload()
-                                ->searchable()
-                                ->required(),
 
                             Forms\Components\Textarea::make('keterangan')
                                 ->nullable()
@@ -800,6 +807,17 @@ class BantuanPpksResource extends Resource
                                     'loading' => 'lazy',
                                 ]),
                         ])->columns(3),
+
+                    \Filament\Infolists\Components\Section::make('Penyaluran Bantuan')
+                        ->icon('heroicon-o-photo')
+                        ->schema([
+                            TextEntry::make('penyaluran.status_penyaluran')
+                                ->label('Status Penyaluran')
+                                ->badge(),
+                            TextEntry::make('penyaluran.tgl_penyerahan')
+                                ->label('Tgl. Penyerahan')
+                                ->date('d F Y'),
+                        ])->columns(2),
 
                     \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
                         ->icon('heroicon-o-document-text')

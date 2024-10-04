@@ -58,6 +58,6 @@ class ListPenyaluranBantuanRastra extends ListRecords
 
     protected function paginateTableQuery(Builder $query): Paginator
     {
-        return $query->with(['bantuan_rastra'])->fastPaginate($this->getTableRecordsPerPage());
+        return $query->fastPaginate($this->getTableRecordsPerPage());
     }
 }
