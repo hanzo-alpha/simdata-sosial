@@ -17,16 +17,16 @@ class Helpers
     public static function generateNoSuratBeritaAcara($model = 'rastra', $sep = '/'): string
     {
         $instansi = setting('app.alias_dinas', 'DINSOS');
-        $judulNo = setting('app.judul_no', 'BAST');
-        $text = ('rastra' === $model) ? $judulNo . '-RASTRA' : $judulNo . '.B';
+        $judulNo = setting('rastra.judul_no', 'BAST');
+        $text = ('rastra' === $model) ? setting('rastra.judul_no', 'BAST-RASTRA') : setting('ppks.judul_no', 'BAST.B');
         $pad = setting('app.pad') ?? '0';
         $sep = setting('app.separator') ?? $sep;
         $bulan = convertToRoman(now()->month);
         $tahun = now()->year;
         $modelClass = ('rastra' === $model) ? BeritaAcara::class : PenyaluranBantuanPpks::class;
         $max = $modelClass::max('id') + 1;
-        //        $kodePpks = setting('app.no_ppks', '400.9') . $sep . setting('app.no_ba_ppks') . $sep . $text;
-        $kodePpks = Str::padLeft($max, 3, $pad) . $sep . $text;
+        $kodePpks = setting('ppks.no_ba') ?? Str::padLeft($max, 3, $pad);
+        $kodePpks = $kodePpks . $sep . $text;
         $kodeAset = Str::padLeft($max, 4, $pad) . $sep . $text;
 
         $kode = ('rastra' === $model) ? $kodeAset : $kodePpks;

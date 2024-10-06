@@ -16,7 +16,7 @@
             <hr />
             <p style="font-size: 12px">
                 <span style="text-decoration-line: underline">
-                    <strong>{{ $record->judul_ba ?? Str::upper('Berita Acara Serah Terima Barang') }}</strong>
+                    <strong>{{ $record->judul_ba ?? Str::upper(setting('ba.kop_ba', 'Berita Acara Serah Terima Barang')) }}</strong>
                 </span>
                 <br />
                 <span>Nomor : {{ $nomorBa }}</span>
