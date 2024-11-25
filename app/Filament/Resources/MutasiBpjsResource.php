@@ -23,7 +23,7 @@ final class MutasiBpjsResource extends Resource
 
     protected static ?string $model = MutasiBpjs::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
     protected static ?string $slug = 'mutasi-bpjs';
     protected static ?string $label = 'Mutasi BPJS';
     protected static ?string $pluralLabel = 'Mutasi BPJS';
@@ -89,7 +89,7 @@ final class MutasiBpjsResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah Mutasi BPJS')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_mutasi')))
                     ->button(),
             ])
             ->columns([

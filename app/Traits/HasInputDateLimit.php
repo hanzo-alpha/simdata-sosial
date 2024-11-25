@@ -19,6 +19,7 @@ trait HasInputDateLimit
             'ppks' => setting('app.batas_tgl_input_ppks'),
             'pkh' => setting('app.batas_tgl_input_pkh'),
             'bpnt' => setting('app.batas_tgl_input_bpnt'),
+            'mutasi' => setting('app.batas_tgl_input_mutasi'),
             default => setting('app.batas_tgl_input'),
         };
 

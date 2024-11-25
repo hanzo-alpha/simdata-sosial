@@ -8,7 +8,6 @@ use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Closure;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -75,25 +74,7 @@ class Settings extends BaseSettings
 
                                     ])->columns(2),
                             ]),
-
                             Group::make([
-                                Section::make('Pengkodean Otomatis')
-                                    ->icon('heroicon-o-code-bracket')
-                                    ->schema([
-                                        TextInput::make('app.judul_no')
-                                            ->label('Judul No. Berita Acara'),
-                                        TextInput::make('app.separator')
-                                            ->label('Pemisah Nomor Surat'),
-                                        TextInput::make('app.pad')
-                                            ->label('Simbol Nomor Surat'),
-                                        TextInput::make('app.no_ppks')
-                                            ->label('Nomor Dinas'),
-                                        TextInput::make('app.no_ba_ppks')
-                                            ->label('Nomor Berita Acara PPKS'),
-                                        TextInput::make('app.alias_dinas')
-                                            ->label('Singkatan Dinas'),
-                                    ])->columns(3),
-
                                 Section::make('Pendukung Aplikasi')
                                     ->icon('heroicon-o-lifebuoy')
                                     ->schema([
@@ -104,54 +85,38 @@ class Settings extends BaseSettings
                                             ->label('Angka Kemiskinan (%)'),
                                         ColorPicker::make('app.warna_kemiskinan')
                                             ->label('Warna Angka Kemiskinan'),
+                                    ])->columns(2),
+                                Section::make('Batas Tanggal Penginputan Data Bantuan')
+                                    ->icon('heroicon-o-calendar-days')
+                                    ->schema([
                                         DatePicker::make('app.batas_tgl_input')
                                             ->label('Batas Tanggal Penginputan Data')
                                             ->date()
                                             ->displayFormat(setting('app.format_tgl')),
-                                        Grid::make()->schema([
-                                            DatePicker::make('app.batas_tgl_input_bpjs')
-                                                ->label('Batas Tanggal Input Data BPJS')
-                                                ->date()
-                                                ->displayFormat(setting('app.format_tgl')),
-                                            DatePicker::make('app.batas_tgl_input_rastra')
-                                                ->label('Batas Tanggal Input Data RASTRA')
-                                                ->date()
-                                                ->displayFormat(setting('app.format_tgl')),
-                                            DatePicker::make('app.batas_tgl_input_ppks')
-                                                ->label('Batas Tanggal Input Data PPKS')
-                                                ->date()
-                                                ->displayFormat(setting('app.format_tgl')),
-                                        ])->columns(3),
+                                        DatePicker::make('app.batas_tgl_input_bpjs')
+                                            ->label('Batas Tanggal Input Data BPJS')
+                                            ->date()
+                                            ->displayFormat(setting('app.format_tgl')),
+                                        DatePicker::make('app.batas_tgl_input_mutasi')
+                                            ->label('Batas Tanggal Penginputan Data Mutasi BPJS')
+                                            ->date()
+                                            ->displayFormat(setting('app.format_tgl')),
+                                        DatePicker::make('app.batas_tgl_input_rastra')
+                                            ->label('Batas Tanggal Input Data RASTRA')
+                                            ->date()
+                                            ->displayFormat(setting('app.format_tgl')),
+                                        DatePicker::make('app.batas_tgl_input_ppks')
+                                            ->label('Batas Tanggal Input Data PPKS')
+                                            ->date()
+                                            ->displayFormat(setting('app.format_tgl')),
 
                                     ])->columns(2),
                             ]),
                         ])->columns(2),
-                    Tabs\Tab::make('Persuratan & Laporan')
+                    Tabs\Tab::make('Pejabat Pelaksana Kegiatan')
                         ->icon('heroicon-o-envelope')
                         ->schema([
                             Group::make([
-                                Section::make('Berita Acara & Lampiran BAST')
-                                    ->icon('heroicon-o-envelope')
-                                    ->schema([
-                                        TextInput::make('ba.kop_title')
-                                            ->label('Kop Judul')
-                                            ->default('PEMERINTAH KABUPATEN SOPPENG'),
-                                        TextInput::make('ba.kop_instansi')
-                                            ->label('Kop Instansi')
-                                            ->default('DINAS SOSIAL'),
-                                        TextInput::make('ba.kop_website')
-                                            ->label('Kop Website'),
-                                        TextInput::make('ba.kop_jalan')
-                                            ->label('Kop Jalan')
-                                            ->default('Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng'),
-                                        TextInput::make('ba.kop_ba')
-                                            ->label('Kop Judul Berita Acara')
-                                            ->default('BERITA ACARA SERAH TERIMA BARANG'),
-                                        ToggleButton::make('ba.kop_layout')
-                                            ->label('Layout Kop/Judul Berita Acara')
-                                            ->onLabel('Vertikal')
-                                            ->offLabel('Horisontal'),
-                                    ])->columns(2),
                                 Section::make('Kepala Dinas')
                                     ->icon('heroicon-o-user')
                                     ->schema([
@@ -195,6 +160,63 @@ class Settings extends BaseSettings
                                         TextInput::make('persuratan.instansi_ppk')
                                             ->label('Instansi Pejabat')
                                             ->default('DINAS SOSIAL KAB. SOPPENG'),
+                                    ])->columns(2),
+                            ]),
+                        ])->columns(2),
+
+                    Tabs\Tab::make('Berita Acara & Penyaluran')
+                        ->schema([
+                            Group::make([
+                                Section::make('Kop Berita Acara & Layout')
+                                    ->icon('heroicon-o-envelope')
+                                    ->schema([
+                                        TextInput::make('ba.kop_title')
+                                            ->label('Kop Judul')
+                                            ->default('PEMERINTAH KABUPATEN SOPPENG'),
+                                        TextInput::make('ba.kop_instansi')
+                                            ->label('Kop Instansi')
+                                            ->default('DINAS SOSIAL'),
+                                        TextInput::make('ba.kop_website')
+                                            ->label('Kop Website'),
+                                        TextInput::make('ba.kop_jalan')
+                                            ->label('Kop Jalan')
+                                            ->default('Jalan Salotungo Kel. Lalabata Rilau Kec. Lalabata Watansoppeng'),
+                                        TextInput::make('ba.kop_ba')
+                                            ->label('Kop Judul Berita Acara')
+                                            ->default('BERITA ACARA SERAH TERIMA BARANG'),
+                                        ToggleButton::make('ba.kop_layout')
+                                            ->label('Layout Kop/Judul Berita Acara')
+                                            ->onLabel('Vertikal')
+                                            ->offLabel('Horisontal'),
+                                    ])->columns(2),
+                                Section::make('Umum')
+                                    ->icon('heroicon-o-envelope')
+                                    ->schema([
+                                        TextInput::make('app.separator')
+                                            ->label('Pemisah Nomor Surat'),
+                                        TextInput::make('app.pad')
+                                            ->label('Simbol Nomor Surat'),
+                                        TextInput::make('app.alias_dinas')
+                                            ->label('Instansi Nomor Surat'),
+                                    ])->columns(3),
+                            ]),
+                            Group::make([
+                                Section::make('Berita Acara Rastra')
+                                    ->icon('heroicon-o-code-bracket')
+                                    ->schema([
+                                        TextInput::make('rastra.judul_no')
+                                            ->label('Judul No. Berita Acara'),
+
+                                    ])->columns(2),
+                                Section::make('Berita Acara PPKS')
+                                    ->icon('heroicon-o-code-bracket')
+                                    ->schema([
+                                        TextInput::make('ppks.judul_no')
+                                            ->label('Judul No. Berita Acara'),
+                                        TextInput::make('ppks.no_ppks')
+                                            ->label('Nomor Dinas'),
+                                        TextInput::make('ppks.no_ba')
+                                            ->label('Nomor Berita Acara PPKS'),
                                     ])->columns(2),
                             ]),
                         ])->columns(2),

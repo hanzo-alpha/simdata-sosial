@@ -40,7 +40,7 @@ class BantuanRastraResource extends Resource
 {
     protected static ?string $model = BantuanRastra::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift';
+    protected static ?string $navigationIcon = 'heroicon-o-share';
     protected static ?string $slug = 'program-rastra';
     protected static ?string $label = 'Program Rastra';
     protected static ?string $pluralLabel = 'Program Rastra';
@@ -513,10 +513,11 @@ class BantuanRastraResource extends Resource
                         ])
                         ->columns(3),
                     \Filament\Infolists\Components\Section::make('Informasi Penyaluran Bantuan')
-                        ->icon('heroicon-o-lifebuoy')
+                        ->icon('heroicon-o-share')
                         ->schema([
                             TextEntry::make('penyaluran.status_penyaluran')
                                 ->label('Status Penyaluran')
+                                ->badge()
                                 ->placeholder('Belum ada penyaluran'),
                             TextEntry::make('penyaluran.tgl_penyerahan')
                                 ->dateTime('l, d M Y H:i:s')
@@ -532,6 +533,8 @@ class BantuanRastraResource extends Resource
                                 ->placeholder('Belum ada Foto KTP / KK')
                                 ->columnSpanFull()
                                 ->alignCenter()
+                                ->width(280)
+                                ->height(400)
                                 ->extraImgAttributes([
                                     'alt' => 'foto ktp kk',
                                     'loading' => 'lazy',
@@ -541,6 +544,8 @@ class BantuanRastraResource extends Resource
                                 ->columnSpanFull()
                                 ->placeholder('Belum ada Foto Penyaluran')
                                 ->alignCenter()
+                                ->width(280)
+                                ->height(400)
                                 ->extraImgAttributes([
                                     'alt' => 'foto penyaluran',
                                     'loading' => 'lazy',
