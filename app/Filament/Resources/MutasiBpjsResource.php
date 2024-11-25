@@ -89,7 +89,7 @@ final class MutasiBpjsResource extends Resource
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah Mutasi BPJS')
                     ->icon('heroicon-m-plus')
-                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpjs')))
+                    ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_mutasi')))
                     ->button(),
             ])
             ->columns([

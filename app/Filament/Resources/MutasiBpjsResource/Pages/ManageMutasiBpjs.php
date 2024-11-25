@@ -60,7 +60,7 @@ class ManageMutasiBpjs extends ManageRecords
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
                 ->model(MutasiBpjs::class)
-                ->disabled($this->enableInputLimitDate('bpjs'))
+                ->disabled($this->enableInputLimitDate('mutasi'))
                 ->mutateFormDataUsing(function (array $data) {
                     $data['model_name'] = PesertaBpjs::class;
                     $data['tipe_mutasi'] ??= TipeMutasiEnum::PESERTA_BPJS;
@@ -71,7 +71,7 @@ class ManageMutasiBpjs extends ManageRecords
             ExportAction::make()
                 ->label('Ekspor XLS')
                 ->color('info')
-                ->disabled($this->enableInputLimitDate('bpjs'))
+                ->disabled($this->enableInputLimitDate('mutasi'))
                 ->exports([
                     ExportMutasiBpjs::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),

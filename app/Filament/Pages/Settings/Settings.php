@@ -97,6 +97,10 @@ class Settings extends BaseSettings
                                             ->label('Batas Tanggal Input Data BPJS')
                                             ->date()
                                             ->displayFormat(setting('app.format_tgl')),
+                                        DatePicker::make('app.batas_tgl_input_mutasi')
+                                            ->label('Batas Tanggal Penginputan Data Mutasi BPJS')
+                                            ->date()
+                                            ->displayFormat(setting('app.format_tgl')),
                                         DatePicker::make('app.batas_tgl_input_rastra')
                                             ->label('Batas Tanggal Input Data RASTRA')
                                             ->date()
