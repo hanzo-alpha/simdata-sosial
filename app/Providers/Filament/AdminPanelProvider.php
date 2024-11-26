@@ -73,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationIcon('heroicon-o-photo')
                     ->navigationGroup('Dashboard Bantuan')
                     ->navigationSort(3)
-                    ->defaultListView('list'),
+                    ->defaultListView('grid'),
                 FilamentJobsMonitorPlugin::make(),
                 FilamentApexChartsPlugin::make(),
                 FilamentSettingsPlugin::make()
