@@ -61,7 +61,6 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(
-                        hasAvatars: false,
                         slug: 'profil',
                     )
                     ->enableTwoFactorAuthentication(),
