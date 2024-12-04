@@ -22,18 +22,18 @@ class ManagePenggantiRastra extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->icon('heroicon-o-plus')
-                ->using(function (array $data, string $model) {
-                    $bantuanRastraId = $data['bantuan_rastra_id'];
-                    $bantuanRastra = BantuanRastra::find($bantuanRastraId);
-                    $bantuanRastra->status_rastra = StatusRastra::PENGGANTI;
-                    $bantuanRastra->save();
-
-                    return $model::create($data);
-                })
-                ->disabled($this->enableInputLimitDate('rastra'))
-                ->closeModalByClickingAway(false),
+//            Actions\CreateAction::make()
+//                ->icon('heroicon-o-plus')
+//                ->using(function (array $data, string $model) {
+//                    $bantuanRastraId = $data['bantuan_rastra_id'];
+//                    $bantuanRastra = BantuanRastra::find($bantuanRastraId);
+//                    $bantuanRastra->status_rastra = StatusRastra::PENGGANTI;
+//                    $bantuanRastra->save();
+//
+//                    return $model::create($data);
+//                })
+//                ->disabled($this->enableInputLimitDate('rastra'))
+//                ->closeModalByClickingAway(false),
         ];
     }
 
