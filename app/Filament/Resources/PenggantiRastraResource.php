@@ -117,12 +117,12 @@ final class PenggantiRastraResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada pengganti RASTRA')
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Tambah')
-                    ->icon('heroicon-m-plus')
-                    ->button(),
-            ])
+//            ->emptyStateActions([
+//                Tables\Actions\CreateAction::make()
+//                    ->label('Tambah')
+//                    ->icon('heroicon-m-plus')
+//                    ->button(),
+//            ])
             ->columns([
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
