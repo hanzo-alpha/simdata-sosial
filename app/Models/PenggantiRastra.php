@@ -8,6 +8,7 @@ use App\Enums\AlasanEnum;
 use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PenggantiRastra extends Model
 {
