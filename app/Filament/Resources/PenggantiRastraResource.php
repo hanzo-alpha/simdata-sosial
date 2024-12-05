@@ -63,7 +63,7 @@ final class PenggantiRastraResource extends Resource
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')
                     ->noSearchResultsMessage('Data Tidak ditemukan.')
-                    ->visibleOn(['create','edit'])
+                    ->visibleOn(['create'])
                     ->required(),
                 TextInput::make('nokk_pengganti')
                     ->label('No. KK Pengganti')
