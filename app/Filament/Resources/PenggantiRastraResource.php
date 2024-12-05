@@ -135,16 +135,16 @@ final class PenggantiRastraResource extends Resource
                     ->sortable()
                     ->description(fn($record) => $record->alamat_pengganti)
                     ->label('NAMA & ALAMAT BARU'),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
+                Tables\Columns\TextColumn::make('nokk_lama')
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
-                    ->description(fn($record) => Str::mask($record->bantuan_rastra?->nik, '*', 2, 12))
+                    ->description(fn($record) => Str::mask($record->nik_lama, '*', 2, 12))
                     ->label('NIK & NO.KK Lama'),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
+                Tables\Columns\TextColumn::make('nama_lama')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->bantuan_rastra?->alamat)
+                    ->description(fn($record) => $record->alamat_lama)
                     ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')
