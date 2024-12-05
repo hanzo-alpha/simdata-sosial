@@ -39,22 +39,6 @@ final class PenggantiRastraResource extends Resource
 
     //    protected static bool $shouldRegisterNavigation = false;
 
-//    public static function canCreate(): bool
-//    {
-//        return false;
-//    }
-//
-//    public static function canEdit(Model $record): bool
-//    {
-//        return false;
-//    }
-//
-//    public static function canDelete(Model $record): bool
-//    {
-//        return false;
-//    }
-
-
     public static function form(Form $form): Form
     {
         return $form
@@ -180,11 +164,7 @@ final class PenggantiRastraResource extends Resource
             ])
             ->deferFilters()
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-//                    Tables\Actions\EditAction::make(),
-//                    Tables\Actions\DeleteAction::make(),
-                ]),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
