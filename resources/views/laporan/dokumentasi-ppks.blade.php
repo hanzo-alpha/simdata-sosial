@@ -11,11 +11,13 @@
             <p style="font-size: 12px">
                 <span><strong>Dokumentasi Penyaluran Bantuan Sosial</strong></span>
                 <br />
-                <span><strong>{{ 'Penyandang Disabilitas' ?? $model->bantuan_ppks?->nama_bantuan }} Tahun {{ now()
-                ->year
-                }}</strong></span>
+                <span>
+                    <strong>
+                        {{ \Illuminate\Support\Str::of($model->bantuan_ppks?->tipe_ppks?->nama_tipe)->lower()->ucfirst() ??
+                        'Penyandang Disabilitas' }} Tahun {{ now()->year}}
+                    </strong>
+                </span>
             </p><br />
-{{--            <p style="text-align: right; font-size: 1.2rem"><span>{{ $model->id }}</span></p>--}}
             <table class="table">
                 <tbody>
                     <tr class="pb-0" style="margin-bottom: 0.1rem">
@@ -55,7 +57,7 @@
                 @if ($model->count() > 0)
                     @forelse ($model->foto_penyerahan as $foto)
                         <div class="img-border">
-                            <img class="img-foto" src="./storage/{{ $foto }}" alt="foto" />
+                            <img class="img-foto-ppks" src="./storage/{{ $foto }}" alt="foto" />
                         </div>
                     @empty
                     <div></div>

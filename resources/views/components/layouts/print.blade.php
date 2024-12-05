@@ -189,6 +189,10 @@
                 max-width: 350px;
             }
 
+            .img-foto-ppks {
+                max-width: 500px;
+            }
+
             .img-border {
                 align-content: center;
                 align-items: center;
