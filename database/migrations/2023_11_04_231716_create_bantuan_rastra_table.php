@@ -38,6 +38,7 @@ return new class () extends Migration {
             $table->year('tahun')->nullable()->default(now()->year);
             $table->tinyInteger('status_rastra')->nullable();
             $table->json('pengganti_rastra')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

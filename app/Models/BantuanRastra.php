@@ -48,6 +48,7 @@ class BantuanRastra extends Model
         'status_rastra' => StatusRastra::class,
         'status_aktif' => StatusAktif::class,
         'status_verifikasi' => StatusVerifikasiEnum::class,
+        'keterangan' => 'string',
     ];
 
     public static function getLatLngAttributes(): array
@@ -194,6 +195,7 @@ class BantuanRastra extends Model
                 ->required()
                 ->options(self::query()
                     ->where('status_rastra', StatusRastra::BARU)
+                    ->where('status_aktif', StatusAktif::AKTIF)
                     ->pluck('nama_lengkap', 'id'))
                 ->searchable(['nama_lengkap', 'nik', 'nokk'])
                 ->lazy()
@@ -210,6 +212,18 @@ class BantuanRastra extends Model
                 ->required()
                 ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
                 ->default(AlasanEnum::PINDAH),
+
+            CuratorPicker::make('penggantiRastra.media_id')
+                ->label('Upload Berita Acara Pengganti')
+                ->relationship('beritaAcara', 'id')
+                ->buttonLabel('Tambah File')
+                ->required()
+                ->preserveFilenames()
+                ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
+                ->maxSize(2048),
+
+            TextInput::make('keterangan')
+                ->label('Keterangan')->nullable(),
 
             ToggleButtons::make('status_aktif')
                 ->label('Status Aktif')

@@ -19,6 +19,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 final class PenggantiRastraResource extends Resource
@@ -32,7 +33,7 @@ final class PenggantiRastraResource extends Resource
     protected static ?string $navigationLabel = 'Pengganti RASTRA';
     protected static ?string $navigationParentItem = 'Program Rastra';
     protected static ?string $navigationGroup = 'Program Sosial';
-    protected static ?string $recordTitleAttribute = 'nama_lengkap';
+    protected static ?string $recordTitleAttribute = 'nama_pengganti';
 
     protected static ?int $navigationSort = 6;
 
@@ -58,11 +59,12 @@ final class PenggantiRastraResource extends Resource
                         ->limit(50)->pluck('nik', 'id')->toArray())
                     ->getOptionLabelFromRecordUsing(fn(
                         $record,
-                    ) => '<strong>' . $record->nik . '</strong><br>' . $record->nama_lengkap)->allowHtml()
+                    ) => '<strong>' . $record?->nik . '</strong><br>' . $record?->nama_lengkap)->allowHtml()
                     ->lazy()
                     ->optionsLimit(15)
                     ->searchingMessage('Sedang mencari...')
                     ->noSearchResultsMessage('Data Tidak ditemukan.')
+                    ->visibleOn(['create'])
                     ->required(),
                 TextInput::make('nokk_pengganti')
                     ->label('No. KK Pengganti')
@@ -116,12 +118,12 @@ final class PenggantiRastraResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada pengganti RASTRA')
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Tambah')
-                    ->icon('heroicon-m-plus')
-                    ->button(),
-            ])
+//            ->emptyStateActions([
+//                Tables\Actions\CreateAction::make()
+//                    ->label('Tambah')
+//                    ->icon('heroicon-m-plus')
+//                    ->button(),
+//            ])
             ->columns([
                 Tables\Columns\TextColumn::make('nik_pengganti')
                     ->searchable()
@@ -134,16 +136,16 @@ final class PenggantiRastraResource extends Resource
                     ->sortable()
                     ->description(fn($record) => $record->alamat_pengganti)
                     ->label('NAMA & ALAMAT BARU'),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nokk')
+                Tables\Columns\TextColumn::make('nokk_lama')
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(fn($state) => Str::mask($state, '*', 2, 12))
-                    ->description(fn($record) => Str::mask($record->bantuan_rastra?->nik, '*', 2, 12))
+                    ->description(fn($record) => Str::mask($record->nik_lama, '*', 2, 12))
                     ->label('NIK & NO.KK Lama'),
-                Tables\Columns\TextColumn::make('bantuan_rastra.nama_lengkap')
+                Tables\Columns\TextColumn::make('nama_lama')
                     ->searchable()
                     ->sortable()
-                    ->description(fn($record) => $record->bantuan_rastra?->alamat)
+                    ->description(fn($record) => $record->alamat_lama)
                     ->label('NAMA & ALAMAT LAMA'),
                 Tables\Columns\TextColumn::make('alasan_dikeluarkan')
                     ->label('Alasan Dikeluarkan')
@@ -162,11 +164,7 @@ final class PenggantiRastraResource extends Resource
             ])
             ->deferFilters()
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ]),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
