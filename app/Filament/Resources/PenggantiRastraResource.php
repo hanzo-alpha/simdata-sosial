@@ -19,6 +19,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 final class PenggantiRastraResource extends Resource
@@ -37,6 +38,22 @@ final class PenggantiRastraResource extends Resource
     protected static ?int $navigationSort = 6;
 
     //    protected static bool $shouldRegisterNavigation = false;
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
 
     public static function form(Form $form): Form
     {
