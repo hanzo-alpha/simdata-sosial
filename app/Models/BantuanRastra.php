@@ -272,7 +272,7 @@ class BantuanRastra extends Model
                 ->relationship('beritaAcara', 'id')
                 ->nullable()
                 ->preserveFilenames()
-                ->columnSpanFull()
+                ->columnSpanFull(),
         ];
     }
 
