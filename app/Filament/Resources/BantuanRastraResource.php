@@ -20,11 +20,13 @@ use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\MaxWidth;
@@ -241,12 +243,22 @@ class BantuanRastraResource extends Resource
                             Forms\Components\Grid::make()->schema([
                                 Forms\Components\TextInput::make('nokk')
                                     ->label('No. KK Pengganti')
-                                    ->maxValue(16)
-                                    ->required(),
+                                    ->required()
+                                    ->live(debounce: 500)
+                                    ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                        $livewire->validateOnly($component->getStatePath());
+                                    })
+                                    ->minLength(16)
+                                    ->maxLength(16),
                                 Forms\Components\TextInput::make('nik')
                                     ->label('NIK Pengganti')
                                     ->required()
-                                    ->maxValue(16)
+                                    ->live(debounce: 500)
+                                    ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                        $livewire->validateOnly($component->getStatePath());
+                                    })
+                                    ->minLength(16)
+                                    ->maxLength(16)
                                     ->unique(ignoreRecord: true),
                                 Forms\Components\TextInput::make('nama_lengkap')
                                     ->label('Nama Pengganti')
@@ -338,12 +350,13 @@ class BantuanRastraResource extends Resource
                             $record->status_rastra = StatusRastra::PENGGANTI;
                             $record->status_aktif = StatusAktif::NONAKTIF;
                             $record->save();
+                            $record->delete();
 
                         })
                         ->after(function (): void {
                             Notification::make()
                                 ->success()
-                                ->title('Status Berhasil Diubah')
+                                ->title('KPM Berhasil Diganti')
                                 ->send();
                         })
                         ->close(),
