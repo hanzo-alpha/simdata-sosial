@@ -8,7 +8,7 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/hanzo-alpha/simdata-sosial/run-tests.yml?event=push&style=flat-square)
 ![GitHub Release](https://img.shields.io/github/v/release/hanzo-alpha/simdata-sosial?display_name=release&style=flat-square)
 ![GitHub License](https://img.shields.io/github/license/hanzo-alpha/simdata-sosial?style=flat-square)
-[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F667862f4-2611-4a95-aba0-9bdb3f5e2523&style=plastic)](https://forge.laravel.com/servers/868035/sites/2558499)
+[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F667862f4-2611-4a95-aba0-9bdb3f5e2523%3Fdate%3D1%26label%3D1%26commit%3D1&style=flat-square)](https://forge.laravel.com/servers/868035/sites/2558499)
 
 </div>
 
