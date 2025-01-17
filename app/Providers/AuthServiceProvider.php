@@ -46,7 +46,6 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Role::class => RolePolicy::class,
         Activity::class => ActivityPolicy::class,
-        Alamat::class => AlamatPolicy::class,
         BantuanBpjs::class => BantuanBpjsPolicy::class,
         BantuanBpnt::class => BantuanBpntPolicy::class,
         BantuanPkh::class => BantuanPkhPolicy::class,
