@@ -106,16 +106,14 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->searchable()
                             ->preload(),
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query->with('bantuan_rastra')->when(
-                            $data['kelurahan'],
-                            fn(Builder $query, $data) => $query->whereRelation(
-                                'bantuan_rastra',
-                                'kelurahan',
-                                $data,
-                            ),
-                        );
-                    }),
+                    ->query(fn(Builder $query, array $data): Builder => $query->with('bantuan_rastra')->when(
+                        $data['kelurahan'],
+                        fn(Builder $query, $data) => $query->whereRelation(
+                            'bantuan_rastra',
+                            'kelurahan',
+                            $data,
+                        ),
+                    )),
                 Tables\Filters\TrashedFilter::make(),
 
             ])
