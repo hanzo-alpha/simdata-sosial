@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Laravel\Octane\Contracts\OperationTerminated;
 use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
@@ -70,11 +72,11 @@ return [
         RequestReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
             ...Octane::prepareApplicationForNextRequest(),
-            //
+
         ],
 
         RequestHandled::class => [
-            //
+
         ],
 
         RequestTerminated::class => [
@@ -83,20 +85,20 @@ return [
 
         TaskReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
-            //
+
         ],
 
         TaskTerminated::class => [
-            //
+
         ],
 
         TickReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
-            //
+
         ],
 
         TickTerminated::class => [
-            //
+
         ],
 
         OperationTerminated::class => [
@@ -132,7 +134,7 @@ return [
     ],
 
     'flush' => [
-        //
+
     ],
 
     /*
