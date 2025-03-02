@@ -23,15 +23,15 @@
         "coolsam/flatpickr": "^3.0",
         "coolsam/signature-pad": "^2.0.0",
         "croustibat/filament-jobs-monitor": "^2.1",
-        "filament/filament": "^3.0",
+        "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "hammerstone/fast-paginate": "^1.0",
         "jeffgreco13/filament-breezy": "^2.1",
         "kenepa/banner": "^0.0.5",
         "kenepa/multi-widget": "^2.0",
-        "laravel/framework": "^10.10",
+        "laravel/framework": "^11.0",
         "laravel/octane": "^2.8",
-        "laravel/sanctum": "^3.2",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "^3.0",
         "malzariey/filament-daterangepicker-filter": "^2.3",
@@ -41,7 +41,7 @@
         "pxlrbt/filament-excel": "^2.1",
         "pxlrbt/filament-spotlight": "^1.0",
         "staudenmeir/eloquent-has-many-deep": "^1.18",
-        "z3d0x/filament-logger": "^0.6.1"
+        "z3d0x/filament-logger": "^0.7.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
@@ -49,7 +49,7 @@
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^7.0",
+        "nunomaduro/collision": "^8.1",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
         "spatie/laravel-ignition": "^2.0"
