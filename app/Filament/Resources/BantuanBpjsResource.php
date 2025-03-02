@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
-use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
@@ -35,15 +33,12 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
 use Wallo\FilamentSelectify\Components\ToggleButton;
@@ -193,29 +188,35 @@ class BantuanBpjsResource extends Resource
                     ->indicator('Wilayah')
                     ->form([
                         Forms\Components\Select::make('kecamatan')
-                            ->options(fn() => Kecamatan::query()
-                                ->where('kabupaten_code', setting('app.kodekab'))
-                                ->pluck('name', 'code'))
+                            ->options(function () {
+                                return Kecamatan::query()
+                                    ->where('kabupaten_code', setting('app.kodekab'))
+                                    ->pluck('name', 'code');
+                            })
                             ->live()
                             ->searchable()
                             ->native(false),
                         Forms\Components\Select::make('kelurahan')
-                            ->options(fn(Forms\Get $get) => Kelurahan::query()
-                                ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                                ->where('kecamatan_code', $get('kecamatan'))
-                                ->pluck('name', 'code'))
+                            ->options(function (Forms\Get $get) {
+                                return Kelurahan::query()
+                                    ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                    ->where('kecamatan_code', $get('kecamatan'))
+                                    ->pluck('name', 'code');
+                            })
                             ->searchable()
                             ->native(false),
                     ])
-                    ->query(fn(Builder $query, array $data): Builder => $query
-                        ->when(
-                            $data['kecamatan'],
-                            fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
-                        )
-                        ->when(
-                            $data['kelurahan'],
-                            fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
-                        )),
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['kecamatan'],
+                                fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
+                            )
+                            ->when(
+                                $data['kelurahan'],
+                                fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
+                            );
+                    }),
                 SelectFilter::make('status_usulan')
                     ->label('Status Usulan')
                     ->options(StatusUsulanEnum::class)
@@ -449,13 +450,15 @@ class BantuanBpjsResource extends Resource
 
                             Select::make('kelurahan')
                                 ->required()
-                                ->options(fn(callable $get) => Kelurahan::query()
-                                    ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
-                                        'code',
-                                        auth()->user()->instansi_id,
-                                    ))
-                                    ->where('kecamatan_code', $get('kecamatan'))
-                                    ->pluck('name', 'code'))
+                                ->options(function (callable $get) {
+                                    return Kelurahan::query()
+                                        ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
+                                            'code',
+                                            auth()->user()->instansi_id,
+                                        ))
+                                        ->where('kecamatan_code', $get('kecamatan'))
+                                        ->pluck('name', 'code');
+                                })
                                 ->native(false)
                                 ->reactive()
                                 ->searchable(),

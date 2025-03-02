@@ -31,7 +31,7 @@ final class AppServiceProvider extends ServiceProvider
 
         Number::useLocale('id');
 
-        Model::shouldBeStrict($this->app->isLocal());
+        Model::shouldBeStrict(!$this->app->isProduction());
         Model::unguard();
 
         setlocale(LC_ALL, 'IND');

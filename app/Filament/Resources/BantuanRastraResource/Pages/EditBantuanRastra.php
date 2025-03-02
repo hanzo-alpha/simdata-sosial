@@ -75,10 +75,12 @@ final class EditBantuanRastra extends EditRecord
 
                         Select::make('kelurahan')
                             ->required()
-                            ->options(fn(callable $get) => Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
-                                'name',
-                                'code',
-                            ))
+                            ->options(function (callable $get) {
+                                return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
+                                    'name',
+                                    'code',
+                                );
+                            })
                             ->reactive()
                             ->searchable(),
                         Select::make('pengganti_rastra.alasan_dikeluarkan')

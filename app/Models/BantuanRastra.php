@@ -127,16 +127,18 @@ class BantuanRastra extends Model
 
                     Select::make('kelurahan')
                         ->required()
-                        ->options(fn(callable $get) => Kelurahan::query()
-                            ->when(
-                                auth()->user()->instansi_id,
-                                fn(Builder $query) => $query->where(
-                                    'code',
+                        ->options(function (callable $get) {
+                            return Kelurahan::query()
+                                ->when(
                                     auth()->user()->instansi_id,
-                                ),
-                            )
-                            ->where('kecamatan_code', $get('kecamatan'))
-                            ?->pluck('name', 'code'))
+                                    fn(Builder $query) => $query->where(
+                                        'code',
+                                        auth()->user()->instansi_id,
+                                    ),
+                                )
+                                ->where('kecamatan_code', $get('kecamatan'))
+                                ?->pluck('name', 'code');
+                        })
                         ->live(onBlur: true)
                         ->native(false)
                         ->searchable(),

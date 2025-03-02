@@ -15,6 +15,7 @@ use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use App\Supports\DateHelper;
 use Filament\Actions\Imports\ImportColumn;
@@ -185,7 +186,13 @@ class BantuanPpksImporter extends Importer
             ImportColumn::make('kriteria_tags_ppks')
                 ->guess(['KRITERIA TAGS PPKS', 'KRITERIA TAGS', 'KRITERIA PPKS'])
                 ->fillRecordUsing(function ($record, $state): void {
-                    $record->kriteria_tags_ppks = [$state];
+                    $kriteria = KriteriaPpks::query()
+                        ->where('tipe_ppks_id', 13)
+                        ->orWhere('nama_kriteria', '=', Str::ucfirst($state))
+                        ->first();
+
+                    $record->kriteria_tags_ppks = [$kriteria->id];
+
                 })
                 ->requiredMapping(),
             ImportColumn::make('status_rumah_tinggal')

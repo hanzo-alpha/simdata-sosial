@@ -35,6 +35,6 @@ class ExportBantuanPkh extends ExcelExport
             Column::make('dir')->heading('DIR'),
             Column::make('gelombang')->heading('GELOMBANG'),
         ]);
-        $this->queue()->withChunkSize(1000);
+        $this->queue()->withChunkSize(500);
     }
 }

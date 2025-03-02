@@ -52,9 +52,11 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
                 ->live()
                 ->native(false),
             Select::make('kelurahan')
-                ->options(fn(Get $get): \Illuminate\Support\Collection => Kelurahan::query()
-                    ->where('kecamatan_code', $get('kecamatan'))
-                    ->pluck('name', 'code'))
+                ->options(function (Get $get): \Illuminate\Support\Collection {
+                    return Kelurahan::query()
+                        ->where('kecamatan_code', $get('kecamatan'))
+                        ->pluck('name', 'code');
+                })
                 ->native(false),
             ToggleButtons::make('cTipe')
                 ->default('bar')

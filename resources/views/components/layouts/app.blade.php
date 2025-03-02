@@ -201,7 +201,12 @@
         <!-- Theme Js -->
         <script src="{{ asset('frontend/js/theme.min.js') }}" type="text/javascript"></script>
 
-        @apexchartsScripts
+        @production
+            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+            @else
+                @apexchartsScripts
+                @endproduction
+
         @stack('js')
     </body>
 </html>
