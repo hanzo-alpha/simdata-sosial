@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\AlasanEnum;
 use App\Enums\JenisKelaminEnum;
 use App\Enums\StatusAktif;
 use App\Enums\StatusBpjsEnum;
-use App\Enums\StatusDtksEnum;
 use App\Enums\StatusKawinBpjsEnum;
 use App\Enums\StatusUsulanEnum;
 use App\Filament\Resources\BantuanBpjsResource\Pages;
@@ -35,15 +33,12 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Str;
 use Wallo\FilamentSelectify\Components\ToggleButton;

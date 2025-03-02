@@ -268,23 +268,21 @@ class BantuanPpksResource extends Resource
                                     Select::make('kelurahan')
                                         ->required()
                                         ->native(false)
-                                        ->options(function (callable $get) {
-                                            return Kelurahan::query()
-                                                ->when(
-                                                    auth()->user()->instansi_id,
-                                                    fn(Builder $query) => $query->where(
-                                                        'code',
-                                                        auth()->user()->instansi_id,
-                                                    ),
-                                                )
-                                                ->where(
-                                                    'kecamatan_code',
-                                                    $get('kecamatan'),
-                                                )?->pluck(
-                                                    'name',
+                                        ->options(fn(callable $get) => Kelurahan::query()
+                                            ->when(
+                                                auth()->user()->instansi_id,
+                                                fn(Builder $query) => $query->where(
                                                     'code',
-                                                );
-                                        })
+                                                    auth()->user()->instansi_id,
+                                                ),
+                                            )
+                                            ->where(
+                                                'kecamatan_code',
+                                                $get('kecamatan'),
+                                            )?->pluck(
+                                                'name',
+                                                'code',
+                                            ))
                                         ->live()
                                         ->searchable(),
                                 ]),
@@ -332,7 +330,7 @@ class BantuanPpksResource extends Resource
                                 ->searchable()
                                 ->required(),
                         ]),
-                    Section::make('Status PPKS/PMKS')
+                    Section::make('Status PPKS')
                         ->schema([
                             Select::make('bansos_diterima')
                                 ->label('Bantuan Yang Pernah Diterima')
@@ -370,13 +368,11 @@ class BantuanPpksResource extends Resource
                                 ->afterStateUpdated(function (Page $livewire, Select $component): void {
                                     $livewire->validateOnly($component->getStatePath());
                                 })
-                                ->options(function (callable $set, callable $get) {
-                                    return KriteriaPpks::where(
-                                        'tipe_ppks_id',
-                                        $get('tipe_ppks_id'),
-                                    )
-                                        ?->pluck('nama_kriteria', 'id');
-                                })
+                                ->options(fn(callable $set, callable $get) => KriteriaPpks::where(
+                                    'tipe_ppks_id',
+                                    $get('tipe_ppks_id'),
+                                )
+                                    ?->pluck('nama_kriteria', 'id'))
                                 ->preload(),
 
                             Select::make('jenis_anggaran')
@@ -616,39 +612,44 @@ class BantuanPpksResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                Tables\Filters\Filter::make('keckel')
-                    ->indicator('Wilayah')
+                Tables\Filters\Filter::make('tipe_kriteria')
+                    ->indicator('Kriteria')
+                    ->columnSpanFull()
                     ->form([
-                        Forms\Components\Select::make('kecamatan')
-                            ->options(function () {
-                                return Kecamatan::query()
-                                    ->where('kabupaten_code', setting('app.kodekab'))
-                                    ->pluck('name', 'code');
-                            })
-                            ->live()
-                            ->searchable()
-                            ->native(false),
-                        Forms\Components\Select::make('kelurahan')
-                            ->options(function (Forms\Get $get) {
-                                return Kelurahan::query()
-                                    ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                                    ->where('kecamatan_code', $get('kecamatan'))
-                                    ->pluck('name', 'code');
-                            })
-                            ->searchable()
-                            ->native(false),
+                        Forms\Components\Fieldset::make()->schema([
+                            Forms\Components\Select::make('tipe_ppks_id')
+                                ->label('Tipe PPKS')
+                                ->options(fn() => TipePpks::query()
+                                    ->pluck('nama_tipe', 'id'))
+                                ->live()
+                                ->searchable()
+                                ->native(false)
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteriaPpks', null)),
+                            Forms\Components\Select::make('kriteriaPpks')
+                                ->label('Kriteria PPKS')
+                                ->options(fn(Forms\Get $get) => KriteriaPpks::query()
+                                    ->where('tipe_ppks_id', $get('tipe_ppks_id'))
+                                    ->pluck('nama_kriteria', 'id'))
+                                ->searchable()
+                                ->native(false),
+                        ])->columnSpanFull(),
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
+                    ->query(
+                        fn(Builder $query, array $data): Builder => $query
                             ->when(
-                                $data['kecamatan'],
-                                fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
+                                $data['tipe_ppks_id'],
+                                fn(Builder $query, $data): Builder => $query->where('tipe_ppks_id', $data),
                             )
                             ->when(
-                                $data['kelurahan'],
-                                fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
-                            );
-                    }),
+                                $data['kriteriaPpks'],
+                                fn(Builder $query, $data): Builder => $query->whereHas(
+                                    'kriteriaPpks',
+                                    function ($query) use ($data): void {
+                                        $query->where('kriteria_ppks_id', $data);
+                                    },
+                                ),
+                            ),
+                    ),
                 SelectFilter::make('bansos_diterima')
                     ->label('Bantuan Diterima')
                     ->multiple()
@@ -668,7 +669,20 @@ class BantuanPpksResource extends Resource
                     ->options(list_tahun())
                     ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
-            ])
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+//            ->filtersFormColumns(4)
+//            ->filtersFormSchema(fn(array $filters): array => [
+//                Section::make('Visibility')
+//                    ->description('These filters affect the visibility of the records in the table.')
+//                    ->schema([
+//                        $filters['tipe_kriteria'],
+//                    ])
+//                    ->columns(2)
+//                    ->columnSpanFull(),
+//                $filters['tahun_anggaran'],
+//                $filters['status_verifikasi'],
+//                $filters['status_aktif'],
+//            ])
             ->deferFilters()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
@@ -797,17 +811,6 @@ class BantuanPpksResource extends Resource
                 ])->columnSpan(2),
 
                 Group::make([
-                    \Filament\Infolists\Components\Section::make('Foto Rumah')
-                        ->icon('heroicon-o-photo')
-                        ->schema([
-                            ImageEntry::make('bukti_foto')
-                                ->hiddenLabel()
-                                ->extraImgAttributes([
-                                    'alt' => 'foto rumah',
-                                    'loading' => 'lazy',
-                                ]),
-                        ])->columns(3),
-
                     \Filament\Infolists\Components\Section::make('Penyaluran Bantuan')
                         ->icon('heroicon-o-photo')
                         ->schema([
@@ -875,6 +878,18 @@ class BantuanPpksResource extends Resource
                                 ->color('primary'),
                         ])
                         ->columns(2),
+
+                    \Filament\Infolists\Components\Section::make('Dokumentasi')
+                        ->icon('heroicon-o-photo')
+                        ->schema([
+                            ImageEntry::make('bukti_foto')
+                                ->hiddenLabel()
+                                ->height(400)
+                                ->extraImgAttributes([
+                                    'alt' => 'dokumentasi',
+                                    'loading' => 'lazy',
+                                ]),
+                        ])->columns(3),
                 ])->columns(1),
 
             ])->columns(3);

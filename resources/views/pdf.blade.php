@@ -83,7 +83,7 @@
                                     {{
                                         $model->created_at->format('d/m/Y H:i:s') .
                                             '
-                                                                                                                WITA'
+                                                                                                                                                        WITA'
                                     }}
                                 </p>
                             </div>

@@ -7,7 +7,7 @@ namespace App\Exports;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
-class ExportBantuanPpks extends ExcelExport
+final class ExportBantuanPpks extends ExcelExport
 {
     public function setUp(): void
     {

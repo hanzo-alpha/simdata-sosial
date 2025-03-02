@@ -41,7 +41,7 @@ return [
         //        'server' => Awcodes\Curator\Glide\DefaultServerFactory::class,
         'server' => ImagickServerFactory::class,
         'fallbacks' => [],
-        'route_path' => 'uploads',
+        'route_path' => 'storage',
     ],
     'image_crop_aspect_ratio' => null,
     'image_resize_mode' => null,

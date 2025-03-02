@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use App\Models\Alamat;
 use App\Models\BantuanBpjs;
 use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
@@ -18,7 +17,6 @@ use App\Models\PendidikanTerakhir;
 use App\Models\PenggantiRastra;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
-use App\Policies\AlamatPolicy;
 use App\Policies\BantuanBpjsPolicy;
 use App\Policies\BantuanBpntPolicy;
 use App\Policies\BantuanPkhPolicy;
@@ -46,7 +44,6 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Role::class => RolePolicy::class,
         Activity::class => ActivityPolicy::class,
-        Alamat::class => AlamatPolicy::class,
         BantuanBpjs::class => BantuanBpjsPolicy::class,
         BantuanBpnt::class => BantuanBpntPolicy::class,
         BantuanPkh::class => BantuanPkhPolicy::class,

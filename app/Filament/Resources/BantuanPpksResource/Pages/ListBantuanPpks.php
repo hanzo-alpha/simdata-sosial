@@ -7,11 +7,11 @@ namespace App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Exports\BantuanPpksExporter;
 use App\Filament\Imports\BantuanPpksImporter;
 use App\Filament\Resources\BantuanPpksResource;
-use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
 use App\Models\TipePpks;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -70,6 +70,10 @@ final class ListBantuanPpks extends ListRecords
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->exporter(BantuanPpksExporter::class)
+                ->formats([
+                    ExportFormat::Xlsx,
+                    ExportFormat::Csv,
+                ])
                 ->disabled($this->enableInputLimitDate('ppks')),
 
             Actions\ImportAction::make()

@@ -205,7 +205,7 @@ class BeritaAcaraResource extends Resource
                             ->searchPrompt('Cari Kelurahan')
                             ->options(function (callable $get) {
                                 return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))
-                                    ?->pluck('name', 'code', );
+                                    ?->pluck('name', 'code');
                             })
                             ->searchable()
                             ->live(onBlur: true),

@@ -237,5 +237,19 @@
             </tr>
             </tbody>
         </table>
+
+                    <div class="">
+                        @isset($record->bukti_foto)
+                            @foreach($record->bukti_foto as $foto)
+                                <div>
+                                    <img
+                                        style="height: 630px"
+                                        src="./storage/{{ $foto }}"
+                                        alt="foto"
+                                    />
+                                </div><br>
+                            @endforeach
+                        @endif
+                    </div>
     @endsection
 </x-layouts.print>
