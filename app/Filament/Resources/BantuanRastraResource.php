@@ -133,35 +133,29 @@ class BantuanRastraResource extends Resource
                     ->indicator('Wilayah')
                     ->form([
                         Forms\Components\Select::make('kecamatan')
-                            ->options(function () {
-                                return Kecamatan::query()
-                                    ->where('kabupaten_code', setting('app.kodekab'))
-                                    ->pluck('name', 'code');
-                            })
+                            ->options(fn() => Kecamatan::query()
+                                ->where('kabupaten_code', setting('app.kodekab'))
+                                ->pluck('name', 'code'))
                             ->live()
                             ->searchable()
                             ->native(false),
                         Forms\Components\Select::make('kelurahan')
-                            ->options(function (Forms\Get $get) {
-                                return Kelurahan::query()
-                                    ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                                    ->where('kecamatan_code', $get('kecamatan'))
-                                    ->pluck('name', 'code');
-                            })
+                            ->options(fn(Forms\Get $get) => Kelurahan::query()
+                                ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
+                                ->where('kecamatan_code', $get('kecamatan'))
+                                ->pluck('name', 'code'))
                             ->searchable()
                             ->native(false),
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['kecamatan'],
-                                fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
-                            )
-                            ->when(
-                                $data['kelurahan'],
-                                fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
-                            );
-                    }),
+                    ->query(fn(Builder $query, array $data): Builder => $query
+                        ->when(
+                            $data['kecamatan'],
+                            fn(Builder $query, $data): Builder => $query->where('kecamatan', $data),
+                        )
+                        ->when(
+                            $data['kelurahan'],
+                            fn(Builder $query, $data): Builder => $query->where('kelurahan', $data),
+                        )),
                 SelectFilter::make('status_verifikasi')
                     ->label('Status Verifikasi')
                     ->options(StatusVerifikasiEnum::class)
@@ -290,12 +284,10 @@ class BantuanRastraResource extends Resource
 
                                 Select::make('kelurahan')
                                     ->required()
-                                    ->options(function (callable $get) {
-                                        return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
-                                            'name',
-                                            'code',
-                                        );
-                                    })
+                                    ->options(fn(callable $get) => Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
+                                        'name',
+                                        'code',
+                                    ))
                                     ->reactive()
                                     ->searchable(),
                                 Select::make('penggantiRastra.alasan_dikeluarkan')
