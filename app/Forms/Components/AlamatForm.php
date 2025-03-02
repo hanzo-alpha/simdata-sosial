@@ -166,12 +166,10 @@ final class AlamatForm extends Field
 
                     Select::make('kelurahan')
                         ->required()
-                        ->options(function (callable $get) {
-                            return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
-                                'name',
-                                'code',
-                            );
-                        })
+                        ->options(fn(callable $get) => Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
+                            'name',
+                            'code',
+                        ))
                         ->reactive()
                         ->searchable(),
                 ]),

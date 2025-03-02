@@ -45,8 +45,8 @@ class BantuanPpksExporter extends Exporter
                 ->label('Hubungan Keluarga'),
             ExportColumn::make('jenis_pekerjaan.nama_pekerjaan')
                 ->label('Jenis Pekerjaan'),
-//            ExportColumn::make('bansos_diterima.nama_bansos')
-//                ->label('Bansos Yang Pernah Diterima'),
+            //            ExportColumn::make('bansos_diterima.nama_bansos')
+            //                ->label('Bansos Yang Pernah Diterima'),
             ExportColumn::make('alamat')
                 ->label('Alamat'),
             ExportColumn::make('prov.name')
@@ -66,7 +66,7 @@ class BantuanPpksExporter extends Exporter
             ExportColumn::make('status_kawin')
                 ->label('Status Kawin')
                 ->state(function (BantuanPpks $record) {
-                    $value = isset($record->status_kawin->value) ? $record->status_kawin->value : null;
+                    $value = $record->status_kawin->value ?? null;
                     return match ($value) {
                         1 => StatusKawinUmumEnum::KAWIN_TERCATAT->getLabel(),
                         2 => StatusKawinUmumEnum::KAWIN_BELUM_TERCATAT->getLabel(),
@@ -111,7 +111,7 @@ class BantuanPpksExporter extends Exporter
             ExportColumn::make('status_rumah_tinggal')
                 ->label('Status Rumah Tinggal')
                 ->state(function (BantuanPpks $record) {
-                    $value = isset($record->status_rumah_tinggal->value) ? $record->status_rumah_tinggal->value : null;
+                    $value = $record->status_rumah_tinggal->value ?? null;
                     return match ($value) {
                         default => StatusRumahEnum::MILIK_SENDIRI->getLabel(),
                         2 => StatusRumahEnum::MENUMPANG->getLabel(),
@@ -120,7 +120,7 @@ class BantuanPpksExporter extends Exporter
             ExportColumn::make('status_kondisi_rumah')
                 ->label('Status Kondisi Rumah')
                 ->state(function (BantuanPpks $record) {
-                    $value = isset($record->status_kondisi_rumah->value) ? $record->status_kondisi_rumah->value : null;
+                    $value = $record->status_kondisi_rumah->value ?? null;
                     return match ($value) {
                         default => StatusKondisiRumahEnum::BAIK->getLabel(),
                         2 => StatusKondisiRumahEnum::SEDANG->getLabel(),
@@ -136,12 +136,12 @@ class BantuanPpksExporter extends Exporter
                         'NON DTKS' => StatusDtksEnum::NON_DTKS->getLabel(),
                     };
                 }),
-//            ExportColumn::make('bukti_foto')
-//                ->label('Bukti Foto'),
+            //            ExportColumn::make('bukti_foto')
+            //                ->label('Bukti Foto'),
             ExportColumn::make('status_verifikasi')
                 ->label('Status Verifikasi')
                 ->state(function (BantuanPpks $record) {
-                    $value = isset($record->status_verifikasi->value) ? $record->status_verifikasi->value : null;
+                    $value = $record->status_verifikasi->value ?? null;
                     return match ($value) {
                         'TERVERIFIKASI' => StatusVerifikasiEnum::VERIFIED->getLabel(),
                         default => StatusVerifikasiEnum::UNVERIFIED->getLabel(),
@@ -151,7 +151,7 @@ class BantuanPpksExporter extends Exporter
             ExportColumn::make('status_aktif')
                 ->label('Status Aktif')
                 ->state(function (BantuanPpks $record) {
-                    $value = isset($record->status_aktif->value) ? $record->status_aktif->value : null;
+                    $value = $record->status_aktif->value ?? null;
                     return match ($value) {
                         1 => StatusAktif::AKTIF->getLabel(),
                         default => StatusAktif::NONAKTIF->getLabel(),
@@ -164,10 +164,10 @@ class BantuanPpksExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Your bantuan ppks export has completed and '.number_format($export->successful_rows).' '.str('row')->plural($export->successful_rows).' exported.';
+        $body = 'Your bantuan ppks export has completed and ' . number_format($export->successful_rows) . ' ' . str('row')->plural($export->successful_rows) . ' exported.';
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to export.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to export.';
         }
 
         return $body;

@@ -203,10 +203,8 @@ class BeritaAcaraResource extends Resource
                             ->required()
                             ->noSearchResultsMessage('Kelurahan tidak ditemukan')
                             ->searchPrompt('Cari Kelurahan')
-                            ->options(function (callable $get) {
-                                return Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))
-                                    ?->pluck('name', 'code');
-                            })
+                            ->options(fn(callable $get) => Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))
+                                ?->pluck('name', 'code'))
                             ->searchable()
                             ->live(onBlur: true),
                         Forms\Components\Select::make('barang_id')
