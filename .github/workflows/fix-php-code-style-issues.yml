@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - dev
+      - production
+      - v2
     paths:
       - '**.php'
 
@@ -13,10 +15,8 @@ permissions:
 
 jobs:
   php-code-styling:
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
+    runs-on: [ ubuntu-latest, windows-latest ]
+    timeout-minutes: 5
 
     steps:
       - name: Checkout code
