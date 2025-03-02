@@ -4,18 +4,19 @@ on:
   release:
     types: [released]
 
+permissions:
+  contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
+    timeout-minutes: 5
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: production
 
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@v1
@@ -26,6 +27,6 @@ jobs:
       - name: Commit updated CHANGELOG
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          branch: main
+          branch: production
           commit_message: Update CHANGELOG
           file_pattern: CHANGELOG.md
