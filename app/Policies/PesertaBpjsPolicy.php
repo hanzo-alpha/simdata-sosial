@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
 use App\Models\PesertaBpjs;
@@ -106,26 +104,5 @@ class PesertaBpjsPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
-    }
-
-    public function download(User $user): bool
-    {
-        return $user->can('download_peserta::bpjs');
-    }
-
-    public function upload(User $user): bool
-    {
-        return $user->can('upload_peserta::bpjs');
-    }
-
-    public function verifyStatus(User $user): bool
-    {
-        return $user->can('verify_status_peserta::bpjs');
-    }
-
-
-    public function verification(User $user): bool
-    {
-        return $user->can('verification_peserta::bpjs');
     }
 }

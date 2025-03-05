@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\AlasanBpjsEnum;
 use App\Enums\StatusMutasi;
 use App\Enums\TipeMutasiEnum;
+use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,5 +44,10 @@ final class MutasiBpjs extends Model
     public function pesertaPbi(): BelongsToMany
     {
         return $this->belongsToMany(PesertaBpjs::class, 'mutasi_peserta_bpjs');
+    }
+
+    public function lampiran(): BelongsTo
+    {
+        return $this->belongsTo(Media::class);
     }
 }

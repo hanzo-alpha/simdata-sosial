@@ -6,6 +6,7 @@ namespace App\Imports;
 
 use App\Models\PesertaBpjs as PesertaJamkesda;
 use App\Models\User;
+use Auth;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -52,45 +53,56 @@ class ImportPesertaBpjs implements
 
     public static function beforeImport(BeforeImport $event): void
     {
+        $user = Auth::user();
         Notification::make('Mulai Mengimpor')
             ->title('Data Peserta Bpjs sedang di impor ke database.')
             ->info()
-            ->sendToDatabase(auth()->user());
+            ->send()
+            ->sendToDatabase($user);
     }
 
     public static function afterImport(AfterImport $event): void
     {
+        $user = Auth::user();
         Notification::make('Impor Berhasil')
-            ->title('Data Peserta BPJS Berhasil di impor')
+            ->title('Data Peserta BPJS Berhasil di impor.')
             ->success()
-            ->sendToDatabase(auth()->user());
+            ->send();
+    }
+
+    public static function importFailed(ImportFailed $event): void
+    {
+        $user = Auth::user();
+        Notification::make('Import Failed')
+            ->title('Gagal Impor Peserta BPJS '.$event->e->getMessage())
+            ->danger()
+            ->send()
+            ->sendToDatabase($user);
     }
 
     public static function afterChunk(AfterChunk $event): void
     {
-        Notification::make('Impor Berhasil')
-            ->title('Data Peserta BPJS Berhasil di impor')
+        $user = Auth::user();
+        Notification::make('Chunk Berhasil')
+            ->title('Berhasil mengimport')
             ->success()
-            ->sendToDatabase(auth()->user());
+            ->send();
     }
 
     public function registerEvents(): array
     {
         return [
-            ImportFailed::class => function (ImportFailed $event): void {
-                Notification::make()
-                    ->title('Gagal Impor Peserta BPJS')
-                    ->danger()
-                    ->sendToDatabase(auth()->user());
-            },
+            BeforeImport::class => [self::class, 'beforeImport'],
+            AfterImport::class => [self::class, 'afterImport'],
+            ImportFailed::class => [self::class, 'importFailed'],
         ];
     }
 
     public function model(array $row): Model|PesertaJamkesda|null
     {
-        return new PesertaJamkesda([
+        $data = [
             'nomor_kartu' => $row['no_kartu'] ?? '-',
-            'nik' => Str::replaceFirst("'", "", $row['nik']) ?? '-',
+            'nik' => Str::replaceFirst("'", '', $row['nik']) ?? '-',
             'nama_lengkap' => $row['nama'] ?? '-',
             'alamat' => $row['alamat'] ?? '-',
             'no_rt' => $row['rt'] ?? null,
@@ -99,7 +111,9 @@ class ImportPesertaBpjs implements
             'kecamatan' => $row['kecamatan'] ?? null,
             'kelurahan' => $row['kelurahan'] ?? null,
             'dusun' => $row['desa'] ?? null,
-        ]);
+        ];
+
+        return PesertaJamkesda::query()->firstOrCreate($data);
     }
 
     #[NoReturn]

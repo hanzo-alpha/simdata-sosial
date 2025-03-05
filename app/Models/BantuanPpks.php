@@ -36,6 +36,7 @@ class BantuanPpks extends Model
     protected $guarded = [];
 
     protected $with = [
+        'detailBantuanPpks',
         'tipe_ppks',
         'bansos_diterima',
         'kab', 'kec', 'kel',
@@ -69,6 +70,11 @@ class BantuanPpks extends Model
     public function tipe_ppks(): BelongsTo
     {
         return $this->belongsTo(TipePpks::class);
+    }
+
+    public function detailBantuanPpks(): BelongsToMany
+    {
+        return $this->belongsToMany(DetailBantuanPpks::class, 'bantuan_ppks_detail_bantuan_ppks');
     }
 
     public function bansos_diterima(): BelongsToMany
