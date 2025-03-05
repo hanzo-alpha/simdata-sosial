@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\KriteriaPpks;
+use App\Models\DetailBantuanPpks;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class KriteriaPpksPolicy
+class DetailBantuanPpksPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class KriteriaPpksPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_kriteria::ppks');
+        return $user->can('view_any_detail::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, KriteriaPpks $kriteriaPpks): bool
+    public function view(User $user, DetailBantuanPpks $detailBantuanPpks): bool
     {
-        return $user->can('view_kriteria::ppks');
+        return $user->can('view_detail::bantuan::ppks');
     }
 
     /**
@@ -31,23 +31,23 @@ class KriteriaPpksPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_kriteria::ppks');
+        return $user->can('create_detail::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, KriteriaPpks $kriteriaPpks): bool
+    public function update(User $user, DetailBantuanPpks $detailBantuanPpks): bool
     {
-        return $user->can('update_kriteria::ppks');
+        return $user->can('update_detail::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, KriteriaPpks $kriteriaPpks): bool
+    public function delete(User $user, DetailBantuanPpks $detailBantuanPpks): bool
     {
-        return $user->can('delete_kriteria::ppks');
+        return $user->can('delete_detail::bantuan::ppks');
     }
 
     /**
@@ -55,15 +55,15 @@ class KriteriaPpksPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_kriteria::ppks');
+        return $user->can('delete_any_detail::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, KriteriaPpks $kriteriaPpks): bool
+    public function forceDelete(User $user, DetailBantuanPpks $detailBantuanPpks): bool
     {
-        return $user->can('force_delete_kriteria::ppks');
+        return $user->can('force_delete_detail::bantuan::ppks');
     }
 
     /**
@@ -71,15 +71,15 @@ class KriteriaPpksPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_kriteria::ppks');
+        return $user->can('force_delete_any_detail::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, KriteriaPpks $kriteriaPpks): bool
+    public function restore(User $user, DetailBantuanPpks $detailBantuanPpks): bool
     {
-        return $user->can('restore_kriteria::ppks');
+        return $user->can('restore_detail::bantuan::ppks');
     }
 
     /**
@@ -87,13 +87,13 @@ class KriteriaPpksPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_kriteria::ppks');
+        return $user->can('restore_any_detail::bantuan::ppks');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, KriteriaPpks $kriteriaPpks): bool
+    public function replicate(User $user, DetailBantuanPpks $detailBantuanPpks): bool
     {
         return $user->can('{{ Replicate }}');
     }

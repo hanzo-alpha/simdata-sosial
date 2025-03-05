@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
 use App\Models\User;
@@ -99,7 +97,6 @@ class QueueMonitorPolicy
     {
         return $user->can('{{ Replicate }}');
     }
-
 
     /**
      * Determine whether the user can reorder.
