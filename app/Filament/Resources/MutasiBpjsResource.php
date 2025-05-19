@@ -9,6 +9,8 @@ use App\Enums\StatusMutasi;
 use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
 use App\Traits\HasInputDateLimit;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\PathGenerators\UserPathGenerator;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -37,45 +39,75 @@ final class MutasiBpjsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('peserta_bpjs_id')
-                    ->label('Nama Peserta BPJS')
-                    ->relationship('peserta', 'nama_lengkap')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->optionsLimit(20)
-                    ->searchable(['nomor_kartu', 'nik', 'nama_lengkap'])
-                    ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
-                    ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
-                    ->native(false)
-                    ->getOptionLabelFromRecordUsing(
-                        fn($record) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . $record->nik . ' | No. Kartu : ' . $record->nomor_kartu,
-                    )
-                    ->allowHtml()
-                    ->columnSpanFull(),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\Select::make('peserta_bpjs_id')
+                        ->label('Nama Peserta BPJS')
+                        ->relationship(
+                            name: 'peserta',
+                            titleAttribute: 'nama_lengkap',
+                        //                        modifyQueryUsing: function ($query) {
+                        //                            if (auth()->user()->hasRole(superadmin_admin_roles())) {
+                        //                                return $query;
+                        //                            }
+                        //                            return $query->with(['kel','kec'])->whereHas('kel', function ($query): void {
+                        //                                $query->where('code', auth()->user()->instansi_id);
+                        //                            });
+                        //                        },
+                        )
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->optionsLimit(20)
+                        ->searchable(['nomor_kartu', 'nik', 'nama_lengkap'])
+                        ->noSearchResultsMessage('Data peserta BPJS tidak ditemukan')
+                        ->searchPrompt('Ketikkan nomor kartu, nik, atau nama untuk mencari')
+                        ->native(false)
+                        ->getOptionLabelFromRecordUsing(
+                            fn(
+                                $record,
+                            ) => "<strong>{$record->nama_lengkap}</strong> | NIK: ".$record->nik.' | No. Kartu : '.$record->nomor_kartu,
+                        )
+                        ->allowHtml()
+                        ->columnSpanFull(),
 
-                Forms\Components\Select::make('alasan_mutasi')
-                    ->enum(AlasanBpjsEnum::class)
-                    ->options(AlasanBpjsEnum::class)
-                    ->native(false)
-                    ->required()
-                    ->preload()
-                    ->lazy(),
+                    Forms\Components\Select::make('alasan_mutasi')
+                        ->enum(AlasanBpjsEnum::class)
+                        ->options(AlasanBpjsEnum::class)
+                        ->native(false)
+                        ->required()
+                        ->preload()
+                        ->lazy(),
 
-                Forms\Components\Select::make('periode_bulan')
-                    ->options(list_bulan())
-                    ->native(false)
-                    ->required()
-                    ->preload()
-                    ->lazy(),
+                    Forms\Components\Select::make('periode_bulan')
+                        ->options(list_bulan())
+                        ->native(false)
+                        ->required()
+                        ->preload()
+                        ->lazy(),
 
-                Forms\Components\TextInput::make('keterangan')
-                    ->dehydrated(),
+                    Forms\Components\Select::make('periode_tahun')
+                        ->options(list_tahun())
+                        ->native(false)
+                        ->required()
+                        ->preload()
+                        ->lazy(),
 
-                Forms\Components\ToggleButtons::make('status_mutasi')
-                    ->label('Status Peserta')
-                    ->options(StatusMutasi::class)
-                    ->inline()
-                    ->default(StatusMutasi::MUTASI),
+                    Forms\Components\TextInput::make('keterangan')
+                        ->dehydrated(),
+
+                    Forms\Components\ToggleButtons::make('status_mutasi')
+                        ->label('Status Peserta')
+                        ->options(StatusMutasi::class)
+                        ->inline()
+                        ->default(StatusMutasi::MUTASI),
+
+                    CuratorPicker::make('lampiran')
+                        ->label('Lampiran')
+                        ->outlined(false)
+                        ->color('warning')
+                        ->pathGenerator(UserPathGenerator::class)
+                        ->buttonLabel('Unggah Bukti')
+                        ->relationship('lampiran', 'id'),
+                ])->inlineLabel(),
             ]);
     }
 
@@ -104,8 +136,9 @@ final class MutasiBpjsResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('periode_bulan')
-                    ->label('Periode Bulan')
-                    ->formatStateUsing(fn($state) => bulan_to_string($state))
+                    ->label('Periode')
+                    ->formatStateUsing(fn($record
+                    ) => bulan_to_string($record->periode_bulan).' - '.$record->periode_tahun)
                     ->badge()
                     ->sortable()
                     ->searchable(),
@@ -119,6 +152,16 @@ final class MutasiBpjsResource extends Resource
                     ->searchable(),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('periode_bulan')
+                    ->label('Periode Bulan')
+                    ->options(list_bulan())
+                    ->native(false)
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('periode_tahun')
+                    ->label('Periode Tahun')
+                    ->options(list_tahun())
+                    ->native(false)
+                    ->preload(),
                 Tables\Filters\SelectFilter::make('status_mutasi')
                     ->label('Status Mutasi')
                     ->options(StatusMutasi::class)
@@ -128,7 +171,7 @@ final class MutasiBpjsResource extends Resource
             ])
             ->hiddenFilterIndicators()
             ->deferLoading()
-//            ->deferFilters()
+            ->deferFilters()
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -153,15 +196,14 @@ final class MutasiBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery()
-                ->withoutGlobalScopes([
-                    SoftDeletingScope::class,
-                ]);
-        }
+        //        if (auth()->user()->hasRole(superadmin_admin_roles())) {
+        //            return parent::getEloquentQuery()
+        //                ->withoutGlobalScopes([
+        //                    SoftDeletingScope::class,
+        //                ]);
+        //        }
 
         return parent::getEloquentQuery()
-//            ->where('kelurahan', auth()->user()->instansi_id)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

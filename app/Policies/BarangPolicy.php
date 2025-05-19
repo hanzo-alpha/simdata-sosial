@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
 use App\Models\Barang;
@@ -106,26 +104,5 @@ class BarangPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
-    }
-
-    public function download(User $user): bool
-    {
-        return $user->can('download::barang');
-    }
-
-    public function upload(User $user): bool
-    {
-        return $user->can('upload::barang');
-    }
-
-    public function verifyStatus(User $user): bool
-    {
-        return $user->can('verify_status::barang');
-    }
-
-
-    public function verification(User $user): bool
-    {
-        return $user->can('verification::barang');
     }
 }
