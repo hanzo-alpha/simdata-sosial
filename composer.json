@@ -25,7 +25,7 @@
         "croustibat/filament-jobs-monitor": "^2.1",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
-        "hammerstone/fast-paginate": "^1.0",
+        "aaronfrancis/fast-paginate": "^1.0",
         "jeffgreco13/filament-breezy": "^2.1",
         "kenepa/banner": "^0.0.5",
         "kenepa/multi-widget": "^2.0",

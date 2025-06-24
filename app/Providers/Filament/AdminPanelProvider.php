@@ -9,7 +9,6 @@ use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -129,7 +128,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ], isPersistent: true)
+            ])
 //            ->globalSearchKeyBindings(['ctrl+alt+s'])
 //            ->globalSearchFieldKeyBindingSuffix()
             ->globalSearchFieldSuffix(fn(): ?string => match (Platform::detect()) {
@@ -140,7 +139,7 @@ class AdminPanelProvider extends PanelProvider
             })
             ->authMiddleware([
                 Authenticate::class,
-            ], isPersistent: true)
+            ])
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([
