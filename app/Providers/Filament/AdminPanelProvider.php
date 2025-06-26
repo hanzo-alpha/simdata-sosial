@@ -128,7 +128,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])
+            ], isPersistent: true)
 //            ->globalSearchKeyBindings(['ctrl+alt+s'])
 //            ->globalSearchFieldKeyBindingSuffix()
             ->globalSearchFieldSuffix(fn(): ?string => match (Platform::detect()) {
@@ -139,7 +139,7 @@ class AdminPanelProvider extends PanelProvider
             })
             ->authMiddleware([
                 Authenticate::class,
-            ])
+            ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
             ->resources([
