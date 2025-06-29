@@ -37,10 +37,5 @@ final class AppServiceProvider extends ServiceProvider
         setlocale(LC_ALL, 'IND');
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
-
-        if ('testing' === config('app.env')) {
-            $this->app->useDatabasePath(base_path('tests/database'));
-        }
-
     }
 }

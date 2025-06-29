@@ -36,8 +36,9 @@ class BantuanPpks extends Model
     protected $guarded = [];
 
     protected $with = [
+        'detailBantuanPpks',
         'tipe_ppks',
-        'bansos_diterima',
+        'bansosDiterima',
         'kab', 'kec', 'kel',
     ];
 
@@ -54,12 +55,12 @@ class BantuanPpks extends Model
         'foto_penyerahan' => 'array',
         'status_aktif' => StatusAktif::class,
         'jenis_anggaran' => JenisAnggaranEnum::class,
-        'jumlah_bantuan' => 'integer',
-        'nama_bantuan' => 'string',
+//        'jumlah_bantuan' => 'integer',
+//        'nama_bantuan' => 'string',
         'keterangan' => 'string',
         'tgl_lahir' => 'date',
         'tgl_ba' => 'datetime',
-        'tahun_anggaran' => 'integer',
+//        'tahun_anggaran' => 'integer',
         'kriteria_ppks' => 'json',
         'kriteria_tags_ppks' => 'json',
         'kategori_tags_ppks' => 'json',
@@ -71,7 +72,12 @@ class BantuanPpks extends Model
         return $this->belongsTo(TipePpks::class);
     }
 
-    public function bansos_diterima(): BelongsToMany
+    public function detailBantuanPpks(): BelongsToMany
+    {
+        return $this->belongsToMany(DetailBantuanPpks::class, 'bantuan_ppks_detail_bantuan_ppks');
+    }
+
+    public function bansosDiterima(): BelongsToMany
     {
         return $this->belongsToMany(BansosDiterima::class, 'bantuan_ppks_bansos_diterima')->withTimestamps();
     }
@@ -112,8 +118,8 @@ class BantuanPpks extends Model
         return $this->hasOne(PenyaluranBantuanPpks::class);
     }
 
-    public function barang(): BelongsTo
-    {
-        return $this->belongsTo(Barang::class);
-    }
+//    public function barang(): BelongsTo
+//    {
+//        return $this->belongsTo(Barang::class);
+//    }
 }

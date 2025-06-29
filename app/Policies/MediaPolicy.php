@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
 use App\Models\User;
@@ -106,26 +104,5 @@ class MediaPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
-    }
-
-    public function download(User $user): bool
-    {
-        return $user->can('download::media');
-    }
-
-    public function upload(User $user): bool
-    {
-        return $user->can('upload::media');
-    }
-
-    public function verifyStatus(User $user): bool
-    {
-        return $user->can('verify_status::media');
-    }
-
-
-    public function verification(User $user): bool
-    {
-        return $user->can('verification::media');
     }
 }
