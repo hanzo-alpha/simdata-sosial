@@ -11,7 +11,7 @@
 ![GitHub Tag](https://img.shields.io/github/v/tag/hanzo-alpha/simdata-sosial?style=flat-square)
 ![GitHub License](https://img.shields.io/github/license/hanzo-alpha/simdata-sosial?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/hanzo-alpha/simdata-sosial?style=flat-square)
-[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F667862f4-2611-4a95-aba0-9bdb3f5e2523%3Fdate%3D1%26label%3D1%26commit%3D1&style=flat-square)](https://forge.laravel.com/servers/868035/sites/2558499)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/hanzo-alpha/simdata-sosial?utm_source=oss&utm_medium=github&utm_campaign=hanzo-alpha%2Fsimdata-sosial&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 </div>
 
