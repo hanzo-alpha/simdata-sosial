@@ -48,6 +48,6 @@ final class MutasiBpjs extends Model
 
     public function lampiran(): BelongsTo
     {
-        return $this->belongsTo(Media::class);
+        return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 }

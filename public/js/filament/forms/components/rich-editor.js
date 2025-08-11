@@ -1289,14 +1289,14 @@ var os = 'style href src width height language class'.split(' '), ss = 'javascri
             super(...arguments), this.allowedAttributes = e || os, this.forbiddenProtocols = n || ss, this.forbiddenElements = r || as, this.purifyOptions = o || {}, this.body = ls(t);
         }
 
-        static sanitize(t, e) {
-            let n = new this(t, e);
-            return n.sanitize(), n;
-        }
-
         static setHTML(t, e, n) {
             let r = new this(e, n).sanitize(), o = r.getHTML ? r.getHTML() : r.outerHTML;
             t.innerHTML = o;
+        }
+
+        static sanitize(t, e) {
+            let n = new this(t, e);
+            return n.sanitize(), n;
         }
 
         sanitize() {
@@ -2316,12 +2316,12 @@ var Yt = class extends ht {
             this.pieceList = new Yt(e);
         }
 
-        static fromJSON(t) {
-            return new this(Array.from(t).map(e => gt.fromJSON(e)));
-        }
-
         static textForStringWithAttributes(t, e) {
             return new this([new Ae(t, e)]);
+        }
+
+        static fromJSON(t) {
+            return new this(Array.from(t).map(e => gt.fromJSON(e)));
         }
 
         copy() {
@@ -6351,7 +6351,7 @@ var an = class extends HTMLElement {
     if (!i.hasAttribute('contenteditable')) return i.setAttribute('contenteditable', ''), function(t) {
         let e = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
         return e.times = 1, S(t, e);
-    }('focus', { onElement: i, withCallback: () => aa(i) });
+    }('focus', { onElement: i, withCallback: () => aa(i) })
 }, aa = function(i) {
     return la(i), ca(i);
 }, la = function(i) {
@@ -6359,7 +6359,7 @@ var an = class extends HTMLElement {
     if ((t = (e = document).queryCommandSupported) !== null && t !== void 0 && t.call(e, 'enableObjectResizing')) return document.execCommand('enableObjectResizing', !1, !1), S('mscontrolselect', {
         onElement: i,
         preventDefault: !0,
-    });
+    })
 }, ca = function(i) {
     var t, e;
     if ((t = (e = document).queryCommandSupported) !== null && t !== void 0 && t.call(e, 'DefaultParagraphSeparator')) {

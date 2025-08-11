@@ -2,6 +2,9 @@
     use App\Models\BantuanRastra;use App\Supports\DateHelper;use App\Supports\Helpers;use Carbon\Carbon;
     $nomorBa = Helpers::generateNoSuratBeritaAcara(model: 'ppks');
     $tglBa = $record->tgl_ba ?? now();
+
+    $namaBantuan = $record->detailBantuanPpks?->first()?->barang()?->first()?->nama_barang;
+    $no = 1;
 @endphp
 
 <x-layouts.print>
@@ -28,7 +31,8 @@
             Pada hari ini {{ $tglBa->dayName ?? now()->dayName }} Tanggal
             {{ tanggal_ke_kalimat($tglBa->format('Y-m-d') ?? now()->format('Y-m-d')) }}  Bertempat di Desa/Kelurahan
             <b>{{ \Illuminate\Support\Str::upper($record->kel->name) }}</b> Dilakukan serah terima Alat Bantu berupa
-            {{ Str::title($record->barang?->nama_barang) ?? $record->nama_bantuan }} kepada para
+            <b>{{ Str::title($namaBantuan) ?? $record->nama_bantuan }}</b>
+            kepada para
             {{ \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }}.
         </p><br />
         <p style="font-size: 12px">Yang bertanda tangan dibawah ini :</p>
@@ -105,7 +109,9 @@
         <ol type="a" style="font-size: 12px;">
             <li>
                 <b>PIHAK KESATU</b>
-                menyerahkan Alat Bantu berupa {{ Str::title($record->barang?->nama_barang) ?? $record->nama_bantuan }} kepada para
+                menyerahkan Alat Bantu berupa <b>{{ Str::title($namaBantuan) ??
+                $record->detailBantuanPpks->nama_bantuan }}</b>
+                kepada para
                 Penyandang Disabilitas
 {{--                {{ \Illuminate\Support\Str::title($record->tipe_ppks?->nama_tipe) ?? 'Penyandang Disabilitas' }}--}}
                 Tahun {{ today()->year }} kepada
@@ -132,30 +138,38 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td class="text-center">
-                    {{ 1 }}
+            @forelse($record->detailBantuanPpks as $detail)
+                {{--                @dd($detail->barang)--}}
+                <tr>
+                    <td class="text-center">
+                        {{ $no++ }}
+                    </td>
+                    <td class="text-center">
+                        {{ $detail->nama_bantuan }}
+                    </td>
+                    <td class="text-center">
+                        {{ $detail->barang->satuan }}
+                    </td>
+                    <td class="text-center">
+                        {{ $detail->barang->kuantitas ?? 1 }}
+                    </td>
+                    <td class="text-right">
+                        {{ Number::format($detail->barang->harga_satuan ?? 0, 0, locale: 'id') }}
+                    </td>
+                    <td class="text-right">
+                        {{ Number::format($detail->barang->total_harga ?? 0, 0, locale: 'id') }}
+                    </td>
+                </tr>
+            @empty
+                <td colspan="6" class="text-center">
+                    Data tidak ditemukan
                 </td>
-                <td class="text-center">
-                    {{ $record->barang?->nama_barang ?? $record->nama_bantuan }}
-                </td>
-                <td class="text-center">
-                    {{ $record->barang?->satuan ?? 'Unit' }}
-                </td>
-                <td class="text-center">
-                    {{ $record->barang?->kuantitas ?? 1 }}
-                </td>
-                <td class="text-right">
-                    {{ Number::format($record->barang?->harga_satuan ?? 0, 0, locale: 'id') }}
-                </td>
-                <td class="text-right">
-                    {{ Number::format($record->barang?->total_harga ?? 0, 0, locale: 'id') }}
-                </td>
-            </tr>
+            @endforelse
             <tr>
                 <td colspan="5" class="pl-0 text-right"><strong>Total Harga (Rp)</strong></td>
                 <td class="text-right">
-                    <strong>{{ Number::format($record->barang?->total_harga ?? 0, 0, locale: 'id') }}</strong>
+                    <strong>{{ Number::format($record->detailBantuanPpks->first()?->barang->total_harga ?? 0, 0, locale: 'id')
+                    }}</strong>
                 </td>
             </tr>
             <tr>
