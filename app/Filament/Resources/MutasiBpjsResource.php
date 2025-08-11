@@ -10,6 +10,7 @@ use App\Filament\Resources\MutasiBpjsResource\Pages;
 use App\Models\MutasiBpjs;
 use App\Traits\HasInputDateLimit;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Awcodes\Curator\PathGenerators\UserPathGenerator;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -95,12 +96,12 @@ final class MutasiBpjsResource extends Resource
                         ->dehydrated(),
 
                     Forms\Components\ToggleButtons::make('status_mutasi')
-                        ->label('Status Peserta')
+                        ->label('Status Mutasi')
                         ->options(StatusMutasi::class)
                         ->inline()
                         ->default(StatusMutasi::MUTASI),
 
-                    CuratorPicker::make('lampiran')
+                    CuratorPicker::make('media_id')
                         ->label('Lampiran')
                         ->outlined(false)
                         ->color('warning')
@@ -128,7 +129,6 @@ final class MutasiBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('peserta.nama_lengkap')
                     ->label('Nama Peserta')
                     ->sortable()
-                    ->copyable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alasan_mutasi')
                     ->label('Alasan Mutasi')
@@ -137,16 +137,21 @@ final class MutasiBpjsResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('periode_bulan')
                     ->label('Periode')
-                    ->formatStateUsing(fn($record
+                    ->formatStateUsing(fn(
+                        $record,
                     ) => bulan_to_string($record->periode_bulan).' - '.$record->periode_tahun)
                     ->badge()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status_mutasi')
-                    ->label('Status Peserta')
+                    ->label('Status Mutasi')
                     ->badge()
                     ->sortable()
                     ->searchable(),
+                CuratorColumn::make('media_id')
+                    ->label('Lampiran')
+                    ->toggledHiddenByDefault()
+                    ->size(40),
                 Tables\Columns\TextColumn::make('keterangan')
                     ->label('Keterangan')
                     ->searchable(),

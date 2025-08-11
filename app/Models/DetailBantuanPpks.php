@@ -20,6 +20,8 @@ class DetailBantuanPpks extends Model
         'bansos_diterima',
     ];
 
+    protected $with = ['barang', 'bansosDiterima'];
+
     public function bantuanPpks(): BelongsToMany
     {
         return $this->belongsToMany(BantuanPpks::class, 'bantuan_ppks_detail_bantuan_ppks');

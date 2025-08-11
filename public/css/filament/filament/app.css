@@ -3342,8 +3342,8 @@ select {
     background-color: hsla(0, 0%, 100%, 0)
 }
 
-.bg-white\/5 {
-    background-color: hsla(0, 0%, 100%, .05)
+.bg-white\/10 {
+    background-color: hsla(0, 0%, 100%, .1)
 }
 
 .\!bg-none {
