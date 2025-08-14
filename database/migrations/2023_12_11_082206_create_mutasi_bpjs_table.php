@@ -22,8 +22,10 @@ return new class () extends Migration {
             $table->string('status_mutasi')->default(StatusMutasi::MUTASI)->nullable();
             $table->string('tipe_mutasi')->default(TipeMutasiEnum::PESERTA_BPJS)->nullable();
             $table->string('model_name')->nullable();
+            $table->string('no_surat_kematian', 16)->nullable();
             $table->text('keterangan')->nullable();
             $table->foreignId('media_id')->index()->nullable();
+            $table->string('lampiran')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

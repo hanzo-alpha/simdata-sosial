@@ -64,10 +64,15 @@ class ManageMutasiBpjs extends ManageRecords
                 ->mutateFormDataUsing(function (array $data) {
                     $data['model_name'] = PesertaBpjs::class;
                     $data['tipe_mutasi'] ??= TipeMutasiEnum::PESERTA_BPJS;
+                    $data['nomor_kartu'] = PesertaBpjs::find($data['peserta_bpjs_id'])->nomor_kartu;
+                    $data['nik'] = PesertaBpjs::find($data['peserta_bpjs_id'])->nik;
+                    $data['nama_lengkap'] = PesertaBpjs::find($data['peserta_bpjs_id'])->nama_lengkap;
+                    $data['alamat_lengkap'] = PesertaBpjs::find($data['peserta_bpjs_id'])->alamat;
 
                     return $data;
                 })
                 ->closeModalByClickingAway(),
+
             ExportAction::make()
                 ->label('Ekspor XLS')
                 ->color('info')

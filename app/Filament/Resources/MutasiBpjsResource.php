@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 final class MutasiBpjsResource extends Resource
@@ -75,6 +76,7 @@ final class MutasiBpjsResource extends Resource
                         ->options(AlasanBpjsEnum::class)
                         ->native(false)
                         ->required()
+                        ->live(onBlur: true)
                         ->preload()
                         ->lazy(),
 
@@ -94,6 +96,12 @@ final class MutasiBpjsResource extends Resource
 
                     Forms\Components\TextInput::make('keterangan')
                         ->dehydrated(),
+
+                    Forms\Components\TextInput::make('no_surat_kematian')
+                        ->label('No. Surat Kematian')
+                        ->helperText('Aktif jika alasan mutasi meninggal.')
+                        ->disabled(fn(Forms\Get $get) => AlasanBpjsEnum::MENINGGAL->value !== $get('alasan_mutasi'))
+                        ->nullable(),
 
                     Forms\Components\ToggleButtons::make('status_mutasi')
                         ->label('Status Mutasi')
@@ -178,7 +186,16 @@ final class MutasiBpjsResource extends Resource
             ->deferLoading()
             ->deferFilters()
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->using(function (Model $record, array $data): Model {
+                        $data['nomor_kartu'] = $record->peserta->nomor_kartu;
+                        $data['nik'] = $record->peserta->nik;
+                        $data['nama_lengkap'] = $record->peserta->nama_lengkap;
+                        $data['alamat_lengkap'] = $record->peserta->alamat;
+                        $record->update($data);
+
+                        return $record;
+                    }),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
