@@ -18,8 +18,8 @@ return new class () extends Migration {
             $table->unsignedInteger('kuantitas')->nullable()->default(0);
             $table->unsignedInteger('jumlah_bulan')->nullable()->default(1);
             $table->string('satuan')->nullable();
-            $table->unsignedDouble('harga_satuan')->nullable()->default(0);
-            $table->unsignedDouble('total_harga')->nullable()->default(0);
+            $table->double('harga_satuan')->nullable()->default(0);
+            $table->double('total_harga')->nullable()->default(0);
             $table->text('keterangan');
             $table->unsignedBigInteger('jenis_bantuan_id')->index()->nullable();
             $table->timestamps();

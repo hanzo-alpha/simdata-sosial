@@ -19,6 +19,7 @@ return new class () extends Migration {
             $table->char('kecamatan', 7)->nullable();
             $table->char('kelurahan', 10)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

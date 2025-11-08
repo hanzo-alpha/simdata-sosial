@@ -20,7 +20,7 @@ return new class () extends Migration {
             $table->unsignedTinyInteger('tahap');
             $table->string('bansos');
             $table->unsignedBigInteger('jenis_bantuan_id')->default(1)->nullable();
-            $table->unsignedDouble('nominal', 20, 2)->nullable()->default(0);
+            $table->double('nominal', 20, 2)->nullable()->default(0);
             $table->string('bank');
             $table->char('provinsi', 2)->nullable();
             $table->char('kabupaten', 5)->nullable();
