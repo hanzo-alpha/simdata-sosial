@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BarangResource\Pages;
 use App\Models\Barang;
+use App\Models\JenisBantuan;
 use App\Models\Kelurahan;
 use App\Supports\Helpers;
 use Awcodes\FilamentBadgeableColumn\Components\Badge;
@@ -140,6 +141,11 @@ class BarangResource extends Resource
                 Tables\Filters\SelectFilter::make('kode_kelurahan')
                     ->label('Kelurahan')
                     ->options(Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->pluck('name', 'code'))
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('jenis_bantuan_id')
+                    ->label('Jenis Bantuan')
+                    ->options(JenisBantuan::pluck('alias', 'id'))
                     ->searchable()
                     ->preload(),
             ])
