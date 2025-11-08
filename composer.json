@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1|^8.2",
+        "aaronfrancis/fast-paginate": "^1.0",
         "akaunting/laravel-apexcharts": "^3.0",
         "andrewdwallo/filament-selectify": "^2.0",
         "awcodes/filament-badgeable-column": "^2.2",
@@ -25,10 +26,8 @@
         "croustibat/filament-jobs-monitor": "^2.1",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
-        "aaronfrancis/fast-paginate": "^1.0",
         "jeffgreco13/filament-breezy": "^2.1",
         "kenepa/banner": "^0.0.5",
-        "kenepa/multi-widget": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/octane": "^2.8",
         "laravel/sanctum": "^4.0",
@@ -41,6 +40,7 @@
         "pxlrbt/filament-excel": "^2.1",
         "pxlrbt/filament-spotlight": "^1.0",
         "staudenmeir/eloquent-has-many-deep": "^1.18",
+        "vodafoneziggonl/filament-multi-widget": "^2.0",
         "z3d0x/filament-logger": "^0.7.0"
     },
     "require-dev": {
