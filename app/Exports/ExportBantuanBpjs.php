@@ -46,8 +46,8 @@ class ExportBantuanBpjs extends ExcelExport
             Column::make('norw')->heading('RW'),
             Column::make('kodepos')->heading('KODE POS'),
             Column::make('status_aktif')->heading('STATUS AKTIF')
-                ->formatStateUsing(fn($state) => (StatusAktif::AKTIF === $state) ? StatusAktif::AKTIF->getLabel() :
-                    StatusAktif::NONAKTIF->getLabel()),
+                ->formatStateUsing(fn($state) => (StatusAktif::AKTIF === $state) ? StatusAktif::AKTIF->getLabel()
+                    : StatusAktif::NONAKTIF->getLabel()),
             Column::make('status_usulan')->heading('STATUS USULAN'),
             Column::make('status_bpjs')->heading('STATUS BPJS')
                 ->formatStateUsing(fn($state) => match ($state) {

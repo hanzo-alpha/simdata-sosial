@@ -81,8 +81,8 @@ class BantuanRastraImporter extends Importer
             ImportColumn::make('status_dtks')
                 ->requiredMapping()
                 ->fillRecordUsing(function (BantuanRastra $record, $state): void {
-                    $record->status_dtks = Str::of($state)->contains('TERDAFTAR DTKS') ? StatusDtksEnum::DTKS :
-                        StatusDtksEnum::NON_DTKS;
+                    $record->status_dtks = Str::of($state)->contains('TERDAFTAR DTKS') ? StatusDtksEnum::DTKS
+                        : StatusDtksEnum::NON_DTKS;
                 })
                 ->label('STATUS DTKS'),
         ];

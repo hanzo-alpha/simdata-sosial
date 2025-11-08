@@ -162,8 +162,8 @@ class BantuanBpjsResource extends Resource
                 Tables\Columns\TextColumn::make('status_usulan')
                     ->label('Status Usulan BPJS')
                     ->sortable()
-                    ->formatStateUsing(fn($record) => $record->status_bpjs->value . ' - ' .
-                        $record->status_usulan->value)
+                    ->formatStateUsing(fn($record) => $record->status_bpjs->value . ' - '
+                        . $record->status_usulan->value)
                     ->toggleable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status_bpjs')
