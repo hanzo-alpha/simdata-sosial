@@ -2,6 +2,10 @@
 
 All notable changes to `simdata-sosial` will be documented in this file.
 
+## v2.0.3 - 2025-11-08
+
+**Full Changelog**: https://github.com/hanzo-alpha/simdata-sosial/compare/v2.0.2...v2.0.3
+
 ## v2.0.1 - 2025-06-29
 
 ### What's Changed
