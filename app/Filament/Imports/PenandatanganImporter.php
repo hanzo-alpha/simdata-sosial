@@ -90,8 +90,8 @@ class PenandatanganImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'import penandatangan telah selesai dan ' . number_format($import->successful_rows) . ' ' .
-            str('row')->plural($import->successful_rows) . ' berhasil diimpor.';
+        $body = 'import penandatangan telah selesai dan ' . number_format($import->successful_rows) . ' '
+            . str('row')->plural($import->successful_rows) . ' berhasil diimpor.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
             $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' gagal di impor.';

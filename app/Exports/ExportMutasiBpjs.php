@@ -13,8 +13,8 @@ class ExportMutasiBpjs extends ExcelExport
 {
     public function setUp(): void
     {
-        $this->withFilename(fn($resource) => date('Ymdhis').'-'.Str::of(replace_nama_file_excel($resource::getLabel()))
-                ->lower()->kebab());
+        $this->withFilename(fn($resource) => date('Ymdhis') . '-' . Str::of(replace_nama_file_excel($resource::getLabel()))
+            ->lower()->kebab());
         $this->askForWriterType();
         $this->withColumns([
             Column::make('id')->heading('NO'),

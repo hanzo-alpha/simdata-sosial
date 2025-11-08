@@ -301,7 +301,7 @@ class BantuanPpksResource extends Resource
                                         ->native(false)
                                         ->options(function (Get $get) {
                                             $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kabupaten::where(
                                                     'provinsi_code',
                                                     setting('app.kodekab', config('custom.default.kodekab')),
@@ -323,7 +323,7 @@ class BantuanPpksResource extends Resource
                                         ->native(false)
                                         ->options(function (Get $get) {
                                             $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                            if (!$kab) {
+                                            if ( ! $kab) {
                                                 return Kecamatan::where(
                                                     'kabupaten_code',
                                                     setting('app.kodekab', config('custom.default.kodekab')),
@@ -481,7 +481,7 @@ class BantuanPpksResource extends Resource
                                 ->native(false)
                                 ->preload()
                                 ->visible(fn() => auth()->user()
-                                        ?->hasRole(['super_admin', 'admin'])
+                                    ?->hasRole(['super_admin', 'admin'])
                                     || auth()->user()->is_admin),
 
                             Forms\Components\Textarea::make('keterangan')
@@ -494,7 +494,7 @@ class BantuanPpksResource extends Resource
                                     fn(
                                         TemporaryUploadedFile $file,
                                     ): string => (string) str($file->getClientOriginalName())
-                                        ->prepend(date('d-m-Y-H-i-s').'-'),
+                                        ->prepend(date('d-m-Y-H-i-s') . '-'),
                                 )
                                 ->preserveFilenames()
                                 ->multiple()
@@ -605,7 +605,7 @@ class BantuanPpksResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('no_rt')
                     ->label('RT/RW')
-                    ->formatStateUsing(fn($record) => $record->no_rt.'/'.$record->no_rw)
+                    ->formatStateUsing(fn($record) => $record->no_rt . '/' . $record->no_rw)
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('penghasilan_rata_rata')
@@ -855,7 +855,7 @@ class BantuanPpksResource extends Resource
                                 ->color('primary'),
                             TextEntry::make('detailBantuanPpks.jumlah_bantuan')
                                 ->label('Jumlah Bantuan')
-                                ->formatStateUsing(fn($state) => $state.' Bantuan')
+                                ->formatStateUsing(fn($state) => $state . ' Bantuan')
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
                             TextEntry::make('detailBantuanPpks.jenis_anggaran')

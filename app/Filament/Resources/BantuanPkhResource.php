@@ -407,8 +407,8 @@ final class BantuanPkhResource extends Resource
                 Tables\Columns\TextColumn::make('alamat')
                     ->sortable()
                     ->toggleable()
-                    ->description(fn($record) => 'Kec. ' . $record->kec()->get()->first()->name . ' | Kel. ' .
-                        $record->kel()->get()->first()->name)
+                    ->description(fn($record) => 'Kec. ' . $record->kec()->get()->first()->name . ' | Kel. '
+                        . $record->kel()->get()->first()->name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')

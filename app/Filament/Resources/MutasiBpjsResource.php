@@ -47,14 +47,14 @@ final class MutasiBpjsResource extends Resource
                         ->relationship(
                             name: 'peserta',
                             titleAttribute: 'nama_lengkap',
-                        //                        modifyQueryUsing: function ($query) {
-                        //                            if (auth()->user()->hasRole(superadmin_admin_roles())) {
-                        //                                return $query;
-                        //                            }
-                        //                            return $query->with(['kel','kec'])->whereHas('kel', function ($query): void {
-                        //                                $query->where('code', auth()->user()->instansi_id);
-                        //                            });
-                        //                        },
+                            //                        modifyQueryUsing: function ($query) {
+                            //                            if (auth()->user()->hasRole(superadmin_admin_roles())) {
+                            //                                return $query;
+                            //                            }
+                            //                            return $query->with(['kel','kec'])->whereHas('kel', function ($query): void {
+                            //                                $query->where('code', auth()->user()->instansi_id);
+                            //                            });
+                            //                        },
                         )
                         ->required()
                         ->unique(ignoreRecord: true)
@@ -66,7 +66,7 @@ final class MutasiBpjsResource extends Resource
                         ->getOptionLabelFromRecordUsing(
                             fn(
                                 $record,
-                            ) => "<strong>{$record->nama_lengkap}</strong> | NIK: ".$record->nik.' | No. Kartu : '.$record->nomor_kartu,
+                            ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . $record->nik . ' | No. Kartu : ' . $record->nomor_kartu,
                         )
                         ->allowHtml()
                         ->columnSpanFull(),
@@ -147,7 +147,7 @@ final class MutasiBpjsResource extends Resource
                     ->label('Periode')
                     ->formatStateUsing(fn(
                         $record,
-                    ) => bulan_to_string($record->periode_bulan).' - '.$record->periode_tahun)
+                    ) => bulan_to_string($record->periode_bulan) . ' - ' . $record->periode_tahun)
                     ->badge()
                     ->sortable()
                     ->searchable(),

@@ -76,7 +76,7 @@ final class ImportMutasiBpjs implements
     {
         $user = Auth::user();
         Notification::make('Import Failed')
-            ->title('Gagal Impor Mutasi BPJS '.$event->e->getMessage())
+            ->title('Gagal Impor Mutasi BPJS ' . $event->e->getMessage())
             ->danger()
             ->send()
             ->sendToDatabase($user);
@@ -160,9 +160,9 @@ final class ImportMutasiBpjs implements
             $values = $failure->values();
 
             Notification::make('Failure Import')
-                ->title('Baris Ke : '.$baris.' | '.$errmsg)
-                ->body('NIK : '.$values['nik'] ?? '-'.' | No.KK : '.$values['no_kk'] ?? '-'.'
-             | Nama : '.$values['nama_lengkap'] ?? '-')
+                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . '
+             | Nama : ' . $values['nama_lengkap'] ?? '-')
                 ->danger()
                 ->sendToDatabase(auth()->user())
                 ->broadcast(User::where('is_admin', 1)->get());

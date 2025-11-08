@@ -74,7 +74,7 @@ class ImportPesertaBpjs implements
     {
         $user = Auth::user();
         Notification::make('Import Failed')
-            ->title('Gagal Impor Peserta BPJS '.$event->e->getMessage())
+            ->title('Gagal Impor Peserta BPJS ' . $event->e->getMessage())
             ->danger()
             ->send()
             ->sendToDatabase($user);
