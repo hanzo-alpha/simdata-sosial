@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Exports;
 
 use App\Enums\AlasanBpjsEnum;
+use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
@@ -12,20 +13,23 @@ class ExportMutasiBpjs extends ExcelExport
 {
     public function setUp(): void
     {
-        $this->askForFilename();
-        $this->withFilename(fn($filename) => date('Ymdhis') . '-' . $filename . '-ekspor');
+        $this->withFilename(fn($resource) => date('Ymdhis').'-'.Str::of(replace_nama_file_excel($resource::getLabel()))
+                ->lower()->kebab());
         $this->askForWriterType();
         $this->withColumns([
             Column::make('id')->heading('NO'),
             Column::make('peserta_bpjs_id')
                 ->formatStateUsing(fn($record) => $record->peserta->nama_lengkap)
                 ->heading('PESERTA BPJS'),
-            Column::make('nomor_kartu')->heading('No. KARTU'),
+            Column::make('nomor_kartu')
+                ->heading('No. KARTU'),
             Column::make('nik')
                 ->formatStateUsing(fn($state) => "'" . $state)
                 ->heading('N I K'),
             Column::make('nama_lengkap')->heading('NAMA LENGKAP'),
-            Column::make('periode_bulan')->heading('PERIODE BULAN'),
+            Column::make('periode_bulan')
+                ->formatStateUsing(fn($state) => bulan_to_string($state))
+                ->heading('PERIODE BULAN'),
             Column::make('periode_tahun')->heading('PERIODE TAHUN'),
             Column::make('alasan_mutasi')
                 ->formatStateUsing(function ($state) {
@@ -38,6 +42,7 @@ class ExportMutasiBpjs extends ExcelExport
                 })
                 ->heading('ALASAN MUTASI'),
             Column::make('alamat_lengkap')->heading('ALAMAT LENGKAP'),
+            Column::make('no_surat_kematian')->heading('NO. SURAT KEMATIAN'),
             Column::make('keterangan')->heading('KETERANGAN'),
         ]);
         $this->queue()->withChunkSize(500);
