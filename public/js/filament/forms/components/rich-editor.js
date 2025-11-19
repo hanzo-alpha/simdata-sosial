@@ -1277,16 +1277,6 @@ Ve.addHook("uponSanitizeAttribute", function(i, t) {
 });
 var os = "style href src width height language class".split(" "), ss = "javascript:".split(" "),
     as = "script iframe form noscript".split(" "), qt = class extends R {
-        constructor(t) {
-            let {
-                allowedAttributes: e,
-                forbiddenProtocols: n,
-                forbiddenElements: r,
-                purifyOptions: o
-            } = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-            super(...arguments), this.allowedAttributes = e || os, this.forbiddenProtocols = n || ss, this.forbiddenElements = r || as, this.purifyOptions = o || {}, this.body = ls(t)
-        }
-
         static setHTML(t, e, n) {
             let r = new this(e, n).sanitize(), o = r.getHTML ? r.getHTML() : r.outerHTML;
             t.innerHTML = o
@@ -1295,6 +1285,16 @@ var os = "style href src width height language class".split(" "), ss = "javascri
         static sanitize(t, e) {
             let n = new this(t, e);
             return n.sanitize(), n
+        }
+
+        constructor(t) {
+            let {
+                allowedAttributes: e,
+                forbiddenProtocols: n,
+                forbiddenElements: r,
+                purifyOptions: o
+            } = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+            super(...arguments), this.allowedAttributes = e || os, this.forbiddenProtocols = n || ss, this.forbiddenElements = r || as, this.purifyOptions = o || {}, this.body = ls(t)
         }
 
         sanitize() {
@@ -2307,19 +2307,19 @@ var Yt = class extends ht {
             return new this([new Gt(t, e)])
         }
 
-        constructor() {
-            let t = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
-            super(...arguments);
-            let e = t.filter(n => !n.isEmpty());
-            this.pieceList = new Yt(e)
-        }
-
         static textForStringWithAttributes(t, e) {
             return new this([new Ae(t, e)])
         }
 
         static fromJSON(t) {
             return new this(Array.from(t).map(e => gt.fromJSON(e)))
+        }
+
+        constructor() {
+            let t = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
+            super(...arguments);
+            let e = t.filter(n => !n.isEmpty());
+            this.pieceList = new Yt(e)
         }
 
         copy() {
@@ -2510,12 +2510,12 @@ var Yt = class extends ht {
             return this.getDirection() === "rtl"
         }
     }, bt = class i extends ht {
-        constructor(t, e, n) {
-            super(...arguments), this.text = As(t || new K), this.attributes = e || [], this.htmlAttributes = n || {}
-        }
-
         static fromJSON(t) {
             return new this(K.fromJSON(t.text), t.attributes, t.htmlAttributes)
+        }
+
+        constructor(t, e, n) {
+            super(...arguments), this.text = As(t || new K), this.attributes = e || [], this.htmlAttributes = n || {}
         }
 
         isEmpty() {
@@ -2732,14 +2732,14 @@ var Yt = class extends ht {
             return new this(Array.from(t).map(e => bt.fromJSON(e)))
         }
 
-        constructor() {
-            let t = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
-            super(...arguments), t.length === 0 && (t = [new bt]), this.blockList = Yt.box(t)
-        }
-
         static fromString(t, e) {
             let n = K.textForStringWithAttributes(t, e);
             return new this([new bt(n)])
+        }
+
+        constructor() {
+            let t = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
+            super(...arguments), t.length === 0 && (t = [new bt]), this.blockList = Yt.box(t)
         }
 
         isEmpty() {

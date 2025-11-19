@@ -52,8 +52,14 @@
                 @if ($model->count() > 0)
                     @forelse ($model->foto_penyerahan as $foto)
                         <div class="img-border" >
-                            <img class="img-foto" src="{{ asset('storage/' . $foto) }}"
+                            @env('production')
+                                <img class="img-foto" src="{{ asset('storage/' . $foto) }}"
+                                     alt="foto penyerahan" />
+                            @endenv
+                            @env('local')
+                                <img class="img-foto" src="{{ public_path('storage/'). $foto }}"
                                  alt="foto penyerahan" />
+                            @endenv
                         </div>
                     @empty
                         <span></span>
@@ -74,11 +80,21 @@
             <div class="">
                 @isset($model->bantuan_rastra->foto_ktp_kk)
                     <div>
-                        <img
-                            style="width: 600px"
-                            src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
-                            alt="foto ktp kk"
-                        />
+                        @env('production')
+                            <img
+                                style="width: 600px"
+                                src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
+                                alt="foto ktp kk"
+                            />
+                        @endenv
+                        @env('local')
+                            <img
+                                style="width: 600px"
+                                src="{{ public_path('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
+                                alt="foto ktp kk"
+                            />
+                        @endenv
+
                     </div>
                 @endif
             </div>
