@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
 
     /*
@@ -64,7 +62,7 @@ return [
          *
          * The directory specified must be writeable by the webserver process.
          * The temporary directory is required to download remote images and when
-         * using the PFDLib back end.
+         * using the PDFLib back end.
          */
         'temp_dir' => sys_get_temp_dir(),
 
@@ -99,6 +97,11 @@ return [
         ],
 
         /**
+         * Operational artifact (log files, temporary files) path validation
+         */
+        'artifactPathValidation' => null,
+
+        /**
          * @var string
          */
         'log_output_file' => null,
@@ -113,8 +116,9 @@ return [
          *
          * Valid settings are 'PDFLib', 'CPDF' (the bundled R&OS PDF class), 'GD' and
          * 'auto'. 'auto' will look for PDFLib and use it if found, or if not it will
-         * fall back on CPDF. 'GD' renders PDFs to graphic files. {@link * Canvas_Factory} ultimately determines which rendering class to instantiate
-         * based on this setting.
+         * fall back on CPDF. 'GD' renders PDFs to graphic files.
+         * {@link * Canvas_Factory} ultimately determines which rendering class to
+         * instantiate based on this setting.
          *
          * Both PDFLib & CPDF rendering backends provide sufficient rendering
          * capabilities for dompdf, however additional features (e.g. object,
@@ -136,20 +140,6 @@ return [
          * @link http://www.php.net/image
          */
         'pdf_backend' => 'CPDF',
-
-        /**
-         * PDFlib license key
-         *
-         * If you are using a licensed, commercial version of PDFlib, specify
-         * your license key here.  If you are using PDFlib-Lite or are evaluating
-         * the commercial version of PDFlib, comment out this setting.
-         *
-         * @link http://www.pdflib.com
-         *
-         * If pdflib present in web server and auto or selected explicitely above,
-         * a real license code must exist!
-         */
-        //"DOMPDF_PDFLIB_LICENSE" => "your license key here",
 
         /**
          * html target media view which should be rendered into pdf.
@@ -226,24 +216,31 @@ return [
         'dpi' => 96,
 
         /**
-         * Enable inline PHP
+         * Enable embedded PHP
          *
-         * If this setting is set to true then DOMPDF will automatically evaluate
-         * inline PHP contained within <script type="text/php"> ... </script> tags.
+         * If this setting is set to true then DOMPDF will automatically evaluate embedded PHP contained
+         * within <script type="text/php"> ... </script> tags.
          *
-         * Enabling this for documents you do not trust (e.g. arbitrary remote html
-         * pages) is a security risk.  Set this option to false if you wish to process
-         * untrusted documents.
+         * ==== IMPORTANT ==== Enabling this for documents you do not trust (e.g. arbitrary remote html pages)
+         * is a security risk.
+         * Embedded scripts are run with the same level of system access available to dompdf.
+         * Set this option to false (recommended) if you wish to process untrusted documents.
+         * This setting may increase the risk of system exploit.
+         * Do not change this settings without understanding the consequences.
+         * Additional documentation is available on the dompdf wiki at:
+         * https://github.com/dompdf/dompdf/wiki
          *
          * @var bool
          */
-        'enable_php' => false,
+        'enable_php' => true,
 
         /**
-         * Enable inline Javascript
+         * Rnable inline JavaScript
          *
-         * If this setting is set to true then DOMPDF will automatically insert
-         * JavaScript code contained within <script type="text/javascript"> ... </script> tags.
+         * If this setting is set to true then DOMPDF will automatically insert JavaScript code contained
+         * within <script type="text/javascript"> ... </script> tags as written into the PDF.
+         * NOTE: This is PDF-based JavaScript to be executed by the PDF viewer,
+         * not browser-based JavaScript executed by Dompdf.
          *
          * @var bool
          */
@@ -252,21 +249,38 @@ return [
         /**
          * Enable remote file access
          *
-         * If this setting is set to true, DOMPDF will access remote sites for
-         * images and CSS files as required.
-         * This is required for part of test case www/test/image_variants.html through www/examples.php
+         *  If this setting is set to true, DOMPDF will access remote sites for
+         *  images and CSS files as required.
          *
-         * Attention!
-         * This can be a security risk, in particular in combination with DOMPDF_ENABLE_PHP and
-         * allowing remote access to dompdf.php or on allowing remote html code to be passed to
-         * $dompdf = new DOMPDF(, $dompdf->load_html(...,
-         * This allows anonymous users to download legally doubtful internet content which on
-         * tracing back appears to being downloaded by your server, or allows malicious php code
-         * in remote html pages to be executed by your server with your account privileges.
+         *  ==== IMPORTANT ====
+         *  This can be a security risk, in particular in combination with isPhpEnabled and
+         *  allowing remote html code to be passed to $dompdf = new DOMPDF(); $dompdf->load_html(...);
+         *  This allows anonymous users to download legally doubtful internet content which on
+         *  tracing back appears to being downloaded by your server, or allows malicious php code
+         *  in remote html pages to be executed by your server with your account privileges.
+         *
+         *  This setting may increase the risk of system exploit. Do not change
+         *  this settings without understanding the consequences. Additional
+         *  documentation is available on the dompdf wiki at:
+         *  https://github.com/dompdf/dompdf/wiki
          *
          * @var bool
          */
         'enable_remote' => false,
+
+        /**
+         * List of allowed remote hosts
+         *
+         * Each value of the array must be a valid hostname.
+         *
+         * This will be used to filter which resources can be loaded in combination with
+         * isRemoteEnabled. If enable_remote is FALSE, then this will have no effect.
+         *
+         * Leave to NULL to allow any remote host.
+         *
+         * @var array|null
+         */
+        'allowed_remote_hosts' => null,
 
         /**
          * A ratio applied to the fonts height to be more like browsers' line height

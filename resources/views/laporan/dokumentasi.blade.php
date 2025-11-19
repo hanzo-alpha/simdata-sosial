@@ -52,7 +52,8 @@
                 @if ($model->count() > 0)
                     @forelse ($model->foto_penyerahan as $foto)
                         <div class="img-border" >
-                            <img class="img-foto" src="./storage/{{ $foto }}" alt="foto" />
+                            <img class="img-foto" src="{{ asset('storage/' . $foto) }}"
+                                 alt="foto penyerahan" />
                         </div>
                     @empty
                         <span></span>
@@ -75,8 +76,8 @@
                     <div>
                         <img
                             style="width: 600px"
-                            src="./storage/{{ $model->bantuan_rastra->foto_ktp_kk }}"
-                            alt="foto"
+                            src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
+                            alt="foto ktp kk"
                         />
                     </div>
                 @endif
