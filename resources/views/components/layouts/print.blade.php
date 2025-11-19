@@ -241,7 +241,7 @@
 
         <script type="text/php">
             if (isset($pdf) && $PAGE_COUNT > 1) {
-                $text = "{{ __('invoices::invoice.page') }} {PAGE_NUM} / {PAGE_COUNT}";
+                $text = "{PAGE_NUM} / {PAGE_COUNT}";
                                 $size = 10;
                                 $font = $fontMetrics->getFont("Verdana");
                                 $width = $fontMetrics->get_text_width($text, $font, $size) / 2;

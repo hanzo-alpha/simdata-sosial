@@ -232,7 +232,7 @@ return [
          *
          * @var bool
          */
-        'enable_php' => true,
+        'enable_php' => false,
 
         /**
          * Rnable inline JavaScript
