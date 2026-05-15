@@ -8,22 +8,17 @@ use App\Enums\StatusPenyaluran;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 
 class PenyaluranBantuanPpks extends Model
 {
+    use LogsActivity;
     use SoftDeletes;
-
-    protected $casts = [
-        'tgl_penyerahan' => 'datetime',
-        'foto_penyerahan' => 'array',
-        'status_penyaluran' => StatusPenyaluran::class,
-    ];
 
     protected $appends = [
         'location',
     ];
-
-    protected $with = ['bantuan_ppks'];
 
     public static function getLatLngAttributes(): array
     {
@@ -36,6 +31,14 @@ class PenyaluranBantuanPpks extends Model
     public static function getComputedLocation(): string
     {
         return 'location';
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     public function bantuan_ppks(): BelongsTo
@@ -58,5 +61,14 @@ class PenyaluranBantuanPpks extends Model
             $this->attributes['lng'] = $location['lng'];
             unset($this->attributes['location']);
         }
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'tgl_penyerahan' => 'datetime',
+            'foto_penyerahan' => 'array',
+            'status_penyaluran' => StatusPenyaluran::class,
+        ];
     }
 }

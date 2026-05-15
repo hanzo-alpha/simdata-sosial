@@ -56,7 +56,7 @@ class ManageBarangs extends ManageRecords
             Actions\Action::make('generate item bantuan')
                 ->label('Generate Item Bantuan Semua Kelurahan')
                 ->color('secondary')
-                ->form([
+                ->schema([
                     Section::make()->schema([
                         Select::make('jenis_bantuan')
                             ->relationship('jenisBantuan', 'alias')
@@ -93,9 +93,10 @@ class ManageBarangs extends ManageRecords
                 })
                 ->visible(fn() => auth()->user()->hasRole(superadmin_admin_roles()))
                 ->icon('heroicon-o-plus'),
+
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->mutateFormDataUsing(function (array $data) {
+                ->mutateDataUsing(function (array $data) {
                     $data['kode_barang'] ??= Helpers::generateKodeBarang();
                     return $data;
                 })

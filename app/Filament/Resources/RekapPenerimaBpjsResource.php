@@ -6,8 +6,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RekapPenerimaBpjsResource\Pages;
 use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Models\Provinsi;
 use App\Models\RekapPenerimaBpjs;
 use BackedEnum;
@@ -89,30 +87,13 @@ class RekapPenerimaBpjsResource extends Resource
                             ->searchable()
                             ->live()
                             ->native(false)
-                            ->options(function (callable $get) {
-                                $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if ( ! $kab) {
-                                    return Kecamatan::where(
-                                        'kabupaten_code',
-                                        setting('app.kodekab', config('custom.default.kodekab')),
-                                    )
-                                        ->pluck('name', 'code');
-                                }
-
-                                return $kab->pluck('name', 'code');
-                            })
+                            ->options(fn(callable $get) => get_kecamatan_options($get('kabupaten')))
                             ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->required()
                             ->native(false)
-                            ->options(fn(callable $get) => Kelurahan::query()->where(
-                                'kecamatan_code',
-                                $get('kecamatan'),
-                            )?->pluck(
-                                'name',
-                                'code',
-                            ))
+                            ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                             ->live()
                             ->searchable(),
                         Select::make('bulan')
@@ -188,18 +169,13 @@ class RekapPenerimaBpjsResource extends Resource
                     ->indicator('Wilayah')
                     ->form([
                         Select::make('kecamatan')
-                            ->options(fn() => Kecamatan::query()
-                                ->where('kabupaten_code', setting('app.kodekab'))
-                                ->pluck('name', 'code'))
+                            ->options(get_kecamatan_options())
                             ->live()
                             ->searchable()
                             ->native(false)
                             ->columnSpanFull(),
                         Select::make('kelurahan')
-                            ->options(fn(callable $get) => Kelurahan::query()
-                                ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                                ->where('kecamatan_code', $get('kecamatan'))
-                                ->pluck('name', 'code'))
+                            ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                             ->searchable()
                             ->native(false)
                             ->columnSpanFull(),
@@ -218,11 +194,11 @@ class RekapPenerimaBpjsResource extends Resource
                     ->options(list_bulan())
                     ->searchable(),
             ])
-            ->actions([
+            ->recordActions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),

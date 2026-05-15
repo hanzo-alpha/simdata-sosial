@@ -38,7 +38,21 @@ class UserResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['name', 'email', 'instansi.name'];
+        return ['name', 'email'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Email' => $record->email,
+            'Instansi' => $record->instansi?->name,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->with(['instansi']);
     }
 
     public static function form(Schema $schema): Schema
@@ -68,14 +82,7 @@ class UserResource extends Resource
                 Forms\Components\Select::make('instansi_id')
                     ->nullable()
                     ->unique(ignoreRecord: true)
-                    ->options(
-                        Kelurahan::query()
-                            ->whereIn(
-                                'kecamatan_code',
-                                config('custom.kode_kecamatan'),
-                            )
-                            ->pluck('name', 'code'),
-                    )
+                    ->options(get_kelurahan_options())
                     ->searchable()
                     ->label('Instansi')
                     ->live(onBlur: true)
@@ -130,20 +137,20 @@ class UserResource extends Resource
             ->filters([
 
             ])
-            ->toggleColumnsTriggerAction(
+            ->columnManagerTriggerAction(
                 fn(Action $action) => $action
                     ->iconButton()
 //                    ->tooltip('Tampilkan / Sembunyikan Kolom Tabel')
                     ->label('Tampilkan / Sembunyikan Kolom Tabel'),
             )
-            ->actions([
+            ->recordActions([
                 Actions\EditAction::make()
                     ->closeModalByClickingAway(false),
                 Actions\DeleteAction::make()
                     ->closeModalByClickingAway(false)
                     ->hidden(fn(Model $record) => 1 === $record->id),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->label('Hapus Terpilih')

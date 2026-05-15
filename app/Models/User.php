@@ -31,12 +31,6 @@ class User extends Authenticatable implements FilamentUser
 
     protected $guarded = [];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-        'is_admin' => StatusAdminEnum::class,
-    ];
-
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
@@ -45,5 +39,14 @@ class User extends Authenticatable implements FilamentUser
     public function instansi(): BelongsTo
     {
         return $this->belongsTo(Kelurahan::class, 'instansi_id', 'code');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'is_admin' => StatusAdminEnum::class,
+        ];
     }
 }

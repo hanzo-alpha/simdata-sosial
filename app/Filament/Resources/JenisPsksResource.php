@@ -68,14 +68,14 @@ class JenisPsksResource extends Resource
             ->filters([
 
             ])
-            ->actions([
+            ->recordActions([
                 Actions\ActionGroup::make([
                     Actions\ViewAction::make(),
                     Actions\EditAction::make(),
                     Actions\DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),

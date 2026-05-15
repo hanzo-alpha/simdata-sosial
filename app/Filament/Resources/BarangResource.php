@@ -7,7 +7,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BarangResource\Pages;
 use App\Models\Barang;
 use App\Models\JenisBantuan;
-use App\Models\Kelurahan;
 use App\Supports\Helpers;
 use Awcodes\BadgeableColumn\Components\Badge;
 use Awcodes\BadgeableColumn\Components\BadgeableColumn;
@@ -49,16 +48,7 @@ class BarangResource extends Resource
                 Select::make('kode_kelurahan')
                     ->label('Kelurahan')
                     ->required()
-                    ->options(Kelurahan::query()
-                        ->when(
-                            auth()->user()->instansi_id,
-                            fn(Builder $query) => $query->where(
-                                'code',
-                                auth()->user()->instansi_id,
-                            ),
-                        )
-                        ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                        ?->pluck('name', 'code'))
+                    ->options(get_kelurahan_options())
                     ->native(false)
                     ->searchable(),
                 Forms\Components\TextInput::make('nama_barang')
@@ -143,7 +133,7 @@ class BarangResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('kode_kelurahan')
                     ->label('Kelurahan')
-                    ->options(Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->pluck('name', 'code'))
+                    ->options(get_kelurahan_options())
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('jenis_bantuan_id')

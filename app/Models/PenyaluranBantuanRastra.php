@@ -10,22 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 
 class PenyaluranBantuanRastra extends Model
 {
+    use LogsActivity;
     use SoftDeletes;
 
     protected $table = 'penyaluran_bantuan_rastra';
-
-    protected $casts = [
-        'tgl_penyerahan' => 'datetime',
-        'foto_penyerahan' => 'array',
-        'status_penyaluran' => StatusPenyaluran::class,
-    ];
-
-    protected $with = [
-        'bantuan_rastra',
-    ];
 
     protected $appends = [
         'location',
@@ -44,6 +37,14 @@ class PenyaluranBantuanRastra extends Model
         return 'location';
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
     public function penandatangan(): BelongsTo
     {
         return $this->belongsTo(Penandatangan::class);
@@ -51,7 +52,7 @@ class PenyaluranBantuanRastra extends Model
 
     public function bantuan_rastra(): BelongsTo
     {
-        return $this->belongsTo(BantuanRastra::class);
+        return $this->belongsTo(BantuanRastra::class)->withTrashed();
     }
 
     public function beritaAcara(): BelongsTo
@@ -96,5 +97,14 @@ class PenyaluranBantuanRastra extends Model
                 Storage::disk('public')->delete($image);
             }
         });
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'tgl_penyerahan' => 'datetime',
+            'foto_penyerahan' => 'array',
+            'status_penyaluran' => StatusPenyaluran::class,
+        ];
     }
 }

@@ -55,4 +55,10 @@ final class Kecamatan extends Model
             'provinsi_code',
         );
     }
+
+    protected static function booted(): void
+    {
+        static::saved(fn($kecamatan) => cache()->forget('kecamatan_options_' . $kecamatan->kabupaten_code));
+        static::deleted(fn($kecamatan) => cache()->forget('kecamatan_options_' . $kecamatan->kabupaten_code));
+    }
 }

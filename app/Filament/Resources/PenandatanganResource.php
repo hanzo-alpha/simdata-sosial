@@ -146,11 +146,11 @@ class PenandatanganResource extends Resource
                     ->preload(),
             ])
             ->deferLoading()
-            ->actions([
+            ->recordActions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),
@@ -166,11 +166,6 @@ class PenandatanganResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery();
-        }
-
-        return parent::getEloquentQuery()
-            ->where('kode_instansi', auth()->user()->instansi_id);
+        return parent::getEloquentQuery();
     }
 }

@@ -9,6 +9,7 @@ use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -33,6 +34,7 @@ use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
 use Outerweb\FilamentSettings\SettingsPlugin as FilamentSettingsPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
+use SpyApp\ThemeEdinburgh\ThemeEdinburghPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -65,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
                     ->enableTwoFactorAuthentication(),
                 SpotlightPlugin::make(),
                 FilamentShieldPlugin::make(),
+                ThemeEdinburghPlugin::make(),
                 CuratorPlugin::make()
                     ->label('Media')
                     ->pluralLabel('Media')
@@ -85,7 +88,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Pengaturan')
                     ->navigationLabel('Pengumuman')
                     ->bannerManagerAccessPermission('page_BannerManagerPage'),
-                //                GlobalSearchModalPlugin::make(),
+                GlobalSearchModalPlugin::make(),
             ])
             ->databaseNotifications()
             ->favicon(asset('images/reno/reno-dinsos-favicon-white.png'))
@@ -128,8 +131,8 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ], isPersistent: true)
-//            ->globalSearchKeyBindings(['ctrl+alt+s'])
-//            ->globalSearchFieldKeyBindingSuffix()
+            ->globalSearchKeyBindings(['ctrl+alt+s'])
+            ->globalSearchFieldKeyBindingSuffix()
             ->globalSearchFieldSuffix(fn(): ?string => match (Platform::detect()) {
                 Platform::Windows => 'CTRL+ALT+S',
                 Platform::Linux,
@@ -141,7 +144,7 @@ class AdminPanelProvider extends PanelProvider
             ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
-//            ->resources([
+            //            ->resources([
 //                config('filament-logger.activity_resource'),
 //            ])
             ->viteTheme('resources/css/filament/admin/theme.css');

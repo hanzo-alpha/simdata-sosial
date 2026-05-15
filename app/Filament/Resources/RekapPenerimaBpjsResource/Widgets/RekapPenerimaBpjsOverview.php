@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\RekapPenerimaBpjsResource\Widgets;
 
-use App\Models\Kecamatan;
 use App\Models\RekapPenerimaBpjs;
 use App\Traits\HasGlobalFilters;
 use App\Traits\HasWidgetShield;
@@ -38,10 +37,10 @@ class RekapPenerimaBpjsOverview extends BaseWidget
         $overview = $this->getOverview($statistik);
         $results = [];
 
-        $listKecamatan = Kecamatan::query()
-            ->where('kabupaten_code', setting('app.kodekab'))
-            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('code', $filters['kecamatan']))
-            ->pluck('name', 'code');
+        $listKecamatan = get_kecamatan_options();
+        if ($filters['kecamatan']) {
+            $listKecamatan = array_intersect_key($listKecamatan, array_flip([$filters['kecamatan']]));
+        }
 
         foreach ($listKecamatan as $code => $name) {
             $value = RekapPenerimaBpjs::query()

@@ -23,12 +23,6 @@ final class MutasiBpjs extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'alasan_mutasi' => AlasanBpjsEnum::class,
-        'status_mutasi' => StatusMutasi::class,
-        'tipe_mutasi' => TipeMutasiEnum::class,
-    ];
-
     protected $with = ['peserta', 'bantuanBpjs'];
 
     public function peserta(): BelongsTo
@@ -49,5 +43,14 @@ final class MutasiBpjs extends Model
     public function lampiran(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'media_id', 'id');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'alasan_mutasi' => AlasanBpjsEnum::class,
+            'status_mutasi' => StatusMutasi::class,
+            'tipe_mutasi' => TipeMutasiEnum::class,
+        ];
     }
 }

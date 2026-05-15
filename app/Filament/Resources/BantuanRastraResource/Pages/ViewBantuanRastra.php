@@ -37,7 +37,7 @@ final class ViewBantuanRastra extends ViewRecord
                 ->icon('heroicon-s-arrow-path-rounded-square')
                 ->color('success')
                 ->disabled($this->enableInputLimitDate('rastra'))
-                ->form([
+                ->schema([
                     Grid::make()->schema([
                         TextInput::make('nokk')
                             ->label('No. KK Pengganti')

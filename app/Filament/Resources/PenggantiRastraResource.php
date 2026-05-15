@@ -21,6 +21,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use UnitEnum;
 
@@ -165,12 +166,14 @@ final class PenggantiRastraResource extends Resource
                     ->searchable(),
             ])
             ->deferFilters()
-            ->actions([
+            ->recordActions([
                 Actions\ViewAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data pengganti Rastra')),
                 ]),
             ]);
     }

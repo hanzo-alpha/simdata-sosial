@@ -79,12 +79,12 @@ final class JenisBantuanResource extends Resource
             ->filters([
 
             ])
-            ->actions([
+            ->recordActions([
                 Actions\ActionGroup::make([
                     Actions\EditAction::make(),
                 ]),
             ])
-            ->bulkActions([
+            ->toolbarActions([
 
             ])
             ->emptyStateActions([

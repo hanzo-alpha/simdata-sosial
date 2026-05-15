@@ -20,7 +20,7 @@ use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
 
 class ListBantuanBpjs extends ListRecords
 {
@@ -92,7 +92,7 @@ class ListBantuanBpjs extends ListRecords
                 ->modalSubmitActionLabel('Unggah')
                 ->color('info')
                 ->modalIcon('heroicon-o-arrow-up-tray')
-                ->form([
+                ->schema([
                     FileUpload::make('attachment')
                         ->label('Impor')
                         ->hiddenLabel()

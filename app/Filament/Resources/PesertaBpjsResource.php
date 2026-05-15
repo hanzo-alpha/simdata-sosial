@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PesertaBpjsResource\Pages\ManagePesertaBpjs;
 use App\Imports\ImportPesertaBpjs;
 use App\Models\PesertaBpjs;
+use App\Rules\NikValidationRule;
 use BackedEnum;
 use Filament\Actions;
 use Filament\Forms;
@@ -73,8 +74,7 @@ final class PesertaBpjsResource extends Resource
                     ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
                         $livewire->validateOnly($component->getStatePath());
                     })
-                    ->minLength(16)
-                    ->maxLength(16)
+                    ->rule(new NikValidationRule(checkMaster: false))
                     ->visibleOn(['edit', 'view']),
                 Forms\Components\TextInput::make('nama_lengkap')
                     ->maxLength(255)
@@ -139,14 +139,14 @@ final class PesertaBpjsResource extends Resource
             ->filters([
 
             ])
-            ->actions([
+            ->recordActions([
                 Actions\ActionGroup::make([
                     Actions\ViewAction::make(),
                     Actions\EditAction::make(),
                     Actions\DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
                 ]),
@@ -162,11 +162,6 @@ final class PesertaBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery();
-        }
-
         return parent::getEloquentQuery();
-        //            ->where('kelurahan', auth()->user()->instansi_id);
     }
 }

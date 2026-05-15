@@ -17,7 +17,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
 
 class ManageMutasiBpjs extends ManageRecords
 {
@@ -61,7 +61,7 @@ class ManageMutasiBpjs extends ManageRecords
                 ->icon('heroicon-o-plus')
                 ->model(MutasiBpjs::class)
                 ->disabled($this->enableInputLimitDate('mutasi'))
-                ->mutateFormDataUsing(function (array $data) {
+                ->mutateDataUsing(function (array $data) {
                     $data['model_name'] = PesertaBpjs::class;
                     $data['tipe_mutasi'] ??= TipeMutasiEnum::PESERTA_BPJS;
                     $data['nomor_kartu'] = PesertaBpjs::find($data['peserta_bpjs_id'])->nomor_kartu;

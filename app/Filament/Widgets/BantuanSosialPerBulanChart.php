@@ -10,8 +10,6 @@ use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Traits\HasWidgetShield;
 use Carbon\Carbon;
 use Filament\Forms\Components\Select;
@@ -45,17 +43,11 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
                 ->options(list_bulan())
                 ->native(false),
             Select::make('kecamatan')
-                ->options(
-                    Kecamatan::query()
-                        ->where('kabupaten_code', setting('app.kodekab'))
-                        ->pluck('name', 'code'),
-                )
+                ->options(get_kecamatan_options())
                 ->live()
                 ->native(false),
             Select::make('kelurahan')
-                ->options(fn(callable $get): \Illuminate\Support\Collection => Kelurahan::query()
-                    ->where('kecamatan_code', $get('kecamatan'))
-                    ->pluck('name', 'code'))
+                ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                 ->native(false),
             ToggleButtons::make('cTipe')
                 ->default('bar')

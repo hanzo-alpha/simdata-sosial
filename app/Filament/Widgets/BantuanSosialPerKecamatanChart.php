@@ -9,7 +9,6 @@ use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
-use App\Models\Kecamatan;
 use App\Models\RekapPenerimaBpjs;
 use App\Traits\HasGlobalFilters;
 use App\Traits\HasWidgetShield;
@@ -80,8 +79,7 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
         $colors = ['#f59e0b', '#03A9F4', '#FDD835', '#BA68C8', '#66BB6A'];
         $gradientColors = ['#fbbf24', '#79cdf2', '#ffeb9b', '#c197c9', '#96e098'];
 
-        $kec = Kecamatan::where('kabupaten_code', setting('app.kodekab', config('custom.default.kodekab')))
-            ->pluck('name', 'code');
+        $kec = get_kecamatan_options();
 
         $jenisBantuan = JenisBantuan::pluck('alias', 'id');
 

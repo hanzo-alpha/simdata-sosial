@@ -13,14 +13,15 @@ use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
 use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
+use App\Rules\NikValidationRule;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use BackedEnum;
 use Filament\Actions;
-use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
@@ -29,6 +30,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
@@ -36,7 +38,9 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use UnitEnum;
@@ -52,6 +56,20 @@ class BantuanRastraResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 4;
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nik', 'no_kk', 'nama_lengkap'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'NIK' => $record->nik,
+            'Kecamatan' => $record->kec?->name,
+            'Kelurahan' => $record->kel?->name,
+        ];
+    }
 
     public static function table(Table $table): Table
     {
@@ -96,9 +114,7 @@ class BantuanRastraResource extends Resource
                     ->label('Alamat')
                     ->sortable()
                     ->toggleable()
-                    ->description(function ($record): void {
-                        'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name;
-                    })
+                    ->description(fn($record): string => 'Kec. ' . $record->kec->name . ' Kel. ' . $record->kel->name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kec.name')
                     ->label('Kecamatan')
@@ -134,20 +150,15 @@ class BantuanRastraResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('keckel')
                     ->indicator('Wilayah')
-                    ->form([
-                        Forms\Components\Select::make('kecamatan')
-                            ->options(fn() => Kecamatan::query()
-                                ->where('kabupaten_code', setting('app.kodekab'))
-                                ->pluck('name', 'code'))
+                    ->schema([
+                        Select::make('kecamatan')
+                            ->options(get_kecamatan_options())
                             ->live()
                             ->searchable()
                             ->native(false)
                             ->columnSpanFull(),
-                        Forms\Components\Select::make('kelurahan')
-                            ->options(fn(callable $get) => Kelurahan::query()
-                                ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                                ->where('kecamatan_code', $get('kecamatan'))
-                                ->pluck('name', 'code'))
+                        Select::make('kelurahan')
+                            ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                             ->searchable()
                             ->native(false)
                             ->columnSpanFull(),
@@ -181,7 +192,7 @@ class BantuanRastraResource extends Resource
             ->deferFilters()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
-            ->actions([
+            ->recordActions([
                 Actions\ActionGroup::make([
                     Actions\ViewAction::make(),
                     Actions\EditAction::make(),
@@ -210,7 +221,7 @@ class BantuanRastraResource extends Resource
                         ->icon('heroicon-s-check-badge')
                         ->schema([
                             Section::make()->schema([
-                                Forms\Components\ToggleButtons::make('status_verifikasi')
+                                ToggleButtons::make('status_verifikasi')
                                     ->options(StatusVerifikasiEnum::class)
                                     ->enum(StatusVerifikasiEnum::class)
                                     ->label('Status Verifikasi')
@@ -269,30 +280,12 @@ class BantuanRastraResource extends Resource
                                     ->required()
                                     ->searchable()
                                     ->reactive()
-                                    ->options(function () {
-                                        $kab = Kecamatan::query()
-                                            ->where('kabupaten_code', setting(
-                                                'app.kodekab',
-                                                config('custom.default.kodekab'),
-                                            ));
-                                        if ( ! $kab) {
-                                            return Kecamatan::where('kabupaten_code', setting(
-                                                'app.kodekab',
-                                                config('custom.default.kodekab'),
-                                            ))
-                                                ->pluck('name', 'code');
-                                        }
-
-                                        return $kab->pluck('name', 'code');
-                                    })
+                                    ->options(get_kecamatan_options())
                                     ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                                 Select::make('kelurahan')
                                     ->required()
-                                    ->options(fn(callable $get) => Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))?->pluck(
-                                        'name',
-                                        'code',
-                                    ))
+                                    ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                                     ->reactive()
                                     ->searchable(),
                                 Select::make('penggantiRastra.alasan_dikeluarkan')
@@ -361,28 +354,37 @@ class BantuanRastraResource extends Resource
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                    Actions\ForceDeleteBulkAction::make(),
-                    Actions\RestoreBulkAction::make(),
-                    ExportBulkAction::make()
-                        ->label('Ekspor Ke Excel')
-                        ->exports([
-                            ExportBantuanRastra::make(),
-                        ]),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data bantuan rastra')),
+                    Actions\ForceDeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus permanen masal ' . $records->count() . ' data bantuan rastra')),
+                    Actions\RestoreBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Pemulihan masal ' . $records->count() . ' data bantuan rastra')),
+                    // ExportBulkAction::make()
+                    //     ->label('Ekspor Ke Excel')
+                    //     ->exports([
+                    //         ExportBantuanRastra::make(),
+                    //     ]),
                     Actions\BulkAction::make('toggle aktif')
                         ->label('Toggle Status Aktif')
                         ->icon('heroicon-o-cursor-arrow-ripple')
-                        ->action(function ($records): void {
-                            $records->each(function ($records): void {
-                                $records->status_aktif = match ($records->status_aktif) {
+                        ->action(function (Collection $records): void {
+                            $records->each(function ($record): void {
+                                $record->status_aktif = match ($record->status_aktif) {
                                     StatusAktif::AKTIF => StatusAktif::NONAKTIF,
                                     StatusAktif::NONAKTIF => StatusAktif::AKTIF,
                                 };
 
-                                $records->save();
+                                $record->save();
                             });
                         })
-                        ->after(function (): void {
+                        ->after(function (Collection $records): void {
+                            activity()
+                                ->log('Ubah status aktif masal ' . $records->count() . ' data bantuan rastra');
+
                             Notification::make()
                                 ->success()
                                 ->title('Status Berhasil Diubah')
@@ -393,9 +395,9 @@ class BantuanRastraResource extends Resource
                     Actions\BulkAction::make('ubah_status_verifikasi')
                         ->label('Ubah Status Verifikasi')
                         ->icon('heroicon-o-check-badge')
-                        ->form([
+                        ->schema([
                             Section::make()->schema([
-                                Forms\Components\ToggleButtons::make('status_verifikasi')
+                                ToggleButtons::make('status_verifikasi')
                                     ->options(StatusVerifikasiEnum::class)
                                     ->enum(StatusVerifikasiEnum::class)
                                     ->label('Status Verifikasi')
@@ -405,14 +407,17 @@ class BantuanRastraResource extends Resource
                                     ->required(),
                             ]),
                         ])
-                        ->action(function ($records, array $data): void {
-                            $records->each(function ($records) use ($data): void {
-                                $records->status_verifikasi = $data['status_verifikasi'];
+                        ->action(function (Collection $records, array $data): void {
+                            $records->each(function ($record) use ($data): void {
+                                $record->status_verifikasi = $data['status_verifikasi'];
 
-                                $records->save();
+                                $record->save();
                             });
                         })
-                        ->after(function (): void {
+                        ->after(function (Collection $records): void {
+                            activity()
+                                ->log('Ubah status verifikasi masal ' . $records->count() . ' data bantuan rastra');
+
                             Notification::make()
                                 ->success()
                                 ->title('Status Berhasil Diubah')
@@ -431,19 +436,208 @@ class BantuanRastraResource extends Resource
             ->schema([
                 Group::make()->schema([
                     Section::make('Data Keluarga')
-                        ->schema(BantuanRastra::getKeluargaForm())->columns(2),
+                        ->schema(static::getKeluargaForm())->columns(2),
                     Section::make('Data Alamat')
-                        ->schema(BantuanRastra::getAlamatForm())->columns(2),
+                        ->schema(static::getAlamatForm())->columns(2),
                 ])->columnSpan(['lg' => 2]),
 
                 Group::make()->schema([
                     Section::make('Status')
-                        ->schema(BantuanRastra::getStatusForm()),
+                        ->schema(static::getStatusForm()),
 
                     Section::make('Verifikasi')
-                        ->schema(BantuanRastra::getUploadForm()),
+                        ->schema(static::getUploadForm()),
                 ])->columnSpan(1),
             ])->columns(3);
+    }
+
+    public static function getKeluargaForm(): array
+    {
+        return [
+            Select::make('status_dtks')
+                ->label('DTKS')
+                ->options(StatusDtksEnum::class)
+                ->preload()
+                ->default(StatusDtksEnum::DTKS)
+                ->lazy(),
+            TextInput::make('nokk')
+                ->label('No. Kartu Keluarga (KK)')
+                ->required()
+                ->live(debounce: 500)
+                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                    $livewire->validateOnly($component->getStatePath());
+                })
+                ->rule(new NikValidationRule()),
+            TextInput::make('nik')
+                ->label('No. Induk Kependudukan (NIK)')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->live(debounce: 500)
+                ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                    $livewire->validateOnly($component->getStatePath());
+                })
+                ->rule(new NikValidationRule(checkAllPrograms: true, ignoreModel: \App\Models\BantuanRastra::class)),
+            TextInput::make('nama_lengkap')
+                ->label('Nama Lengkap')
+                ->required()
+                ->maxLength(255),
+        ];
+    }
+
+    public static function getAlamatForm(): array
+    {
+        return [
+            Grid::make(2)
+                ->schema([
+                    TextInput::make('alamat')
+                        ->required()
+                        ->columnSpanFull(),
+                    Select::make('kecamatan')
+                        ->required()
+                        ->searchable()
+                        ->live(onBlur: true)
+                        ->native(false)
+                        ->options(get_kecamatan_options())
+                        ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+
+                    Select::make('kelurahan')
+                        ->required()
+                        ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
+                        ->live(onBlur: true)
+                        ->native(false)
+                        ->searchable(),
+                ]),
+
+            Grid::make(3)
+                ->schema([
+                    TextInput::make('dusun')
+                        ->label('Dusun')
+                        ->nullable(),
+                    TextInput::make('no_rt')
+                        ->label('RT')
+                        ->nullable(),
+                    TextInput::make('no_rw')
+                        ->label('RW')
+                        ->nullable(),
+                ]),
+        ];
+    }
+
+    public static function getStatusForm(): array
+    {
+        return [
+            Select::make('jenis_bantuan_id')
+                ->required()
+                ->searchable()
+                ->disabled()
+                ->hidden()
+                ->relationship(
+                    name: 'jenis_bantuan',
+                    titleAttribute: 'alias',
+                    modifyQueryUsing: fn(Builder $query) => $query->whereNotIn('id', [1, 2]),
+                )
+                ->default(5)
+                ->dehydrated(),
+
+            Select::make('status_verifikasi')
+                ->label('Status Verifikasi')
+                ->options(StatusVerifikasiEnum::class)
+                ->default(StatusVerifikasiEnum::UNVERIFIED)
+                ->preload()
+                ->visible(fn() => auth()->user()?->hasRole(superadmin_admin_roles())),
+
+            Select::make('status_rastra')
+                ->label('Status Rastra')
+                ->enum(StatusRastra::class)
+                ->options(StatusRastra::class)
+                ->default(StatusRastra::BARU)
+                ->live()
+                ->preload(),
+
+            Select::make('penggantiRastra.keluarga_id')
+                ->label('Keluarga Yang Diganti')
+                ->required()
+                ->options(BantuanRastra::query()
+                    ->where('status_rastra', StatusRastra::BARU)
+                    ->where('status_aktif', StatusAktif::AKTIF)
+                    ->pluck('nama_lengkap', 'id'))
+                ->searchable(['nama_lengkap', 'nik', 'nokk'])
+                ->lazy()
+                ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
+                ->preload(),
+
+            Select::make('penggantiRastra.alasan_dikeluarkan')
+                ->searchable()
+                ->options(AlasanEnum::class)
+                ->enum(AlasanEnum::class)
+                ->native(false)
+                ->preload()
+                ->lazy()
+                ->required()
+                ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
+                ->default(AlasanEnum::PINDAH),
+
+            CuratorPicker::make('penggantiRastra.media_id')
+                ->label('Upload Berita Acara Pengganti')
+                ->relationship('beritaAcara', 'id')
+                ->buttonLabel('Tambah File')
+                ->required()
+                ->preserveFilenames()
+                ->visible(fn(Get $get) => StatusRastra::PENGGANTI === $get('status_rastra'))
+                ->maxSize(2048),
+
+            TextInput::make('keterangan')
+                ->label('Keterangan')->nullable(),
+
+            ToggleButtons::make('status_aktif')
+                ->label('Status Aktif')
+                ->enum(StatusAktif::class)
+                ->options(StatusAktif::class)
+                ->default(StatusAktif::AKTIF)
+                ->inline(),
+        ];
+    }
+
+    public static function getUploadForm(): array
+    {
+        return [
+            DateTimePicker::make('created_at')
+                ->label('Tgl. Penyerahan')
+                ->disabled()
+                ->default(now())
+                ->displayFormat('d/M/Y H:i:s')
+                ->dehydrated(),
+            FileUpload::make('foto_ktp_kk')
+                ->label('Unggah Foto KTP / KK')
+                ->image()
+                ->imageEditor()
+                ->reorderable()
+                ->disk('public')
+                ->openable()
+                ->downloadable()
+                ->imageEditor()
+                ->imageEditorAspectRatioOptions([
+                    null,
+                    '16:9',
+                    '4:3',
+                    '1:1',
+                ])
+                ->unique(ignoreRecord: true)
+                ->helperText('maks. 2MB')
+                ->maxFiles(1)
+                ->maxSize(2048)
+                ->columnSpanFull()
+                ->imagePreviewHeight('250')
+                ->previewable(true),
+
+            CuratorPicker::make('media_id')
+                ->label('Upload Berita Acara')
+                ->buttonLabel('Tambah File')
+                ->relationship('beritaAcara', 'id')
+                ->nullable()
+                ->preserveFilenames()
+                ->columnSpanFull(),
+        ];
     }
 
     public static function infolist(Schema $schema): Schema
@@ -596,15 +790,8 @@ class BantuanRastraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery()
-                ->withoutGlobalScopes([
-                    SoftDeletingScope::class,
-                ]);
-        }
-
         return parent::getEloquentQuery()
-            ->where('kelurahan', auth()->user()->instansi_id)
+            ->with(['kec', 'kel', 'penggantiRastra'])
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

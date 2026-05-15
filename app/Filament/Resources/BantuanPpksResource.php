@@ -17,16 +17,16 @@ use App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use App\Models\TipePpks;
-use Awcodes\TableRepeater\Header;
+use App\Rules\NikValidationRule;
 use BackedEnum;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\ImageEntry;
@@ -45,6 +45,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -66,7 +67,16 @@ class BantuanPpksResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['nokk', 'nik', 'nama_lengkap', 'kel.name', 'kec.name', 'kab.name'];
+        return ['nokk', 'nik', 'nama_lengkap'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'NIK' => $record->nik,
+            'Kecamatan' => $record->kec?->name,
+            'Kelurahan' => $record->kel?->name,
+        ];
     }
 
     public static function getWidgets(): array
@@ -97,8 +107,7 @@ class BantuanPpksResource extends Resource
                                 ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
                                     $livewire->validateOnly($component->getStatePath());
                                 })
-                                ->minLength(16)
-                                ->maxLength(16),
+                                ->rule(new NikValidationRule()),
                             TextInput::make('nik')
                                 ->label('No. Induk Kependudukan (NIK)')
                                 ->required()
@@ -107,8 +116,11 @@ class BantuanPpksResource extends Resource
                                 ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
                                     $livewire->validateOnly($component->getStatePath());
                                 })
-                                ->minLength(16)
-                                ->maxLength(16),
+                                ->rule(fn($record, $state) => new NikValidationRule(
+                                    checkMaster: ! ($record && $record->nik === $state),
+                                    checkAllPrograms: true,
+                                    ignoreModel: \App\Models\BantuanPpks::class,
+                                )),
                             TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
                                 ->required()
@@ -211,13 +223,13 @@ class BantuanPpksResource extends Resource
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->addActionLabel('Tambah Detail Bantuan')
-                                ->headers([
-                                    Header::make('Item Bantuan')->align('center'),
-                                    Header::make('Nama Bantuan')->align('center'),
-                                    Header::make('Jumlah')->align('center'),
-                                    Header::make('Jenis Anggaran')->align('center'),
-                                    Header::make('Tahun Anggaran')->align('center'),
-                                    Header::make('Bansos Diterima')->align('center'),
+                                ->table([
+                                    TableColumn::make('Item Bantuan'),
+                                    TableColumn::make('Nama Bantuan'),
+                                    TableColumn::make('Jumlah'),
+                                    TableColumn::make('Jenis Anggaran'),
+                                    TableColumn::make('Tahun Anggaran'),
+                                    TableColumn::make('Bansos Diterima'),
                                 ])
                                 ->schema([
                                     Forms\Components\Select::make('barang_id')
@@ -322,38 +334,13 @@ class BantuanPpksResource extends Resource
                                         ->searchable()
                                         ->live()
                                         ->native(false)
-                                        ->options(function (callable $get) {
-                                            $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                            if ( ! $kab) {
-                                                return Kecamatan::where(
-                                                    'kabupaten_code',
-                                                    setting('app.kodekab', config('custom.default.kodekab')),
-                                                )
-                                                    ->pluck('name', 'code');
-                                            }
-
-                                            return $kab->pluck('name', 'code');
-                                        })
+                                        ->options(fn(callable $get) => get_kecamatan_options($get('kabupaten')))
                                         ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                                     Select::make('kelurahan')
                                         ->required()
                                         ->native(false)
-                                        ->options(fn(callable $get) => Kelurahan::query()
-                                            ->when(
-                                                auth()->user()->instansi_id,
-                                                fn(Builder $query) => $query->where(
-                                                    'code',
-                                                    auth()->user()->instansi_id,
-                                                ),
-                                            )
-                                            ->where(
-                                                'kecamatan_code',
-                                                $get('kecamatan'),
-                                            )?->pluck(
-                                                'name',
-                                                'code',
-                                            ))
+                                        ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                                         ->live()
                                         ->searchable(),
                                 ]),
@@ -748,8 +735,15 @@ class BantuanPpksResource extends Resource
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                    Actions\ForceDeleteBulkAction::make(),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data bantuan PPKS')),
+                    Actions\ForceDeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus permanen masal ' . $records->count() . ' data bantuan PPKS')),
+                    Actions\RestoreBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Pemulihan masal ' . $records->count() . ' data bantuan PPKS')),
                     ExportBulkAction::make()
                         ->label('Ekspor Ke Excel')
                         ->exports([
@@ -977,7 +971,7 @@ class BantuanPpksResource extends Resource
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()
-            ->with(['nama_lengkap', 'dtks_id', 'nik', 'nokk']);
+            ->with(['kec', 'kel']);
     }
 
     public static function getRelations(): array
@@ -999,15 +993,8 @@ class BantuanPpksResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery()
-                ->withoutGlobalScopes([
-                    SoftDeletingScope::class,
-                ]);
-        }
-
         return parent::getEloquentQuery()
-            ->where('kelurahan', auth()->user()->instansi_id)
+            ->with(['detailBantuanPpks', 'tipe_ppks', 'bansosDiterima', 'kab', 'kec', 'kel'])
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

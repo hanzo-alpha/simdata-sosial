@@ -13,7 +13,7 @@ class PdfController extends Controller
 {
     public function cetakDokumentasiRastra(Request $request): Response
     {
-        $model = $request->get('m')::find($request->get('id'));
+        $model = $this->getRecord($request->input('m'), $request->input('id'));
         $pdf = PDF::loadView('laporan.dokumentasi', compact('model'));
         $pdf->setOption([
             'defaultFont' => 'sans-serif',
@@ -24,7 +24,7 @@ class PdfController extends Controller
 
     public function cetakDokumentasi(Request $request): Response
     {
-        $model = $request->get('m')::find($request->get('id'));
+        $model = $this->getRecord($request->input('m'), $request->input('id'));
         $pdf = PDF::loadView('laporan.dokumentasi-ppks', compact('model'));
         $pdf->setOption([
             'dpi' => 96,
@@ -36,8 +36,8 @@ class PdfController extends Controller
 
     public function downloadBeritaAcara(Request $request): Response
     {
-        $data = $request->has('d') ? $request->get('d') : [];
-        $record = $request->get('m')::find($request->get('id'));
+        $data = $request->has('d') ? $request->input('d') : [];
+        $record = $this->getRecord($request->input('m'), $request->input('id'));
         $pdf = PDF::loadView('laporan.ba', compact('record', 'data'));
         $pdf->setOption([
             'dpi' => 120,
@@ -50,9 +50,9 @@ class PdfController extends Controller
 
     public function cetakBeritaAcaraPpks(Request $request): Response
     {
-        $data = $request->has('d') ? $request->get('d') : [];
-        $records = $request->has('m') ? $request->get('m') : BantuanPpks::class;
-        $record = $records::find($request->get('id'));
+        $data = $request->has('d') ? $request->input('d') : [];
+        $modelClass = $request->input('m', BantuanPpks::class);
+        $record = $this->getRecord($modelClass, $request->input('id'));
         $pdf = PDF::loadView('laporan.ba-ppks', compact('record', 'data'));
         $pdf->setOption([
             'dpi' => 120,
@@ -61,5 +61,16 @@ class PdfController extends Controller
         ]);
 
         return $pdf->stream('bast-ppks.pdf');
+    }
+
+    private function getRecord(string $modelClass, mixed $id)
+    {
+        $query = $modelClass::query();
+
+        if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses_recursive($modelClass))) {
+            $query->withTrashed();
+        }
+
+        return $query->find($id);
     }
 }

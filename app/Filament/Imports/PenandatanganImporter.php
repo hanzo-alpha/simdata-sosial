@@ -134,4 +134,11 @@ class PenandatanganImporter extends Importer
     {
         return 'redis';
     }
+
+    public function completed(): void
+    {
+        activity()
+            ->performedOn($this->getImport())
+            ->log('Impor penandatangan selesai: ' . number_format($this->getImport()->successful_rows) . ' baris berhasil.');
+    }
 }

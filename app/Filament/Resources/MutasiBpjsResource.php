@@ -23,6 +23,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use UnitEnum;
 
 final class MutasiBpjsResource extends Resource
@@ -192,7 +193,7 @@ final class MutasiBpjsResource extends Resource
             ->hiddenFilterIndicators()
             ->deferLoading()
             ->deferFilters()
-            ->actions([
+            ->recordActions([
                 Actions\EditAction::make()
                     ->using(function (Model $record, array $data): Model {
                         $data['nomor_kartu'] = $record->peserta->nomor_kartu;
@@ -207,11 +208,17 @@ final class MutasiBpjsResource extends Resource
                 Actions\ForceDeleteAction::make(),
                 Actions\RestoreAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                    Actions\ForceDeleteBulkAction::make(),
-                    Actions\RestoreBulkAction::make(),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data mutasi BPJS')),
+                    Actions\ForceDeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus permanen masal ' . $records->count() . ' data mutasi BPJS')),
+                    Actions\RestoreBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Memulihkan masal ' . $records->count() . ' data mutasi BPJS')),
                 ]),
             ]);
     }

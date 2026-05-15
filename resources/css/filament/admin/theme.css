@@ -96,3 +96,5 @@
 .dark .fi-sidebar-nav {
     border-right: 1px solid var(--color-sidebar-border);
 }
+
+@import '../../../../vendor/spykapps/theme-edinburgh/resources/css/edinburgh.css';

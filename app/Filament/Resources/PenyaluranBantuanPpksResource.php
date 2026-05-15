@@ -24,6 +24,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use UnitEnum;
 
 class PenyaluranBantuanPpksResource extends Resource
@@ -206,7 +207,7 @@ class PenyaluranBantuanPpksResource extends Resource
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
-            ->actions([
+            ->recordActions([
                 Actions\Action::make('pdf')
                     ->label('Print Dokumentasi')
                     ->color('success')
@@ -218,9 +219,11 @@ class PenyaluranBantuanPpksResource extends Resource
                     Actions\DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data penyaluran PPKS')),
                 ]),
             ]);
     }
@@ -245,12 +248,14 @@ class PenyaluranBantuanPpksResource extends Resource
     {
         if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery()
+                ->with(['bantuan_ppks'])
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]);
         }
 
         return parent::getEloquentQuery()
+            ->with(['bantuan_ppks'])
             ->whereHas('bantuan_ppks', fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,

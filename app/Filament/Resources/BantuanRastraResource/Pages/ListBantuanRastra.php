@@ -17,7 +17,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
 
 class ListBantuanRastra extends ListRecords
 {

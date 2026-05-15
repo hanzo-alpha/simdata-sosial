@@ -19,7 +19,7 @@ final class ViewBantuanPkh extends ViewRecord
     {
         return [
             Actions\EditAction::make()
-                ->disabled($this->enableInputLimitDate('pkh')),
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 }

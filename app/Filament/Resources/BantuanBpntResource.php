@@ -25,7 +25,9 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use UnitEnum;
 
@@ -42,6 +44,26 @@ class BantuanBpntResource extends Resource
     protected static ?int $navigationSort = 2;
     protected static ?string $recordTitleAttribute = 'nama_penerima';
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nik', 'no_kk', 'nama_penerima'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'NIK' => $record->nik,
+            'Kecamatan' => $record->kec?->name,
+            'Kelurahan' => $record->kel?->name,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->with(['kec', 'kel']);
+    }
+
     public static function getWidgets(): array
     {
         return [
@@ -57,15 +79,14 @@ class BantuanBpntResource extends Resource
                 Section::make('Data Penerima Manfaat BPNT')
                     ->columnSpanFull()
                     ->schema([
-                        TextInput::make('no_nik')
+                        TextInput::make('nik')
                             ->label('No. Induk Kependudukan (NIK)')
                             ->required()
                             ->live(debounce: 500)
                             ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
                                 $livewire->validateOnly($component->getStatePath());
                             })
-                            ->minLength(16)
-                            ->maxLength(16),
+                            ->rule(new NikValidationRule(checkAllPrograms: true, ignoreModel: \App\Models\BantuanBpnt::class)),
                         TextInput::make('nama_penerima')
                             ->label('Nama Penerima')
                             ->required(),
@@ -106,32 +127,12 @@ class BantuanBpntResource extends Resource
                                 ->searchable()
                                 ->live()
                                 ->native(false)
-                                ->options(function (callable $get) {
-                                    $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                    if ( ! $kab) {
-                                        return Kecamatan::where('kabupaten_code', setting(
-                                            'app.kodekab',
-                                            config('custom.default.kodekab'),
-                                        ))
-                                            ->pluck('name', 'code');
-                                    }
-
-                                    return $kab->pluck('name', 'code');
-                                })
+                                ->options(fn(callable $get) => get_kecamatan_options($get('kabupaten')))
                                 ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                             Select::make('kelurahan')
                                 ->nullable()
-                                ->options(function (callable $get) {
-                                    $kel = Kelurahan::query()
-                                        ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
-                                            'code',
-                                            auth()->user()->instansi_id,
-                                        ))
-                                        ->where('kecamatan_code', $get('kecamatan'));
-
-                                    return $kel->clone()->pluck('name', 'code');
-                                })
+                                ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                                 ->live()
                                 ->native(false)
                                 ->searchable()
@@ -161,7 +162,7 @@ class BantuanBpntResource extends Resource
             Section::make('INFORMASI PENERIMA MANFAAT')
                 ->icon('heroicon-o-user')
                 ->schema([
-                    TextEntry::make('no_nik')
+                    TextEntry::make('nik')
                         ->label('NIK PENERIMA')
                         ->icon('heroicon-o-identification')
                         ->weight(FontWeight::SemiBold)
@@ -211,7 +212,7 @@ class BantuanBpntResource extends Resource
                     ->button(),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('no_nik')
+                Tables\Columns\TextColumn::make('nik')
                     ->label('N I K')
                     ->sortable()
                     ->toggleable()
@@ -248,18 +249,13 @@ class BantuanBpntResource extends Resource
                     ->indicator('Wilayah')
                     ->form([
                         Select::make('kecamatan')
-                            ->options(fn() => Kecamatan::query()
-                                ->where('kabupaten_code', setting('app.kodekab'))
-                                ->pluck('name', 'code'))
+                            ->options(get_kecamatan_options())
                             ->live()
                             ->searchable()
                             ->native(false)
                             ->columnSpanFull(),
                         Select::make('kelurahan')
-                            ->options(fn(callable $get) => Kelurahan::query()
-                                ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                                ->where('kecamatan_code', $get('kecamatan'))
-                                ->pluck('name', 'code'))
+                            ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                             ->searchable()
                             ->native(false)
                             ->columnSpanFull(),
@@ -278,7 +274,7 @@ class BantuanBpntResource extends Resource
             ->deferFilters()
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
-            ->actions([
+            ->recordActions([
                 Actions\ActionGroup::make([
                     Actions\ViewAction::make(),
                     Actions\EditAction::make(),
@@ -287,10 +283,17 @@ class BantuanBpntResource extends Resource
                     Actions\RestoreAction::make(),
                 ]),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                    Actions\ForceDeleteBulkAction::make(),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data bantuan BPNT')),
+                    Actions\ForceDeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus permanen masal ' . $records->count() . ' data bantuan BPNT')),
+                    Actions\RestoreBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Pemulihan masal ' . $records->count() . ' data bantuan BPNT')),
                 ]),
             ]);
     }
@@ -314,15 +317,8 @@ class BantuanBpntResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery()
-                ->withoutGlobalScopes([
-                    SoftDeletingScope::class,
-                ]);
-        }
-
         return parent::getEloquentQuery()
-            ->where('kelurahan', auth()->user()->instansi_id)
+            ->with(['prov', 'kab', 'kec', 'kel'])
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

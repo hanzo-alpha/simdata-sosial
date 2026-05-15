@@ -19,9 +19,9 @@ final class EditBantuanPkh extends EditRecord
     {
         return [
             Actions\ViewAction::make()
-                ->disabled($this->enableInputLimitDate('pkh')),
+                ->disabled($this->enableInputLimitDate()),
             Actions\DeleteAction::make()
-                ->disabled($this->enableInputLimitDate('pkh')),
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 }

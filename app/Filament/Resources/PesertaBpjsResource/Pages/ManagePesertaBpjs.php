@@ -33,7 +33,7 @@ class ManagePesertaBpjs extends ManageRecords
                 ->modalDescription('Unggah Peserta BPJS ke database')
                 ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-down-tray')
-                ->mutateFormDataUsing(function (array $data) {
+                ->mutateDataUsing(function (array $data) {
                     $data['bulan'] ??= now()->month;
                     $data['tahun'] ??= now()->year;
                     return $data;

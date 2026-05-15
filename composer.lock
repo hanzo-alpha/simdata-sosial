@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c3adf349fc7798f04521cda7b0f17cb",
+    "content-hash": "9eea7406b6f7050db195452a8890d3b3",
     "packages": [
         {
             "name": "aaronfrancis/fast-paginate",
@@ -9698,6 +9698,64 @@
                 }
             ],
             "time": "2026-03-23T22:56:56+00:00"
+        },
+        {
+            "name": "spykapps/theme-edinburgh",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SpykApp/theme-edinburgh.git",
+                "reference": "a0c76a12f237e03913b03747e5daae10a8c2c3f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SpykApp/theme-edinburgh/zipball/a0c76a12f237e03913b03747e5daae10a8c2c3f8",
+                "reference": "a0c76a12f237e03913b03747e5daae10a8c2c3f8",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SpyApp\\ThemeEdinburgh\\ThemeEdinburghServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SpyApp\\ThemeEdinburgh\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Spykapps",
+                    "email": "hello@spykapps.com"
+                }
+            ],
+            "description": "A royal Filament theme inspired by Edinburgh's Old Town — stone-gray surfaces, brass accents, heavy borders, and ornate details.",
+            "homepage": "https://spykapps.com/theme-edinburgh",
+            "keywords": [
+                "edinburgh",
+                "filament",
+                "filament-plugin",
+                "laravel",
+                "spykapps",
+                "theme"
+            ],
+            "support": {
+                "issues": "https://github.com/SpykApp/theme-edinburgh/issues",
+                "source": "https://github.com/SpykApp/theme-edinburgh/tree/v1.0.3"
+            },
+            "time": "2026-03-12T07:52:19+00:00"
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep",

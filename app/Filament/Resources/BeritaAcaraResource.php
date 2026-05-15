@@ -8,8 +8,6 @@ use App\Enums\StatusAktif;
 use App\Filament\Resources\BeritaAcaraResource\Pages;
 use App\Models\BantuanRastra;
 use App\Models\BeritaAcara;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Supports\Helpers;
 use Awcodes\Shout\Components\Shout;
 use BackedEnum;
@@ -92,10 +90,7 @@ class BeritaAcaraResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('kelurahan')
                     ->label('Kelurahan')
-                    ->options(Kelurahan::query()->whereIn(
-                        'kecamatan_code',
-                        config('custom.kode_kecamatan'),
-                    )->pluck('name', 'code'))
+                    ->options(get_kelurahan_options())
                     ->searchable()
                     ->multiple()
                     ->preload(),
@@ -198,29 +193,14 @@ class BeritaAcaraResource extends Resource
                             ->live(onBlur: true)
                             ->noSearchResultsMessage('Kecamatan tidak ditemukan')
                             ->searchPrompt('Cari Kecamatan')
-                            ->options(function () {
-                                $kab = Kecamatan::query()->where(
-                                    'kabupaten_code',
-                                    setting('app.kodekab', config('custom.default.kodekab')),
-                                );
-                                if ( ! $kab) {
-                                    return Kecamatan::where(
-                                        'kabupaten_code',
-                                        setting('app.kodekab', config('custom.default.kodekab')),
-                                    )
-                                        ->pluck('name', 'code');
-                                }
-
-                                return $kab->pluck('name', 'code');
-                            })
+                            ->options(get_kecamatan_options())
                             ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->required()
                             ->noSearchResultsMessage('Kelurahan tidak ditemukan')
                             ->searchPrompt('Cari Kelurahan')
-                            ->options(fn(callable $get) => Kelurahan::query()->where('kecamatan_code', $get('kecamatan'))
-                                ?->pluck('name', 'code'))
+                            ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                             ->searchable()
                             ->live(onBlur: true),
                         Forms\Components\Select::make('barang_id')
@@ -257,12 +237,7 @@ class BeritaAcaraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery();
-        }
-
-        return parent::getEloquentQuery()
-            ->where('kelurahan', auth()->user()->instansi_id);
+        return parent::getEloquentQuery();
     }
 
     public static function getPages(): array

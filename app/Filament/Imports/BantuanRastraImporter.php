@@ -115,4 +115,11 @@ class BantuanRastraImporter extends Importer
     {
         return 'redis';
     }
+
+    public function completed(): void
+    {
+        activity()
+            ->performedOn($this->getImport())
+            ->log('Impor bantuan rastra selesai: ' . number_format($this->getImport()->successful_rows) . ' baris berhasil.');
+    }
 }

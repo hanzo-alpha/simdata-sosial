@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\HasKelurahanScope;
 use App\Traits\HasWilayah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,15 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BeritaAcara extends Model
 {
+    use HasKelurahanScope;
     use HasWilayah;
 
     protected $table = 'berita_acara';
-
-    protected $casts = [
-        'tgl_ba' => 'date',
-        'upload_ba' => 'array',
-        'bantuan_rastra_ids' => 'array',
-    ];
 
     protected $with = [
         'penandatangan', 'itemBantuan', 'kel', 'kec',
@@ -40,5 +36,14 @@ class BeritaAcara extends Model
     {
         return $this->belongsToMany(Barang::class, 'barang_berita_acara')
             ->withTimestamps();
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'tgl_ba' => 'date',
+            'upload_ba' => 'array',
+            'bantuan_rastra_ids' => 'array',
+        ];
     }
 }

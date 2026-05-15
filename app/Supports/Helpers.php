@@ -190,4 +190,31 @@ class Helpers
 
         return $nilai * ($pajak / 100) ?? 0.00;
     }
+
+    public static function getKecamatanOptions(string|int|null $kabupatenCode = null): array
+    {
+        $kabupatenCode ??= setting('app.kodekab', config('custom.default.kodekab'));
+
+        return cache()->rememberForever("kecamatan_options_{$kabupatenCode}", fn() => \App\Models\Kecamatan::query()
+            ->where('kabupaten_code', $kabupatenCode)
+            ->pluck('name', 'code')
+            ->toArray());
+    }
+
+    public static function getKelurahanOptions(string|int|null $kecamatanCode = null): array
+    {
+        if ( ! $kecamatanCode) {
+            return [];
+        }
+
+        $user = auth()->user();
+        $instansiId = ($user && ! $user->hasRole(superadmin_admin_roles())) ? $user->instansi_id : null;
+        $cacheKey = "kelurahan_options_{$kecamatanCode}" . ($instansiId ? "_{$instansiId}" : '');
+
+        return cache()->rememberForever($cacheKey, fn() => \App\Models\Kelurahan::query()
+            ->where('kecamatan_code', $kecamatanCode)
+            ->when($instansiId, fn($query) => $query->where('code', $instansiId))
+            ->pluck('name', 'code')
+            ->toArray());
+    }
 }

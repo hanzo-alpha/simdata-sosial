@@ -29,6 +29,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use UnitEnum;
 
@@ -141,7 +142,9 @@ class PenyaluranBantuanRastraResource extends Resource
             ])
             ->toolbarActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data penyaluran Rastra')),
                 ]),
             ]);
     }
@@ -305,14 +308,14 @@ class PenyaluranBantuanRastraResource extends Resource
     {
         if (auth()->user()->hasRole(superadmin_admin_roles())) {
             return parent::getEloquentQuery()
-                ->with(['beritaAcara'])
+                ->with(['beritaAcara', 'bantuan_rastra'])
                 ->withoutGlobalScopes([
                     SoftDeletingScope::class,
                 ]);
         }
 
         return parent::getEloquentQuery()
-            ->with(['beritaAcara'])
+            ->with(['beritaAcara', 'bantuan_rastra'])
             ->whereHas('bantuan_rastra', fn(Builder $query) => $query->where('kelurahan', auth()->user()->instansi_id))
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,

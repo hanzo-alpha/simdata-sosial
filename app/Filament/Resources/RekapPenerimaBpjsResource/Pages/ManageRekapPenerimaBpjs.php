@@ -70,7 +70,7 @@ class ManageRekapPenerimaBpjs extends ManageRecords
 
             Actions\CreateAction::make()
                 ->disabled($this->enableInputLimitDate('bpjs'))
-                ->mutateFormDataUsing(function (array $data) {
+                ->mutateDataUsing(function (array $data) {
                     $data['provinsi'] = setting('app.kodeprov', '73');
                     $data['kabupaten'] = setting('app.kodekab', '7312');
                     return $data;
