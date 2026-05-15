@@ -13,17 +13,25 @@ use App\Models\PenyaluranBantuanRastra;
 use App\Traits\HasInputDateLimit;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
+use BackedEnum;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
-use Filament\Forms;
+use Filament\Actions;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class PenyaluranBantuanRastraResource extends Resource
 {
@@ -31,12 +39,12 @@ class PenyaluranBantuanRastraResource extends Resource
 
     protected static ?string $model = PenyaluranBantuanRastra::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-gift';
     protected static ?string $slug = 'penyaluran-bantuan-rastra';
     protected static ?string $label = 'Penyaluran Rastra';
     protected static ?string $pluralLabel = 'Penyaluran Rastra';
     protected static ?string $navigationParentItem = 'Program Rastra';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 7;
 
     public static function getGloballySearchableAttributes(): array
@@ -53,7 +61,7 @@ class PenyaluranBantuanRastraResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada penyaluran bantuan RASTRA')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->disabled(fn() => cek_batas_input(setting('app.batas_tgl_input_rastra')))
@@ -87,7 +95,7 @@ class PenyaluranBantuanRastraResource extends Resource
                     ->limit(30),
                 CuratorColumn::make('beritaAcara')
                     ->label('Berita Acara')
-                    ->size(60),
+                    ->imageSize(60),
                 Tables\Columns\TextColumn::make('status_penyaluran')
                     ->label('Status')
                     ->alignCenter()
@@ -96,8 +104,8 @@ class PenyaluranBantuanRastraResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('filter_kel')
                     ->label('Kelurahan')
-                    ->form([
-                        Forms\Components\Select::make('kelurahan')
+                    ->schema([
+                        Select::make('kelurahan')
                             ->label('Kelurahan')
                             ->native(false)
                             ->options(Kelurahan::query()
@@ -117,8 +125,8 @@ class PenyaluranBantuanRastraResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
 
             ])
-            ->actions([
-                Tables\Actions\Action::make('cetak_dokumentasi')
+            ->recordActions([
+                Actions\Action::make('cetak_dokumentasi')
                     ->label('Cetak Dokumentasi')
                     ->color('success')
                     ->icon('heroicon-o-arrow-down-tray')
@@ -127,25 +135,25 @@ class PenyaluranBantuanRastraResource extends Resource
                         ['id' => $record, 'm' => self::$model],
                     ))
                     ->openUrlInNewTab(),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make()->schema([
-                        Forms\Components\Select::make('bantuan_rastra_id')
+                Group::make()->schema([
+                    Section::make()->schema([
+                        Select::make('bantuan_rastra_id')
                             ->label('Nama KPM')
                             ->required()
                             ->relationship('bantuan_rastra', 'nama_lengkap', modifyQueryUsing: fn(
@@ -161,7 +169,7 @@ class PenyaluranBantuanRastraResource extends Resource
                             ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(function ($state, Forms\Set $set): void {
+                            ->afterStateUpdated(function ($state, callable $set): void {
                                 $rastra = BantuanRastra::find($state);
 
                                 if (isset($rastra) && $rastra->count() > 0) {
@@ -175,11 +183,11 @@ class PenyaluranBantuanRastraResource extends Resource
                             ->columnSpanFull()
                             ->helperText(str('**Nama KPM** disini, termasuk dengan NIK.')->inlineMarkdown()->toHtmlString())
                             ->optionsLimit(20),
-                        Forms\Components\TextInput::make('no_kk')
+                        TextInput::make('no_kk')
                             ->label('NO KK')
                             ->disabled()
                             ->dehydrated(),
-                        Forms\Components\TextInput::make('nik_kpm')
+                        TextInput::make('nik_kpm')
                             ->label('NIK KPM')
                             ->disabled()
                             ->dehydrated(),
@@ -237,19 +245,19 @@ class PenyaluranBantuanRastraResource extends Resource
 
                     ])->columns(2),
                 ])->columnSpan(2),
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make()->schema([
-                        Forms\Components\DateTimePicker::make('tgl_penyerahan')
+                Group::make()->schema([
+                    Section::make()->schema([
+                        DateTimePicker::make('tgl_penyerahan')
                             ->label('Tgl. Penyerahan')
                             ->displayFormat('d/M/Y H:i:s')
                             ->default(now()),
-                        Forms\Components\Select::make('status_penyaluran')
+                        Select::make('status_penyaluran')
                             ->label('Status Penyaluran Bantuan')
                             ->options(StatusPenyaluran::class)
                             ->default(StatusPenyaluran::TERSALURKAN)
                             ->lazy()
                             ->preload(),
-                        Forms\Components\FileUpload::make('foto_penyerahan')
+                        FileUpload::make('foto_penyerahan')
                             ->label('Foto Penyerahan')
                             ->disk('public')
                             ->directory('penyaluran')

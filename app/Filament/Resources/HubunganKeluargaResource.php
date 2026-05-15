@@ -6,17 +6,20 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\HubunganKeluargaResource\Pages;
 use App\Models\HubunganKeluarga;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 final class HubunganKeluargaResource extends Resource
 {
     protected static ?string $model = HubunganKeluarga::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-lifebuoy';
 
     protected static ?string $slug = 'hubungan-keluarga';
 
@@ -24,13 +27,13 @@ final class HubunganKeluargaResource extends Resource
 
     protected static ?string $pluralLabel = 'Hubungan Keluarga';
 
-    protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard Bantuan';
 
     protected static ?string $recordTitleAttribute = 'nama_hubungan';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\TextInput::make('nama_hubungan')
                     ->label('Nama Hubungan')
@@ -46,7 +49,7 @@ final class HubunganKeluargaResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada hubungan keluarga')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -58,12 +61,12 @@ final class HubunganKeluargaResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

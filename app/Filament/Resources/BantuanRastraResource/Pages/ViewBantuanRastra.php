@@ -15,12 +15,12 @@ use App\Models\Kelurahan;
 use App\Traits\HasInputDateLimit;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Filament\Actions;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Schemas\Components\Grid;
+use Filament\Support\Enums\Width;
 
 final class ViewBantuanRastra extends ViewRecord
 {
@@ -102,7 +102,7 @@ final class ViewBantuanRastra extends ViewRecord
                             ->maxSize(2048),
                     ])->columns(2),
                 ])
-                ->modalWidth(MaxWidth::FourExtraLarge)
+                ->modalWidth(Width::FourExtraLarge)
                 ->action(function ($record, array $data): void {
                     $keluargaDigantiId = $record->id;
 

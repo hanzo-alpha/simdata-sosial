@@ -10,37 +10,40 @@ use App\Models\BantuanRastra;
 use App\Models\PenggantiRastra;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 final class PenggantiRastraResource extends Resource
 {
     protected static ?string $model = PenggantiRastra::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-arrow-up-tray';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-arrow-up-tray';
     protected static ?string $slug = 'pengganti-rastra';
     protected static ?string $label = 'Pengganti RASTRA';
     protected static ?string $pluralLabel = 'Pengganti RASTRA';
     protected static ?string $navigationLabel = 'Pengganti RASTRA';
     protected static ?string $navigationParentItem = 'Program Rastra';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?string $recordTitleAttribute = 'nama_pengganti';
 
     protected static ?int $navigationSort = 6;
 
     //    protected static bool $shouldRegisterNavigation = false;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Select::make('bantuan_rastra_id')
                     ->relationship('bantuan_rastra', 'nama_lengkap')
@@ -118,7 +121,7 @@ final class PenggantiRastraResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada pengganti RASTRA')
 //            ->emptyStateActions([
-//                Tables\Actions\CreateAction::make()
+//                Actions\CreateAction::make()
 //                    ->label('Tambah')
 //                    ->icon('heroicon-m-plus')
 //                    ->button(),
@@ -163,11 +166,11 @@ final class PenggantiRastraResource extends Resource
             ])
             ->deferFilters()
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

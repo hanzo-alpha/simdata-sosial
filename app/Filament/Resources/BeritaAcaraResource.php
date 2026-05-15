@@ -9,29 +9,34 @@ use App\Models\BantuanRastra;
 use App\Models\BeritaAcara;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Enums\StatusAktif;
 use App\Supports\Helpers;
 use Awcodes\Shout\Components\Shout;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Str;
+use Illuminate\Support\Str;
+use UnitEnum;
 
 class BeritaAcaraResource extends Resource
 {
     protected static ?string $model = BeritaAcara::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $slug = 'berita-acara';
     protected static ?string $label = 'Berita Acara Rastra';
     protected static ?string $pluralLabel = 'Berita Acara Rastra';
     protected static ?string $navigationParentItem = 'Program Rastra';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 8;
     protected static ?string $recordTitleAttribute = 'judul_ba';
 
@@ -78,12 +83,9 @@ class BeritaAcaraResource extends Resource
                 Tables\Columns\TextColumn::make('bantuan_rastra_ids')
                     ->label('Jumlah KPM')
                     ->toggleable()
+                    ->state(fn(BeritaAcara $record): string => count($record->bantuan_rastra_ids ?? []) . ' Orang')
                     ->copyable()
-                    ->alignCenter()
-                    ->formatStateUsing(function ($state) {
-                        $ids = explode(',', $state);
-                        return BantuanRastra::whereIn('id', $ids)->count() . ' Orang';
-                    }),
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('upload_ba')
                     ->label('Berita Acara'),
             ])
@@ -101,39 +103,53 @@ class BeritaAcaraResource extends Resource
             ->deferFilters()
             ->deferLoading()
             ->hiddenFilterIndicators()
-            ->actions([
-                Tables\Actions\Action::make('cetak')
+            ->recordActions([
+                Actions\Action::make('cetak')
                     ->label('Cetak Berita Acara')
                     ->color('info')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->url(fn(Model $record) => route('ba.rastra', ['id' => $record, 'm' => self::$model]))
-                    ->form([
-                        Forms\Components\Section::make()
+                    ->schema([
+                        Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('beritaAcara'),
                             ]),
                     ])
                     ->openUrlInNewTab(),
-                Tables\Actions\EditAction::make()->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->closeModalByClickingAway(false),
+                Actions\EditAction::make()
+                    ->using(function (Model $record, array $data): Model {
+                        $bantuan = BantuanRastra::query()
+                            ->where('kecamatan', $data['kecamatan'])
+                            ->where('kelurahan', $data['kelurahan'])
+                            ->where('status_aktif', StatusAktif::AKTIF)
+                            ->get();
+
+                        $data['bantuan_rastra_ids'] = $bantuan->pluck('id');
+                        $record->update($data);
+
+                        return $record;
+                    })
+                    ->closeModalByClickingAway(false),
+                Actions\DeleteAction::make()->closeModalByClickingAway(false),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Shout::make('so-important')
                     ->content('Sebelum mengisi form berita acara, harap mengisi terlebih dahulu penandatangan. Silahkan ke menu Dashboard Bantuan -> Penandatangan')
                     ->color(Color::Blue)
                     ->icon('heroicon-o-information-circle')
                     ->columnSpanFull(),
-                Forms\Components\Section::make()
+                Section::make()
+                    ->columnSpanFull()
                     ->schema([
                         Forms\Components\TextInput::make('nomor_ba')
                             ->label('Nomor Berita Acara')

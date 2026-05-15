@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Coolsam\FilamentFlatpickr\Enums\FlatpickrTheme;
+use Coolsam\Flatpickr\Enums\FlatpickrTheme;
 
 return [
-    'default_theme' => FlatpickrTheme::DEFAULT,
+    'theme' => FlatpickrTheme::DEFAULT,
 ];

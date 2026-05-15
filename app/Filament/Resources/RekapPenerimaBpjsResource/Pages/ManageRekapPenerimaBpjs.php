@@ -10,8 +10,8 @@ use App\Models\Kelurahan;
 use App\Models\RekapPenerimaBpjs;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 

@@ -10,47 +10,47 @@ use App\Filament\Resources\PenandatanganResource\Pages;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Penandatangan;
-use Coolsam\SignaturePad\Forms\Components\Fields\SignaturePad;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class PenandatanganResource extends Resource
 {
     protected static ?string $model = Penandatangan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $slug = 'penandatangan';
     protected static ?string $label = 'Penandatangan';
     protected static ?string $pluralLabel = 'Penandatangan';
     protected static ?string $navigationLabel = 'Penandatangan';
-    protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard Bantuan';
     //    protected static bool $isScopedToTenant = false;
     protected static ?string $recordTitleAttribute = 'nama_penandatangan';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Select::make('kode_kecamatan')
                     ->label('Kecamatan')
                     ->options(Kecamatan::where('kabupaten_code', setting('app.kodekab'))->pluck('name', 'code'))
                     ->searchable()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(function (Set $set): void {
+                    ->afterStateUpdated(function (callable $set): void {
                         $set('kode_instansi', null);
                     })
                     ->required(),
                 Select::make('kode_instansi')
                     ->label('Kelurahan')
-                    ->options(function (Get $get) {
+                    ->options(function (callable $get) {
                         $kelurahan = Kelurahan::where('kecamatan_code', $get('kode_kecamatan'))->pluck('name', 'code');
                         return $kelurahan ?? [];
                     })
@@ -74,13 +74,6 @@ class PenandatanganResource extends Resource
                     ->options(StatusPenandatangan::class)
                     ->default(StatusPenandatangan::AKTIF)
                     ->nullable(),
-
-                SignaturePad::make('signature')
-                    ->label('Tanda Tangan')
-                    ->hidden()
-                    ->dehydrated()
-                    ->columnSpanFull()
-                    ->hideDownloadButtons(),
             ]);
     }
 
@@ -93,7 +86,7 @@ class PenandatanganResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada penandatangan')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -154,12 +147,12 @@ class PenandatanganResource extends Resource
             ])
             ->deferLoading()
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

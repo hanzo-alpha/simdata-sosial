@@ -10,8 +10,8 @@ use App\Models\BantuanBpnt;
 use App\Models\Kelurahan;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
@@ -66,10 +66,10 @@ class ListBantuanBpnts extends ListRecords
                 ->color('success')
                 ->label('Upload CSV')
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate('bpnt')),
+                ->disabled($this->enableInputLimitDate()),
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate('bpnt')),
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 

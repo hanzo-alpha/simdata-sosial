@@ -16,20 +16,22 @@ use App\Models\BantuanRastra;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\Width;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -37,16 +39,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use UnitEnum;
 
 class BantuanRastraResource extends Resource
 {
     protected static ?string $model = BantuanRastra::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-share';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-share';
     protected static ?string $slug = 'program-rastra';
     protected static ?string $label = 'Program Rastra';
     protected static ?string $pluralLabel = 'Program Rastra';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 4;
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
@@ -59,7 +62,7 @@ class BantuanRastraResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada bantuan RASTRA')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_rastra')))
@@ -138,14 +141,16 @@ class BantuanRastraResource extends Resource
                                 ->pluck('name', 'code'))
                             ->live()
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                         Forms\Components\Select::make('kelurahan')
-                            ->options(fn(Forms\Get $get) => Kelurahan::query()
+                            ->options(fn(callable $get) => Kelurahan::query()
                                 ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
                                 ->where('kecamatan_code', $get('kecamatan'))
                                 ->pluck('name', 'code'))
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                     ])
                     ->query(fn(Builder $query, array $data): Builder => $query
                         ->when(
@@ -177,13 +182,13 @@ class BantuanRastraResource extends Resource
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\ForceDeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
-                    Tables\Actions\Action::make('Toggle Aktif')
+                Actions\ActionGroup::make([
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
+                    Actions\ForceDeleteAction::make(),
+                    Actions\RestoreAction::make(),
+                    Actions\Action::make('Toggle Aktif')
                         ->icon('heroicon-s-arrow-path-rounded-square')
                         ->action(function ($record): void {
                             $record->status_aktif = match ($record->status_aktif) {
@@ -201,9 +206,9 @@ class BantuanRastraResource extends Resource
                                 ->send();
                         })
                         ->close(),
-                    Tables\Actions\Action::make('Ubah Status Verifikasi')
+                    Actions\Action::make('Ubah Status Verifikasi')
                         ->icon('heroicon-s-check-badge')
-                        ->form([
+                        ->schema([
                             Section::make()->schema([
                                 Forms\Components\ToggleButtons::make('status_verifikasi')
                                     ->options(StatusVerifikasiEnum::class)
@@ -228,14 +233,14 @@ class BantuanRastraResource extends Resource
                                 ->title('Status Berhasil Diubah')
                                 ->send();
                         })
-                        ->modalWidth(MaxWidth::FitContent)
+                        ->modalWidth(Width::FitContent)
                         ->close(),
-                    Tables\Actions\Action::make('penggantiRastra')
+                    Actions\Action::make('penggantiRastra')
                         ->label('Ganti KPM Baru')
                         ->icon('heroicon-s-user-plus')
-                        ->form([
-                            Forms\Components\Grid::make()->schema([
-                                Forms\Components\TextInput::make('nokk')
+                        ->schema([
+                            Grid::make()->schema([
+                                TextInput::make('nokk')
                                     ->label('No. KK Pengganti')
                                     ->required()
                                     ->live(debounce: 500)
@@ -244,7 +249,7 @@ class BantuanRastraResource extends Resource
                                     })
                                     ->minLength(16)
                                     ->maxLength(16),
-                                Forms\Components\TextInput::make('nik')
+                                TextInput::make('nik')
                                     ->label('NIK Pengganti')
                                     ->required()
                                     ->live(debounce: 500)
@@ -254,10 +259,10 @@ class BantuanRastraResource extends Resource
                                     ->minLength(16)
                                     ->maxLength(16)
                                     ->unique(ignoreRecord: true),
-                                Forms\Components\TextInput::make('nama_lengkap')
+                                TextInput::make('nama_lengkap')
                                     ->label('Nama Pengganti')
                                     ->required(),
-                                Forms\Components\TextInput::make('alamat')
+                                TextInput::make('alamat')
                                     ->label('Alamat Pengganti')
                                     ->nullable(),
                                 Select::make('kecamatan')
@@ -308,7 +313,7 @@ class BantuanRastraResource extends Resource
                                     ->maxSize(2048),
                             ])->columns(2),
                         ])
-                        ->modalWidth(MaxWidth::FourExtraLarge)
+                        ->modalWidth(Width::FourExtraLarge)
                         ->action(function ($record, array $data): void {
                             $keluargaDigantiId = $record->id;
 
@@ -355,16 +360,16 @@ class BantuanRastraResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                    Actions\ForceDeleteBulkAction::make(),
+                    Actions\RestoreBulkAction::make(),
                     ExportBulkAction::make()
                         ->label('Ekspor Ke Excel')
                         ->exports([
                             ExportBantuanRastra::make(),
                         ]),
-                    Tables\Actions\BulkAction::make('toggle aktif')
+                    Actions\BulkAction::make('toggle aktif')
                         ->label('Toggle Status Aktif')
                         ->icon('heroicon-o-cursor-arrow-ripple')
                         ->action(function ($records): void {
@@ -385,7 +390,7 @@ class BantuanRastraResource extends Resource
                         })
                         ->closeModalByClickingAway()
                         ->deselectRecordsAfterCompletion(),
-                    Tables\Actions\BulkAction::make('ubah_status_verifikasi')
+                    Actions\BulkAction::make('ubah_status_verifikasi')
                         ->label('Ubah Status Verifikasi')
                         ->icon('heroicon-o-check-badge')
                         ->form([
@@ -413,16 +418,16 @@ class BantuanRastraResource extends Resource
                                 ->title('Status Berhasil Diubah')
                                 ->send();
                         })
-                        ->modalWidth(MaxWidth::FitContent)
+                        ->modalWidth(Width::FitContent)
                         ->closeModalByClickingAway()
                         ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Group::make()->schema([
                     Section::make('Data Keluarga')
@@ -431,22 +436,22 @@ class BantuanRastraResource extends Resource
                         ->schema(BantuanRastra::getAlamatForm())->columns(2),
                 ])->columnSpan(['lg' => 2]),
 
-                Forms\Components\Group::make()->schema([
+                Group::make()->schema([
                     Section::make('Status')
                         ->schema(BantuanRastra::getStatusForm()),
 
-                    Forms\Components\Section::make('Verifikasi')
+                    Section::make('Verifikasi')
                         ->schema(BantuanRastra::getUploadForm()),
                 ])->columnSpan(1),
             ])->columns(3);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
+        return $schema
             ->schema([
-                \Filament\Infolists\Components\Group::make([
-                    \Filament\Infolists\Components\Section::make('Informasi Keluarga')
+                Group::make([
+                    Section::make('Informasi Keluarga')
                         ->icon('heroicon-o-user')
                         ->schema([
                             TextEntry::make('status_dtks')
@@ -473,7 +478,7 @@ class BantuanRastraResource extends Resource
                                 ->color('primary'),
 
                         ])->columns(2),
-                    \Filament\Infolists\Components\Section::make('Informasi Alamat')
+                    Section::make('Informasi Alamat')
                         ->icon('heroicon-o-map')
                         ->schema([
                             TextEntry::make('alamat')
@@ -499,8 +504,8 @@ class BantuanRastraResource extends Resource
                         ])->columns(2),
                 ])->columnSpan(2),
 
-                \Filament\Infolists\Components\Group::make([
-                    \Filament\Infolists\Components\Section::make('Informasi Status Penerima')
+                Group::make([
+                    Section::make('Informasi Status Penerima')
                         ->icon('heroicon-o-lifebuoy')
                         ->schema([
                             TextEntry::make('status_verifikasi')
@@ -517,7 +522,7 @@ class BantuanRastraResource extends Resource
                                 ->badge(),
                         ])
                         ->columns(3),
-                    \Filament\Infolists\Components\Section::make('Informasi Penyaluran Bantuan')
+                    Section::make('Informasi Penyaluran Bantuan')
                         ->icon('heroicon-o-share')
                         ->schema([
                             TextEntry::make('penyaluran.status_penyaluran')
@@ -530,34 +535,32 @@ class BantuanRastraResource extends Resource
                                 ->placeholder('Belum ada penyaluran'),
                         ])
                         ->columns(2),
-                    \Filament\Infolists\Components\Section::make('Informasi Verifikasi Foto KTP & Penyaluran')
-                        ->icon('heroicon-o-photo')
-                        ->schema([
-                            ImageEntry::make('foto_ktp_kk')
-                                ->label('Foto KTP/KK')
-                                ->placeholder('Belum ada Foto KTP / KK')
-                                ->columnSpanFull()
-                                ->alignCenter()
-                                ->width(280)
-                                ->height(400)
-                                ->extraImgAttributes([
-                                    'alt' => 'foto ktp kk',
-                                    'loading' => 'lazy',
-                                ]),
-                            ImageEntry::make('penyaluran.foto_penyerahan')
-                                ->label('Foto Penyaluran')
-                                ->columnSpanFull()
-                                ->placeholder('Belum ada Foto Penyaluran')
-                                ->alignCenter()
-                                ->width(280)
-                                ->height(400)
-                                ->extraImgAttributes([
-                                    'alt' => 'foto penyaluran',
-                                    'loading' => 'lazy',
-                                ]),
-                        ])->columns(1),
-                ])->columns(1),
+                ])->columnSpan(1),
 
+                Section::make('Informasi Verifikasi Foto KTP & Penyaluran')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        ImageEntry::make('foto_ktp_kk')
+                            ->label('Foto KTP/KK')
+                            ->placeholder('Belum ada Foto KTP / KK')
+                            ->columnSpanFull()
+                            ->extraImgAttributes([
+                                'alt' => 'foto ktp kk',
+                                'loading' => 'lazy',
+                                'class' => 'mx-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-full h-auto',
+                                'style' => 'max-height: 500px; object-fit: contain;',
+                            ]),
+                        ImageEntry::make('penyaluran.foto_penyerahan')
+                            ->label('Foto Penyaluran')
+                            ->columnSpanFull()
+                            ->placeholder('Belum ada Foto Penyaluran')
+                            ->extraImgAttributes([
+                                'alt' => 'foto penyaluran',
+                                'loading' => 'lazy',
+                                'class' => 'mx-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-full h-auto',
+                                'style' => 'max-height: 500px; object-fit: contain;',
+                            ]),
+                    ])->columnSpanFull()->columns(2),
             ])->columns(3);
     }
 

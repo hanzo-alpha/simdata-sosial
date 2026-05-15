@@ -2,7 +2,7 @@
     <tbody>
     <th class="text-center" rowspan="3">
         <img style="align-items: center; align-content: center;"
-             src="images/logos/logo-soppeng2.png"
+             src="{{ public_path('images/logos/logo-soppeng2.png') }}"
              alt="logo"
              height="90" />
 

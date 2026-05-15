@@ -10,22 +10,24 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
 use App\Models\RekapPenerimaBpjs;
-use Filament\Forms\Components\Grid;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class RekapPenerimaBpjsResource extends Resource
 {
     protected static ?string $model = RekapPenerimaBpjs::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $slug = 'rekap-penerima-pbi';
     protected static ?string $label = 'Rekap Penerima BPJS';
     protected static ?string $pluralLabel = 'Rekap Penerima PBI APBD';
@@ -33,7 +35,7 @@ class RekapPenerimaBpjsResource extends Resource
     protected static ?string $pluralModelLabel = 'Rekap Penerima PBI APBD';
     protected static ?string $navigationLabel = 'Rekap PBI';
     protected static ?string $navigationParentItem = 'Program BPJS';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 7;
 
     public static function getGloballySearchableAttributes(): array
@@ -41,11 +43,12 @@ class RekapPenerimaBpjsResource extends Resource
         return ['prov.name', 'kab.name', 'kec.name', 'kel.name'];
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Grid::make()
+                    ->columnSpanFull()
                     ->schema([
                         Select::make('provinsi')
                             ->required()
@@ -64,7 +67,7 @@ class RekapPenerimaBpjsResource extends Resource
                             ->searchable()
                             ->live()
                             ->native(false)
-                            ->options(function (Get $get) {
+                            ->options(function (callable $get) {
                                 $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
                                 if ( ! $kab) {
                                     return Kabupaten::where(
@@ -86,7 +89,7 @@ class RekapPenerimaBpjsResource extends Resource
                             ->searchable()
                             ->live()
                             ->native(false)
-                            ->options(function (Get $get) {
+                            ->options(function (callable $get) {
                                 $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
                                 if ( ! $kab) {
                                     return Kecamatan::where(
@@ -190,14 +193,16 @@ class RekapPenerimaBpjsResource extends Resource
                                 ->pluck('name', 'code'))
                             ->live()
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                         Select::make('kelurahan')
-                            ->options(fn(Get $get) => Kelurahan::query()
+                            ->options(fn(callable $get) => Kelurahan::query()
                                 ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
                                 ->where('kecamatan_code', $get('kecamatan'))
                                 ->pluck('name', 'code'))
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                     ])
                     ->query(fn(Builder $query, array $data): Builder => $query
                         ->when(
@@ -214,14 +219,20 @@ class RekapPenerimaBpjsResource extends Resource
                     ->searchable(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(['kec', 'kel', 'prov', 'kab']);
     }
 
     public static function getPages(): array

@@ -8,37 +8,40 @@ use App\Enums\StatusPenyaluran;
 use App\Filament\Resources\PenyaluranBantuanPpksResource\Pages;
 use App\Models\BantuanPpks;
 use App\Models\PenyaluranBantuanPpks;
+use BackedEnum;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
+use Filament\Actions;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class PenyaluranBantuanPpksResource extends Resource
 {
     protected static ?string $model = PenyaluranBantuanPpks::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-gift';
     protected static ?string $slug = 'penyaluran-bantuan-ppks';
     protected static ?string $label = 'Penyaluran PPKS';
     protected static ?string $pluralLabel = 'Penyaluran PPKS';
     protected static ?string $navigationParentItem = 'Program PPKS';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 8;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Group::make()->schema([
                     Section::make()->schema([
@@ -55,7 +58,7 @@ class PenyaluranBantuanPpksResource extends Resource
                             ) => "<strong>{$record->nama_lengkap}</strong><br> {$record->nik}")
                             ->allowHtml()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(function ($state, Set $set): void {
+                            ->afterStateUpdated(function ($state, callable $set): void {
                                 $rastra = BantuanPpks::find($state);
 
                                 if (isset($rastra) && $rastra->count() > 0) {
@@ -166,7 +169,7 @@ class PenyaluranBantuanPpksResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada penyaluran bantuan PPKS')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->disabled(fn() => cek_batas_input(setting('app.batas_tgl_input_ppks')))
@@ -205,20 +208,20 @@ class PenyaluranBantuanPpksResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('pdf')
+                Actions\Action::make('pdf')
                     ->label('Print Dokumentasi')
                     ->color('success')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->url(fn(Model $record) => route('cetak-dokumentasi.ppks', ['id' => $record, 'm' => self::$model]))
                     ->openUrlInNewTab(),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

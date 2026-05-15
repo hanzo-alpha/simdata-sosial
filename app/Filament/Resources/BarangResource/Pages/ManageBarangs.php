@@ -10,11 +10,11 @@ use App\Models\Kelurahan;
 use App\Supports\Helpers;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Schemas\Components\Section;
 use Illuminate\Database\Eloquent\Collection;
 
 class ManageBarangs extends ManageRecords

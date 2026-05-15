@@ -8,10 +8,11 @@ use App\Filament\Resources\BeritaAcaraResource;
 use App\Models\BantuanRastra;
 use App\Models\BeritaAcara;
 use App\Models\Kecamatan;
+use App\Enums\StatusAktif;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -57,6 +58,7 @@ class ManageBeritaAcaras extends ManageRecords
                     $bantuan = BantuanRastra::query()
                         ->where('kecamatan', $data['kecamatan'])
                         ->where('kelurahan', $data['kelurahan'])
+                        ->where('status_aktif', StatusAktif::AKTIF)
                         ->get();
 
                     $data['bantuan_rastra_ids'] = $bantuan->pluck('id');

@@ -4,107 +4,92 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\BansosDiterima;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BansosDiterimaPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_bansos::diterima');
+        return $authUser->can('view_any_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, BansosDiterima $bansosDiterima): bool
+    public function view(AuthUser $authUser, BansosDiterima $bansosDiterima): bool
     {
-        return $user->can('view_bansos::diterima');
+        return $authUser->can('view_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_bansos::diterima');
+        return $authUser->can('create_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, BansosDiterima $bansosDiterima): bool
+    public function update(AuthUser $authUser, BansosDiterima $bansosDiterima): bool
     {
-        return $user->can('update_bansos::diterima');
+        return $authUser->can('update_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, BansosDiterima $bansosDiterima): bool
+    public function delete(AuthUser $authUser, BansosDiterima $bansosDiterima): bool
     {
-        return $user->can('delete_bansos::diterima');
+        return $authUser->can('delete_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->can('delete_any_bansos::diterima');
+        return $authUser->can('delete_any_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, BansosDiterima $bansosDiterima): bool
+    public function restore(AuthUser $authUser, BansosDiterima $bansosDiterima): bool
     {
-        return $user->can('force_delete_bansos::diterima');
+        return $authUser->can('restore_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(AuthUser $authUser, BansosDiterima $bansosDiterima): bool
     {
-        return $user->can('force_delete_any_bansos::diterima');
+        return $authUser->can('force_delete_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, BansosDiterima $bansosDiterima): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_bansos::diterima');
+        return $authUser->can('force_delete_any_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_any_bansos::diterima');
+        return $authUser->can('restore_any_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, BansosDiterima $bansosDiterima): bool
+    public function replicate(AuthUser $authUser, BansosDiterima $bansosDiterima): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $authUser->can('replicate_bansos_diterima');
     }
 
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $authUser->can('reorder_bansos_diterima');
     }
+
+    public function download(AuthUser $authUser): bool
+    {
+        return $authUser->can('download_bansos_diterima');
+    }
+
+    public function upload(AuthUser $authUser): bool
+    {
+        return $authUser->can('upload_bansos_diterima');
+    }
+
+    public function verification(AuthUser $authUser): bool
+    {
+        return $authUser->can('verification_bansos_diterima');
+    }
+
+    public function verifyStatus(AuthUser $authUser, BansosDiterima $bansosDiterima): bool
+    {
+        return $authUser->can('verify_status_bansos_diterima');
+    }
+
 }

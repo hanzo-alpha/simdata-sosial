@@ -12,11 +12,11 @@ use App\Models\TipePpks;
 use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Actions\Exports\Enums\ExportFormat;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Str;
+use Illuminate\Support\Str;
 
 final class ListBantuanPpks extends ListRecords
 {

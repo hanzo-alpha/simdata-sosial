@@ -17,8 +17,8 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Support\Enums\Platform;
+use Filament\Support\Enums\Width;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -31,7 +31,7 @@ use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Kenepa\Banner\BannerPlugin;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
-use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
+use Outerweb\FilamentSettings\SettingsPlugin as FilamentSettingsPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseTransactions()
             ->login(CustomLogin::class)
             ->passwordReset()
-            ->maxContentWidth(MaxWidth::Full)
+            ->maxContentWidth(Width::Full)
             ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
@@ -70,8 +70,7 @@ class AdminPanelProvider extends PanelProvider
                     ->pluralLabel('Media')
                     ->navigationIcon('heroicon-o-photo')
                     ->navigationGroup('Dashboard Bantuan')
-                    ->navigationSort(3)
-                    ->defaultListView('grid'),
+                    ->navigationSort(3),
                 FilamentJobsMonitorPlugin::make(),
                 FilamentApexChartsPlugin::make(),
                 FilamentSettingsPlugin::make()
@@ -102,8 +101,8 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->navigationGroups([
-                NavigationGroup::make('program sosial')
-                    ->label('Program Sosial')
+                NavigationGroup::make('program bantuan')
+                    ->label('Program Bantuan')
                     ->collapsible()
                     ->collapsed(),
                 NavigationGroup::make('dashboard bantuan')
@@ -142,9 +141,9 @@ class AdminPanelProvider extends PanelProvider
             ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
-            ->resources([
-                config('filament-logger.activity_resource'),
-            ])
+//            ->resources([
+//                config('filament-logger.activity_resource'),
+//            ])
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

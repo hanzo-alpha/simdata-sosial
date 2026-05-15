@@ -13,8 +13,8 @@ use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -119,13 +119,13 @@ final class ListBantuanPkh extends ListRecords
                 ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate('pkh'))
+                ->disabled($this->enableInputLimitDate())
                 ->successRedirectUrl(route('filament.admin.resources.program-pkh.index'))
                 ->modalWidth('lg'),
             Actions\CreateAction::make()
                 ->label('Buat Baru')
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate('pkh')),
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use App\Traits\HasWidgetShield;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanPpksPerMonthChart extends ApexChartWidget

@@ -6,7 +6,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\JenisBantuan;
 use App\Models\RekapPenerimaBpjs;
-use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use App\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
@@ -30,7 +30,7 @@ class BantuanChart extends ApexChartWidget
     protected static ?string $heading = 'Statistik Program Bantuan Sosial';
     protected static ?int $contentHeight = 500;
     protected static bool $deferLoading = true;
-    protected static ?string $pollingInterval = '30s';
+    protected ?string $pollingInterval = '30s';
     protected static ?int $sort = 4;
 
     protected function getOptions(): array

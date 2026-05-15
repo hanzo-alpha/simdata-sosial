@@ -4,107 +4,92 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\BantuanRastra;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BantuanRastraPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_bantuan::rastra');
+        return $authUser->can('view_any_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, BantuanRastra $bantuanRastra): bool
+    public function view(AuthUser $authUser, BantuanRastra $bantuanRastra): bool
     {
-        return $user->can('view_bantuan::rastra');
+        return $authUser->can('view_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_bantuan::rastra');
+        return $authUser->can('create_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, BantuanRastra $bantuanRastra): bool
+    public function update(AuthUser $authUser, BantuanRastra $bantuanRastra): bool
     {
-        return $user->can('update_bantuan::rastra');
+        return $authUser->can('update_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, BantuanRastra $bantuanRastra): bool
+    public function delete(AuthUser $authUser, BantuanRastra $bantuanRastra): bool
     {
-        return $user->can('delete_bantuan::rastra');
+        return $authUser->can('delete_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->can('delete_any_bantuan::rastra');
+        return $authUser->can('delete_any_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, BantuanRastra $bantuanRastra): bool
+    public function restore(AuthUser $authUser, BantuanRastra $bantuanRastra): bool
     {
-        return $user->can('force_delete_bantuan::rastra');
+        return $authUser->can('restore_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(AuthUser $authUser, BantuanRastra $bantuanRastra): bool
     {
-        return $user->can('force_delete_any_bantuan::rastra');
+        return $authUser->can('force_delete_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, BantuanRastra $bantuanRastra): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_bantuan::rastra');
+        return $authUser->can('force_delete_any_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_any_bantuan::rastra');
+        return $authUser->can('restore_any_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, BantuanRastra $bantuanRastra): bool
+    public function replicate(AuthUser $authUser, BantuanRastra $bantuanRastra): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $authUser->can('replicate_bantuan_rastra');
     }
 
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $authUser->can('reorder_bantuan_rastra');
     }
+
+    public function download(AuthUser $authUser): bool
+    {
+        return $authUser->can('download_bantuan_rastra');
+    }
+
+    public function upload(AuthUser $authUser): bool
+    {
+        return $authUser->can('upload_bantuan_rastra');
+    }
+
+    public function verification(AuthUser $authUser): bool
+    {
+        return $authUser->can('verification_bantuan_rastra');
+    }
+
+    public function verifyStatus(AuthUser $authUser, BantuanRastra $bantuanRastra): bool
+    {
+        return $authUser->can('verify_status_bantuan_rastra');
+    }
+
 }

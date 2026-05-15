@@ -57,12 +57,7 @@
                 @if ($model->count() > 0)
                     @forelse ($model->foto_penyerahan as $foto)
                         <div class="img-border">
-                            @env('production')
-                                <img class="img-foto-ppks" src="{{ asset('storage/' . $foto) }}" alt="foto" />
-                            @endenv
-                            @env('local')
-                                <img class="img-foto-ppks" src="{{ public_path('storage/' . $foto) }}" alt="foto" />
-                            @endenv
+                                <img class="img-foto-ppks" src="{{ storage_path('app/public/' . $foto) }}" alt="foto" />
                         </div>
                     @empty
                     <div></div>
@@ -95,12 +90,7 @@
                 @isset($model->bantuan_ppks->bukti_foto)
                     @foreach($model->bantuan_ppks->bukti_foto as $foto)
                         <div>
-                            @env('production')
-                                <img style="width: 600px" src="{{ asset('storage/' . $foto) }}" alt="foto" />
-                            @endenv
-                            @env('local')
-                                <img style="width: 600px" src="{{ public_path('storage/' . $foto) }}" alt="foto" />
-                            @endenv
+                                <img style="width: 600px" src="{{ storage_path('app/public/' . $foto) }}" alt="foto" />
                         </div>
                     @endforeach
                 @endif

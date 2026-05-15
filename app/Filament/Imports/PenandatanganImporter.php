@@ -14,7 +14,7 @@ use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Filament\Forms\Components\Checkbox;
-use Str;
+use Illuminate\Support\Str;
 
 class PenandatanganImporter extends Importer
 {

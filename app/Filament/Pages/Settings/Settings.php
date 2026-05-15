@@ -5,29 +5,36 @@ declare(strict_types=1);
 namespace App\Filament\Pages\Settings;
 
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
-use Closure;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
-use Outerweb\FilamentSettings\Filament\Pages\Settings as BaseSettings;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Schema;
+use Outerweb\FilamentSettings\Pages\Settings as BaseSettings;
+use UnitEnum;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class Settings extends BaseSettings
 {
     use HasPageShield;
 
-    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
     protected static ?string $navigationLabel = 'Pengaturan';
     protected ?string $heading = 'Pengaturan Aplikasi';
 
-    public function schema(): array|Closure
+    public function getMaxContentWidth(): \Filament\Support\Enums\Width|string|null
     {
-        return [
+        return \Filament\Support\Enums\Width::Full;
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema->components([
             Tabs::make('Pengaturan')
+                ->columnSpanFull()
                 ->schema([
                     Tabs\Tab::make('Aplikasi')
                         ->icon('heroicon-o-computer-desktop')
@@ -112,7 +119,7 @@ class Settings extends BaseSettings
 
                                     ])->columns(2),
                             ]),
-                        ])->columns(2),
+                        ]),
                     Tabs\Tab::make('Pejabat Pelaksana Kegiatan')
                         ->icon('heroicon-o-envelope')
                         ->schema([
@@ -162,7 +169,7 @@ class Settings extends BaseSettings
                                             ->default('DINAS SOSIAL KAB. SOPPENG'),
                                     ])->columns(2),
                             ]),
-                        ])->columns(2),
+                        ]),
 
                     Tabs\Tab::make('Berita Acara & Penyaluran')
                         ->schema([
@@ -219,8 +226,8 @@ class Settings extends BaseSettings
                                             ->label('Nomor Berita Acara PPKS'),
                                     ])->columns(2),
                             ]),
-                        ])->columns(2),
+                        ]),
                 ]),
-        ];
+        ]);
     }
 }

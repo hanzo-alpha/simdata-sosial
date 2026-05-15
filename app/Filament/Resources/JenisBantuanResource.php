@@ -6,30 +6,33 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\JenisBantuanResource\Pages;
 use App\Models\JenisBantuan;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 final class JenisBantuanResource extends Resource
 {
     protected static ?string $model = JenisBantuan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $slug = 'jenis-bantuan';
     protected static ?string $label = 'Jenis Bantuan';
-    protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard Bantuan';
     protected static ?string $pluralLabel = 'Jenis Bantuan';
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $recordTitleAttribute = 'nama_bantuan';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\TextInput::make('nama_bantuan')
                     ->required()
@@ -50,7 +53,7 @@ final class JenisBantuanResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada jenis bantuan')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -77,15 +80,15 @@ final class JenisBantuanResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\EditAction::make(),
                 ]),
             ])
             ->bulkActions([
 
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                Actions\CreateAction::make(),
             ]);
     }
 

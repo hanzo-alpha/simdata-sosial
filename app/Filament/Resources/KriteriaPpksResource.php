@@ -6,31 +6,34 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KriteriaPpksResource\Pages;
 use App\Models\KriteriaPpks;
-use Awcodes\FilamentBadgeableColumn\Components\Badge;
-use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
+use Awcodes\BadgeableColumn\Components\Badge;
+use Awcodes\BadgeableColumn\Components\BadgeableColumn;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 class KriteriaPpksResource extends Resource
 {
     protected static ?string $model = KriteriaPpks::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-ticket';
     protected static ?string $slug = 'kriteria-ppks';
     protected static ?string $label = 'Kriteria PPKS';
     protected static ?string $pluralLabel = 'Kriteria PPKS';
     protected static ?string $navigationLabel = 'Kriteria PPKS';
     protected static ?string $navigationParentItem = 'Tipe PPKS';
-    protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard Bantuan';
     protected static ?string $recordTitleAttribute = 'nama_kriteria';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Select::make('tipe_ppks_id')
                     ->relationship('tipe_ppks', 'nama_tipe')
@@ -59,7 +62,7 @@ class KriteriaPpksResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada kriteria PPKS')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -78,12 +81,12 @@ class KriteriaPpksResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

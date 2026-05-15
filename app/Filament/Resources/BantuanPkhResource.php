@@ -13,37 +13,38 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use Str;
+use UnitEnum;
 
 final class BantuanPkhResource extends Resource
 {
     protected static ?string $model = BantuanPkh::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $slug = 'program-pkh';
     protected static ?string $label = 'Program PKH';
     protected static ?string $pluralLabel = 'Program PKH';
     protected static ?string $navigationLabel = 'Program PKH';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 3;
     protected static ?string $recordTitleAttribute = 'nama_penerima';
 
@@ -54,11 +55,12 @@ final class BantuanPkhResource extends Resource
         ];
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                \Filament\Forms\Components\Group::make()
+                Group::make()
+                    ->columnSpanFull()
                     ->schema([
                         Section::make('Data Pribadi')->schema([
                             Select::make('status_dtks')
@@ -172,7 +174,7 @@ final class BantuanPkhResource extends Resource
                         ])->columns(2),
                     ])
                     ->columnSpan(2),
-                \Filament\Forms\Components\Group::make()
+                Group::make()
                     ->schema([
                         Section::make('Data Bantuan')->schema([
                             TextInput::make('tahap')
@@ -194,11 +196,11 @@ final class BantuanPkhResource extends Resource
             ])->columns(3);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->schema([
             Group::make([
-                \Filament\Infolists\Components\Section::make('INFORMASI PENERIMA MANFAAT')
+                Section::make('INFORMASI PENERIMA MANFAAT')
                     ->icon('heroicon-o-user')
                     ->schema([
                         TextEntry::make('status_dtks')
@@ -223,7 +225,7 @@ final class BantuanPkhResource extends Resource
                             ->weight(FontWeight::SemiBold)
                             ->color('primary'),
                     ])->columns(2),
-                \Filament\Infolists\Components\Section::make('INFORMASI ALAMAT')
+                Section::make('INFORMASI ALAMAT')
                     ->icon('heroicon-o-map-pin')
                     ->schema([
                         TextEntry::make('alamat')
@@ -292,7 +294,7 @@ final class BantuanPkhResource extends Resource
             ])->columnSpan(2),
 
             Group::make([
-                \Filament\Infolists\Components\Section::make('INFORMASI BANTUAN')
+                Section::make('INFORMASI BANTUAN')
                     ->icon('heroicon-o-lifebuoy')
                     ->schema([
                         TextEntry::make('tahap')
@@ -349,7 +351,7 @@ final class BantuanPkhResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada bantuan PKH')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_pkh')))
@@ -467,14 +469,16 @@ final class BantuanPkhResource extends Resource
                                 ->pluck('name', 'code'))
                             ->live()
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                         Select::make('kelurahan')
-                            ->options(fn(Get $get) => Kelurahan::query()
+                            ->options(fn(callable $get) => Kelurahan::query()
                                 ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
                                 ->where('kecamatan_code', $get('kecamatan'))
                                 ->pluck('name', 'code'))
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                     ])
                     ->query(fn(Builder $query, array $data): Builder => $query
                         ->when(
@@ -498,16 +502,16 @@ final class BantuanPkhResource extends Resource
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\ForceDeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
+                    Actions\ForceDeleteAction::make(),
+                    Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                Actions\BulkActionGroup::make([
                     ExportBulkAction::make()
                         ->label('Ekspor XLS yang dipilih')
                         ->color('primary')
@@ -516,8 +520,8 @@ final class BantuanPkhResource extends Resource
                             ExportBantuanPkh::make()
                                 ->except(['created_at', 'updated_at', 'deleted_at']),
                         ]),
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Actions\DeleteBulkAction::make(),
+                    Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }

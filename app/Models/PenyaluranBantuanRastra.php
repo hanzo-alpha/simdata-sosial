@@ -79,16 +79,21 @@ class PenyaluranBantuanRastra extends Model
     protected static function booted(): void
     {
         static::deleted(static function (PenyaluranBantuanRastra $penyaluran): void {
-            foreach ($penyaluran->foto_penyerahan as $image) {
-                Storage::delete("app/public/{$image}");
+            if (is_array($penyaluran->foto_penyerahan)) {
+                foreach ($penyaluran->foto_penyerahan as $image) {
+                    Storage::disk('public')->delete($image);
+                }
             }
         });
 
         static::updating(static function (PenyaluranBantuanRastra $penyaluran): void {
-            $imagesToDelete = array_diff($penyaluran->getOriginal('foto_penyerahan'), $penyaluran->foto_penyerahan);
+            $original = $penyaluran->getOriginal('foto_penyerahan') ?? [];
+            $current = $penyaluran->foto_penyerahan ?? [];
+
+            $imagesToDelete = array_diff($original, $current);
 
             foreach ($imagesToDelete as $image) {
-                Storage::delete("app/public/{$image}");
+                Storage::disk('public')->delete($image);
             }
         });
     }

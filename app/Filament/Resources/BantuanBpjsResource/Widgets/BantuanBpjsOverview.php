@@ -10,13 +10,13 @@ use App\Models\BantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\PesertaBpjs;
 use App\Traits\HasGlobalFilters;
-use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use App\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
-use Number;
+use Illuminate\Support\Number;
 
 class BantuanBpjsOverview extends BaseWidget
 {
@@ -24,6 +24,7 @@ class BantuanBpjsOverview extends BaseWidget
     use HasWidgetShield;
     use InteractsWithPageFilters;
     use InteractsWithPageTable;
+    protected int|string|array $columnSpan = 'full';
 
     //    protected static bool $isDiscovered = false;
     protected static ?int $sort = 1;
@@ -128,28 +129,28 @@ class BantuanBpjsOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'Program BPJS',
-                value: Number::format($this->getPageTableQuery()->count(), 2, 0, 'id') . config('custom.app.stat_prefix'),
+                value: Number::format((float) ($this->getPageTableQuery()->count()), locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total Keseluruhan Program BPJS')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('danger'),
             Stat::make(
                 label: 'Program BPJS Berhasil',
-                value: Number::format($data['verified'], 2, 2, 'id') . config('custom.app.stat_prefix'),
+                value: Number::format((float) ($data['verified'] ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Jumlah Program BPJS Berhasil')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),
             Stat::make(
                 label: 'Program BPJS Gagal',
-                value: Number::format($data['unverified'], 2, 2, 'id') . config('custom.app.stat_prefix'),
+                value: Number::format((float) ($data['unverified'] ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Jumlah Program BPJS Gagal')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success'),
             Stat::make(
                 label: 'Program BPJS Sedang Proses',
-                value: Number::format($data['review'], 2, 2, 'id') . config('custom.app.stat_prefix'),
+                value: Number::format((float) ($data['review'] ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Jumlah Program BPJS Sedang Proses')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
@@ -161,7 +162,7 @@ class BantuanBpjsOverview extends BaseWidget
     {
         return Stat::make(
             label: $label ?? 'KPM BPJS',
-            value: Number::format($value ?? 0, 0, locale: ('id')) . config('custom.app.stat_prefix'),
+            value: Number::format((float) ($value ?? 0), 0, locale: ('id')) . config('custom.app.stat_prefix'),
         )
             ->description($desc ?? 'Total KPM Kec. Marioriwawo')
             ->descriptionIcon('heroicon-o-' . $icon ?? 'user')

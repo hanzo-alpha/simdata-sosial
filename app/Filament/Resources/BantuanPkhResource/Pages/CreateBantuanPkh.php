@@ -8,7 +8,7 @@ use App\Enums\StatusDtksEnum;
 use App\Enums\StatusPkhBpntEnum;
 use App\Filament\Resources\BantuanPkhResource;
 use Filament\Resources\Pages\CreateRecord;
-use Str;
+use Illuminate\Support\Str;
 
 final class CreateBantuanPkh extends CreateRecord
 {

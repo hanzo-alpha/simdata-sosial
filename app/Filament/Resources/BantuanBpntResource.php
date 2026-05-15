@@ -11,33 +11,34 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class BantuanBpntResource extends Resource
 {
     protected static ?string $model = BantuanBpnt::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $slug = 'program-bpnt';
     protected static ?string $label = 'Program BPNT';
     protected static ?string $pluralLabel = 'Program BPNT';
     protected static ?string $navigationLabel = 'Program BPNT';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 2;
     protected static ?string $recordTitleAttribute = 'nama_penerima';
 
@@ -49,11 +50,13 @@ class BantuanBpntResource extends Resource
     }
 
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Section::make('Data Penerima Manfaat BPNT')->schema([
+                Section::make('Data Penerima Manfaat BPNT')
+                    ->columnSpanFull()
+                    ->schema([
                     TextInput::make('no_nik')
                         ->label('No. Induk Kependudukan (NIK)')
                         ->required()
@@ -152,10 +155,10 @@ class BantuanBpntResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
-            \Filament\Infolists\Components\Section::make('INFORMASI PENERIMA MANFAAT')
+        return $schema->schema([
+            Section::make('INFORMASI PENERIMA MANFAAT')
                 ->icon('heroicon-o-user')
                 ->schema([
                     TextEntry::make('no_nik')
@@ -201,7 +204,7 @@ class BantuanBpntResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada bantuan BPNT')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_bpnt')))
@@ -250,14 +253,16 @@ class BantuanBpntResource extends Resource
                                 ->pluck('name', 'code'))
                             ->live()
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                         Select::make('kelurahan')
-                            ->options(fn(Get $get) => Kelurahan::query()
+                            ->options(fn(callable $get) => Kelurahan::query()
                                 ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
                                 ->where('kecamatan_code', $get('kecamatan'))
                                 ->pluck('name', 'code'))
                             ->searchable()
-                            ->native(false),
+                            ->native(false)
+                            ->columnSpanFull(),
                     ])
                     ->query(fn(Builder $query, array $data): Builder => $query
                         ->when(
@@ -274,18 +279,18 @@ class BantuanBpntResource extends Resource
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\ForceDeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
+                    Actions\ForceDeleteAction::make(),
+                    Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                    Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }

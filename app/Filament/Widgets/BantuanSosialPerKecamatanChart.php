@@ -12,9 +12,11 @@ use App\Models\JenisBantuan;
 use App\Models\Kecamatan;
 use App\Models\RekapPenerimaBpjs;
 use App\Traits\HasGlobalFilters;
-use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use App\Traits\HasWidgetShield;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Schemas\Schema;
+use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,19 +24,20 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerKecamatanChart extends ApexChartWidget
 {
+    use HasFiltersSchema;
     //    use HasGlobalFilters;
     use HasWidgetShield;
     //    use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Program Bantuan Sosial Per Kecamatan';
-    protected static ?string $pollingInterval = '30s';
+    protected ?string $pollingInterval = '30s';
     protected static bool $deferLoading = true;
     protected static ?int $sort = 3;
     //    protected int|string|array $columnSpan = 'full';
 
-    protected function getFormSchema(): array
+    public function filtersSchema(Schema $schema): Schema
     {
-        return [
+        return $schema->components([
             ToggleButtons::make('chartTipe')
                 ->default('bar')
                 ->options([
@@ -46,7 +49,7 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
             Toggle::make('chartGrid')
                 ->default(false)
                 ->label('Tampilkan Grid'),
-        ];
+        ]);
     }
 
     protected function queryChart($model, $kodekec, array $filters): int|string|array|Builder|Collection
@@ -72,7 +75,7 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
 
     protected function getOptions(): array
     {
-        $filters = $this->filterFormData;
+        $filters = $this->filters;
         $results = [];
         $colors = ['#f59e0b', '#03A9F4', '#FDD835', '#BA68C8', '#66BB6A'];
         $gradientColors = ['#fbbf24', '#79cdf2', '#ffeb9b', '#c197c9', '#96e098'];

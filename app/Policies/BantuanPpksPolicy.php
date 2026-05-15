@@ -4,107 +4,92 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\BantuanPpks;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BantuanPpksPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_bantuan::ppks');
+        return $authUser->can('view_any_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, BantuanPpks $bantuanPpks): bool
+    public function view(AuthUser $authUser, BantuanPpks $bantuanPpks): bool
     {
-        return $user->can('view_bantuan::ppks');
+        return $authUser->can('view_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_bantuan::ppks');
+        return $authUser->can('create_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, BantuanPpks $bantuanPpks): bool
+    public function update(AuthUser $authUser, BantuanPpks $bantuanPpks): bool
     {
-        return $user->can('update_bantuan::ppks');
+        return $authUser->can('update_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, BantuanPpks $bantuanPpks): bool
+    public function delete(AuthUser $authUser, BantuanPpks $bantuanPpks): bool
     {
-        return $user->can('delete_bantuan::ppks');
+        return $authUser->can('delete_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->can('delete_any_bantuan::ppks');
+        return $authUser->can('delete_any_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, BantuanPpks $bantuanPpks): bool
+    public function restore(AuthUser $authUser, BantuanPpks $bantuanPpks): bool
     {
-        return $user->can('force_delete_bantuan::ppks');
+        return $authUser->can('restore_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(AuthUser $authUser, BantuanPpks $bantuanPpks): bool
     {
-        return $user->can('force_delete_any_bantuan::ppks');
+        return $authUser->can('force_delete_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, BantuanPpks $bantuanPpks): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_bantuan::ppks');
+        return $authUser->can('force_delete_any_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_any_bantuan::ppks');
+        return $authUser->can('restore_any_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, BantuanPpks $bantuanPpks): bool
+    public function replicate(AuthUser $authUser, BantuanPpks $bantuanPpks): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $authUser->can('replicate_bantuan_ppks');
     }
 
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $authUser->can('reorder_bantuan_ppks');
     }
+
+    public function download(AuthUser $authUser): bool
+    {
+        return $authUser->can('download_bantuan_ppks');
+    }
+
+    public function upload(AuthUser $authUser): bool
+    {
+        return $authUser->can('upload_bantuan_ppks');
+    }
+
+    public function verification(AuthUser $authUser): bool
+    {
+        return $authUser->can('verification_bantuan_ppks');
+    }
+
+    public function verifyStatus(AuthUser $authUser, BantuanPpks $bantuanPpks): bool
+    {
+        return $authUser->can('verify_status_bantuan_ppks');
+    }
+
 }

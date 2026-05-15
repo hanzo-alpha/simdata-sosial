@@ -8,33 +8,37 @@ use App\Enums\JenisAnggaranEnum;
 use App\Enums\StatusDtksEnum;
 use App\Filament\Resources\DetailBantuanPpksResource\Pages;
 use App\Models\DetailBantuanPpks;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class DetailBantuanPpksResource extends Resource
 {
     protected static ?string $model = DetailBantuanPpks::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $slug = 'detail-bantuan-ppks';
 
     protected static ?string $label = 'Detail Bantuan PPKS';
 
     protected static ?string $pluralLabel = 'Detail Bantuan PPKS';
     protected static ?string $navigationParentItem = 'Program PPKS';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
 
     protected static ?string $recordTitleAttribute = 'nama_bantuan';
     protected static bool $shouldRegisterNavigation = false;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Section::make()->schema([
+                Section::make()->schema([
                     Forms\Components\Select::make('bantuan_ppks_id')
                         ->relationship(
                             name: 'bantuanPpks',
@@ -90,12 +94,12 @@ class DetailBantuanPpksResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
