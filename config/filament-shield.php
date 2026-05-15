@@ -128,7 +128,7 @@ return [
         'methods' => [
             'viewAny', 'view', 'create', 'update', 'delete', 'deleteAny', 'restore',
             'forceDelete', 'forceDeleteAny', 'restoreAny', 'replicate', 'reorder',
-            'download', 'upload', 'verification', 'verify_status'
+            'download', 'upload', 'verification', 'verify_status',
         ],
         'single_parameter_methods' => [
             'viewAny',
@@ -183,7 +183,7 @@ return [
             ],
         ],
         'exclude' => [
-            //
+
         ],
     ],
 

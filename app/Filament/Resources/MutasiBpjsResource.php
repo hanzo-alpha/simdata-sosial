@@ -71,8 +71,8 @@ final class MutasiBpjsResource extends Resource
                             ->native(false)
                             ->getOptionLabelFromRecordUsing(
                                 fn(
-                                $record,
-                            ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . $record->nik . ' | No. Kartu : ' . $record->nomor_kartu,
+                                    $record,
+                                ) => "<strong>{$record->nama_lengkap}</strong> | NIK: " . $record->nik . ' | No. Kartu : ' . $record->nomor_kartu,
                             )
                             ->allowHtml()
                             ->columnSpanFull(),

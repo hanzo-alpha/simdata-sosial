@@ -57,100 +57,100 @@ class BantuanBpntResource extends Resource
                 Section::make('Data Penerima Manfaat BPNT')
                     ->columnSpanFull()
                     ->schema([
-                    TextInput::make('no_nik')
-                        ->label('No. Induk Kependudukan (NIK)')
-                        ->required()
-                        ->live(debounce: 500)
-                        ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
-                            $livewire->validateOnly($component->getStatePath());
-                        })
-                        ->minLength(16)
-                        ->maxLength(16),
-                    TextInput::make('nama_penerima')
-                        ->label('Nama Penerima')
-                        ->required(),
-                    Grid::make()->schema([
-                        Select::make('provinsi')
-                            ->nullable()
-                            ->searchable()
-                            ->reactive()
-                            ->options(Provinsi::pluck('name', 'code'))
-                            ->default(setting('app.kodeprov', config('custom.default.kodeprov')))
-                            ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
-
-                        Select::make('kabupaten')
-                            ->nullable()
-                            ->options(function (callable $get) {
-                                $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                                if ( ! $kab) {
-                                    return Kabupaten::where('code', setting(
-                                        'app.kodekab',
-                                        config('custom.default.kodekab'),
-                                    ))
-                                        ->pluck('name', 'code');
-                                }
-
-                                return $kab->pluck('name', 'code');
+                        TextInput::make('no_nik')
+                            ->label('No. Induk Kependudukan (NIK)')
+                            ->required()
+                            ->live(debounce: 500)
+                            ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
+                                $livewire->validateOnly($component->getStatePath());
                             })
-                            ->reactive()
-                            ->default(config('custom.default.kodekab'))
-                            ->searchable()
+                            ->minLength(16)
+                            ->maxLength(16),
+                        TextInput::make('nama_penerima')
+                            ->label('Nama Penerima')
+                            ->required(),
+                        Grid::make()->schema([
+                            Select::make('provinsi')
+                                ->nullable()
+                                ->searchable()
+                                ->reactive()
+                                ->options(Provinsi::pluck('name', 'code'))
+                                ->default(setting('app.kodeprov', config('custom.default.kodeprov')))
+                                ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null)),
+
+                            Select::make('kabupaten')
+                                ->nullable()
+                                ->options(function (callable $get) {
+                                    $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
+                                    if ( ! $kab) {
+                                        return Kabupaten::where('code', setting(
+                                            'app.kodekab',
+                                            config('custom.default.kodekab'),
+                                        ))
+                                            ->pluck('name', 'code');
+                                    }
+
+                                    return $kab->pluck('name', 'code');
+                                })
+                                ->reactive()
+                                ->default(config('custom.default.kodekab'))
+                                ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                            ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
-                    ])
+                                ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null)),
+                        ])
 //                        ->visibleOn(['edit', 'view'])
-                        ->columns(2),
-                    Grid::make()->schema([
-                        Select::make('kecamatan')
-                            ->nullable()
-                            ->searchable()
-                            ->live()
-                            ->native(false)
-                            ->options(function (callable $get) {
-                                $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                if ( ! $kab) {
-                                    return Kecamatan::where('kabupaten_code', setting(
-                                        'app.kodekab',
-                                        config('custom.default.kodekab'),
-                                    ))
-                                        ->pluck('name', 'code');
-                                }
+                            ->columns(2),
+                        Grid::make()->schema([
+                            Select::make('kecamatan')
+                                ->nullable()
+                                ->searchable()
+                                ->live()
+                                ->native(false)
+                                ->options(function (callable $get) {
+                                    $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
+                                    if ( ! $kab) {
+                                        return Kecamatan::where('kabupaten_code', setting(
+                                            'app.kodekab',
+                                            config('custom.default.kodekab'),
+                                        ))
+                                            ->pluck('name', 'code');
+                                    }
 
-                                return $kab->pluck('name', 'code');
-                            })
-                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                                    return $kab->pluck('name', 'code');
+                                })
+                                ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
-                        Select::make('kelurahan')
-                            ->nullable()
-                            ->options(function (callable $get) {
-                                $kel = Kelurahan::query()
-                                    ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
-                                        'code',
-                                        auth()->user()->instansi_id,
-                                    ))
-                                    ->where('kecamatan_code', $get('kecamatan'));
+                            Select::make('kelurahan')
+                                ->nullable()
+                                ->options(function (callable $get) {
+                                    $kel = Kelurahan::query()
+                                        ->when(auth()->user()->instansi_id, fn(Builder $query) => $query->where(
+                                            'code',
+                                            auth()->user()->instansi_id,
+                                        ))
+                                        ->where('kecamatan_code', $get('kecamatan'));
 
-                                return $kel->clone()->pluck('name', 'code');
-                            })
-                            ->live()
-                            ->native(false)
-                            ->searchable()
+                                    return $kel->clone()->pluck('name', 'code');
+                                })
+                                ->live()
+                                ->native(false)
+                                ->searchable()
 //                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
-                            ->afterStateUpdated(function (callable $set, $state): void {
-                                $village = Kelurahan::where('code', $state)->first();
-                                if ($village) {
-                                    $set('latitude', $village['latitude']);
-                                    $set('longitude', $village['longitude']);
-                                    $set('location', [
-                                        'lat' => (float) $village['latitude'],
-                                        'lng' => (float) $village['longitude'],
-                                    ]);
-                                }
+                                ->afterStateUpdated(function (callable $set, $state): void {
+                                    $village = Kelurahan::where('code', $state)->first();
+                                    if ($village) {
+                                        $set('latitude', $village['latitude']);
+                                        $set('longitude', $village['longitude']);
+                                        $set('location', [
+                                            'lat' => (float) $village['latitude'],
+                                            'lng' => (float) $village['longitude'],
+                                        ]);
+                                    }
 
-                            }),
+                                }),
+                        ])
+                            ->columns(2),
                     ])
-                        ->columns(2),
-                ])
                     ->columns(2),
             ]);
     }
