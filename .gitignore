@@ -27,3 +27,7 @@ yarn-error.log
 rr
 .rr.yaml
 ./Scripts
+/database/u620101454_reno.sql
+/database/u620101454_reno - MySQL84.sql
+/database/u620101454_renos - Copy.sql
+/database/u620101454_renos - Copy - MySQL8.sql
