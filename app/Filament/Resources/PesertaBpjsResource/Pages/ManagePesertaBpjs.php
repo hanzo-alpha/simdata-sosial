@@ -44,7 +44,9 @@ class ManagePesertaBpjs extends ManageRecords
                         ->title('Data Peserta BPJS sedang diimpor secara background')
                         ->info()
                         ->sendToDatabase(auth()->user());
-                    Excel::import(new ImportPesertaBpjs(), $data['attachment'], 'public');
+                    $import = new ImportPesertaBpjs();
+                    $import->setUser(auth()->user());
+                    Excel::import($import, $data['attachment'], 'public');
                 })
                 ->after(function (): void {
                     Notification::make()

@@ -12,9 +12,11 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::table('penyaluran_bantuan_rastra', function (Blueprint $table): void {
-            $table->text('keterangan')->nullable()->after('status_penyaluran');
-        });
+        if ( ! Schema::hasColumn('penyaluran_bantuan_rastra', 'keterangan')) {
+            Schema::table('penyaluran_bantuan_rastra', function (Blueprint $table): void {
+                $table->text('keterangan')->nullable()->after('status_penyaluran');
+            });
+        }
     }
 
     /**

@@ -86,10 +86,24 @@ class Settings extends BaseSettings
                                     ->icon('heroicon-o-lifebuoy')
                                     ->schema([
                                         TextInput::make('app.angka_kemiskinan')
-                                            ->label('Angka Kemiskinan'),
+                                            ->label('Jumlah Penduduk Miskin')
+                                            ->numeric()
+                                            ->suffix('jiwa')
+                                            ->helperText('Jumlah penduduk miskin (dalam jiwa)'),
                                         TextInput::make('app.angka_kemiskinan_persen')
-                                            ->mask('9.99')
-                                            ->label('Angka Kemiskinan (%)'),
+                                            ->mask('99.99')
+                                            ->label('Persentase Kemiskinan')
+                                            ->suffix('%')
+                                            ->helperText('Persentase penduduk miskin terhadap total populasi'),
+                                        TextInput::make('app.tahun_data_kemiskinan')
+                                            ->label('Tahun Data')
+                                            ->numeric()
+                                            ->default(now()->year)
+                                            ->helperText('Tahun referensi data kemiskinan'),
+                                        TextInput::make('app.sumber_data_kemiskinan')
+                                            ->label('Sumber Data')
+                                            ->default('BPS Kab. Soppeng')
+                                            ->helperText('Sumber resmi data kemiskinan'),
                                         ColorPicker::make('app.warna_kemiskinan')
                                             ->label('Warna Angka Kemiskinan'),
                                     ])->columns(2),

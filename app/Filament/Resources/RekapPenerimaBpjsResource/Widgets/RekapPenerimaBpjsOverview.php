@@ -95,7 +95,10 @@ class RekapPenerimaBpjsOverview extends BaseWidget
             ->where('bulan', now()->addMonth(1)->month)
             ->sum('jumlah');
 
-        $jamkesda = RekapPenerimaBpjs::sum('jumlah');
+        $jamkesda = RekapPenerimaBpjs::query()
+            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+            ->sum('jumlah');
 
         return [
             'jamkesda' => $jamkesda,
@@ -145,8 +148,8 @@ class RekapPenerimaBpjsOverview extends BaseWidget
             label: $label ?: 'KPM BPJS',
             value: Number::format((float) ($value ?? 0), 0, locale: 'id') . config('custom.app.stat_prefix'),
         )
-            ->description($desc ?: 'Total KPM Kec. Marioriwawo')
-            ->descriptionIcon('heroicon-o-' . $icon ?? 'user')
+            ->description($desc ?: 'Total KPM BPJS')
+            ->descriptionIcon('heroicon-o-' . ($icon ?: 'user'))
             ->color($color ?? 'success');
     }
 }

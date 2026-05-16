@@ -50,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
             ->login(CustomLogin::class)
             ->passwordReset()
             ->maxContentWidth(Width::Full)
+            ->sidebarWidth('15rem')
             ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
@@ -91,6 +92,7 @@ class AdminPanelProvider extends PanelProvider
                 GlobalSearchModalPlugin::make(),
             ])
             ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->favicon(asset('images/reno/reno-dinsos-favicon-white.png'))
             ->brandName(config('custom.app.name'))
             ->brandLogo(asset('images/reno/svg/logo-no-background.svg'))

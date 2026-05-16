@@ -126,8 +126,8 @@ class BantuanPpksOverview extends BaseWidget
             label: $label ?? 'KPM PPKS',
             value: Number::format((float) ($value ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
         )
-            ->description($desc ?? 'Total KPM Kec. ')
-            ->descriptionIcon('heroicon-o-' . $icon ?? 'user')
+            ->description($desc ?? 'Total KPM PPKS')
+            ->descriptionIcon('heroicon-o-' . ($icon ?? 'user'))
             ->color($color ?? 'success');
     }
 

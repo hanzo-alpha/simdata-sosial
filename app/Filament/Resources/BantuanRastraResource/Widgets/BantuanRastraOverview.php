@@ -70,8 +70,8 @@ class BantuanRastraOverview extends BaseWidget
             label: $label ?? 'KPM PKH Kec. Marioriwawo',
             value: Number::format((float) ($value ?? 0), 0, locale: ('id')) . config('custom.app.stat_prefix'),
         )
-            ->description($desc ?? 'Total KPM Kec. Marioriwawo')
-            ->descriptionIcon('heroicon-o-' . $icon ?? 'user')
+            ->description($desc ?? 'Total KPM Rastra')
+            ->descriptionIcon('heroicon-o-' . ($icon ?? 'user'))
             ->color($color ?? 'success');
     }
 }

@@ -85,7 +85,11 @@ final class JenisBantuanResource extends Resource
                 ]),
             ])
             ->toolbarActions([
-
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(\Illuminate\Support\Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data jenis bantuan')),
+                ]),
             ])
             ->emptyStateActions([
                 Actions\CreateAction::make(),
