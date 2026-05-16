@@ -28,7 +28,7 @@
         "laravel/framework": "^12.0",
         "laravel/octane": "^2.17",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.11",
+        "laravel/tinker": "^3.0",
         "leandrocfe/filament-apex-charts": "^5.0",
         "malzariey/filament-daterangepicker-filter": "^5.0",
         "njxqlus/filament-progressbar": "^2.0",
