@@ -3,6 +3,14 @@ name: "Update Changelog"
 on:
   release:
     types: [released]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to update'
+        required: true
+      body:
+        description: 'Release notes'
+        required: false
 
 permissions:
   contents: write
@@ -21,8 +29,8 @@ jobs:
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@v1
         with:
-          latest-version: ${{ github.event.release.name }}
-          release-notes: ${{ github.event.release.body }}
+          latest-version: ${{ github.event.release.name || inputs.version }}
+          release-notes: ${{ github.event.release.body || inputs.body }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
@@ -30,6 +38,6 @@ jobs:
           add-paths: CHANGELOG.md
           commit-message: Update CHANGELOG
           branch: update-changelog
-          title: "Update CHANGELOG for ${{ github.event.release.name }}"
-          body: "Automated update of CHANGELOG.md for release ${{ github.event.release.name }}."
+          title: "Update CHANGELOG for ${{ github.event.release.name || inputs.version }}"
+          body: "Automated update of CHANGELOG.md for release ${{ github.event.release.name || inputs.version }}."
           base: main
