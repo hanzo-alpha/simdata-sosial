@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 
 class BeritaAcara extends Model
 {
     use HasKelurahanScope;
     use HasWilayah;
+    use LogsActivity;
     use SoftDeletes;
-    use \Spatie\Activitylog\Models\Concerns\LogsActivity;
 
     protected $table = 'berita_acara';
 

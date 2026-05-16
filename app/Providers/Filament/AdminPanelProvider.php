@@ -67,7 +67,8 @@ class AdminPanelProvider extends PanelProvider
                     )
                     ->enableTwoFactorAuthentication(),
                 SpotlightPlugin::make(),
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup('Pengaturan'),
                 ThemeEdinburghPlugin::make(),
                 CuratorPlugin::make()
                     ->label('Media')

@@ -29,9 +29,9 @@ class ManageBeritaAcaras extends ManageRecords
         if (auth()->user()->hasRole(['super_admin', 'admin_rastra', 'admin'])) {
             $bantuan = Kecamatan::query()->where('kabupaten_code', setting('app.kodekab'))->get();
             $bantuan->each(function ($item, $key) use (&$results): void {
-                $results->put('semua', Tab::make()->badge(BeritaAcara::query()->count()));
+                $results->put('semua', Tab::make()->badge(BeritaAcara::query()->withTrashed()->count()));
                 $results->put(Str::lower($item->name), Tab::make()
-                    ->badge(BeritaAcara::query()->whereHas(
+                    ->badge(BeritaAcara::query()->withTrashed()->whereHas(
                         'kec',
                         fn(Builder $query) => $query->where('berita_acara.kecamatan', $item->code),
                     )->count())
@@ -59,6 +59,7 @@ class ManageBeritaAcaras extends ManageRecords
                         ->where('kecamatan', $data['kecamatan'])
                         ->where('kelurahan', $data['kelurahan'])
                         ->where('status_aktif', StatusAktif::AKTIF)
+                        ->withTrashed()
                         ->get();
 
                     $data['bantuan_rastra_ids'] = $bantuan->pluck('id');
