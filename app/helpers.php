@@ -343,3 +343,17 @@ if ( ! function_exists('bulan_to_string')) {
         }
     }
 }
+
+if ( ! function_exists('get_kecamatan_options')) {
+    function get_kecamatan_options(string|int|null $kabupatenCode = null): array
+    {
+        return Helpers::getKecamatanOptions($kabupatenCode);
+    }
+}
+
+if ( ! function_exists('get_kelurahan_options')) {
+    function get_kelurahan_options(string|int|null $kecamatanCode = null): array
+    {
+        return Helpers::getKelurahanOptions($kecamatanCode);
+    }
+}

@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace App\Filament\Resources\BantuanPpksResource\RelationManagers;
 
 use App\Enums\JenisAnggaranEnum;
+use Filament\Actions;
+use Filament\Actions\DetachAction;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Table;
 
 class DetailBantuanPpksRelationManager extends RelationManager
 {
     protected static string $relationship = 'detailBantuanPpks';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\TextInput::make('nama_bantuan')
                     ->label('Nama Bantuan')
@@ -52,18 +53,18 @@ class DetailBantuanPpksRelationManager extends RelationManager
 
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make(),
-                Tables\Actions\CreateAction::make(),
+                Actions\AttachAction::make(),
+                Actions\CreateAction::make(),
             ])
             ->actions([
                 DetachAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DetachBulkAction::make(),
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

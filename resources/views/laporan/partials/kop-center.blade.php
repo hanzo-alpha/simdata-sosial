@@ -1,14 +1,7 @@
-@if(config('app.env') === 'local')
     <img style="align-items: center; align-content: center;"
-         src="images/logos/logo-soppeng2.png"
+         src="{{ public_path('images/logos/logo-soppeng2.png') }}"
          alt="logo"
          height="60" />
-@else
-    <img style="align-items: center; align-content: center;"
-         src="{{ asset('images/logos/logo-soppeng2.png') }}"
-         alt="logo"
-         height="60" />
-@endif
 <h2 style="margin-bottom: 5px">
     <strong>{{ setting('ba.kop_title') }}</strong>
 </h2>

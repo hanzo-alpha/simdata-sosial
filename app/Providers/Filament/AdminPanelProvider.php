@@ -9,6 +9,7 @@ use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Settings\Settings;
 use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -17,8 +18,8 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Support\Enums\Platform;
+use Filament\Support\Enums\Width;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -31,8 +32,9 @@ use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Kenepa\Banner\BannerPlugin;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
-use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
+use Outerweb\FilamentSettings\SettingsPlugin as FilamentSettingsPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
+use SpyApp\ThemeEdinburgh\ThemeEdinburghPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -47,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseTransactions()
             ->login(CustomLogin::class)
             ->passwordReset()
-            ->maxContentWidth(MaxWidth::Full)
+            ->maxContentWidth(Width::Full)
             ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
@@ -65,13 +67,13 @@ class AdminPanelProvider extends PanelProvider
                     ->enableTwoFactorAuthentication(),
                 SpotlightPlugin::make(),
                 FilamentShieldPlugin::make(),
+                ThemeEdinburghPlugin::make(),
                 CuratorPlugin::make()
                     ->label('Media')
                     ->pluralLabel('Media')
                     ->navigationIcon('heroicon-o-photo')
                     ->navigationGroup('Dashboard Bantuan')
-                    ->navigationSort(3)
-                    ->defaultListView('grid'),
+                    ->navigationSort(3),
                 FilamentJobsMonitorPlugin::make(),
                 FilamentApexChartsPlugin::make(),
                 FilamentSettingsPlugin::make()
@@ -86,7 +88,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Pengaturan')
                     ->navigationLabel('Pengumuman')
                     ->bannerManagerAccessPermission('page_BannerManagerPage'),
-                //                GlobalSearchModalPlugin::make(),
+                GlobalSearchModalPlugin::make(),
             ])
             ->databaseNotifications()
             ->favicon(asset('images/reno/reno-dinsos-favicon-white.png'))
@@ -102,8 +104,8 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->navigationGroups([
-                NavigationGroup::make('program sosial')
-                    ->label('Program Sosial')
+                NavigationGroup::make('program bantuan')
+                    ->label('Program Bantuan')
                     ->collapsible()
                     ->collapsed(),
                 NavigationGroup::make('dashboard bantuan')
@@ -129,8 +131,8 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ], isPersistent: true)
-//            ->globalSearchKeyBindings(['ctrl+alt+s'])
-//            ->globalSearchFieldKeyBindingSuffix()
+            ->globalSearchKeyBindings(['ctrl+alt+s'])
+            ->globalSearchFieldKeyBindingSuffix()
             ->globalSearchFieldSuffix(fn(): ?string => match (Platform::detect()) {
                 Platform::Windows => 'CTRL+ALT+S',
                 Platform::Linux,
@@ -142,9 +144,9 @@ class AdminPanelProvider extends PanelProvider
             ], isPersistent: true)
             ->renderHook('panels::head.end', fn(): View => view('livewire-head'))
             ->renderHook('panels::body.end', fn(): View => view('livewire-body'))
-            ->resources([
-                config('filament-logger.activity_resource'),
-            ])
+            //            ->resources([
+//                config('filament-logger.activity_resource'),
+//            ])
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

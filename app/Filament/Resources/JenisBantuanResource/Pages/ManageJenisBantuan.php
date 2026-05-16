@@ -22,7 +22,7 @@ final class ManageJenisBantuan extends ManageRecords
             CreateAction::make()
                 ->disabled($this->enableInputLimitDate())
                 ->icon('heroicon-o-plus')
-                ->mutateFormDataUsing(function (array $data) {
+                ->mutateDataUsing(function (array $data) {
                     $alias = Str::of($data['alias']);
                     $data['alias'] = $alias->upper();
                     $data['model_name'] = 'App\\Models\\' . convertNameBasedOnModelName($alias->ucfirst());

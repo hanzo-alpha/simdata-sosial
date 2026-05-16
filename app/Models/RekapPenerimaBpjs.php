@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class RekapPenerimaBpjs extends Model
 {
     use HasWilayah;
+    protected $with = ['kec', 'kel', 'prov', 'kab'];
 
     protected $fillable = [
         'provinsi',

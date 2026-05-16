@@ -6,7 +6,7 @@ namespace App\Filament\Resources\BantuanBpjsResource\Pages;
 
 use App\Filament\Resources\BantuanBpjsResource;
 use Filament\Resources\Pages\CreateRecord;
-use Str;
+use Illuminate\Support\Str;
 
 final class CreateBantuanBpjs extends CreateRecord
 {

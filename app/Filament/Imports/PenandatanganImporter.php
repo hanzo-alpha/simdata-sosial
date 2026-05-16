@@ -14,7 +14,7 @@ use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Filament\Forms\Components\Checkbox;
-use Str;
+use Illuminate\Support\Str;
 
 class PenandatanganImporter extends Importer
 {
@@ -133,5 +133,12 @@ class PenandatanganImporter extends Importer
     public function getJobConnection(): ?string
     {
         return 'redis';
+    }
+
+    public function completed(): void
+    {
+        activity()
+            ->performedOn($this->getImport())
+            ->log('Impor penandatangan selesai: ' . number_format($this->getImport()->successful_rows) . ' baris berhasil.');
     }
 }

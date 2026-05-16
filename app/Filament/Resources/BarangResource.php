@@ -7,35 +7,37 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BarangResource\Pages;
 use App\Models\Barang;
 use App\Models\JenisBantuan;
-use App\Models\Kelurahan;
 use App\Supports\Helpers;
-use Awcodes\FilamentBadgeableColumn\Components\Badge;
-use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
+use Awcodes\BadgeableColumn\Components\Badge;
+use Awcodes\BadgeableColumn\Components\BadgeableColumn;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 class BarangResource extends Resource
 {
     protected static ?string $model = Barang::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-gift';
     protected static ?string $slug = 'item-bantuan';
     protected static ?string $label = 'Item Bantuan';
     protected static ?string $pluralLabel = 'Item Bantuan';
-    protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard Bantuan';
     protected static ?int $navigationSort = 9;
     protected static ?string $recordTitleAttribute = 'nama_barang';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Select::make('jenis_bantuan_id')
                     ->relationship('jenisBantuan', 'alias')
@@ -46,16 +48,7 @@ class BarangResource extends Resource
                 Select::make('kode_kelurahan')
                     ->label('Kelurahan')
                     ->required()
-                    ->options(Kelurahan::query()
-                        ->when(
-                            auth()->user()->instansi_id,
-                            fn(Builder $query) => $query->where(
-                                'code',
-                                auth()->user()->instansi_id,
-                            ),
-                        )
-                        ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
-                        ?->pluck('name', 'code'))
+                    ->options(get_kelurahan_options())
                     ->native(false)
                     ->searchable(),
                 Forms\Components\TextInput::make('nama_barang')
@@ -79,7 +72,7 @@ class BarangResource extends Resource
                     ->live(onBlur: true)
                     ->default(0)
                     ->afterStateUpdated(
-                        fn(Forms\Get $get, Forms\Set $set, $state) => $set('total_harga', $get('kuantitas') * $state),
+                        fn(callable $get, callable $set, $state) => $set('total_harga', $get('kuantitas') * $state),
                     ),
                 Forms\Components\TextInput::make('total_harga')
                     ->label('Total Harga')
@@ -100,7 +93,7 @@ class BarangResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada barang')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah Item Bantuan')
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -140,7 +133,7 @@ class BarangResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('kode_kelurahan')
                     ->label('Kelurahan')
-                    ->options(Kelurahan::query()->whereIn('kecamatan_code', config('custom.kode_kecamatan'))->pluck('name', 'code'))
+                    ->options(get_kelurahan_options())
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('jenis_bantuan_id')
@@ -150,12 +143,12 @@ class BarangResource extends Resource
                     ->preload(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

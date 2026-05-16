@@ -17,27 +17,27 @@ use App\Filament\Resources\BantuanPpksResource\Pages;
 use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Kelurahan;
 use App\Models\KriteriaPpks;
 use App\Models\Provinsi;
 use App\Models\TipePpks;
-use Awcodes\TableRepeater\Components\TableRepeater;
-use Awcodes\TableRepeater\Header;
+use App\Rules\NikValidationRule;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
@@ -45,27 +45,38 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use UnitEnum;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class BantuanPpksResource extends Resource
 {
     protected static ?string $model = BantuanPpks::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-window';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-window';
     protected static ?string $slug = 'program-ppks';
     protected static ?string $label = 'Program PPKS';
     protected static ?string $pluralLabel = 'Program PPKS';
     protected static ?string $navigationLabel = 'Program PPKS';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?int $navigationSort = 5;
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['nokk', 'nik', 'nama_lengkap', 'kel.name', 'kec.name', 'kab.name'];
+        return ['nokk', 'nik', 'nama_lengkap'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'NIK' => $record->nik,
+            'Kecamatan' => $record->kec?->name,
+            'Kelurahan' => $record->kel?->name,
+        ];
     }
 
     public static function getWidgets(): array
@@ -75,11 +86,11 @@ class BantuanPpksResource extends Resource
         ];
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Group::make()->schema([
+                Group::make()->schema([
                     Section::make('Data Keluarga')
                         ->schema([
                             Select::make('status_dtks')
@@ -96,8 +107,7 @@ class BantuanPpksResource extends Resource
                                 ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
                                     $livewire->validateOnly($component->getStatePath());
                                 })
-                                ->minLength(16)
-                                ->maxLength(16),
+                                ->rule(new NikValidationRule()),
                             TextInput::make('nik')
                                 ->label('No. Induk Kependudukan (NIK)')
                                 ->required()
@@ -106,8 +116,11 @@ class BantuanPpksResource extends Resource
                                 ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
                                     $livewire->validateOnly($component->getStatePath());
                                 })
-                                ->minLength(16)
-                                ->maxLength(16),
+                                ->rule(fn($record, $state) => new NikValidationRule(
+                                    checkMaster: ! ($record && $record->nik === $state),
+                                    checkAllPrograms: true,
+                                    ignoreModel: \App\Models\BantuanPpks::class,
+                                )),
                             TextInput::make('nama_lengkap')
                                 ->label('Nama Lengkap')
                                 ->required()
@@ -205,18 +218,18 @@ class BantuanPpksResource extends Resource
 
                     Section::make('Detail Bantuan PPKS')
                         ->schema([
-                            TableRepeater::make('detailBantuanPpks')
+                            Repeater::make('detailBantuanPpks')
                                 ->relationship('detailBantuanPpks')
                                 ->hiddenLabel()
                                 ->columnSpanFull()
                                 ->addActionLabel('Tambah Detail Bantuan')
-                                ->headers([
-                                    Header::make('Item Bantuan')->align('center'),
-                                    Header::make('Nama Bantuan')->align('center'),
-                                    Header::make('Jumlah')->align('center'),
-                                    Header::make('Jenis Anggaran')->align('center'),
-                                    Header::make('Tahun Anggaran')->align('center'),
-                                    Header::make('Bansos Diterima')->align('center'),
+                                ->table([
+                                    TableColumn::make('Item Bantuan'),
+                                    TableColumn::make('Nama Bantuan'),
+                                    TableColumn::make('Jumlah'),
+                                    TableColumn::make('Jenis Anggaran'),
+                                    TableColumn::make('Tahun Anggaran'),
+                                    TableColumn::make('Bansos Diterima'),
                                 ])
                                 ->schema([
                                     Forms\Components\Select::make('barang_id')
@@ -251,7 +264,7 @@ class BantuanPpksResource extends Resource
                                         ->options(JenisAnggaranEnum::class)
                                         ->default(JenisAnggaranEnum::APBD)
                                         ->preload()
-//                                        ->extraAttributes(['class' => 'p-2'])
+                                        //                                        ->extraAttributes(['class' => 'p-2'])
                                         ->native(false),
                                     Select::make('tahun_anggaran')
                                         ->label('Tahun Anggaran')
@@ -299,7 +312,7 @@ class BantuanPpksResource extends Resource
                                         ->searchable()
                                         ->live()
                                         ->native(false)
-                                        ->options(function (Get $get) {
+                                        ->options(function (callable $get) {
                                             $kab = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
                                             if ( ! $kab) {
                                                 return Kabupaten::where(
@@ -321,38 +334,13 @@ class BantuanPpksResource extends Resource
                                         ->searchable()
                                         ->live()
                                         ->native(false)
-                                        ->options(function (Get $get) {
-                                            $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                                            if ( ! $kab) {
-                                                return Kecamatan::where(
-                                                    'kabupaten_code',
-                                                    setting('app.kodekab', config('custom.default.kodekab')),
-                                                )
-                                                    ->pluck('name', 'code');
-                                            }
-
-                                            return $kab->pluck('name', 'code');
-                                        })
+                                        ->options(fn(callable $get) => get_kecamatan_options($get('kabupaten')))
                                         ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                                     Select::make('kelurahan')
                                         ->required()
                                         ->native(false)
-                                        ->options(fn(callable $get) => Kelurahan::query()
-                                            ->when(
-                                                auth()->user()->instansi_id,
-                                                fn(Builder $query) => $query->where(
-                                                    'code',
-                                                    auth()->user()->instansi_id,
-                                                ),
-                                            )
-                                            ->where(
-                                                'kecamatan_code',
-                                                $get('kecamatan'),
-                                            )?->pluck(
-                                                'name',
-                                                'code',
-                                            ))
+                                        ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                                         ->live()
                                         ->searchable(),
                                 ]),
@@ -372,7 +360,7 @@ class BantuanPpksResource extends Resource
                         ]),
                 ])->columnSpan(['lg' => 2]),
 
-                Forms\Components\Group::make()->schema([
+                Group::make()->schema([
                     Section::make('Berita Acara')
                         ->schema([
                             Forms\Components\DateTimePicker::make('tgl_ba')
@@ -421,7 +409,7 @@ class BantuanPpksResource extends Resource
                                 ->options(TipePpks::pluck('nama_tipe', 'id'))
                                 ->preload()
                                 ->live()
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteriaPpks', null)),
+                                ->afterStateUpdated(fn(callable $set) => $set('kriteriaPpks', null)),
 
                             Select::make('kriteriaPpks')
                                 ->label('Kriteria PPKS')
@@ -444,18 +432,6 @@ class BantuanPpksResource extends Resource
                                 )
                                     ?->pluck('nama_kriteria', 'id'))
                                 ->preload(),
-
-                            //                            Select::make('jenis_anggaran')
-                            //                                ->enum(JenisAnggaranEnum::class)
-                            //                                ->options(JenisAnggaranEnum::class)
-                            //                                ->default(JenisAnggaranEnum::APBD)
-                            //                                ->native(false)
-                            //                                ->preload(),
-                            //
-                            //                            TextInput::make('tahun_anggaran')
-                            //                                ->label('Tahun')
-                            //                                ->default(now()->year)
-                            //                                ->numeric(),
 
                             Forms\Components\Select::make('status_rumah_tinggal')
                                 ->label('Status Rumah Tinggal')
@@ -531,7 +507,7 @@ class BantuanPpksResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada bantuan PPKS')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->disabled(fn(): bool => cek_batas_input(setting('app.batas_tgl_input_ppks')))
@@ -674,7 +650,7 @@ class BantuanPpksResource extends Resource
                     ->indicator('Kriteria')
                     ->columnSpanFull()
                     ->form([
-                        Forms\Components\Fieldset::make()->schema([
+                        Fieldset::make()->schema([
                             Forms\Components\Select::make('tipe_ppks_id')
                                 ->label('Tipe PPKS')
                                 ->options(fn() => TipePpks::query()
@@ -682,10 +658,10 @@ class BantuanPpksResource extends Resource
                                 ->live()
                                 ->searchable()
                                 ->native(false)
-                                ->afterStateUpdated(fn(Forms\Set $set) => $set('kriteriaPpks', null)),
+                                ->afterStateUpdated(fn(callable $set) => $set('kriteriaPpks', null)),
                             Forms\Components\Select::make('kriteriaPpks')
                                 ->label('Kriteria PPKS')
-                                ->options(fn(Forms\Get $get) => KriteriaPpks::query()
+                                ->options(fn(callable $get) => KriteriaPpks::query()
                                     ->where('tipe_ppks_id', $get('tipe_ppks_id'))
                                     ->pluck('nama_kriteria', 'id'))
                                 ->searchable()
@@ -728,7 +704,7 @@ class BantuanPpksResource extends Resource
                     ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
-//            ->filtersFormColumns(4)
+            //            ->filtersFormColumns(4)
 //            ->filtersFormSchema(fn(array $filters): array => [
 //                Section::make('Visibility')
 //                    ->description('These filters affect the visibility of the records in the table.')
@@ -745,22 +721,29 @@ class BantuanPpksResource extends Resource
             ->deselectAllRecordsWhenFiltered()
             ->hiddenFilterIndicators()
             ->actions([
-                Tables\Actions\Action::make('cetak ba')
+                Actions\Action::make('cetak ba')
                     ->label('Cetak Berita Acara')
                     ->icon('heroicon-o-printer')
                     ->url(fn($record) => route('ba.ppks', ['id' => $record, 'm' => BantuanPpks::class]), true),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\ForceDeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
+                    Actions\ForceDeleteAction::make(),
+                    Actions\RestoreAction::make(),
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data bantuan PPKS')),
+                    Actions\ForceDeleteBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus permanen masal ' . $records->count() . ' data bantuan PPKS')),
+                    Actions\RestoreBulkAction::make()
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Pemulihan masal ' . $records->count() . ' data bantuan PPKS')),
                     ExportBulkAction::make()
                         ->label('Ekspor Ke Excel')
                         ->exports([
@@ -770,12 +753,12 @@ class BantuanPpksResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
+        return $schema
             ->schema([
                 Group::make([
-                    \Filament\Infolists\Components\Section::make('Informasi Keluarga')
+                    Section::make('Informasi Keluarga')
                         ->icon('heroicon-o-user')
                         ->schema([
                             TextEntry::make('status_dtks')
@@ -842,7 +825,7 @@ class BantuanPpksResource extends Resource
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
                         ])->columns(2),
-                    \Filament\Infolists\Components\Section::make('Detail Bantuan PPKS')
+                    Section::make('Detail Bantuan PPKS')
                         ->icon('heroicon-o-document-text')
                         ->schema([
                             TextEntry::make('detailBantuanPpks.nama_bantuan')
@@ -871,7 +854,7 @@ class BantuanPpksResource extends Resource
                                 ->weight(FontWeight::SemiBold)
                                 ->color('primary'),
                         ])->columns(2),
-                    \Filament\Infolists\Components\Section::make('Informasi Alamat')
+                    Section::make('Informasi Alamat')
                         ->icon('heroicon-o-map-pin')
                         ->schema([
                             TextEntry::make('alamat')
@@ -898,7 +881,7 @@ class BantuanPpksResource extends Resource
                 ])->columnSpan(2),
 
                 Group::make([
-                    \Filament\Infolists\Components\Section::make('Penyaluran Bantuan')
+                    Section::make('Penyaluran Bantuan')
                         ->icon('heroicon-o-photo')
                         ->schema([
                             TextEntry::make('penyaluran.status_penyaluran')
@@ -909,7 +892,7 @@ class BantuanPpksResource extends Resource
                                 ->date('d F Y'),
                         ])->columns(2),
 
-                    \Filament\Infolists\Components\Section::make('Informasi Bantuan Dan Status Penerima')
+                    Section::make('Informasi Bantuan Dan Status Penerima')
                         ->icon('heroicon-o-document-text')
                         ->schema([
                             //                            TextEntry::make('nama_bantuan')
@@ -966,19 +949,21 @@ class BantuanPpksResource extends Resource
                         ])
                         ->columns(2),
 
-                    \Filament\Infolists\Components\Section::make('Dokumentasi')
-                        ->icon('heroicon-o-photo')
-                        ->schema([
-                            ImageEntry::make('bukti_foto')
-                                ->hiddenLabel()
-                                ->height(400)
-                                ->extraImgAttributes([
-                                    'alt' => 'dokumentasi',
-                                    'loading' => 'lazy',
-                                ]),
-                        ])->columns(3),
-                ])->columns(1),
+                ])->columnSpan(1),
 
+                Section::make('Dokumentasi')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        ImageEntry::make('bukti_foto')
+                            ->hiddenLabel()
+                            ->columnSpanFull()
+                            ->extraImgAttributes([
+                                'alt' => 'dokumentasi',
+                                'loading' => 'lazy',
+                                'class' => 'mx-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-full h-auto',
+                                'style' => 'max-height: 800px; object-fit: contain;',
+                            ]),
+                    ])->columnSpanFull(),
             ])->columns(3);
     }
 
@@ -986,7 +971,7 @@ class BantuanPpksResource extends Resource
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()
-            ->with(['nama_lengkap', 'dtks_id', 'nik', 'nokk']);
+            ->with(['kec', 'kel']);
     }
 
     public static function getRelations(): array
@@ -1008,15 +993,8 @@ class BantuanPpksResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery()
-                ->withoutGlobalScopes([
-                    SoftDeletingScope::class,
-                ]);
-        }
-
         return parent::getEloquentQuery()
-            ->where('kelurahan', auth()->user()->instansi_id)
+            ->with(['detailBantuanPpks', 'tipe_ppks', 'bansosDiterima', 'kab', 'kec', 'kel'])
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

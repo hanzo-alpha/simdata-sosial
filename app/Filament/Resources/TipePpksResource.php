@@ -6,27 +6,27 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TipePpksResource\Pages;
 use App\Models\TipePpks;
-use Awcodes\FilamentBadgeableColumn\Components\Badge;
-use Awcodes\FilamentBadgeableColumn\Components\BadgeableColumn;
-use Awcodes\TableRepeater\Components\TableRepeater;
-use Awcodes\TableRepeater\Header;
+use Awcodes\BadgeableColumn\Components\Badge;
+use Awcodes\BadgeableColumn\Components\BadgeableColumn;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\Alignment;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class TipePpksResource extends Resource
 {
     protected static ?string $model = TipePpks::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-ticket';
     protected static ?string $slug = 'tipe-ppks';
     protected static ?string $label = 'Tipe PPKS';
     protected static ?string $pluralLabel = 'Tipe PPKS';
     protected static ?string $navigationLabel = 'Tipe PPKS';
-    protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard Bantuan';
     protected static ?string $recordTitleAttribute = 'nama_tipe';
 
     public static function getGloballySearchableAttributes(): array
@@ -34,9 +34,9 @@ class TipePpksResource extends Resource
         return ['nama_tipe', 'alias', 'kriteria_ppks.nama_kriteria'];
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\TextInput::make('nama_tipe')
                     ->label('Nama Tipe')
@@ -47,17 +47,12 @@ class TipePpksResource extends Resource
                 Forms\Components\Textarea::make('deskripsi')
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                TableRepeater::make('kriteria_ppks')
+                Forms\Components\Repeater::make('kriteria_ppks')
                     ->label('Kriteria PPKS')
                     ->relationship()
-                    ->headers([
-                        Header::make('Nama Kriteria')
-                            ->align(Alignment::Center),
+                    ->table([
+                        Forms\Components\Repeater\TableColumn::make('Nama Kriteria'),
                     ])
-                    ->renderHeader(true)
-                    ->showLabels()
-                    ->streamlined()
-                    ->emptyLabel('Tidak ada kriteria PPKS.')
                     ->simple(
                         Forms\Components\TextInput::make('nama_kriteria')
                             ->label('Nama Kriteria')
@@ -77,7 +72,7 @@ class TipePpksResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada tipe PPKS')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->disabled(fn() => cek_batas_input('ppks'))
@@ -103,13 +98,13 @@ class TipePpksResource extends Resource
             ->filters([
 
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

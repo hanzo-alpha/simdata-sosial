@@ -3,6 +3,7 @@ import {defineConfig} from "vite";
 import laravel from "laravel-vite-plugin";
 import {homedir} from "os";
 import {resolve} from "path";
+import tailwindcss from "@tailwindcss/vite";
 
 let host = "simdata-sosial.local";
 
@@ -16,8 +17,9 @@ export default defineConfig({
             ],
             refresh: true,
         }),
+        tailwindcss(),
     ],
-    server: detectServerConfig(host),
+    // server: detectServerConfig(host),
 });
 
 function detectServerConfig(host) {

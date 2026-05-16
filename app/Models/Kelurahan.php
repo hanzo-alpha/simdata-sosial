@@ -54,6 +54,18 @@ final class Kelurahan extends Model
         return $this->belongsTo(Kecamatan::class, 'kecamatan_code', 'code');
     }
 
+    protected static function booted(): void
+    {
+        static::saved(function ($kelurahan): void {
+            cache()->forget('kelurahan_options_all');
+            cache()->forget('kelurahan_options_' . $kelurahan->kecamatan_code);
+        });
+        static::deleted(function ($kelurahan): void {
+            cache()->forget('kelurahan_options_all');
+            cache()->forget('kelurahan_options_' . $kelurahan->kecamatan_code);
+        });
+    }
+
     //    public function bantuanRastras(): BelongsTo
     //    {
     //        return $this->belongsTo(BantuanRastra::class, 'code', 'kelurahan');

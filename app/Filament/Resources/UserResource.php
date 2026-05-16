@@ -2,47 +2,62 @@
 
 declare(strict_types=1);
 
-//declare(strict_types=1);
-
 namespace App\Filament\Resources;
 
 use App\Enums\StatusAdminEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\Kelurahan;
 use App\Models\User;
+use BackedEnum;
+use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
-use Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
     protected static ?string $slug = 'pengguna';
     protected static ?string $label = 'Pengguna';
     protected static ?string $pluralLabel = 'Pengguna';
-    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['name', 'email', 'instansi.name'];
+        return ['name', 'email'];
     }
 
-    public static function form(Form $form): Form
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return $form
+        return [
+            'Email' => $record->email,
+            'Instansi' => $record->instansi?->name,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->with(['instansi']);
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -67,14 +82,7 @@ class UserResource extends Resource
                 Forms\Components\Select::make('instansi_id')
                     ->nullable()
                     ->unique(ignoreRecord: true)
-                    ->options(
-                        Kelurahan::query()
-                            ->whereIn(
-                                'kecamatan_code',
-                                config('custom.kode_kecamatan'),
-                            )
-                            ->pluck('name', 'code'),
-                    )
+                    ->options(get_kelurahan_options())
                     ->searchable()
                     ->label('Instansi')
                     ->live(onBlur: true)
@@ -102,7 +110,7 @@ class UserResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada pengguna')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -129,21 +137,21 @@ class UserResource extends Resource
             ->filters([
 
             ])
-            ->toggleColumnsTriggerAction(
+            ->columnManagerTriggerAction(
                 fn(Action $action) => $action
                     ->iconButton()
 //                    ->tooltip('Tampilkan / Sembunyikan Kolom Tabel')
                     ->label('Tampilkan / Sembunyikan Kolom Tabel'),
             )
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                Actions\EditAction::make()
                     ->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()
+                Actions\DeleteAction::make()
                     ->closeModalByClickingAway(false)
                     ->hidden(fn(Model $record) => 1 === $record->id),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->label('Hapus Terpilih')
                         ->icon('heroicon-m-trash')

@@ -4,26 +4,22 @@ declare(strict_types=1);
 
 namespace App\Filament\Auth;
 
-use Filament\Forms\Components\Component;
+use Filament\Auth\Pages\Login;
 use Filament\Forms\Components\TextInput;
-use Filament\Pages\Auth\Login;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Schema;
 use Illuminate\Validation\ValidationException;
 
 class CustomLogin extends Login
 {
-    protected function getForms(): array
+    public function form(Schema $schema): Schema
     {
-        return [
-            'form' => $this->form(
-                $this->makeForm()
-                    ->schema([
-                        $this->getLoginFormComponent(),
-                        $this->getPasswordFormComponent(),
-                        $this->getRememberFormComponent(),
-                    ])
-                    ->statePath('data'),
-            ),
-        ];
+        return $schema
+            ->components([
+                $this->getLoginFormComponent(),
+                $this->getPasswordFormComponent(),
+                $this->getRememberFormComponent(),
+            ]);
     }
 
     protected function getLoginFormComponent(): Component

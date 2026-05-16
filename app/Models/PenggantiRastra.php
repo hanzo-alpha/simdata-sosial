@@ -17,11 +17,6 @@ class PenggantiRastra extends Model
 
     protected $with = ['beritaAcara'];
 
-    protected $casts = [
-        'alasan_dikeluarkan' => AlasanEnum::class,
-        'attachment' => 'array',
-    ];
-
     public function keluarga(): BelongsTo
     {
         return $this->belongsTo(BantuanRastra::class);
@@ -35,5 +30,13 @@ class PenggantiRastra extends Model
     public function bantuan_rastra(): BelongsTo
     {
         return $this->belongsTo(BantuanRastra::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'alasan_dikeluarkan' => AlasanEnum::class,
+            'attachment' => 'array',
+        ];
     }
 }

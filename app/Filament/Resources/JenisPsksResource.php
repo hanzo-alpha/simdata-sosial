@@ -6,29 +6,32 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\JenisPsksResource\Pages;
 use App\Models\JenisPsks;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class JenisPsksResource extends Resource
 {
     protected static ?string $model = JenisPsks::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $slug = 'jenis-psks';
     protected static ?string $label = 'Jenis PSKS';
     protected static ?string $pluralLabel = 'Jenis PSKS';
     protected static ?string $navigationLabel = 'Jenis PSKS';
     protected static ?string $navigationParentItem = 'Tipe PPKS';
-    protected static ?string $navigationGroup = 'Dashboard Bantuan';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard Bantuan';
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $recordTitleAttribute = 'nama_psks';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 TextInput::make('nama_psks')
                     ->required(),
@@ -43,7 +46,7 @@ class JenisPsksResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada jenis PSKS')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Tambah')
                     ->icon('heroicon-m-plus')
                     ->button(),
@@ -65,16 +68,16 @@ class JenisPsksResource extends Resource
             ->filters([
 
             ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                Actions\ActionGroup::make([
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

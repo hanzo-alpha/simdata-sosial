@@ -9,50 +9,44 @@ use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
-use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\RekapPenerimaBpjs;
-use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use App\Traits\HasWidgetShield;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
-use Filament\Forms\Get;
+use Filament\Schemas\Schema;
+use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use JetBrains\PhpStorm\NoReturn;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerKelurahanChart extends ApexChartWidget
 {
+    use HasFiltersSchema;
     use HasWidgetShield;
 
     protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
     protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
     protected static bool $deferLoading = true;
-    protected static ?string $pollingInterval = '30s';
+    protected ?string $pollingInterval = '30s';
     protected static ?int $sort = 2;
     protected int|string|array $columnSpan = 'full';
 
-    protected function getFormSchema(): array
+    public function filtersSchema(Schema $schema): Schema
     {
-        return [
+        return $schema->components([
             Select::make('program')
                 ->options(JenisBantuan::query()->pluck('alias', 'id'))
                 ->default(3)
                 ->native(false),
             Select::make('kecamatan')
-                ->options(
-                    Kecamatan::query()
-                        ->where('kabupaten_code', setting('app.kodekab'))
-                        ->pluck('name', 'code'),
-                )
+                ->options(get_kecamatan_options())
                 ->live()
                 ->native(false),
             Select::make('kelurahan')
-                ->options(fn(Get $get): \Illuminate\Support\Collection => Kelurahan::query()
-                    ->where('kecamatan_code', $get('kecamatan'))
-                    ->pluck('name', 'code'))
+                ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                 ->native(false),
             ToggleButtons::make('cTipe')
                 ->default('bar')
@@ -82,7 +76,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             Toggle::make('cLabel')
                 ->default(false)
                 ->label('Tampilkan Label'),
-        ];
+        ]);
     }
 
     protected function queryChart(string|int $model, $kodekel, array $filters): int|string|array|Builder|Collection
@@ -138,9 +132,9 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         return $results;
     }
 
-    #[NoReturn] protected function getOptions(): array
+    protected function getOptions(): array
     {
-        $filters = $this->filterFormData;
+        $filters = $this->filters;
         $results = [];
         $colors = ['#03A9F4', '#f59e0b', '#FDD835', '#BA68C8', '#66BB6A'];
         $gradientColors = ['#79cdf2', '#fbbf24', '#ffeb9b', '#c197c9', '#96e098'];

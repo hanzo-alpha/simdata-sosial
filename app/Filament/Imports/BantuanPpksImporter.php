@@ -267,4 +267,11 @@ class BantuanPpksImporter extends Importer
     {
         return 'redis';
     }
+
+    public function completed(): void
+    {
+        activity()
+            ->performedOn($this->getImport())
+            ->log('Impor bantuan PPKS selesai: ' . number_format($this->getImport()->successful_rows) . ' baris berhasil.');
+    }
 }

@@ -1,7 +1,7 @@
 <x-layouts.print>
     @section('content')
         <div class="text-center">
-            <img src="{{ asset('images/logos/logo-soppeng2.png') }}" alt="logo" height="60" />
+            <img src="{{ public_path('images/logos/logo-soppeng2.png') }}" alt="logo" height="60" />
             <h2 style="margin-bottom: 5px"><strong>PEMERINTAH KABUPATEN SOPPENG</strong></h2>
             <h1 style="margin-top: 3px; margin-bottom: 5px"><strong>DINAS SOSIAL</strong></h1>
             {{-- <p style="margin-top: 0"> --}}
@@ -63,7 +63,7 @@
                             style="width: 400px; height: 500px; padding: 5px; margin-bottom: 5px; margin-top: 10px"
                             class="img-border"
                         >
-                            <img style="width: 300px" src="{{ asset('storage/' . $foto) }}" alt="foto" />
+                            <img style="width: 300px" src="{{ storage_path('app/public/' . $foto) }}" alt="foto" />
                             <div class="m-0" style="font-size: 10px">
                                 <p style="margin-top: 30px">
                                     Penyaluran pada titik koordinat indonesia : {{ $model->lat }}
@@ -100,7 +100,7 @@
                     <div class="">
                         <img
                             style="width: 600px"
-                            src="{{ asset('storage/' . $model->bantuan_rastra->foto_ktp_kk) }}"
+                            src="{{ storage_path('app/public/' . $model->bantuan_rastra->foto_ktp_kk) }}"
                             alt="foto"
                         />
                     </div>

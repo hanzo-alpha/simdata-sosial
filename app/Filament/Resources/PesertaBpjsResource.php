@@ -7,37 +7,41 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PesertaBpjsResource\Pages\ManagePesertaBpjs;
 use App\Imports\ImportPesertaBpjs;
 use App\Models\PesertaBpjs;
+use App\Rules\NikValidationRule;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use UnitEnum;
 
 final class PesertaBpjsResource extends Resource
 {
     protected static ?string $model = PesertaBpjs::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $slug = 'peserta-bpjs';
     protected static ?string $label = 'Peserta BPJS';
     protected static ?string $pluralLabel = 'Peserta BPJS';
     protected static ?string $navigationLabel = 'Peserta BPJS';
     protected static ?string $navigationParentItem = 'Program BPJS';
-    protected static ?string $navigationGroup = 'Program Sosial';
+    protected static string|UnitEnum|null $navigationGroup = 'Program Bantuan';
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
 
     protected static ?int $navigationSort = 8;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 FileUpload::make('attachment')
                     ->label('Impor')
@@ -70,8 +74,7 @@ final class PesertaBpjsResource extends Resource
                     ->afterStateUpdated(function (Page $livewire, TextInput $component): void {
                         $livewire->validateOnly($component->getStatePath());
                     })
-                    ->minLength(16)
-                    ->maxLength(16)
+                    ->rule(new NikValidationRule(checkMaster: false))
                     ->visibleOn(['edit', 'view']),
                 Forms\Components\TextInput::make('nama_lengkap')
                     ->maxLength(255)
@@ -91,7 +94,7 @@ final class PesertaBpjsResource extends Resource
             ->emptyStateIcon('heroicon-o-information-circle')
             ->emptyStateHeading('Belum ada peserta BPJS')
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make()
+                Actions\CreateAction::make()
                     ->label('Unggah Data')
                     ->modalHeading('Unggah Data Peserta BPJS')
                     ->modalDescription('Unggah Peserta BPJS ke database')
@@ -136,16 +139,16 @@ final class PesertaBpjsResource extends Resource
             ->filters([
 
             ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                Actions\ActionGroup::make([
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
                 ]),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -159,11 +162,6 @@ final class PesertaBpjsResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        if (auth()->user()->hasRole(superadmin_admin_roles())) {
-            return parent::getEloquentQuery();
-        }
-
         return parent::getEloquentQuery();
-        //            ->where('kelurahan', auth()->user()->instansi_id);
     }
 }

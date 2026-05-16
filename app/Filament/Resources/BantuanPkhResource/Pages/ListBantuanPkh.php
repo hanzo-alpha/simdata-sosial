@@ -13,13 +13,13 @@ use App\Traits\HasInputDateLimit;
 use Filament\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-use pxlrbt\FilamentExcel\Actions\Pages\ExportAction;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
 
 final class ListBantuanPkh extends ListRecords
 {
@@ -70,14 +70,15 @@ final class ListBantuanPkh extends ListRecords
                     ExportBantuanPkh::make()
                         ->except(['created_at', 'updated_at', 'deleted_at']),
                 ])
-                ->disabled($this->enableInputLimitDate('pkh')),
+                ->disabled($this->enableInputLimitDate()),
+
             Actions\Action::make('unggahData')
                 ->label('Upload XLS')
                 ->modalHeading('Unggah Data Bantuan PKH')
                 ->modalDescription('Unggah data PKH ke database dari file excel')
                 ->modalSubmitActionLabel('Unggah')
                 ->modalIcon('heroicon-o-arrow-up-tray')
-                ->form([
+                ->schema([
                     FileUpload::make('attachment')
                         ->label('Impor')
                         ->hiddenLabel()
@@ -119,13 +120,14 @@ final class ListBantuanPkh extends ListRecords
                 ->color('success')
                 ->modalAlignment(Alignment::Center)
                 ->closeModalByClickingAway(false)
-                ->disabled($this->enableInputLimitDate('pkh'))
+                ->disabled($this->enableInputLimitDate())
                 ->successRedirectUrl(route('filament.admin.resources.program-pkh.index'))
                 ->modalWidth('lg'),
+
             Actions\CreateAction::make()
                 ->label('Buat Baru')
                 ->icon('heroicon-o-plus')
-                ->disabled($this->enableInputLimitDate('pkh')),
+                ->disabled($this->enableInputLimitDate()),
         ];
     }
 

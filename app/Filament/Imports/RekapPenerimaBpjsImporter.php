@@ -78,12 +78,16 @@ class RekapPenerimaBpjsImporter extends Importer
     public function resolveRecord(): ?RekapPenerimaBpjs
     {
         return RekapPenerimaBpjs::firstOrNew([
-            // Update existing records, matching them by `$this->data['column_name']`
             'kecamatan' => $this->data['kecamatan'],
             'kelurahan' => $this->data['kelurahan'],
             'jumlah' => $this->data['jumlah'],
         ]);
+    }
 
-        //        return new RekapPenerimaBpjs();
+    public function completed(): void
+    {
+        activity()
+            ->performedOn($this->getImport())
+            ->log('Impor rekap penerima BPJS selesai: ' . number_format($this->getImport()->successful_rows) . ' baris berhasil.');
     }
 }

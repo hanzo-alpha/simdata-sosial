@@ -2,66 +2,47 @@
 
 declare(strict_types=1);
 
-use App\ServerFactory\ImagickServerFactory;
-use Awcodes\Curator\PathGenerators\UserPathGenerator;
-
 return [
-    'accepted_file_types' => [
-        'image/jpeg',
-        'image/png',
-        'image/webp',
-        'image/svg+xml',
-        'application/pdf',
-        'application/vnd.ms-excel',
-        'application/x-msexcel',
-        'application/xls',
+    'curation_formats' => Awcodes\Curator\Enums\PreviewableExtensions::toArray(),
+    'default_disk' => env('CURATOR_DEFAULT_DISK', 'public'),
+    'default_directory' => null,
+    'default_visibility' => 'public',
+    'features' => [
+        'curations' => true,
+        'file_swap' => true,
+        'directory_restriction' => false,
+        'preserve_file_names' => false,
+        'tenancy' => [
+            'enabled' => false,
+            'relationship_name' => null,
+        ],
     ],
-    'cloud_disks' => [
-        's3',
-        'cloudinary',
-        'imgix',
-    ],
-    'curation_formats' => [
-        'jpg',
-        'jpeg',
-        'webp',
-        'png',
-        'avif',
-    ],
-    'tabs' => [
-        'display_curation' => false,
-        'display_upload_new' => true,
-    ],
-    'curation_presets' => [
-        Awcodes\Curator\Curations\ThumbnailPreset::class,
-    ],
-    'directory' => 'media',
-    'disk' => env('FILAMENT_FILESYSTEM_DISK', 'public'),
-    'glide' => [
-        //        'server' => Awcodes\Curator\Glide\DefaultServerFactory::class,
-        'server' => ImagickServerFactory::class,
-        'fallbacks' => [],
-        'route_path' => 'storage',
-    ],
-    'image_crop_aspect_ratio' => null,
-    'image_resize_mode' => null,
-    'image_resize_target_height' => null,
-    'image_resize_target_width' => null,
-    'is_limited_to_directory' => false,
-    'max_size' => 5000,
+    'glide_token' => env('CURATOR_GLIDE_TOKEN'),
     'model' => Awcodes\Curator\Models\Media::class,
-    'min_size' => 0,
-    'path_generator' => UserPathGenerator::class,
-    'resources' => [
+    'path_generator' => null,
+    'resource' => [
         'label' => 'Media',
         'plural_label' => 'Media',
-        'navigation_group' => null,
-        'navigation_icon' => 'heroicon-o-photo',
-        'navigation_sort' => null,
-        'navigation_count_badge' => false,
-        'resource' => Awcodes\Curator\Resources\MediaResource::class,
+        'default_layout' => 'grid',
+        'navigation' => [
+            'group' => null,
+            'icon' => 'heroicon-o-photo',
+            'sort' => null,
+            'should_register' => true,
+            'should_show_badge' => false,
+        ],
+        'resource' => Awcodes\Curator\Resources\Media\MediaResource::class,
+        'pages' => [
+            'create' => Awcodes\Curator\Resources\Media\Pages\CreateMedia::class,
+            'edit' => Awcodes\Curator\Resources\Media\Pages\EditMedia::class,
+            'index' => Awcodes\Curator\Resources\Media\Pages\ListMedia::class,
+        ],
+        'schemas' => [
+            'form' => Awcodes\Curator\Resources\Media\Schemas\MediaForm::class,
+        ],
+        'tables' => [
+            'table' => Awcodes\Curator\Resources\Media\Tables\MediaTable::class,
+        ],
     ],
-    'should_preserve_filenames' => false,
-    'should_register_navigation' => true,
-    'visibility' => 'public',
+    'url_provider' => Awcodes\Curator\Providers\GlideUrlProvider::class,
 ];

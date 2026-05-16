@@ -62,11 +62,13 @@ class PesertaBpjsImporter extends Importer
 
     public function resolveRecord(): ?PesertaBpjs
     {
-        // return PesertaBpjs::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
         return new PesertaBpjs();
+    }
+
+    public function completed(): void
+    {
+        activity()
+            ->performedOn($this->getImport())
+            ->log('Impor peserta BPJS selesai: ' . number_format($this->getImport()->successful_rows) . ' baris berhasil.');
     }
 }

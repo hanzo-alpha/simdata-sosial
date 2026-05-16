@@ -8,22 +8,22 @@ use App\Enums\StatusVerifikasiEnum;
 use App\Models\BantuanPpks;
 use App\Models\Kecamatan;
 use App\Traits\HasGlobalFilters;
-use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use App\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Number;
+use Illuminate\Support\Number;
 
 class BantuanPpksOverview extends BaseWidget
 {
     use HasGlobalFilters;
     use HasWidgetShield;
     use InteractsWithPageFilters;
+    protected int|string|array $columnSpan = 'full';
 
-    //    protected static bool $isDiscovered = false;
-    protected static ?int $sort = 1;
+    protected int|array|null $columns = 4;
 
     protected function getStats(): array
     {
@@ -35,26 +35,32 @@ class BantuanPpksOverview extends BaseWidget
 
         $listKecamatan = Kecamatan::query()
             ->where('kabupaten_code', setting('app.kodekab'))
+            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('code', $filters['kecamatan']))
             ->pluck('name', 'code');
 
         foreach ($listKecamatan as $code => $name) {
             $value = BantuanPpks::query()
                 ->select(['created_at', 'kecamatan', 'kelurahan'])
-                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters))
-                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters))
+                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
                 ->where('kecamatan', $code)
                 ->count();
-            $label = 'KPM PPKS Kec. ' . $name;
-            $desc = 'Total PPKS Kec. ' . $name;
-            $icon = 'user';
 
-            $results[] = $this->renderStats($value, $label, $desc, $icon);
+            $results[] = $this->renderStats(
+                $value,
+                'KPM PPKS Kec. ' . $name,
+                'Total PPKS Kec. ' . $name,
+                'user',
+            );
         }
 
         $results['all'] = $this->renderStats(
-            BantuanPpks::count(),
+            BantuanPpks::query()
+                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+                ->count(),
             'Rekap KPM PPKS',
-            'Total KPM Program PPKS Semua Kecamatan',
+            'Total KPM Program PPKS',
             'users',
             'primary',
         );
@@ -92,21 +98,21 @@ class BantuanPpksOverview extends BaseWidget
         return [
             Stat::make(
                 label: 'KPM PPKS Tidak Terverifikasi',
-                value: Number::format($data['unverified'], locale: 'id') . config('custom.app.stat_prefix'),
+                value: Number::format((float) ($data['unverified'] ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total KPM PPKS Tidak Terverifikasi')
                 ->descriptionIcon('heroicon-o-minus-circle')
                 ->color('danger'),
             Stat::make(
                 label: 'KPM PPKS Terverifikasi',
-                value: Number::format($data['verified'], locale: 'id') . config('custom.app.stat_prefix'),
+                value: Number::format((float) ($data['verified'] ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total KPM PPKS Terverifikasi')
                 ->descriptionIcon('heroicon-o-check-badge')
                 ->color('success'),
             Stat::make(
                 label: 'KPM PPKS Ditinjau',
-                value: Number::format($data['review'], locale: 'id') . config('custom.app.stat_prefix'),
+                value: Number::format((float) ($data['review'] ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
             )
                 ->description('Total KPM PPKS Ditinjau')
                 ->descriptionIcon('heroicon-o-exclamation-circle')
@@ -118,7 +124,7 @@ class BantuanPpksOverview extends BaseWidget
     {
         return Stat::make(
             label: $label ?? 'KPM PPKS',
-            value: Number::format($value ?? 0, locale: 'id') . config('custom.app.stat_prefix'),
+            value: Number::format((float) ($value ?? 0), locale: 'id') . config('custom.app.stat_prefix'),
         )
             ->description($desc ?? 'Total KPM Kec. ')
             ->descriptionIcon('heroicon-o-' . $icon ?? 'user')
@@ -129,7 +135,7 @@ class BantuanPpksOverview extends BaseWidget
     {
         return BantuanPpks::query()->with(['tipe_ppks'])
             ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']));
+            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']));
     }
 
     protected function filterField(): array

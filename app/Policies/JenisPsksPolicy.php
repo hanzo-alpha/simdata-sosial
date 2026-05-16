@@ -5,106 +5,91 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\JenisPsks;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class JenisPsksPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_jenis::psks');
+        return $authUser->can('view_any_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, JenisPsks $jenisPsks): bool
+    public function view(AuthUser $authUser, JenisPsks $jenisPsks): bool
     {
-        return $user->can('view_jenis::psks');
+        return $authUser->can('view_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_jenis::psks');
+        return $authUser->can('create_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, JenisPsks $jenisPsks): bool
+    public function update(AuthUser $authUser, JenisPsks $jenisPsks): bool
     {
-        return $user->can('update_jenis::psks');
+        return $authUser->can('update_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, JenisPsks $jenisPsks): bool
+    public function delete(AuthUser $authUser, JenisPsks $jenisPsks): bool
     {
-        return $user->can('delete_jenis::psks');
+        return $authUser->can('delete_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return $user->can('delete_any_jenis::psks');
+        return $authUser->can('delete_any_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, JenisPsks $jenisPsks): bool
+    public function restore(AuthUser $authUser, JenisPsks $jenisPsks): bool
     {
-        return $user->can('force_delete_jenis::psks');
+        return $authUser->can('restore_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDelete(AuthUser $authUser, JenisPsks $jenisPsks): bool
     {
-        return $user->can('force_delete_any_jenis::psks');
+        return $authUser->can('force_delete_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, JenisPsks $jenisPsks): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_jenis::psks');
+        return $authUser->can('force_delete_any_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_any_jenis::psks');
+        return $authUser->can('restore_any_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, JenisPsks $jenisPsks): bool
+    public function replicate(AuthUser $authUser, JenisPsks $jenisPsks): bool
     {
-        return $user->can('{{ Replicate }}');
+        return $authUser->can('replicate_jenis_psks');
     }
 
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $authUser->can('reorder_jenis_psks');
     }
+
+    public function download(AuthUser $authUser): bool
+    {
+        return $authUser->can('download_jenis_psks');
+    }
+
+    public function upload(AuthUser $authUser): bool
+    {
+        return $authUser->can('upload_jenis_psks');
+    }
+
+    public function verification(AuthUser $authUser): bool
+    {
+        return $authUser->can('verification_jenis_psks');
+    }
+
+    public function verifyStatus(AuthUser $authUser, JenisPsks $jenisPsks): bool
+    {
+        return $authUser->can('verify_status_jenis_psks');
+    }
+
 }

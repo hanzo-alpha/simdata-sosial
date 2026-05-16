@@ -20,7 +20,7 @@ class BantuanBpntImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('no_nik')
+            ImportColumn::make('nik')
                 ->guess(['nik', 'no nik', 'nik ktp'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
@@ -86,5 +86,12 @@ class BantuanBpntImporter extends Importer
     public function getJobConnection(): ?string
     {
         return 'redis';
+    }
+
+    public function completed(): void
+    {
+        activity()
+            ->performedOn($this->getImport())
+            ->log('Impor bantuan BPNT selesai: ' . number_format($this->getImport()->successful_rows) . ' baris berhasil.');
     }
 }
