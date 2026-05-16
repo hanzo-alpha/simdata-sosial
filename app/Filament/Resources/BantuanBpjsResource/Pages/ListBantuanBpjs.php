@@ -111,6 +111,7 @@ class ListBantuanBpjs extends ListRecords
                 ])
                 ->action(function (array $data): void {
                     $import = new ImportBantuanBpjs();
+                    $import->setUser(auth()->user());
                     $import->import($data['attachment'], 'public');
                 })
                 ->icon('heroicon-o-arrow-up-tray')

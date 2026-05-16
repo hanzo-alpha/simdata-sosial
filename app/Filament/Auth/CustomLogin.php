@@ -44,7 +44,7 @@ class CustomLogin extends Login
     protected function throwFailureValidationException(): never
     {
         throw ValidationException::withMessages([
-            'data.login' => __('filament-panels::pages/auth/login.messages.failed'),
+            'data.login' => __('filament-panels::auth/pages/login.messages.failed'),
         ]);
     }
 }

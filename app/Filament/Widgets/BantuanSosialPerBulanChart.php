@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Models\BantuanBpjs;
 use App\Models\BantuanBpnt;
 use App\Models\BantuanPkh;
 use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
+use App\Models\RekapPenerimaBpjs;
 use App\Traits\HasWidgetShield;
-use Carbon\Carbon;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Schema;
+use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,13 +23,15 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerBulanChart extends ApexChartWidget
 {
+    use \App\Traits\HasGlobalFilters;
+    use \Filament\Widgets\Concerns\InteractsWithPageFilters;
     use HasFiltersSchema;
     use HasWidgetShield;
 
-    protected static bool $isDiscovered = false;
+    protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerBulanChart';
-    protected static ?string $heading = 'Bantuan Sosial Per Bulan Chart';
-    protected static ?int $sort = 4;
+    protected static ?string $heading = 'Tren Bantuan Sosial Per Bulan';
+    protected static ?int $sort = 30;
     protected int|string|array $columnSpan = 'full';
 
     public function filtersSchema(Schema $schema): Schema
@@ -39,15 +41,9 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
                 ->options(JenisBantuan::query()->pluck('alias', 'id'))
                 ->default(3)
                 ->native(false),
-            Select::make('bulan')
-                ->options(list_bulan())
-                ->native(false),
-            Select::make('kecamatan')
-                ->options(get_kecamatan_options())
-                ->live()
-                ->native(false),
-            Select::make('kelurahan')
-                ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
+            Select::make('tahun')
+                ->options(array_combine(range(now()->year, now()->year - 5), range(now()->year, now()->year - 5)))
+                ->default(now()->year)
                 ->native(false),
             ToggleButtons::make('cTipe')
                 ->default('bar')
@@ -71,88 +67,70 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
         ]);
     }
 
-    protected function queryChart(string|int $model, $kodekel, array $filters): int|string|array|Builder|Collection
+    protected function queryChart(string|int $model, int $month, array $filters): int|string|array|Builder|Collection
     {
-        $bulan = ! empty($filters['bulan']) ? Carbon::parse($filters['bulan'])->month : 0;
-        $kodekel = ! empty($kodekel) ? Carbon::parse($kodekel) : today();
         $model = match ((int) $model) {
             1 => BantuanPkh::class,
             2 => BantuanBpnt::class,
-            3 => BantuanBpjs::class,
+            3 => RekapPenerimaBpjs::class,
             4 => BantuanPpks::class,
             5 => BantuanRastra::class,
         };
 
-        //        dd($bulan, $kodekel);
+        $year = $filters['tahun'] ?? now()->year;
 
-        return $model::query()
-            ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
-            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
-            ->when($filters['program'], fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']))
-            ->when($filters['bulan'], fn(Builder $query) => $query->where('created_at', $bulan))
-            ->where('created_at', $kodekel)
-            ->count();
-    }
+        $query = $model::query()
+            ->when($filters['kecamatan'] ?? null, fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+            ->when($filters['kelurahan'] ?? null, fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year);
 
-    protected function queryChartArray(array|\Illuminate\Support\Collection $bantuan, $kodekel, array $filters): array
-    {
-        $results = [];
-        $bulan = ! empty($filters['bulan']) ? Carbon::parse($filters['bulan'])->month : 0;
-        foreach ($bantuan as $key => $item) {
-            $model = match ((int) $item) {
-                1 => BantuanPkh::class,
-                2 => BantuanBpnt::class,
-                3 => BantuanBpjs::class,
-                4 => BantuanPpks::class,
-                5 => BantuanRastra::class,
-            };
-
-            $kodekel = ! empty($kodekel) ? Carbon::parse($kodekel) : today();
-
-            $results[$key] = $model::query()
-                ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
-                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
-                ->when($filters['program'], fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']))
-                ->when($filters['bulan'], fn(Builder $query) => $query->where('created_at', $bulan))
-                ->where('created_at', $kodekel)
-                ->count();
+        if (RekapPenerimaBpjs::class === $model) {
+            return (int) $query->sum('jumlah');
         }
 
-        return $results;
+        return $query->count();
     }
-
-
 
     protected function getOptions(): array
     {
-        $filters = $this->filters;
+        $filters = array_merge($this->filters, $this->getFilters());
         $results = [];
-        $colors = ['#f59e0b', '#03A9F4', '#FDD835', '#BA68C8', '#66BB6A'];
-        $gradientColors = ['#fbbf24', '#79cdf2', '#ffeb9b', '#c197c9', '#96e098'];
+        $colors = ['#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EF4444'];
+        $gradientColors = ['#60A5FA', '#FBBF24', '#34D399', '#A78BFA', '#F87171'];
 
         $listBulan = list_bulan(short: true);
+        $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
 
-        $jenisBantuan = JenisBantuan::find($filters['program']) ?? JenisBantuan::pluck('id', 'alias');
-
-        foreach ($listBulan as $code => $name) {
-            $results['labels'][$code] = $name;
-
-            $results[$jenisBantuan->id][$name] = $this->queryChart($jenisBantuan->id, $code, $filters);
+        foreach ($listBulan as $monthNum => $monthName) {
+            $results['labels'][$monthNum] = $monthName;
+            $results[$jenisBantuan->id][$monthName] = $this->queryChart($jenisBantuan->id, $monthNum, $filters);
         }
 
-        //        dd($results);
-
-        $cTipe = auth()->user()->instansi_id ? 'bar' : $filters['cTipe'];
-        $cTipeOpt = (bool) auth()->user()->instansi_id;
+        $cTipe = auth()->user()->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
+        $isStacked = (bool) ($filters['cStack'] ?? false);
 
         return [
             'chart' => [
                 'type' => $cTipe,
                 'height' => 480,
+                'stacked' => $isStacked,
                 'toolbar' => [
                     'show' => true,
+                    'tools' => [
+                        'download' => true,
+                        'selection' => false,
+                        'zoom' => false,
+                        'zoomin' => false,
+                        'zoomout' => false,
+                        'pan' => false,
+                        'reset' => false,
+                    ],
+                ],
+                'animations' => [
+                    'enabled' => true,
+                    'easing' => 'easeinout',
+                    'speed' => 800,
                 ],
             ],
             'series' => [
@@ -163,28 +141,10 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
             ],
             'plotOptions' => [
                 'bar' => [
-                    'distributed' => (bool) $filters['cStack'],
-                    'stacked' => (bool) $filters['cStack'],
-                    'horizontal' => $cTipeOpt,
-                    'borderRadius' => 2,
-                    'track' => [
-                        'background' => 'transparent',
-                        'strokeWidth' => '100%',
-                    ],
+                    'borderRadius' => 8,
+                    'columnWidth' => '50%',
                     'dataLabels' => [
-                        'show' => true,
-                        'name' => [
-                            'show' => true,
-                            'offsetY' => -10,
-                            'fontWeight' => 600,
-                            'fontFamily' => 'inherit',
-                        ],
-                        'value' => [
-                            'show' => true,
-                            'fontWeight' => 600,
-                            'fontSize' => '24px',
-                            'fontFamily' => 'inherit',
-                        ],
+                        'position' => 'top',
                     ],
                 ],
             ],
@@ -192,8 +152,7 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
                 'categories' => array_values($results['labels']),
                 'labels' => [
                     'style' => [
-                        'fontWeight' => 500,
-                        'fontFamily' => 'inherit',
+                        'fontWeight' => 600,
                     ],
                 ],
             ],
@@ -201,37 +160,68 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
                 'labels' => [
                     'style' => [
                         'fontWeight' => 500,
-                        'fontFamily' => 'inherit',
                     ],
                 ],
             ],
             'fill' => [
                 'type' => 'gradient',
                 'gradient' => [
-                    'shade' => 'dark',
+                    'shade' => 'light',
                     'type' => 'vertical',
-                    'shadeIntensity' => 0.5,
+                    'shadeIntensity' => 0.4,
                     'gradientToColors' => $gradientColors,
-                    'inverseColors' => true,
-                    'opacityFrom' => 1,
-                    'opacityTo' => 1,
+                    'inverseColors' => false,
+                    'opacityFrom' => 0.9,
+                    'opacityTo' => 0.6,
                     'stops' => [0, 100],
                 ],
             ],
-
             'dataLabels' => [
-                'enabled' => true,
+                'enabled' => false,
             ],
             'grid' => [
-                'show' => $filters['chartGrid'],
+                'show' => (bool) ($filters['chartGrid'] ?? false),
+                'borderColor' => '#f1f1f1',
+                'strokeDashArray' => 4,
             ],
             'tooltip' => [
                 'enabled' => true,
+                'theme' => 'light',
             ],
             'stroke' => [
-                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
+                'show' => true,
+                'width' => 'line' === $cTipe ? 4 : 2,
+                'curve' => 'smooth',
+                'colors' => 'line' === $cTipe ? $colors : ['transparent'],
             ],
             'colors' => $colors,
+            'legend' => [
+                'position' => 'top',
+                'horizontalAlign' => 'right',
+                'fontWeight' => 600,
+            ],
         ];
+    }
+
+    protected function extraJsOptions(): ?RawJs
+    {
+        return RawJs::make(<<<'JS'
+            {
+                yaxis: {
+                    labels: {
+                        formatter: function (val) {
+                            return val.toLocaleString('id-ID');
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return Number(val).toLocaleString('id-ID') + ' KPM';
+                        }
+                    }
+                }
+            }
+        JS);
     }
 }

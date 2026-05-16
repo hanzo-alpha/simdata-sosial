@@ -14,6 +14,7 @@ use App\Enums\StatusRumahEnum;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanPpks;
 use App\Filament\Resources\BantuanPpksResource\Pages;
+use App\Filament\Resources\BantuanPpksResource\RelationManagers\PenyaluransRelationManager;
 use App\Filament\Resources\BantuanPpksResource\Widgets\BantuanPpksOverview;
 use App\Models\BantuanPpks;
 use App\Models\Kabupaten;
@@ -335,12 +336,14 @@ class BantuanPpksResource extends Resource
                                         ->live()
                                         ->native(false)
                                         ->options(fn(callable $get) => get_kecamatan_options($get('kabupaten')))
+                                        ->default(fn() => auth()->user()->instansi?->kecamatan_code)
                                         ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                                     Select::make('kelurahan')
                                         ->required()
                                         ->native(false)
                                         ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
+                                        ->default(fn() => auth()->user()->instansi_id)
                                         ->live()
                                         ->searchable(),
                                 ]),
@@ -977,7 +980,7 @@ class BantuanPpksResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //            DetailBantuanPpksRelationManager::class
+            PenyaluransRelationManager::class,
         ];
     }
 

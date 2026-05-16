@@ -29,6 +29,6 @@ class ExportBantuanRastra extends ExcelExport
             Column::make('status_rastra')->heading('Status Rastra'),
             Column::make('foto_ktp_kk')->heading('Foto KTP KK'),
         ]);
-        $this->queue()->withChunkSize(300);
+        $this->queue()->withChunkSize(1000);
     }
 }

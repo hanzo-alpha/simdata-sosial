@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -12,7 +13,11 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 final class Provinsi extends Model
 {
+    use HasFactory;
     use HasRelationships;
+
+    public $incrementing = false;
+    public $timestamps = false;
 
     protected $table = 'provinsi';
 

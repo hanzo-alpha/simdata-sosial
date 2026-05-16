@@ -10,17 +10,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BeritaAcara extends Model
 {
     use HasKelurahanScope;
     use HasWilayah;
+    use SoftDeletes;
+    use \Spatie\Activitylog\Models\Concerns\LogsActivity;
 
     protected $table = 'berita_acara';
 
     protected $with = [
         'penandatangan', 'itemBantuan', 'kel', 'kec',
     ];
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function penandatangan(): BelongsTo
     {

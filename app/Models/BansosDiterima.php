@@ -10,8 +10,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BansosDiterima extends Model
 {
+    use \Spatie\Activitylog\Models\Concerns\LogsActivity;
     protected $table = 'bansos_diterima';
     protected $guarded = [];
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function bantuan_ppks(): BelongsTo
     {

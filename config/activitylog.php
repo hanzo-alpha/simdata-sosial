@@ -14,6 +14,16 @@ return [
     'enabled' => env('ACTIVITYLOG_ENABLED', true),
 
     /*
+     * The table name to be used for logging activities.
+     */
+    'table_name' => 'activity_log',
+
+    /*
+     * The database connection to be used for logging activities.
+     */
+    'database_connection' => env('ACTIVITYLOG_DB_CONNECTION'),
+
+    /*
      * When the clean command is executed, all recording activities older than
      * the number of days specified here will be deleted.
      */

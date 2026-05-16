@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
+use App\Enums\StatusAdminEnum;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
@@ -22,6 +23,15 @@ class Dashboard extends \Filament\Pages\Dashboard
         return \Filament\Support\Enums\Width::Full;
     }
 
+    public function getColumns(): int|array
+    {
+        return [
+            'sm' => 1,
+            'md' => 2,
+            'xl' => 3,
+        ];
+    }
+
     public function filtersForm(Schema $schema): Schema
     {
         return $schema
@@ -36,18 +46,22 @@ class Dashboard extends \Filament\Pages\Dashboard
                             ->options(Kecamatan::query()
                                 ->where('kabupaten_code', setting('app.kodekab'))
                                 ->pluck('name', 'code'))
-                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null))
-                            ->columnSpanFull(),
+                            ->default(fn() => auth()->user()->instansi?->kecamatan_code)
+                            ->disabled(fn() => StatusAdminEnum::OPERATOR === auth()->user()->is_admin)
+                            ->dehydrated()
+                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->label('Kelurahan')
                             ->options(fn(callable $get) => Kelurahan::query()
                                 ->where('kecamatan_code', $get('kecamatan'))
                                 ->pluck('name', 'code'))
+                            ->default(fn() => auth()->user()->instansi_id)
+                            ->disabled(fn() => StatusAdminEnum::OPERATOR === auth()->user()->is_admin)
+                            ->dehydrated()
                             ->native(false)
                             ->live()
-                            ->searchable()
-                            ->columnSpanFull(),
+                            ->searchable(),
                     ])
                     ->columnSpanFull()
                     ->columns(2),

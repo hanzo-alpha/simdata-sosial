@@ -6,12 +6,19 @@ namespace App\Traits;
 
 trait HasGlobalFilters
 {
-    protected function getFilters(): array
+    public function getFilters(): array
     {
-        return [
-            'tipe' => $this->filters['tipe'] ?? null,
-            'kecamatan' => $this->filters['kecamatan'] ?? null,
-            'kelurahan' => $this->filters['kelurahan'] ?? null,
+        $filters = [
+            'tipe' => $this->pageFilters['tipe'] ?? null,
+            'kecamatan' => $this->pageFilters['kecamatan'] ?? null,
+            'kelurahan' => $this->pageFilters['kelurahan'] ?? null,
         ];
+
+        if (auth()->check() && auth()->user()->instansi_id) {
+            $filters['kelurahan'] = auth()->user()->instansi_id;
+            $filters['kecamatan'] = auth()->user()->instansi?->kecamatan_code;
+        }
+
+        return $filters;
     }
 }

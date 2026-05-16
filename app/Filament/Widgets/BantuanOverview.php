@@ -26,6 +26,8 @@ class BantuanOverview extends MultiWidget
 
     protected int|string|array $columnSpan = 'full';
 
+    protected static ?int $sort = -10;
+
     protected int|array|null $columns = 1;
 
     public function getColumnSpan(): int|string|array
@@ -35,7 +37,7 @@ class BantuanOverview extends MultiWidget
 
     public function shouldPersistMultiWidgetTabsInSession(): bool
     {
-        return true;
+        return false;
     }
 
 }

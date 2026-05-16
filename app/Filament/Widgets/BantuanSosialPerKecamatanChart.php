@@ -15,7 +15,7 @@ use App\Traits\HasWidgetShield;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Schema;
-use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
+use Filament\Support\RawJs;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,16 +23,16 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerKecamatanChart extends ApexChartWidget
 {
-    use HasFiltersSchema;
-    //    use HasGlobalFilters;
+    use HasGlobalFilters;
     use HasWidgetShield;
-    //    use InteractsWithPageFilters;
+    use InteractsWithPageFilters;
 
-    protected static ?string $heading = 'Program Bantuan Sosial Per Kecamatan';
+    protected static ?string $heading = 'Perbandingan Bantuan Sosial Per Kecamatan';
+    protected static ?string $subheading = 'Semua program bantuan berdasarkan wilayah kecamatan';
     protected ?string $pollingInterval = '30s';
     protected static bool $deferLoading = true;
-    protected static ?int $sort = 3;
-    //    protected int|string|array $columnSpan = 'full';
+    protected static ?int $sort = 21;
+    protected int|string|array $columnSpan = 'full';
 
     public function filtersSchema(Schema $schema): Schema
     {
@@ -74,74 +74,55 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
 
     protected function getOptions(): array
     {
-        $filters = $this->filters;
+        $filters = array_merge($this->filters, $this->getFilters());
         $results = [];
-        $colors = ['#f59e0b', '#03A9F4', '#FDD835', '#BA68C8', '#66BB6A'];
-        $gradientColors = ['#fbbf24', '#79cdf2', '#ffeb9b', '#c197c9', '#96e098'];
+        $colors = ['#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EF4444'];
+        $gradientColors = ['#60A5FA', '#FBBF24', '#34D399', '#A78BFA', '#F87171'];
 
         $kec = get_kecamatan_options();
-
         $jenisBantuan = JenisBantuan::pluck('alias', 'id');
 
         foreach ($kec as $code => $name) {
             $results['labels'][$code] = $name;
-
-            foreach ($jenisBantuan as $id => $bantuan) {
-                $results[$bantuan][$name] = $this->queryChart($id, $code, $filters);
+            foreach ($jenisBantuan as $id => $alias) {
+                $results[$alias][$name] = $this->queryChart($id, $code, $filters);
             }
         }
 
+        $chartTipe = $filters['chartTipe'] ?? 'bar';
+
         return [
             'chart' => [
-                'type' => $filters['chartTipe'],
+                'type' => $chartTipe,
                 'height' => 480,
                 'toolbar' => [
-                    'show' => false,
+                    'show' => true,
+                    'tools' => [
+                        'download' => true,
+                        'selection' => false,
+                        'zoom' => false,
+                        'zoomin' => false,
+                        'zoomout' => false,
+                        'pan' => false,
+                        'reset' => false,
+                    ],
+                ],
+                'animations' => [
+                    'enabled' => true,
+                    'easing' => 'easeinout',
+                    'speed' => 800,
                 ],
             ],
-            'series' => [
-                [
-                    'name' => 'BPJS',
-                    'data' => array_values($results['BPJS']),
-                ],
-                [
-                    'name' => 'PKH',
-                    'data' => array_values($results['PKH']),
-                ],
-                [
-                    'name' => 'BPNT',
-                    'data' => array_values($results['BPNT']),
-                ],
-                [
-                    'name' => 'PPKS',
-                    'data' => array_values($results['PPKS']),
-                ],
-                [
-                    'name' => 'RASTRA',
-                    'data' => array_values($results['RASTRA']),
-                ],
-            ],
+            'series' => collect($jenisBantuan)->map(fn($alias) => [
+                'name' => $alias,
+                'data' => array_values($results[$alias]),
+            ])->values()->toArray(),
             'plotOptions' => [
                 'bar' => [
-                    'borderRadius' => 2,
-                    'track' => [
-                        'background' => 'transparent',
-                        'strokeWidth' => '100%',
-                    ],
+                    'borderRadius' => 8,
+                    'columnWidth' => '70%',
                     'dataLabels' => [
-                        'show' => true,
-                        'name' => [
-                            'show' => true,
-                            'offsetY' => -10,
-                            'fontWeight' => 600,
-                            'fontFamily' => 'inherit',
-                        ],
-                        'value' => [
-                            'show' => true,
-                            'fontWeight' => 600,
-                            'fontSize' => '24px',
-                            'fontFamily' => 'inherit',
-                        ],
+                        'position' => 'top',
                     ],
                 ],
             ],
@@ -149,7 +130,7 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
                 'categories' => array_values($results['labels']),
                 'labels' => [
                     'style' => [
-                        'fontWeight' => 500,
+                        'fontWeight' => 600,
                         'fontFamily' => 'inherit',
                     ],
                 ],
@@ -165,42 +146,78 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
             'fill' => [
                 'type' => 'gradient',
                 'gradient' => [
-                    'shade' => 'dark',
+                    'shade' => 'light',
                     'type' => 'vertical',
-                    'shadeIntensity' => 0.5,
+                    'shadeIntensity' => 0.25,
                     'gradientToColors' => $gradientColors,
-                    'inverseColors' => true,
-                    'opacityFrom' => 1,
-                    'opacityTo' => 1,
+                    'inverseColors' => false,
+                    'opacityFrom' => 0.85,
+                    'opacityTo' => 0.55,
                     'stops' => [0, 100],
                 ],
             ],
-
             'dataLabels' => [
-                'enabled' => true,
+                'enabled' => false,
             ],
             'grid' => [
-                'show' => $filters['chartGrid'],
+                'show' => (bool) ($filters['chartGrid'] ?? false),
+                'borderColor' => '#f1f1f1',
+                'strokeDashArray' => 4,
             ],
             'tooltip' => [
                 'enabled' => true,
+                'theme' => 'light',
+                'shared' => true,
+                'intersect' => false,
+                'y' => [
+                    'style' => [
+                        'fontFamily' => 'inherit',
+                    ],
+                ],
+                'style' => [
+                    'fontFamily' => 'inherit',
+                ],
             ],
             'stroke' => [
-                'width' => 'line' === $filters['chartTipe'] ? 4 : 0,
+                'show' => true,
+                'width' => 'line' === $chartTipe ? 4 : 2,
+                'curve' => 'smooth',
+                'colors' => 'line' === $chartTipe ? $colors : ['transparent'],
             ],
             'colors' => $colors,
+            'legend' => [
+                'position' => 'top',
+                'horizontalAlign' => 'center',
+                'fontFamily' => 'inherit',
+                'fontWeight' => 600,
+                'fontSize' => '13px',
+                'itemMargin' => [
+                    'horizontal' => 10,
+                    'vertical' => 5,
+                ],
+            ],
         ];
     }
 
-    private function generateSeriesChart(string $name, array $data): array
+    protected function extraJsOptions(): ?RawJs
     {
-        $arr = [
-            'name' => $name,
-            'data' => $data,
-        ];
-
-        return [
-            $arr,
-        ];
+        return RawJs::make(<<<'JS'
+            {
+                yaxis: {
+                    labels: {
+                        formatter: function (val) {
+                            return val.toLocaleString('id-ID');
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return Number(val).toLocaleString('id-ID') + ' KPM';
+                        }
+                    }
+                }
+            }
+        JS);
     }
 }

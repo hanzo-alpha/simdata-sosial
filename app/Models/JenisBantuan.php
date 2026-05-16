@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 final class JenisBantuan extends Model
 {
     use HasFactory;
+    use \Spatie\Activitylog\Models\Concerns\LogsActivity;
 
     public $timestamps = false;
 
@@ -22,4 +23,12 @@ final class JenisBantuan extends Model
         'model_name',
         'deskripsi',
     ];
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 }

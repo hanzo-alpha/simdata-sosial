@@ -12,9 +12,11 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::table('barang', function (Blueprint $table): void {
-            $table->unsignedBigInteger('jenis_bantuan_id')->index()->nullable()->after('keterangan');
-        });
+        if ( ! Schema::hasColumn('barang', 'jenis_bantuan_id')) {
+            Schema::table('barang', function (Blueprint $table): void {
+                $table->unsignedBigInteger('jenis_bantuan_id')->index()->nullable()->after('keterangan');
+            });
+        }
     }
 
     /**
