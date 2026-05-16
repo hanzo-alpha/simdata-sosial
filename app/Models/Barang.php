@@ -10,11 +10,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Barang extends Model
 {
+    use \Spatie\Activitylog\Models\Concerns\LogsActivity;
     protected $table = 'barang';
 
     protected $guarded = [];
 
     protected $with = ['kel'];
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function beritaAcara(): BelongsToMany
     {

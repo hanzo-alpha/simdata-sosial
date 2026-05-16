@@ -7,6 +7,7 @@ use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class () extends Migration {
     public function up(): void
@@ -33,7 +34,11 @@ return new class () extends Migration {
             $table->tinyInteger('status_aktif')
                 ->nullable()
                 ->default(0);
-            $table->foreignIdFor(Media::class)->nullable()->constrained('media')->cascadeOnDelete()->cascadeOnUpdate();
+            if ('sqlite' === config('database.default')) {
+                $table->unsignedBigInteger('media_id')->nullable();
+            } else {
+                $table->foreignIdFor(Media::class)->nullable()->constrained('media')->cascadeOnDelete()->cascadeOnUpdate();
+            }
             $table->json('foto_ktp_kk')->nullable();
             $table->year('tahun')->nullable()->default(now()->year);
             $table->tinyInteger('status_rastra')->nullable();
@@ -42,8 +47,12 @@ return new class () extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->string('alamat_lengkap')->virtualAs("CONCAT(alamat, ', ', dusun, ', ',
-             'RT. ' ,no_rt, ', ', 'RW. ', no_rw)");
+            //            $table->string('alamat_lengkap')->virtualAs(
+            //                match (config('database.default')) {
+            //                    'sqlite' => "alamat || ', ' || dusun || ', RT. ' || no_rt || ', RW. ' || no_rw",
+            //                    default => "CONCAT(alamat, ', ', dusun, ', ', 'RT. ' ,no_rt, ', ', 'RW. ', no_rw)"
+            //                }
+            //            );
         });
     }
 };

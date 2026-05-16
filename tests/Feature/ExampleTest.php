@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-//uses(RefreshDatabase::class);
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('returns a successful response', function (): void {
     $response = $this->get('/');

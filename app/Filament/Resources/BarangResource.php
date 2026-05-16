@@ -148,7 +148,9 @@ class BarangResource extends Resource
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
+                    Actions\DeleteBulkAction::make()
+                        ->after(fn(\Illuminate\Support\Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data item bantuan')),
                 ]),
             ]);
     }

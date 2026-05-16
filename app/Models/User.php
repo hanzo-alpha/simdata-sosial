@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
@@ -22,6 +23,7 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory;
     use HasRoles;
     use Notifiable;
+    use \Spatie\Activitylog\Models\Concerns\LogsActivity;
     use TwoFactorAuthenticatable;
 
     protected $hidden = [
@@ -30,6 +32,14 @@ class User extends Authenticatable implements FilamentUser
     ];
 
     protected $guarded = [];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges();
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {

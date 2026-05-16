@@ -12,6 +12,8 @@ use App\Enums\StatusUsulanEnum;
 use App\Models\BantuanBpjs as DataBantuanBpjs;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
+use App\Models\User;
+use App\Traits\HasImportNotifications;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +21,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -32,9 +33,6 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Events\AfterChunk;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Validators\Failure;
 use Str;
@@ -53,57 +51,23 @@ class ImportBantuanBpjs implements
     WithValidation,
     WithEvents
 {
+    use HasImportNotifications;
     use Importable;
-    use RegistersEventListeners;
     use SkipsErrors;
     use SkipsFailures;
 
-    public static function beforeImport(BeforeImport $event): void
-    {
-        Notification::make('Mulai Mengimpor')
-            ->title('Data Bantuan Bpjs sedang di impor ke database.')
-            ->info()
-            ->sendToDatabase(auth()->user());
-    }
-
-    public static function afterImport(AfterImport $event): void
-    {
-        Notification::make('Impor Berhasil')
-            ->title('Data Bantuan BPJS Berhasil di impor')
-            ->success()
-            ->sendToDatabase(auth()->user());
-    }
-
-    public static function afterChunk(AfterChunk $event): void
-    {
-        Notification::make('Impor Berhasil')
-            ->title('Data Bantuan BPJS Berhasil di impor')
-            ->success()
-            ->sendToDatabase(auth()->user());
-    }
-
     public function registerEvents(): array
     {
-        return [
+        return array_merge($this->importRegisterEvents(), [
             ImportFailed::class => function (ImportFailed $event): void {
-                Notification::make('Import Failed')
-                    ->title('Gagal mengimpor usulan BPJS')
-                    ->danger()
-                    ->sendToDatabase(auth()->user());
+                if ($this->user) {
+                    Notification::make('Import Failed')
+                        ->title('Gagal mengimpor usulan BPJS')
+                        ->danger()
+                        ->sendToDatabase($this->user);
+                }
             },
-            //            AfterImport::class => function (AfterImport $event): void {
-            //                Notification::make('Impor Berhasil')
-            //                    ->title('Data Bantuan BPJS Berhasil di impor')
-            //                    ->success()
-            //                    ->sendToDatabase(auth()->user());
-            //            },
-            //            BeforeImport::class => function (BeforeImport $event): void {
-            //                Notification::make('Mulai Mengimpor')
-            //                    ->title('Data Bantuan Bpjs sedang di impor ke database.')
-            //                    ->info()
-            //                    ->sendToDatabase(auth()->user());
-            //            },
-        ];
+        ]);
     }
 
     /**
@@ -230,5 +194,15 @@ class ImportBantuanBpjs implements
     public function uniqueBy(): array
     {
         return ['nik'];
+    }
+
+    protected function getImportSuccessTitle(): string
+    {
+        return 'Impor Berhasil';
+    }
+
+    protected function getImportSuccessMessage(): string
+    {
+        return 'Data Bantuan BPJS Berhasil di impor';
     }
 }

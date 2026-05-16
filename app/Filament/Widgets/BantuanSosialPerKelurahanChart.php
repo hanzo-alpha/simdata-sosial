@@ -16,7 +16,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Schema;
+use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
@@ -25,14 +27,35 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
 {
     use HasFiltersSchema;
     use HasWidgetShield;
+    use InteractsWithPageFilters;
 
     protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerKelurahanChart';
-    protected static ?string $heading = 'Bantuan Sosial Per Kelurahan Chart';
     protected static bool $deferLoading = true;
     protected ?string $pollingInterval = '30s';
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 20;
     protected int|string|array $columnSpan = 'full';
+    public function getSubheading(): ?string
+    {
+        return 'Data penerima bantuan berdasarkan kelurahan';
+    }
+
+    public function getHeading(): ?string
+    {
+        $filters = $this->filters;
+        $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
+        $year = $filters['tahun'] ?? 2024;
+
+        return 'Distribusi Bantuan ' . $jenisBantuan->alias . ' Per Kelurahan ' . $year;
+    }
+
+    /**
+     * Use this method to update the chart options when the filter form is submitted.
+     */
+    public function updatedInteractsWithSchemas(string $statePath): void
+    {
+        $this->updateOptions();
+    }
 
     public function filtersSchema(Schema $schema): Schema
     {
@@ -40,13 +63,6 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             Select::make('program')
                 ->options(JenisBantuan::query()->pluck('alias', 'id'))
                 ->default(3)
-                ->native(false),
-            Select::make('kecamatan')
-                ->options(get_kecamatan_options())
-                ->live()
-                ->native(false),
-            Select::make('kelurahan')
-                ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
                 ->native(false),
             ToggleButtons::make('cTipe')
                 ->default('bar')
@@ -79,7 +95,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         ]);
     }
 
-    protected function queryChart(string|int $model, $kodekel, array $filters): int|string|array|Builder|Collection
+    protected function queryChart(string|int $model, string|int|null $kodekel, array $filters): int|string|array|Builder|Collection
     {
         $model = match ((int) $model) {
             1 => BantuanPkh::class,
@@ -90,21 +106,29 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         };
 
         $query = $model::query()
-            ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
-            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
-            ->where('kelurahan', $kodekel);
+            ->select(['created_at', 'kecamatan', 'kelurahan'])
+            ->where('kelurahan', $kodekel)
+            ->where(function (Builder $query) use ($filters): void {
+                $year = $filters['tahun'] ?? 2024;
+                if (\Schema::hasColumn($query->getModel()->getTable(), 'tahun')) {
+                    $query->where('tahun', $year);
+                } else {
+                    $query->whereYear('created_at', $year);
+                }
+            });
+        // ->when($filters['kecamatan'] ?? null, fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+        // ->when($filters['kelurahan'] ?? null, fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']));
 
         if (RekapPenerimaBpjs::class === $model) {
             return $query->clone()->sum('jumlah');
         }
 
-        return  $query
-            ->when($filters['program'], fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']))
+        return $query
+            ->when($filters['program'] ?? null, fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']))
             ->count();
     }
 
-    protected function queryChartArray(array|\Illuminate\Support\Collection $bantuan, $kodekel, array $filters): array
+    protected function queryChartArray(array|\Illuminate\Support\Collection $bantuan, string|int|null $kodekel, array $filters): array
     {
         $results = [];
 
@@ -119,10 +143,10 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
 
             $results[] = $model::query()
                 ->select(['created_at', 'kecamatan', 'kelurahan', 'jenis_bantuan_id'])
-                ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
+                ->when($filters['kecamatan'] ?? null, fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
+                ->when($filters['kelurahan'] ?? null, fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
                 ->when(
-                    $filters['program'],
+                    $filters['program'] ?? null,
                     fn(Builder $query) => $query->where('jenis_bantuan_id', $filters['program']),
                 )
                 ->where('kelurahan', $kodekel)
@@ -136,38 +160,60 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
     {
         $filters = $this->filters;
         $results = [];
-        $colors = ['#03A9F4', '#f59e0b', '#FDD835', '#BA68C8', '#66BB6A'];
-        $gradientColors = ['#79cdf2', '#fbbf24', '#ffeb9b', '#c197c9', '#96e098'];
+        $colors = ['#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EF4444'];
+        $gradientColors = ['#60A5FA', '#FBBF24', '#34D399', '#A78BFA', '#F87171'];
+
+        $kdKec = $filters['kecamatan'] ?? null;
+        $kdKel = $filters['kelurahan'] ?? null;
+
+        $userInstansiId = auth()->user()->instansi_id ?? $kdKel;
 
         $kel = Kelurahan::query()
-            ->when(auth()->user()->instansi_id, function (Builder $query): void {
-                $query->where('code', auth()->user()->instansi_id);
+            ->when($userInstansiId, function (Builder $query) use ($userInstansiId): void {
+                $query->where('code', $userInstansiId);
             })
-            ->when($filters['kecamatan'], function (Builder $query) use ($filters): void {
-                $query->where('kecamatan_code', $filters['kecamatan']);
-            })
-            ->when($filters['kelurahan'], function (Builder $query) use ($filters): void {
-                $query->where('code', $filters['kelurahan']);
+            ->when($kdKec, function (Builder $query) use ($kdKec): void {
+                $query->where('kecamatan_code', $kdKec);
             })
             ->whereIn('kecamatan_code', config('custom.kode_kecamatan'))
             ->pluck('name', 'code');
 
-        $jenisBantuan = JenisBantuan::find($filters['program']) ?? JenisBantuan::pluck('id', 'alias');
+
+        $programId = $filters['program'] ?? 3;
+
+        $jenisBantuan = JenisBantuan::find($programId);
 
         foreach ($kel as $code => $name) {
             $results['labels'][$code] = $name;
             $results[$jenisBantuan->id][$name] = $this->queryChart($jenisBantuan->id, $code, $filters);
         }
 
-        $cTipe = auth()->user()->instansi_id ? 'bar' : $filters['cTipe'];
-        $cTipeOpt = (bool) auth()->user()->instansi_id;
+        $cTipe = auth()->user()->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
+        $isStacked = (bool) ($filters['cStack'] ?? false);
+        $chartGrid = (bool) ($filters['chartGrid'] ?? false);
+        $cLabel = (bool) ($filters['cLabel'] ?? false);
 
         return [
             'chart' => [
                 'type' => $cTipe,
                 'height' => 480,
+                'stacked' => $isStacked,
                 'toolbar' => [
                     'show' => true,
+                    'tools' => [
+                        'download' => true,
+                        'selection' => false,
+                        'zoom' => false,
+                        'zoomin' => false,
+                        'zoomout' => false,
+                        'pan' => false,
+                        'reset' => false,
+                    ],
+                ],
+                'animations' => [
+                    'enabled' => true,
+                    'easing' => 'easeinout',
+                    'speed' => 800,
                 ],
             ],
             'series' => [
@@ -178,35 +224,25 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             ],
             'plotOptions' => [
                 'bar' => [
-                    'distributed' => (bool) $filters['cStack'],
-                    'stacked' => (bool) $filters['cStack'],
-                    'horizontal' => $cTipeOpt,
-                    'borderRadius' => 2,
-                    'track' => [
-                        'background' => 'transparent',
-                        'strokeWidth' => '100%',
+                    'horizontal' => false,
+                    'borderRadius' => 8,
+                    'columnWidth' => '60%',
+                    'dataLabels' => [
+                        'position' => 'top',
                     ],
-                    //                    'dataLabels' => [
-                    //                        'show' => true,
-                    //                        'name' => [
-                    //                            'show' => true,
-                    //                            'offsetY' => -10,
-                    //                            'fontWeight' => 600,
-                    //                            'fontFamily' => 'inherit',
-                    //                        ],
-                    //                        'value' => [
-                    //                            'show' => true,
-                    //                            'fontWeight' => 600,
-                    //                            'fontSize' => '24px',
-                    //                            'fontFamily' => 'inherit',
-                    //                            'colors' => '#03A9F4',
-                    //                        ],
-                    //                    ],
                 ],
+            ],
+            'stroke' => [
+                'show' => true,
+                'width' => 'line' === $cTipe ? 4 : 2,
+                'curve' => 'smooth',
+                'colors' => 'line' === $cTipe ? $colors : ['transparent'],
             ],
             'xaxis' => [
                 'categories' => array_values($results['labels']),
                 'labels' => [
+                    'rotate' => -45,
+                    'rotateAlways' => false,
                     'style' => [
                         'fontWeight' => 500,
                         'fontFamily' => 'inherit',
@@ -224,35 +260,66 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             'fill' => [
                 'type' => 'gradient',
                 'gradient' => [
-                    'shade' => 'dark',
+                    'shade' => 'light',
                     'type' => 'vertical',
-                    'shadeIntensity' => 0.5,
+                    'shadeIntensity' => 0.25,
                     'gradientToColors' => $gradientColors,
-                    'inverseColors' => true,
-                    'opacityFrom' => 1,
-                    'opacityTo' => 1,
+                    'inverseColors' => false,
+                    'opacityFrom' => 0.85,
+                    'opacityTo' => 0.55,
                     'stops' => [0, 100],
                 ],
             ],
             'dataLabels' => [
-                'enabled' => (bool) $filters['cLabel'],
-                'distributed' => (bool) $filters['cLabel'],
-                //                'textAnchor' => 'middle',
-                //                'style' => [
-                //                    'fontSize' => '14px',
-                //                    'colors' => '#03A9F4',
-                //                ],
+                'enabled' => (bool) ($cLabel ?? false),
+                'offsetY' => -20,
+                'style' => [
+                    'fontSize' => '12px',
+                    'colors' => ['#304758'],
+                ],
             ],
             'grid' => [
-                'show' => $filters['chartGrid'],
+                'show' => (bool) ($chartGrid ?? false),
+                'borderColor' => '#f1f1f1',
+                'padding' => [
+                    'top' => 10,
+                ],
             ],
             'tooltip' => [
                 'enabled' => true,
+                'theme' => 'light',
+                'x' => [
+                    'show' => true,
+                ],
             ],
-            //            'stroke' => [
-            //                'width' => 'line' === $filters['cTipe'] ? 8 : 0,
-            //            ],
             'colors' => $colors,
+            'legend' => [
+                'position' => 'top',
+                'horizontalAlign' => 'right',
+                'fontFamily' => 'inherit',
+            ],
         ];
+    }
+
+    protected function extraJsOptions(): ?RawJs
+    {
+        return RawJs::make(<<<'JS'
+            {
+                yaxis: {
+                    labels: {
+                        formatter: function (val) {
+                            return val.toLocaleString('id-ID');
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return Number(val).toLocaleString('id-ID') + ' KPM';
+                        }
+                    }
+                }
+            }
+        JS);
     }
 }

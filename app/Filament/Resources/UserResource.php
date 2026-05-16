@@ -163,6 +163,8 @@ class UserResource extends Resource
                                 $items->syncRoles();
                             });
                         })
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus masal ' . $records->count() . ' data pengguna'))
                         ->deselectRecordsAfterCompletion(),
                     BulkAction::make('forceDelete')
                         ->label('Hapus Selamanya')
@@ -175,6 +177,8 @@ class UserResource extends Resource
                                 $items->syncRoles();
                             });
                         })
+                        ->after(fn(Collection $records) => activity()
+                            ->log('Hapus permanen masal ' . $records->count() . ' data pengguna'))
                         ->deselectRecordsAfterCompletion(),
                 ]),
             ])

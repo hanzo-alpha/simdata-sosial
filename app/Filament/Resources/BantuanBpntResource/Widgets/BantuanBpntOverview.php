@@ -69,8 +69,8 @@ class BantuanBpntOverview extends BaseWidget
             label: $label ?? 'KPM PKH Kec. Marioriwawo',
             value: Number::format((float) ($value ?? 0), 0, locale: 'id') . config('custom.app.stat_prefix'),
         )
-            ->description($desc ?? 'Total KPM')
-            ->descriptionIcon('heroicon-o-' . $icon ?? 'document-chart-bar')
+            ->description($desc ?? 'Total KPM BPNT')
+            ->descriptionIcon('heroicon-o-' . ($icon ?? 'user'))
             ->color($color ?? 'success');
     }
 }

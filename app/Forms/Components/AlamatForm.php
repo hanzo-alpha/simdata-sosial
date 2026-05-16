@@ -9,10 +9,10 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
 use Filament\Forms\Components\Field;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Model;
 
 final class AlamatForm extends Field
@@ -72,49 +72,9 @@ final class AlamatForm extends Field
         $record?->touch();
     }
 
-    public function getChildComponents(): array
+    public function getChildComponents(?string $key = null): array
     {
         return [
-            //            Grid::make()
-            //                ->schema([
-            //                    Geocomplete::make('alamat')
-            //                        ->countries(['id'])
-            //                        ->updateLatLng()
-            //                        ->geocodeOnLoad()
-            //                        ->columnSpanFull()
-            //                        ->reverseGeocode([
-            //                            'country' => '%C',
-            //                            'city' => '%L',
-            //                            'city_district' => '%D',
-            //                            'zip' => '%z',
-            //                            'state' => '%A1',
-            //                            'street' => '%S %n',
-            //                        ]),
-            //                    Grid::make(2)->schema([
-            //                        TextInput::make('latitude')
-            //                            ->disabled()
-            //                            ->dehydrated()
-            //                            ->reactive()
-            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-            //                                $set('location', [
-            //                                    'lat' => floatVal($state),
-            //                                    'lng' => floatVal($get('longitude')),
-            //                                ]);
-            //                            })
-            //                            ->lazy(),
-            //                        TextInput::make('longitude')
-            //                            ->disabled()
-            //                            ->dehydrated()
-            //                            ->reactive()
-            //                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-            //                                $set('location', [
-            //                                    'lat' => (float) $get('latitude'),
-            //                                    'lng' => floatVal($state),
-            //                                ]);
-            //                            })
-            //                            ->lazy(),
-            //                    ]),
-            //                ]),
             Grid::make(2)
                 ->schema([
                     TextInput::make('alamat')
@@ -162,6 +122,7 @@ final class AlamatForm extends Field
 
                             return $kab->pluck('name', 'code');
                         })
+                        ->default(fn() => auth()->user()->instansi?->kecamatan_code)
                         ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
@@ -170,6 +131,7 @@ final class AlamatForm extends Field
                             'name',
                             'code',
                         ))
+                        ->default(fn() => auth()->user()->instansi_id)
                         ->reactive()
                         ->searchable(),
                 ]),

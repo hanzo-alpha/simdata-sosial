@@ -12,15 +12,17 @@ use App\Traits\HasKelurahanScope;
 use App\Traits\HasTambahan;
 use App\Traits\HasWilayah;
 use Awcodes\Curator\Models\Media;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class BantuanRastra extends Model
 {
+    use HasFactory;
     use HasKelurahanScope;
     use HasTambahan;
     use HasWilayah;
@@ -44,7 +46,7 @@ class BantuanRastra extends Model
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function beritaAcara(): BelongsTo
@@ -52,9 +54,14 @@ class BantuanRastra extends Model
         return $this->belongsTo(Media::class, 'media_id', 'id');
     }
 
-    public function penyaluran(): HasOne
+    public function penyalurans(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(PenyaluranBantuanRastra::class);
+        return $this->hasMany(PenyaluranBantuanRastra::class);
+    }
+
+    public function penyaluran(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(PenyaluranBantuanRastra::class)->latestOfMany();
     }
 
     public function attachments(): BelongsTo

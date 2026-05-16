@@ -20,7 +20,6 @@ use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
@@ -95,9 +94,14 @@ class BantuanPpks extends Model
         return $this->belongsTo(Penandatangan::class);
     }
 
-    public function penyaluran(): HasOne
+    public function penyalurans(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(PenyaluranBantuanPpks::class);
+        return $this->hasMany(PenyaluranBantuanPpks::class);
+    }
+
+    public function penyaluran(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(PenyaluranBantuanPpks::class)->latestOfMany();
     }
 
     protected function casts(): array

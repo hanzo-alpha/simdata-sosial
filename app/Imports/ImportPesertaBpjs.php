@@ -6,7 +6,7 @@ namespace App\Imports;
 
 use App\Models\PesertaBpjs as PesertaJamkesda;
 use App\Models\User;
-use Auth;
+use App\Traits\HasImportNotifications;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\NoReturn;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -26,9 +25,6 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
-use Maatwebsite\Excel\Events\AfterChunk;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Validators\Failure;
 use Str;
@@ -46,56 +42,23 @@ class ImportPesertaBpjs implements
     WithUpserts,
     WithEvents
 {
+    use HasImportNotifications;
     use Importable;
-    use RegistersEventListeners;
     use SkipsErrors;
     use SkipsFailures;
 
-    public static function beforeImport(BeforeImport $event): void
-    {
-        $user = Auth::user();
-        Notification::make('Mulai Mengimpor')
-            ->title('Data Peserta Bpjs sedang di impor ke database.')
-            ->info()
-            ->send()
-            ->sendToDatabase($user);
-    }
-
-    public static function afterImport(AfterImport $event): void
-    {
-        $user = Auth::user();
-        Notification::make('Impor Berhasil')
-            ->title('Data Peserta BPJS Berhasil di impor.')
-            ->success()
-            ->send();
-    }
-
-    public static function importFailed(ImportFailed $event): void
-    {
-        $user = Auth::user();
-        Notification::make('Import Failed')
-            ->title('Gagal Impor Peserta BPJS ' . $event->e->getMessage())
-            ->danger()
-            ->send()
-            ->sendToDatabase($user);
-    }
-
-    public static function afterChunk(AfterChunk $event): void
-    {
-        $user = Auth::user();
-        Notification::make('Chunk Berhasil')
-            ->title('Berhasil mengimport')
-            ->success()
-            ->send();
-    }
-
     public function registerEvents(): array
     {
-        return [
-            BeforeImport::class => [self::class, 'beforeImport'],
-            AfterImport::class => [self::class, 'afterImport'],
-            ImportFailed::class => [self::class, 'importFailed'],
-        ];
+        return array_merge($this->importRegisterEvents(), [
+            ImportFailed::class => function (ImportFailed $event): void {
+                if ($this->user) {
+                    Notification::make('Import Failed')
+                        ->title('Gagal Impor Peserta BPJS ' . $event->e->getMessage())
+                        ->danger()
+                        ->sendToDatabase($this->user);
+                }
+            },
+        ]);
     }
 
     public function model(array $row): Model|PesertaJamkesda|null
@@ -120,11 +83,13 @@ class ImportPesertaBpjs implements
     public function onError(Throwable $e): void
     {
         Log::error($e);
-        Notification::make('Error Impor')
-            ->title('Terjadi kesalahan saat mengimpor. Import Di batalkan')
-            ->body($e)
-            ->danger()
-            ->sendToDatabase(auth()->user());
+        if ($this->user) {
+            Notification::make('Error Impor')
+                ->title('Terjadi kesalahan saat mengimpor. Import Di batalkan')
+                ->body($e->getMessage())
+                ->danger()
+                ->sendToDatabase($this->user);
+        }
     }
 
     public function onFailure(Failure ...$failures): void
@@ -134,13 +99,15 @@ class ImportPesertaBpjs implements
             $errmsg = $failure->errors()[0];
             $values = $failure->values();
 
-            Notification::make('Failure Import')
-                ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
-                ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . '
-             | Nama : ' . $values['nama_lengkap'] ?? '-')
-                ->danger()
-                ->sendToDatabase(auth()->user())
-                ->broadcast(User::where('is_admin', 1)->get());
+            if ($this->user) {
+                Notification::make('Failure Import')
+                    ->title('Baris Ke : ' . $baris . ' | ' . $errmsg)
+                    ->body('NIK : ' . $values['nik'] ?? '-' . ' | No.KK : ' . $values['no_kk'] ?? '-' . '
+                 | Nama : ' . $values['nama_lengkap'] ?? '-')
+                    ->danger()
+                    ->sendToDatabase($this->user)
+                    ->broadcast(User::where('is_admin', 1)->get());
+            }
 
             Log::error($errmsg);
         }
@@ -170,5 +137,15 @@ class ImportPesertaBpjs implements
     public function chunkSize(): int
     {
         return 2000;
+    }
+
+    protected function getImportSuccessTitle(): string
+    {
+        return 'Impor Berhasil';
+    }
+
+    protected function getImportSuccessMessage(): string
+    {
+        return 'Data Peserta BPJS Berhasil di impor.';
     }
 }

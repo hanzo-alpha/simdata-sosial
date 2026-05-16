@@ -450,11 +450,13 @@ class BantuanBpjsResource extends Resource
                                 ->live()
                                 ->native(false)
                                 ->options(get_kecamatan_options())
+                                ->default(fn() => auth()->user()->instansi?->kecamatan_code)
                                 ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                             Select::make('kelurahan')
                                 ->required()
                                 ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
+                                ->default(fn() => auth()->user()->instansi_id)
                                 ->native(false)
                                 ->reactive()
                                 ->searchable(),

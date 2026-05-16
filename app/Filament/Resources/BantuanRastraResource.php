@@ -11,6 +11,7 @@ use App\Enums\StatusRastra;
 use App\Enums\StatusVerifikasiEnum;
 use App\Exports\ExportBantuanRastra;
 use App\Filament\Resources\BantuanRastraResource\Pages;
+use App\Filament\Resources\BantuanRastraResource\RelationManagers\PenyaluransRelationManager;
 use App\Filament\Resources\BantuanRastraResource\Widgets\BantuanRastraOverview;
 use App\Models\BantuanRastra;
 use App\Rules\NikValidationRule;
@@ -498,11 +499,13 @@ class BantuanRastraResource extends Resource
                         ->live(onBlur: true)
                         ->native(false)
                         ->options(get_kecamatan_options())
+                        ->default(fn() => auth()->user()->instansi?->kecamatan_code)
                         ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
                         ->required()
                         ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
+                        ->default(fn() => auth()->user()->instansi_id)
                         ->live(onBlur: true)
                         ->native(false)
                         ->searchable(),
@@ -774,7 +777,7 @@ class BantuanRastraResource extends Resource
     public static function getRelations(): array
     {
         return [
-
+            PenyaluransRelationManager::class,
         ];
     }
 

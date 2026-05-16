@@ -21,16 +21,16 @@
 - [x] Optimize global search by limiting searchable columns.
 
 ## 📝 Audit & Logging
-- [ ] Ensure all Bulk Actions (Delete/Import) are recorded in `activity_log`.
-- [ ] Enhance log details to include "before" and "after" snapshots for critical changes.
-- [ ] Create a UI for Superadmins to easily browse audit logs.
+- [x] Ensure all Bulk Actions (Delete/Import) are recorded in `activity_log`.
+- [x] Enhance log details to include "before" and "after" snapshots for critical changes.
+- [x] Create a UI for Superadmins to easily browse audit logs.
 
 ## 🧪 Testing & QA
-- [ ] Add Architecture tests using Pest to enforce code standards (e.g., `casts()` method usage).
-- [ ] Add Feature tests for critical workflows: Penyaluran Bantuan and CSV Imports.
-- [ ] Implement "Smoke Tests" for all Filament resources.
+- [x] Add Architecture tests using Pest to enforce code standards (e.g., `casts()` method usage).
+- [x] Add Feature tests for critical workflows: Penyaluran Bantuan and CSV Imports.
+- [x] Implement "Smoke Tests" for all Filament resources.
 
 ## 🔄 Workflow & UX
-- [ ] Implement real-time notifications for background job completion (Import/Export).
-- [ ] Add a "Queue Monitor" dashboard for users to track their background tasks.
-- [ ] Add a global "Data Integrity Dashboard" to show duplicity or invalid data.
+- [x] Implement real-time notifications for background job completion (Import/Export).
+- [x] Add a "Queue Monitor" dashboard for users to track their background tasks.
+- [x] Add a global "Data Integrity Dashboard" to show duplicity or invalid data.

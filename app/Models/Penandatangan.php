@@ -13,10 +13,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Penandatangan extends Model
 {
     use HasKelurahanScope;
+    use \Spatie\Activitylog\Models\Concerns\LogsActivity;
     protected $table = 'penandatangan';
     protected $with = ['kecamatan', 'kelurahan'];
 
     protected $guarded = [];
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function getKelurahanColumn(): string
     {

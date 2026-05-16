@@ -11,6 +11,7 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Provinsi;
+use App\Rules\NikValidationRule;
 use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
@@ -128,11 +129,13 @@ class BantuanBpntResource extends Resource
                                 ->live()
                                 ->native(false)
                                 ->options(fn(callable $get) => get_kecamatan_options($get('kabupaten')))
+                                ->default(fn() => auth()->user()->instansi?->kecamatan_code)
                                 ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
 
                             Select::make('kelurahan')
                                 ->nullable()
                                 ->options(fn(callable $get) => get_kelurahan_options($get('kecamatan')))
+                                ->default(fn() => auth()->user()->instansi_id)
                                 ->live()
                                 ->native(false)
                                 ->searchable()
