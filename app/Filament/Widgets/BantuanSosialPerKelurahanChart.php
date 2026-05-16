@@ -46,7 +46,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
         $year = $filters['tahun'] ?? 2024;
 
-        return 'Distribusi Bantuan ' . $jenisBantuan->alias . ' Per Kelurahan ' . $year;
+        return 'Distribusi Bantuan ' . ($jenisBantuan?->alias ?? 'Program') . ' Per Kelurahan ' . $year;
     }
 
     /**
@@ -181,11 +181,13 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
 
         $programId = $filters['program'] ?? 3;
 
-        $jenisBantuan = JenisBantuan::find($programId);
+        $jenisBantuan = JenisBantuan::find($programId) ?? JenisBantuan::find(3);
 
         foreach ($kel as $code => $name) {
             $results['labels'][$code] = $name;
-            $results[$jenisBantuan->id][$name] = $this->queryChart($jenisBantuan->id, $code, $filters);
+            if ($jenisBantuan) {
+                $results[$jenisBantuan->id][$name] = $this->queryChart($jenisBantuan->id, $code, $filters);
+            }
         }
 
         $cTipe = auth()->user()->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
@@ -218,8 +220,8 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => $jenisBantuan->alias,
-                    'data' => array_values($results[$jenisBantuan->id]),
+                    'name' => $jenisBantuan?->alias ?? 'Program',
+                    'data' => $jenisBantuan ? array_values($results[$jenisBantuan->id]) : [],
                 ],
             ],
             'plotOptions' => [
