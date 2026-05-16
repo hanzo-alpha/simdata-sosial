@@ -38,7 +38,7 @@ jobs:
         with:
           add-paths: CHANGELOG.md
           commit-message: Update CHANGELOG
-          branch: update-changelog
+          branch: update-changelog-${{ github.event.release.tag_name || inputs.version }}
           title: "Update CHANGELOG for ${{ github.event.release.name || inputs.version }}"
           body: "Automated update of CHANGELOG.md for release ${{ github.event.release.name || inputs.version }}."
           base: main
