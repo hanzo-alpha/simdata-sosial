@@ -10,12 +10,13 @@ use App\Models\BantuanPpks;
 use App\Models\BantuanRastra;
 use App\Models\JenisBantuan;
 use App\Models\RekapPenerimaBpjs;
-use App\Traits\HasGlobalFilters;
 use App\Traits\HasWidgetShield;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
+use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,16 +24,26 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerKecamatanChart extends ApexChartWidget
 {
-    use HasGlobalFilters;
+    use HasFiltersSchema;
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-    protected static ?string $heading = 'Perbandingan Bantuan Sosial Per Kecamatan';
-    protected static ?string $subheading = 'Semua program bantuan berdasarkan wilayah kecamatan';
     protected ?string $pollingInterval = '30s';
     protected static bool $deferLoading = true;
     protected static ?int $sort = 21;
     protected int|string|array $columnSpan = 'full';
+    public function getSubheading(): ?string
+    {
+        return 'Semua program bantuan berdasarkan wilayah kecamatan';
+    }
+
+    public function getHeading(): ?string
+    {
+        $filters = $this->filters;
+        $year = $filters['tahun'] ?? 2024;
+
+        return 'Perbandingan Bantuan Sosial Per Kecamatan ' . $year;
+    }
 
     public function filtersSchema(Schema $schema): Schema
     {
@@ -48,7 +59,15 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
             Toggle::make('chartGrid')
                 ->default(false)
                 ->label('Tampilkan Grid'),
+            Select::make('tahun')
+                ->options(list_tahun())
+                ->default(now()->year),
         ]);
+    }
+
+    public function updatedInteractsWithSchemas(string $statePath): void
+    {
+        $this->updateOptions();
     }
 
     protected function queryChart($model, $kodekec, array $filters): int|string|array|Builder|Collection
@@ -62,8 +81,11 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
         };
 
         $query = $model::query()
-            ->select(['created_at', 'kecamatan', 'kelurahan'])
-            ->where('kecamatan', $kodekec);
+            ->where('kecamatan', $kodekec)
+            ->where(function (Builder $query) use ($filters): void {
+                $year = $filters['tahun'] ?? 2024;
+                $query->whereYear('created_at', $year);
+            });
 
         if (RekapPenerimaBpjs::class === $model) {
             return $query->clone()->sum('jumlah');
@@ -74,7 +96,7 @@ class BantuanSosialPerKecamatanChart extends ApexChartWidget
 
     protected function getOptions(): array
     {
-        $filters = array_merge($this->filters, $this->getFilters());
+        $filters = $this->filters;
         $results = [];
         $colors = ['#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EF4444'];
         $gradientColors = ['#60A5FA', '#FBBF24', '#34D399', '#A78BFA', '#F87171'];

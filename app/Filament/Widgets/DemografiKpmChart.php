@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DemografiKpmChart extends ChartWidget
 {
+    use \App\Traits\HasGlobalFilters;
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
@@ -32,34 +33,35 @@ class DemografiKpmChart extends ChartWidget
 
     protected function getData(): array
     {
-        $kecamatan = $this->pageFilters['kecamatan'] ?? null;
-        $kelurahan = $this->pageFilters['kelurahan'] ?? null;
-
-        if (auth()->check() && auth()->user()->instansi_id) {
-            $kelurahan = auth()->user()->instansi_id;
-            $kecamatan = auth()->user()->instansi?->kecamatan_code;
-        }
+        $filters = array_merge((array) ($this->filters ?? []), $this->getFilters());
+        $kecamatan = $filters['kecamatan'] ?? null;
+        $kelurahan = $filters['kelurahan'] ?? null;
+        $year = $filters['tahun'] ?? 2024;
 
         $rastra = BantuanRastra::query()
             ->where('status_aktif', StatusAktif::AKTIF)
             ->when($kecamatan, fn(Builder $query) => $query->where('kecamatan', $kecamatan))
             ->when($kelurahan, fn(Builder $query) => $query->where('kelurahan', $kelurahan))
+            ->where('tahun', $year)
             ->count();
 
         $ppks = BantuanPpks::query()
             ->where('status_aktif', StatusAktif::AKTIF)
             ->when($kecamatan, fn(Builder $query) => $query->where('kecamatan', $kecamatan))
             ->when($kelurahan, fn(Builder $query) => $query->where('kelurahan', $kelurahan))
+            ->whereYear('created_at', $year)
             ->count();
 
         $pkh = BantuanPkh::query()
             ->when($kecamatan, fn(Builder $query) => $query->where('kecamatan', $kecamatan))
             ->when($kelurahan, fn(Builder $query) => $query->where('kelurahan', $kelurahan))
+            ->where('tahun', $year)
             ->count();
 
         $bpnt = BantuanBpnt::query()
             ->when($kecamatan, fn(Builder $query) => $query->where('kecamatan', $kecamatan))
             ->when($kelurahan, fn(Builder $query) => $query->where('kelurahan', $kelurahan))
+            ->whereYear('created_at', $year)
             ->count();
 
         $total = $rastra + $ppks + $pkh + $bpnt;

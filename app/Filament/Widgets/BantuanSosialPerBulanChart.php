@@ -17,22 +17,30 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerBulanChart extends ApexChartWidget
 {
-    use \App\Traits\HasGlobalFilters;
-    use \Filament\Widgets\Concerns\InteractsWithPageFilters;
     use HasFiltersSchema;
     use HasWidgetShield;
+    use InteractsWithPageFilters;
 
     protected static bool $isDiscovered = true;
     protected static ?string $chartId = 'bantuanSosialPerBulanChart';
-    protected static ?string $heading = 'Tren Bantuan Sosial Per Bulan';
     protected static ?int $sort = 30;
     protected int|string|array $columnSpan = 'full';
+
+    public function getHeading(): ?string
+    {
+        $filters = $this->filters;
+        $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
+        $year = $filters['tahun'] ?? now()->year;
+
+        return 'Tren Bantuan ' . $jenisBantuan->alias . ' Per Bulan ' . $year;
+    }
 
     public function filtersSchema(Schema $schema): Schema
     {
@@ -43,7 +51,7 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
                 ->native(false),
             Select::make('tahun')
                 ->options(array_combine(range(now()->year, now()->year - 5), range(now()->year, now()->year - 5)))
-                ->default(now()->year)
+                ->default(now()->year())
                 ->native(false),
             ToggleButtons::make('cTipe')
                 ->default('bar')
@@ -67,6 +75,11 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
         ]);
     }
 
+    public function updatedInteractsWithSchemas(string $statePath): void
+    {
+        $this->updateOptions();
+    }
+
     protected function queryChart(string|int $model, int $month, array $filters): int|string|array|Builder|Collection
     {
         $model = match ((int) $model) {
@@ -81,20 +94,28 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
 
         $query = $model::query()
             ->when($filters['kecamatan'] ?? null, fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-            ->when($filters['kelurahan'] ?? null, fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
-            ->whereMonth('created_at', $month)
-            ->whereYear('created_at', $year);
+            ->when($filters['kelurahan'] ?? null, fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']));
 
         if (RekapPenerimaBpjs::class === $model) {
-            return (int) $query->sum('jumlah');
+            return (int) $query->where('bulan', $month)
+                ->whereYear('created_at', $year)
+                ->sum('jumlah');
         }
 
-        return $query->count();
+        return $query->whereMonth('created_at', $month)
+            ->where(function (Builder $query) use ($year): void {
+                if (\Schema::hasColumn($query->getModel()->getTable(), 'tahun')) {
+                    $query->where('tahun', $year);
+                } else {
+                    $query->whereYear('created_at', $year);
+                }
+            })
+            ->count();
     }
 
     protected function getOptions(): array
     {
-        $filters = array_merge($this->filters, $this->getFilters());
+        $filters = $this->filters;
         $results = [];
         $colors = ['#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EF4444'];
         $gradientColors = ['#60A5FA', '#FBBF24', '#34D399', '#A78BFA', '#F87171'];

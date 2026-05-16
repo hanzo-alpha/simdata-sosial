@@ -8,10 +8,13 @@ trait HasGlobalFilters
 {
     public function getFilters(): array
     {
+        $pageFilters = (array) ($this->filters ?? []);
+
         $filters = [
-            'tipe' => $this->pageFilters['tipe'] ?? null,
-            'kecamatan' => $this->pageFilters['kecamatan'] ?? null,
-            'kelurahan' => $this->pageFilters['kelurahan'] ?? null,
+            'tipe' => $pageFilters['tipe'] ?? null,
+            'kecamatan' => $pageFilters['kecamatan'] ?? null,
+            'kelurahan' => $pageFilters['kelurahan'] ?? null,
+            'tahun' => $pageFilters['tahun'] ?? 2024,
         ];
 
         if (auth()->check() && auth()->user()->instansi_id) {

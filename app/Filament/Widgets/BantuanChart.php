@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\JenisBantuan;
+use App\Models\Kelurahan;
 use App\Models\RekapPenerimaBpjs;
 use App\Traits\HasWidgetShield;
 use Filament\Support\RawJs;
@@ -14,30 +15,21 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanChart extends ApexChartWidget
 {
-    use \App\Traits\HasGlobalFilters;
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
-    /**
-     * Chart Id
-     *
-     * @var string
-     */
     protected static ?string $chartId = 'bantuanChart';
-
-    /**
-     * Widget Title
-     *
-     * @var string|null
-     */
-    protected static ?string $heading = 'Distribusi Seluruh Program Bantuan Sosial';
-    protected static ?string $subheading = 'Perbandingan total penerima per jenis bantuan';
     protected static ?int $contentHeight = 500;
     protected static bool $deferLoading = true;
     protected ?string $pollingInterval = '30s';
     protected static ?int $sort = 11;
 
     protected int|string|array $columnSpan = 'full';
+
+    public function getHeading(): ?string
+    {
+        return 'Distribusi Program Bantuan Sosial ' . now()->year;
+    }
 
     protected function getOptions(): array
     {
@@ -168,29 +160,35 @@ class BantuanChart extends ApexChartWidget
         ];
     }
 
+
+
     protected function renderBantuan(): array
     {
         $results = [];
         $labels = [];
         $colors = [];
-        $filters = $this->getFilters();
+        $userInstansiId = auth()->user()->instansi_id;
+        $kelurahan = Kelurahan::where('code', $userInstansiId)->first();
+        $kdKec = $kelurahan->kecamatan_code;
+        $kdKel = $kelurahan->code;
+        $filters = [
+            'kecamatan' => $kdKec,
+            'kelurahan' => $kdKel,
+        ];
 
         $jenisBantuan = JenisBantuan::query()->whereNot('id', 3)->get();
         foreach ($jenisBantuan as $item) {
             $labels[] = $item->alias;
             $colors[] = $item->warna;
-            $results[] = $item->model_name::query()
+            $model = $item->model_name;
+            $query = $model::query()
                 ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
-                ->count();
-        }
+                ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']));
 
-        $results[] = (int) RekapPenerimaBpjs::query()
-            ->when($filters['kecamatan'], fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-            ->when($filters['kelurahan'], fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']))
-            ->sum('jumlah');
-        $labels[] = 'BPJS';
-        $colors[] = '#f0d62a';
+            $results[] = (RekapPenerimaBpjs::class === $model)
+                ? $query->sum('jumlah')
+                : $query->count();
+        }
 
         $angkaKemiskinan = (int) (setting('app.angka_kemiskinan') ?? 0);
         $tahunData = setting('app.tahun_data_kemiskinan', now()->year);
