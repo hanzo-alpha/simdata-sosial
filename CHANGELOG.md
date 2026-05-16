@@ -2,6 +2,10 @@
 
 All notable changes to `simdata-sosial` will be documented in this file.
 
+## v2.0.6 - 2026-05-16
+
+Manual changelog update
+
 ## v2.0.1 - 2025-06-29
 
 ### What's Changed
