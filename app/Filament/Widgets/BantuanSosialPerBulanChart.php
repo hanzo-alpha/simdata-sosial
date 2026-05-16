@@ -39,7 +39,7 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
         $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
         $year = $filters['tahun'] ?? now()->year;
 
-        return 'Tren Bantuan ' . $jenisBantuan->alias . ' Per Bulan ' . $year;
+        return 'Tren Bantuan ' . ($jenisBantuan?->alias ?? 'Program') . ' Per Bulan ' . $year;
     }
 
     public function filtersSchema(Schema $schema): Schema
@@ -125,7 +125,9 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
 
         foreach ($listBulan as $monthNum => $monthName) {
             $results['labels'][$monthNum] = $monthName;
-            $results[$jenisBantuan->id][$monthName] = $this->queryChart($jenisBantuan->id, $monthNum, $filters);
+            if ($jenisBantuan) {
+                $results[$jenisBantuan->id][$monthName] = $this->queryChart($jenisBantuan->id, $monthNum, $filters);
+            }
         }
 
         $cTipe = auth()->user()->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
@@ -156,8 +158,8 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => $jenisBantuan->alias,
-                    'data' => array_values($results[$jenisBantuan->id]),
+                    'name' => $jenisBantuan?->alias ?? 'Program',
+                    'data' => $jenisBantuan ? array_values($results[$jenisBantuan->id]) : [],
                 ],
             ],
             'plotOptions' => [
