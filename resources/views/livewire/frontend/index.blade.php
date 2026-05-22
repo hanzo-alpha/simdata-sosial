@@ -137,50 +137,7 @@
         </div>
     </div>
     <!-- =========== Hero Section End =========== -->
-    <!-- =========== Quick Actions Start =========== -->
-    <section class="py-8">
-        <div class="container">
-            <div class="mb-6 text-center">
-                <h2 class="text-2xl font-semibold">Akses Cepat</h2>
-                <p class="text-sm text-gray-500">Tombol cepat untuk fitur penting aplikasi</p>
-            </div>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <a
-                    href="{{ Route::has('pdf.download') ? route('pdf.download') : '#' }}"
-                    class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
-                >
-                    <div class="text-primary mb-2">Unduh Dokumentasi</div>
-                    <p class="text-sm text-gray-600">Cetak dokumentasi penyaluran bantuan</p>
-                </a>
-
-                <a
-                    href="{{ Route::has('ba.rastra') ? route('ba.rastra') : '#' }}"
-                    class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
-                >
-                    <div class="text-primary mb-2">Berita Acara Rastra</div>
-                    <p class="text-sm text-gray-600">Lihat atau cetak Berita Acara RASTRA</p>
-                </a>
-
-                <a
-                    href="{{ Route::has('ba.ppks') ? route('ba.ppks') : '#' }}"
-                    class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
-                >
-                    <div class="text-primary mb-2">Berita Acara PPKS</div>
-                    <p class="text-sm text-gray-600">Lihat atau cetak Berita Acara PPKS</p>
-                </a>
-
-                <a
-                    href="{{ Route::has('frontend') ? route('frontend') . '#chart' : '#chart' }}"
-                    class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
-                >
-                    <div class="text-primary mb-2">Lihat Grafik</div>
-                    <p class="text-sm text-gray-600">Langsung ke statistik program bantuan</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
+    <!-- Quick Actions removed -->
     <!-- =========== feature Section Start =========== -->
     <section class="overflow-hidden">
         <div class="py-16 xl:py-24">
