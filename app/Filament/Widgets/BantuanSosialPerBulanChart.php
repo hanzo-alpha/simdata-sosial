@@ -20,6 +20,7 @@ use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Schema as DBSchema;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerBulanChart extends ApexChartWidget
@@ -36,7 +37,8 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
     public function getHeading(): ?string
     {
         $filters = $this->filters;
-        $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
+        $jenisBantuan = JenisBantuan::query()->firstWhere('id', $filters['program'] ?? 3)
+            ?? JenisBantuan::query()->firstWhere('id', 3);
         $year = $filters['tahun'] ?? now()->year;
 
         return 'Tren Bantuan ' . ($jenisBantuan?->alias ?? 'Program') . ' Per Bulan ' . $year;
@@ -51,7 +53,7 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
                 ->native(false),
             Select::make('tahun')
                 ->options(array_combine(range(now()->year, now()->year - 5), range(now()->year, now()->year - 5)))
-                ->default(now()->year())
+                ->default(now()->year)
                 ->native(false),
             ToggleButtons::make('cTipe')
                 ->default('bar')
@@ -92,25 +94,8 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
 
         $year = $filters['tahun'] ?? now()->year;
 
-        $query = $model::query()
-            ->when($filters['kecamatan'] ?? null, fn(Builder $query) => $query->where('kecamatan', $filters['kecamatan']))
-            ->when($filters['kelurahan'] ?? null, fn(Builder $query) => $query->where('kelurahan', $filters['kelurahan']));
-
-        if (RekapPenerimaBpjs::class === $model) {
-            return (int) $query->where('bulan', $month)
-                ->whereYear('created_at', $year)
-                ->sum('jumlah');
-        }
-
-        return $query->whereMonth('created_at', $month)
-            ->where(function (Builder $query) use ($year): void {
-                if (\Schema::hasColumn($query->getModel()->getTable(), 'tahun')) {
-                    $query->where('tahun', $year);
-                } else {
-                    $query->whereYear('created_at', $year);
-                }
-            })
-            ->count();
+        // Deprecated: per-month per-model queries. Use aggregated query in getOptions instead.
+        return 0;
     }
 
     protected function getOptions(): array
@@ -121,16 +106,48 @@ class BantuanSosialPerBulanChart extends ApexChartWidget
         $gradientColors = ['#60A5FA', '#FBBF24', '#34D399', '#A78BFA', '#F87171'];
 
         $listBulan = list_bulan(short: true);
-        $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
+        $jenisBantuan = JenisBantuan::query()->firstWhere('id', $filters['program'] ?? 3)
+            ?? JenisBantuan::query()->firstWhere('id', 3);
+
+        // Build aggregated counts per month for the selected program
+        $programId = $filters['program'] ?? 3;
+        $model = match ((int) $programId) {
+            1 => BantuanPkh::class,
+            2 => BantuanBpnt::class,
+            3 => RekapPenerimaBpjs::class,
+            4 => BantuanPpks::class,
+            5 => BantuanRastra::class,
+        };
+
+        $baseQuery = $model::query()
+            ->when($filters['kecamatan'] ?? null, fn(Builder $q) => $q->where('kecamatan', $filters['kecamatan']))
+            ->when($filters['kelurahan'] ?? null, fn(Builder $q) => $q->where('kelurahan', $filters['kelurahan']));
+
+        $year = $filters['tahun'] ?? now()->year;
+        if (DBSchema::hasColumn($baseQuery->getModel()->getTable(), 'tahun')) {
+            $baseQuery = $baseQuery->where('tahun', $year);
+        } else {
+            $baseQuery = $baseQuery->whereYear('created_at', $year);
+        }
+
+        if (RekapPenerimaBpjs::class === $model) {
+            $aggregates = $baseQuery->selectRaw('MONTH(created_at) as month, SUM(jumlah) as total')
+                ->groupBy('month')
+                ->pluck('total', 'month')
+                ->toArray();
+        } else {
+            $aggregates = $baseQuery->selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+                ->groupBy('month')
+                ->pluck('total', 'month')
+                ->toArray();
+        }
 
         foreach ($listBulan as $monthNum => $monthName) {
             $results['labels'][$monthNum] = $monthName;
-            if ($jenisBantuan) {
-                $results[$jenisBantuan->id][$monthName] = $this->queryChart($jenisBantuan->id, $monthNum, $filters);
-            }
+            $results[$programId][$monthName] = (int) ($aggregates[$monthNum] ?? 0);
         }
 
-        $cTipe = auth()->user()->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
+        $cTipe = auth()->user()?->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
         $isStacked = (bool) ($filters['cStack'] ?? false);
 
         return [

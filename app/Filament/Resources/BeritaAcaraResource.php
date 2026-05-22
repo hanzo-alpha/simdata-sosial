@@ -19,10 +19,12 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use UnitEnum;
 
@@ -41,6 +43,19 @@ class BeritaAcaraResource extends Resource
 
     public static function table(Table $table): Table
     {
+
+        $filters = [
+            Tables\Filters\SelectFilter::make('kelurahan')
+                ->label('Kelurahan')
+                ->options(get_kelurahan_options())
+                ->searchable()
+                ->multiple()
+                ->preload(),
+        ];
+
+        if (in_array(SoftDeletes::class, class_uses_recursive(self::$model))) {
+            $filters[] = TrashedFilter::make();
+        }
 
         return $table
             ->defaultSort('created_at', 'desc')
@@ -82,20 +97,14 @@ class BeritaAcaraResource extends Resource
                 Tables\Columns\TextColumn::make('bantuan_rastra_ids')
                     ->label('Jumlah KPM')
                     ->toggleable()
-                    ->state(fn(BeritaAcara $record): string => count($record->bantuan_rastra_ids ?? []) . ' Orang')
+                    ->state(fn(BeritaAcara $record): string => count($record->bantuan_rastra_ids ?? [])
+                        .' Orang')
                     ->copyable()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('upload_ba')
                     ->label('Berita Acara'),
             ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('kelurahan')
-                    ->label('Kelurahan')
-                    ->options(get_kelurahan_options())
-                    ->searchable()
-                    ->multiple()
-                    ->preload(),
-            ])
+            ->filters($filters)
             ->deferFilters()
             ->deferLoading()
             ->hiddenFilterIndicators()
@@ -118,6 +127,7 @@ class BeritaAcaraResource extends Resource
                             ->where('kecamatan', $data['kecamatan'])
                             ->where('kelurahan', $data['kelurahan'])
                             ->where('status_aktif', StatusAktif::AKTIF)
+                            ->withTrashed()
                             ->get();
 
                         $data['bantuan_rastra_ids'] = $bantuan->pluck('id');
@@ -131,7 +141,7 @@ class BeritaAcaraResource extends Resource
             ->toolbarActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make()
-                        ->after(fn(\Illuminate\Support\Collection $records) => activity()
+                        ->after(fn(Collection $records) => activity()
                             ->log('Hapus masal ' . $records->count() . ' data berita acara rastra')),
                 ]),
             ]);
@@ -240,10 +250,7 @@ class BeritaAcaraResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        return parent::getEloquentQuery();
     }
 
     public static function getPages(): array

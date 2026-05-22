@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DemografiKpmChart extends ChartWidget
 {
-    use \App\Traits\HasGlobalFilters;
+    use ChartWidget\Concerns\HasFiltersSchema;
     use HasWidgetShield;
     use InteractsWithPageFilters;
 
@@ -33,7 +33,7 @@ class DemografiKpmChart extends ChartWidget
 
     protected function getData(): array
     {
-        $filters = array_merge((array) ($this->filters ?? []), $this->getFilters());
+//        $filters = $this->filters;
         $kecamatan = $filters['kecamatan'] ?? null;
         $kelurahan = $filters['kelurahan'] ?? null;
         $year = $filters['tahun'] ?? 2024;

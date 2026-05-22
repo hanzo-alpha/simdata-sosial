@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DataIntegrityWidget extends StatsOverviewWidget
 {
@@ -20,50 +21,62 @@ class DataIntegrityWidget extends StatsOverviewWidget
     protected function getStats(): array
     {
         $filters = $this->getFilters();
+        // helper to build per-table duplicate-NIK subquery if column exists
+        $buildNikDup = function (string $table) use ($filters) {
+            if (!Schema::hasColumn($table, 'nik')) {
+                return null;
+            }
 
-        $rastraDup = DB::table('bantuan_rastra')
-            ->select('nik')
-            ->whereNull('deleted_at')
-            ->when($filters['kecamatan'] ?? null, fn($q, $val) => $q->where('kecamatan', $val))
-            ->when($filters['kelurahan'] ?? null, fn($q, $val) => $q->where('kelurahan', $val))
-            ->groupBy('nik')
-            ->havingRaw('COUNT(*) > 1')
-            ->get()
-            ->count();
+            $query = DB::table($table)->select('nik');
 
-        $ppksDup = DB::table('bantuan_ppks')
-            ->select('nik')
-            ->whereNull('deleted_at')
-            ->when($filters['kecamatan'] ?? null, fn($q, $val) => $q->where('kecamatan', $val))
-            ->when($filters['kelurahan'] ?? null, fn($q, $val) => $q->where('kelurahan', $val))
-            ->groupBy('nik')
-            ->havingRaw('COUNT(*) > 1')
-            ->get()
-            ->count();
+            if (Schema::hasColumn($table, 'deleted_at')) {
+                $query = $query->whereNull('deleted_at');
+            }
 
-        $bpjsDup = DB::table('bantuan_bpjs')
-            ->select('nik')
-            ->whereNull('deleted_at')
-            ->when($filters['kecamatan'] ?? null, fn($q, $val) => $q->where('kecamatan', $val))
-            ->when($filters['kelurahan'] ?? null, fn($q, $val) => $q->where('kelurahan', $val))
-            ->groupBy('nik')
-            ->havingRaw('COUNT(*) > 1')
-            ->get()
-            ->count();
+            if (Schema::hasColumn($table, 'kecamatan') && ($filters['kecamatan'] ?? null)) {
+                $query = $query->where('kecamatan', $filters['kecamatan']);
+            }
+
+            if (Schema::hasColumn($table, 'kelurahan') && ($filters['kelurahan'] ?? null)) {
+                $query = $query->where('kelurahan', $filters['kelurahan']);
+            }
+
+            return $query->groupBy('nik')->havingRaw('COUNT(*) > 1');
+        };
+
+        $rastraDupQuery = $buildNikDup('bantuan_rastra');
+        $rastraDup = $rastraDupQuery ? DB::query()->fromSub($rastraDupQuery, 'rastra_duplicates')->count() : 0;
+
+        $ppksDupQuery = $buildNikDup('bantuan_ppks');
+        $ppksDup = $ppksDupQuery ? DB::query()->fromSub($ppksDupQuery, 'ppks_duplicates')->count() : 0;
+
+        $bpjsDupQuery = $buildNikDup('bantuan_bpjs');
+        $bpjsDup = $bpjsDupQuery ? DB::query()->fromSub($bpjsDupQuery, 'bpjs_duplicates')->count() : 0;
 
         // Cross-table duplicates (e.g. NIK in Rastra and PPKS)
-        $crossDupCount = DB::table(DB::raw("(
-            SELECT nik FROM bantuan_rastra WHERE deleted_at IS NULL " . ($filters['kecamatan'] ? " AND kecamatan = '{$filters['kecamatan']}'" : "") . ($filters['kelurahan'] ? " AND kelurahan = '{$filters['kelurahan']}'" : "") . "
-            UNION ALL
-            SELECT nik FROM bantuan_ppks WHERE deleted_at IS NULL " . ($filters['kecamatan'] ? " AND kecamatan = '{$filters['kecamatan']}'" : "") . ($filters['kelurahan'] ? " AND kelurahan = '{$filters['kelurahan']}'" : "") . "
-            UNION ALL
-            SELECT nik FROM bantuan_bpjs WHERE deleted_at IS NULL " . ($filters['kecamatan'] ? " AND kecamatan = '{$filters['kecamatan']}'" : "") . ($filters['kelurahan'] ? " AND kelurahan = '{$filters['kelurahan']}'" : "") . "
-        ) as all_niks"))
-            ->select('nik')
-            ->groupBy('nik')
-            ->havingRaw('COUNT(*) > 1')
-            ->get()
-            ->count();
+        $subqueries = [];
+        foreach (['bantuan_rastra', 'bantuan_ppks', 'bantuan_bpjs'] as $tbl) {
+            $q = $buildNikDup($tbl);
+            if ($q) {
+                $subqueries[] = $q;
+            }
+        }
+
+        if (empty($subqueries)) {
+            $crossDupCount = 0;
+        } else {
+            $union = array_shift($subqueries);
+            foreach ($subqueries as $sq) {
+                $union = $union->unionAll($sq);
+            }
+
+            $crossDupCountQuery = DB::query()->fromSub($union, 'all_niks')
+                ->select('nik')
+                ->groupBy('nik')
+                ->havingRaw('COUNT(*) > 1');
+
+            $crossDupCount = DB::query()->fromSub($crossDupCountQuery, 'cross_duplicates')->count();
+        }
 
         return [
             Stat::make('Duplikasi NIK Rastra', $rastraDup)

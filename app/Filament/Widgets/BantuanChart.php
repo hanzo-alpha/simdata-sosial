@@ -167,8 +167,8 @@ class BantuanChart extends ApexChartWidget
         $results = [];
         $labels = [];
         $colors = [];
-        $userInstansiId = auth()->user()->instansi_id;
-        $kelurahan = Kelurahan::where('code', $userInstansiId)->first();
+        $userInstansiId = auth()->user()?->instansi_id;
+        $kelurahan = Kelurahan::query()->where('code', $userInstansiId)->first();
         $kdKec = $kelurahan->kecamatan_code ?? null;
         $kdKel = $kelurahan->code ?? null;
         $filters = [

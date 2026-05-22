@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\BantuanRastra;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +11,8 @@ return new class () extends Migration {
     {
         Schema::create('berita_acara', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->foreignId(BantuanRastra::class);
+            // store selected Rastra IDs as JSON array (many-to-many via IDs)
+            $table->json('bantuan_rastra_ids')->nullable();
             $table->string('nomor_ba');
             $table->string('judul_ba');
             $table->date('tgl_ba')->nullable()->default(today());

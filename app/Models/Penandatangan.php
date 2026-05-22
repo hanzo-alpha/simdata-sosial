@@ -9,6 +9,7 @@ use App\Enums\StatusPenandatangan;
 use App\Traits\HasKelurahanScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Penandatangan extends Model
 {
@@ -19,12 +20,12 @@ class Penandatangan extends Model
 
     protected $guarded = [];
 
-    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
-        return \Spatie\Activitylog\LogOptions::defaults()
+        return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function getKelurahanColumn(): string

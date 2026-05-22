@@ -21,6 +21,7 @@ use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Schema as DBSchema;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class BantuanSosialPerKelurahanChart extends ApexChartWidget
@@ -43,7 +44,8 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
     public function getHeading(): ?string
     {
         $filters = $this->filters;
-        $jenisBantuan = JenisBantuan::find($filters['program'] ?? 3) ?? JenisBantuan::find(3);
+        $jenisBantuan = JenisBantuan::query()->firstWhere('id', $filters['program'] ?? 3)
+            ?? JenisBantuan::query()->firstWhere('id', 3);
         $year = $filters['tahun'] ?? 2024;
 
         return 'Distribusi Bantuan ' . ($jenisBantuan?->alias ?? 'Program') . ' Per Kelurahan ' . $year;
@@ -166,7 +168,7 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
         $kdKec = $filters['kecamatan'] ?? null;
         $kdKel = $filters['kelurahan'] ?? null;
 
-        $userInstansiId = auth()->user()->instansi_id ?? $kdKel;
+        $userInstansiId = auth()->user()?->instansi_id ?? $kdKel;
 
         $kel = Kelurahan::query()
             ->when($userInstansiId, function (Builder $query) use ($userInstansiId): void {
@@ -181,16 +183,48 @@ class BantuanSosialPerKelurahanChart extends ApexChartWidget
 
         $programId = $filters['program'] ?? 3;
 
-        $jenisBantuan = JenisBantuan::find($programId) ?? JenisBantuan::find(3);
+        $jenisBantuan = JenisBantuan::query()->firstWhere('id', $programId)
+            ?? JenisBantuan::query()->firstWhere('id', 3);
+
+        // Build one aggregated query per selected program to avoid N queries (one per kelurahan)
+        $programId = $filters['program'] ?? 3;
+        $model = match ((int) $programId) {
+            1 => BantuanPkh::class,
+            2 => BantuanBpnt::class,
+            3 => RekapPenerimaBpjs::class,
+            4 => BantuanPpks::class,
+            5 => BantuanRastra::class,
+        };
+
+        $baseQuery = $model::query()
+            ->when($filters['kecamatan'] ?? null, fn(Builder $q) => $q->where('kecamatan', $filters['kecamatan']))
+            ->when($filters['kelurahan'] ?? null, fn(Builder $q) => $q->where('kelurahan', $filters['kelurahan']));
+
+        $year = $filters['tahun'] ?? now()->year;
+        if (DBSchema::hasColumn($baseQuery->getModel()->getTable(), 'tahun')) {
+            $baseQuery = $baseQuery->where('tahun', $year);
+        } else {
+            $baseQuery = $baseQuery->whereYear('created_at', $year);
+        }
+
+        if (RekapPenerimaBpjs::class === $model) {
+            $aggregates = $baseQuery->selectRaw('kelurahan, SUM(jumlah) as total')
+                ->groupBy('kelurahan')
+                ->pluck('total', 'kelurahan')
+                ->toArray();
+        } else {
+            $aggregates = $baseQuery->selectRaw('kelurahan, COUNT(*) as total')
+                ->groupBy('kelurahan')
+                ->pluck('total', 'kelurahan')
+                ->toArray();
+        }
 
         foreach ($kel as $code => $name) {
             $results['labels'][$code] = $name;
-            if ($jenisBantuan) {
-                $results[$jenisBantuan->id][$name] = $this->queryChart($jenisBantuan->id, $code, $filters);
-            }
+            $results[$programId][$name] = (int) ($aggregates[$code] ?? 0);
         }
 
-        $cTipe = auth()->user()->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
+        $cTipe = auth()->user()?->instansi_id ? 'bar' : ($filters['cTipe'] ?? 'bar');
         $isStacked = (bool) ($filters['cStack'] ?? false);
         $chartGrid = (bool) ($filters['chartGrid'] ?? false);
         $cLabel = (bool) ($filters['cLabel'] ?? false);
