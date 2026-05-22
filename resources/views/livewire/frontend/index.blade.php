@@ -147,7 +147,7 @@
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <a
-                    href="{{ route('pdf.download') }}"
+                    href="{{ Route::has('pdf.download') ? route('pdf.download') : '#' }}"
                     class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
                 >
                     <div class="text-primary mb-2">Unduh Dokumentasi</div>
@@ -155,7 +155,7 @@
                 </a>
 
                 <a
-                    href="{{ route('ba.rastra') }}"
+                    href="{{ Route::has('ba.rastra') ? route('ba.rastra') : '#' }}"
                     class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
                 >
                     <div class="text-primary mb-2">Berita Acara Rastra</div>
@@ -163,7 +163,7 @@
                 </a>
 
                 <a
-                    href="{{ route('ba.ppks') }}"
+                    href="{{ Route::has('ba.ppks') ? route('ba.ppks') : '#' }}"
                     class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
                 >
                     <div class="text-primary mb-2">Berita Acara PPKS</div>
@@ -171,7 +171,7 @@
                 </a>
 
                 <a
-                    href="{{ route('frontend') }}#chart"
+                    href="{{ Route::has('frontend') ? route('frontend') . '#chart' : '#chart' }}"
                     class="block rounded-lg border bg-white p-5 text-center shadow hover:shadow-md"
                 >
                     <div class="text-primary mb-2">Lihat Grafik</div>
