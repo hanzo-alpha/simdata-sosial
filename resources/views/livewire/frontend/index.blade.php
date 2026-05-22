@@ -15,249 +15,144 @@
                     </h1>
                     <p class="text-gray-500 sm:text-lg">
                         Sistem Informasi Rumah Data Terpadu Dinas Sosial Kabupaten Soppeng. Dibuat untuk mempermudah
-                        Dinas Sosial dalam monitoring data penyebaran bantuan sosial khususnya dalam ruang lingkup
-                        kabupaten soppeng.
                     </p>
-                    <div class="mt-5 flex flex-wrap items-center justify-center gap-5">
-                        <div class="flex items-center gap-2">
-                            <svg
-                                class="h-5 w-5 text-green-500"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                            <p class="text-sm text-gray-700">Multi User Instansi Kelurahan</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <svg
-                                class="h-5 w-5 text-green-500"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                            <p class="text-sm text-gray-700">Mencakup 5 Bantuan Sosial</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <svg
-                                class="h-5 w-5 text-green-500"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                            <p class="text-sm text-gray-700">Penggunaan Mudah dan Cepat</p>
-                        </div>
+
+                    <div>
+                        <!-- Redesigned Landing (Tailwind 4) -->
+                        <header class="bg-linear-to-b from-yellow-50/60 to-white/60 py-20">
+                            <div class="container mx-auto px-4 text-center">
+                                <h1 class="text-4xl font-extrabold text-slate-900 sm:text-5xl">
+                                    RENO — Sistem Informasi Dinas Sosial
+                                </h1>
+                                <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+                                    Rumah Data Terpadu untuk mempermudah monitoring dan penyaluran bantuan sosial di
+                                    Kabupaten Soppeng.
+                                </p>
+
+                                <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                                    @if (Route::has('login'))
+                                        <a
+                                            href="{{ route('login') }}"
+                                            class="bg-primary inline-flex items-center gap-2 rounded-md px-6 py-3 text-white shadow"
+                                        >
+                                            Masuk
+                                        </a>
+                                    @endif
+
+                                    @if (Route::has('register'))
+                                        <a
+                                            href="{{ route('register') }}"
+                                            class="border-primary text-primary inline-flex items-center gap-2 rounded-md border px-6 py-3"
+                                        >
+                                            Daftar
+                                        </a>
+                                    @endif
+
+                                    @if (Route::has('pdf.download'))
+                                        <a
+                                            href="{{ route('pdf.download') }}"
+                                            class="text-primary inline-flex items-center gap-2 rounded-md bg-white px-6 py-3 shadow"
+                                        >
+                                            Unduh Dokumen
+                                        </a>
+                                    @endif
+                                </div>
+
+                                <div class="mt-10 flex items-center justify-center gap-8">
+                                    <img
+                                        src="{{ asset('images/logos/logo-soppeng-new.png') }}"
+                                        alt="logo-soppeng"
+                                        class="h-12"
+                                    />
+                                    <img
+                                        src="{{ asset('images/logos/logo-dinsos-crop.png') }}"
+                                        alt="logo-dinsos"
+                                        class="h-14"
+                                    />
+                                </div>
+                            </div>
+                        </header>
+
+                        <main class="py-16">
+                            <div class="container mx-auto px-4">
+                                <!-- Features -->
+                                <section class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                                    <div class="rounded-lg border bg-white p-6 text-center shadow">
+                                        <h3 class="text-lg font-semibold">Akses Multi-User</h3>
+                                        <p class="mt-2 text-sm text-slate-600">
+                                            Role instansi, kelurahan, dan admin untuk pengelolaan data.
+                                        </p>
+                                    </div>
+                                    <div class="rounded-lg border bg-white p-6 text-center shadow">
+                                        <h3 class="text-lg font-semibold">Lima Program Bantuan</h3>
+                                        <p class="mt-2 text-sm text-slate-600">
+                                            BPJS, RASTRA, BPNT, PKH, PPKS serta indikator kemiskinan.
+                                        </p>
+                                    </div>
+                                    <div class="rounded-lg border bg-white p-6 text-center shadow">
+                                        <h3 class="text-lg font-semibold">Laporan & Berita Acara</h3>
+                                        <p class="mt-2 text-sm text-slate-600">
+                                            Cetak laporan dan berita acara penyaluran secara cepat.
+                                        </p>
+                                    </div>
+                                </section>
+
+                                <!-- Chart / Statistics -->
+                                <section class="mt-12 grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
+                                    <div class="rounded-lg border bg-white p-6 shadow">
+                                        <h4 class="text-md font-semibold">Statistik Program</h4>
+                                        <div class="mt-4">
+                                            <div wire:poll.keep-alive>
+                                                {{ $chart->container() }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rounded-lg border bg-white p-6 shadow">
+                                        <h4 class="text-md font-semibold">Ringkasan Cepat</h4>
+                                        <ul class="mt-4 space-y-3 text-sm text-slate-600">
+                                            <li>
+                                                Jumlah KPM:
+                                                <strong>{{ number_format($kpmCount ?? 0) }}</strong>
+                                            </li>
+                                            <li>
+                                                Transaksi Terakhir:
+                                                <strong>{{ $lastDistributionAt ?? '-' }}</strong>
+                                            </li>
+                                            <li>
+                                                Data Kelurahan:
+                                                <strong>{{ $kelurahanCount ?? 0 }}</strong>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </section>
+
+                                <!-- CTA -->
+                                <section class="mt-12 text-center">
+                                    <p class="text-slate-600">
+                                        Butuh bantuan atau ingin melihat demo? Hubungi tim pengembang.
+                                    </p>
+                                    <div class="mt-4">
+                                        <a
+                                            href="mailto:it@dinsos.soppeng.go.id"
+                                            class="bg-primary inline-block rounded-md px-6 py-3 text-white"
+                                        >
+                                            Hubungi Kami
+                                        </a>
+                                    </div>
+                                </section>
+                            </div>
+                        </main>
+
+                        <footer class="border-t bg-white py-6">
+                            <div class="container mx-auto px-4 text-center text-sm text-slate-500">
+                                © {{ date('Y') }} DINAS SOSIAL KAB. SOPPENG
+                            </div>
+                        </footer>
                     </div>
-                    <div class="mt-12 flex flex-wrap items-center justify-center gap-2">
-                        <div class="flex items-center">
-                            <img
-                                src="{{ asset('images/logos/logo-soppeng-new.png') }}"
-                                alt="logo-soppeng"
-                                class="rounded-md px-4 py-2"
-                                width="100"
-                            />
-                        </div>
-                        <div class="flex items-center">
-                            <img
-                                src="{{ asset('images/logos/logo-dinsos-crop.png') }}"
-                                alt="logo-dinsos"
-                                class="rounded-md px-4 py-2"
-                                width="200"
-                            />
-                        </div>
-                    </div>
+                    class="swiper w-5/6 rounded-md border-[10px] border-white bg-white shadow-lg"
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="container">
-        <div class="relative -mt-64 sm:-mt-80">
-            <div class="hidden sm:block">
-                <div
-                    class="after:absolute after:end-10 after:-top-10 after:h-24 after:w-24 after:bg-[url('../images/pattern/dot5.svg')]"
-                ></div>
-                <div
-                    class="before:absolute before:start-10 before:-bottom-10 before:h-24 before:w-24 before:bg-[url('../images/pattern/dot2.svg')]"
-                ></div>
-            </div>
-
-            <div
-                id="swiper_one"
-                class="swiper w-5/6 rounded-md border-[10px] border-white bg-white shadow-lg"
-                data-aos="fade-up"
-                data-aos-duration="2000"
-            >
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img
-                            src="{{ asset('frontend/images/hero/program-rastra.png') }}"
-                            alt="dashboard-dark"
-                            class="rounded-md"
-                        />
-                    </div>
-
-                    <div class="swiper-slide">
-                        <img
-                            src="{{ asset('frontend/images/hero/dashboard.png') }}"
-                            alt="dashboard"
-                            class="rounded-md"
-                        />
-                    </div>
-
-                    <div class="swiper-slide">
-                        <img
-                            src="{{ asset('frontend/images/hero/program-bpjs.png') }}"
-                            alt="penyaluran-rastra"
-                            class="rounded-md"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- =========== Hero Section End =========== -->
-    <!-- Quick Actions removed -->
-    <!-- =========== feature Section Start =========== -->
-    <section class="overflow-hidden">
-        <div class="py-16 xl:py-24">
-            <div class="container">
-                <div class="text-center">
-                    <span class="text-primary bg-primary/10 rounded-full px-3 py-1 text-sm font-medium">
-                        Grafik Program Bantuan
-                    </span>
-                    <h1 class="mt-3 mb-4 text-3xl/tight font-medium">Lihat Data KPM Secara Cepat</h1>
-                    <p class="text-gray-500">
-                        Menampilkan data grafik Program Bantuan
-                        <span class="text-primary">BPJS, RASTRA, BPNT, PKH, PPKS, dan Angka Kemiskinan</span>
-                    </p>
-                </div>
-                <div class="py-16 xl:pt-16 xl:pb-28">
-                    <div class="grid-cols-1n grid items-center gap-6 lg:grid-cols-2">
-                        <div class="order-2 lg:order-1 2xl:w-9/12" data-aos="fade-up" data-aos-duration="500">
-                            <div class="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-lg">
-                                <svg
-                                    class="text-primary h-7 w-7"
-                                    viewBox="0 0 24 24"
-                                    version="1.1"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect id="bound" x="0" y="0" width="24" height="24"></rect>
-                                        <path
-                                            d="M10.8226874,8.36941377 L12.7324324,9.82298668 C13.4112512,8.93113547 14.4592942,8.4 15.6,8.4 C17.5882251,8.4 19.2,10.0117749 19.2,12 C19.2,13.9882251 17.5882251,15.6 15.6,15.6 C14.5814697,15.6 13.6363389,15.1780547 12.9574041,14.4447676 L11.1963369,16.075302 C12.2923051,17.2590082 13.8596186,18 15.6,18 C18.9137085,18 21.6,15.3137085 21.6,12 C21.6,8.6862915 18.9137085,6 15.6,6 C13.6507856,6 11.9186648,6.9294879 10.8226874,8.36941377 Z"
-                                            id="Combined-Shape"
-                                            fill="currentColor"
-                                            opacity="0.3"
-                                        ></path>
-                                        <path
-                                            d="M8.4,18 C5.0862915,18 2.4,15.3137085 2.4,12 C2.4,8.6862915 5.0862915,6 8.4,6 C11.7137085,6 14.4,8.6862915 14.4,12 C14.4,15.3137085 11.7137085,18 8.4,18 Z"
-                                            id="Oval-14-Copy"
-                                            fill="currentColor"
-                                        ></path>
-                                    </g>
-                                </svg>
-                            </div>
-
-                            <h1 class="mt-6 mb-4 text-3xl/tight font-medium">Real Time Data Update</h1>
-                            <p class="text-gray-500">
-                                Saat ini ada 5 Program Bantuan Sosial yang di tangani oleh Dinas Sosial Kabupaten
-                                Soppeng. Yaitu Program BPJS, RASTRA, BPNT, PKH, dan PPKS serta Angka Kemiskinan. Grafik
-                                data ditampilkan secara realtime untuk akses informasi secara cepat.
-                            </p>
-                        </div>
-
-                        <div class="relative order-1 lg:order-2">
-                            <div class="hidden sm:block">
-                                <div
-                                    class="after:absolute after:-end-8 after:-top-8 after:h-20 after:w-20 after:bg-[url('../images/pattern/dot2.svg')] 2xl:after:-end-8"
-                                ></div>
-                                <div
-                                    class="before:absolute before:-start-8 before:-bottom-8 before:h-20 before:w-20 before:bg-[url('../images/pattern/dot5.svg')]"
-                                ></div>
-                            </div>
-                            <div wire:poll.keep-alive>
-                                {{ $chart->container() }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- =========== Stats Section Start =========== -->
-    <section class="relative bg-gradient-to-r from-gray-100/70 to-gray-100/50 py-16 xl:py-24">
-        <div class="absolute inset-x-0 top-0 hidden sm:block">
-            <img src="{{ asset('frontend/images/shapes/white-wave.svg') }}" alt="svg" class="w-full -scale-x-100" />
-        </div>
-        <div class="relative container" data-aos="fade-up" data-aos-duration="600">
-            <div class="text-center">
-                <span class="text-primary bg-primary/10 rounded-full px-3 py-1 text-sm font-medium">
-                    Jumlah KPM Program Bantuan
-                </span>
-                <h2 class="my-5 text-xl font-semibold md:text-3xl">Data Statistik Program Bantuan Sosial</h2>
-                {{-- <p class="text-slate-500">Saat ini program bantuan pada Dinas Sosial berjumlah 5 Program.</p> --}}
-            </div>
-
-            <div class="mt-14 grid grid-cols-2 gap-6 py-16 md:grid-cols-3" data-aos="fade-up" wire:poll.keep-alive>
-                <div class="text-center">
-                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpjs'], 0, locale: 'id') }} Kpm</h4>
-                    <p class="text-slate-600">Program BPJS</p>
-                </div>
-                <div class="text-center">
-                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['rastra'], 0, locale: 'id') }} Kpm</h4>
-                    <p class="text-slate-600">Program RASTRA</p>
-                </div>
-                <div class="text-center">
-                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['pkh'], 0, locale: 'id') }} Kpm</h4>
-                    <p class="text-slate-600">Program PKH</p>
-                </div>
-                <div class="mt-4 text-center">
-                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['bpnt'], 0, locale: 'id') }} Kpm</h4>
-                    <p class="text-slate-600">Program BPNT</p>
-                </div>
-                <div class="mt-4 text-center">
-                    <h4 class="mb-3 text-5xl">{{ Number::format($bantuan['ppks'], 0, locale: 'id') }} Kpm</h4>
-                    <p class="text-slate-600">Program PPKS</p>
-                </div>
-                <div class="mt-4 text-center">
-                    <h4 class="mb-3 text-5xl">
-                        {{ Number::percentage((float) setting('app.angka_kemiskinan_persen'), 2, locale: 'id') }}
-                    </h4>
-                    <p class="text-slate-600">Angka Kemiskinan Kab. Soppeng</p>
-                </div>
-            </div>
-        </div>
-        <div class="absolute inset-x-0 bottom-0 hidden sm:block">
-            <img
-                src="{{ asset('frontend/images/shapes/white-wave.svg') }}"
-                alt="svg"
-                class="w-full scale-x-100 -scale-y-100"
-            />
-        </div>
-    </section>
-    <!-- =========== stats Section end =========== -->
-    @push('js')
-        {!! $chart->script() !!}
-    @endpush
 </div>
